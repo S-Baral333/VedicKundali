@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Offline – Kundali</title>
+    <meta name="theme-color" content="#0A0A14" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Cormorant+Garamond:ital@0;1&display=swap" rel="stylesheet" />
+    <style>
+      :root { color-scheme: dark; }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body {
+        height: 100%;
+        background:
+          radial-gradient(ellipse at 50% 40%, rgba(245, 200, 66, 0.08), transparent 60%),
+          #0A0A14;
+        color: #E8DDB8;
+        font-family: "Cormorant Garamond", Georgia, serif;
+        overflow: hidden;
+      }
+      .stars {
+        position: fixed; inset: 0; pointer-events: none;
+        background-image:
+          radial-gradient(1px 1px at 12% 18%, #fff8, transparent 50%),
+          radial-gradient(1px 1px at 78% 32%, #fff6, transparent 50%),
+          radial-gradient(1.5px 1.5px at 38% 72%, #fff7, transparent 50%),
+          radial-gradient(1px 1px at 62% 84%, #fff5, transparent 50%),
+          radial-gradient(1px 1px at 28% 50%, #fff5, transparent 50%),
+          radial-gradient(1.5px 1.5px at 88% 60%, #fff7, transparent 50%);
+        animation: twinkle 4s ease-in-out infinite alternate;
+      }
+      @keyframes twinkle { from { opacity: 0.55 } to { opacity: 1 } }
+      main {
+        position: relative;
+        height: 100%;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        padding: 2rem; text-align: center;
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+      .mark {
+        width: 96px; height: 96px; margin-bottom: 1.5rem;
+        filter: drop-shadow(0 0 24px rgba(245, 200, 66, 0.35));
+      }
+      h1 {
+        font-family: "Cinzel", serif;
+        font-weight: 600;
+        font-size: clamp(1.75rem, 5vw, 2.5rem);
+        letter-spacing: 0.04em;
+        color: #F5C842;
+        margin-bottom: 0.75rem;
+      }
+      p {
+        font-size: clamp(1rem, 2.4vw, 1.15rem);
+        font-style: italic;
+        color: #C8B080;
+        max-width: 36ch;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+      }
+      .btn {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, #C8860A, #8B5A00);
+        color: #0A0A14;
+        text-decoration: none;
+        font-family: "Cinzel", serif;
+        font-size: 0.95rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        box-shadow: 0 4px 20px rgba(200, 134, 10, 0.3);
+        transition: transform 0.2s;
+      }
+      .btn:hover, .btn:active { transform: translateY(-1px); }
+    </style>
+  </head>
+  <body>
+    <div class="stars"></div>
+    <main>
+      <img src="/icons/icon-192.png" alt="" class="mark" />
+      <h1>The Cosmos is Quiet</h1>
+      <p>You're offline. Cached pages still work — try Dashboard or Horoscope. We'll reconnect when the signal returns.</p>
+      <button class="btn" onclick="location.reload()">Try Again</button>
+    </main>
+  </body>
+</html>

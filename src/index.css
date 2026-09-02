@@ -1,0 +1,1825 @@
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500&family=IM+Fell+English:ital@1&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@300;400;500;600&family=Noto+Sans+Bengali:wght@300;400;500;600&family=Noto+Sans+Tamil:wght@300;400;500;600&family=Noto+Sans+Telugu:wght@300;400;500;600&family=Noto+Serif+Devanagari:wght@400;500;600;700&display=swap");
+
+/* ── Script-aware body font (heading stays Cormorant for Latin; for Indic scripts we let Noto take over for legibility) ── */
+html[data-lang="hi"], html[data-lang="ne"], html[data-lang="mr"] { font-family: 'Noto Sans Devanagari', 'Jost', sans-serif; }
+html[data-lang="bn"] { font-family: 'Noto Sans Bengali', 'Jost', sans-serif; }
+html[data-lang="ta"] { font-family: 'Noto Sans Tamil', 'Jost', sans-serif; }
+html[data-lang="te"] { font-family: 'Noto Sans Telugu', 'Jost', sans-serif; }
+html[data-lang="hi"] h1, html[data-lang="hi"] h2, html[data-lang="hi"] h3,
+html[data-lang="ne"] h1, html[data-lang="ne"] h2, html[data-lang="ne"] h3,
+html[data-lang="mr"] h1, html[data-lang="mr"] h2, html[data-lang="mr"] h3 { font-family: 'Noto Serif Devanagari', 'Cormorant Garamond', serif; }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════
+   Premium Cosmic Experience — Design System
+   ═══════════════════════════════════════════════ */
+
+@layer base {
+  :root {
+    /* ── Core palette — Cool Indigo Night · Saffron · Parchment ── */
+    --gold: 33 86% 48%;          /* Saffron #D88318 (slightly brightened on cool bg) */
+    --gold-light: 38 75% 68%;
+    --gold-pale: 38 70% 90%;     /* Cream #FBF5E9 */
+    --gold-dim: 33 60% 30%;
+
+    --ink: 240 33% 4%;           /* Cool indigo night */
+    --ink-2: 240 25% 8%;
+    --ink-3: 240 16% 12%;
+
+    --crimson: 0 75% 38%;        /* Severity / dosha alert */
+
+    --glass: 0 0% 100% / 0.035;
+    --glass-border: 33 86% 48% / 0.18;
+    --glass-border-soft: 0 0% 100% / 0.06;
+
+    --text-primary: 36 80% 92%;  /* Parchment #FCF0DC */
+    --text-secondary: 36 30% 72%;
+    --text-muted: 36 15% 52%;
+
+    /* ── Tailwind semantic tokens (cool dark night) ── */
+    --background: 240 33% 4%;
+    --foreground: 36 80% 92%;
+
+    --card: 240 25% 8%;
+    --card-foreground: 36 80% 92%;
+
+    --popover: 240 22% 10%;
+    --popover-foreground: 36 80% 92%;
+
+    --primary: 33 86% 48%;
+    --primary-foreground: 240 33% 4%;
+
+    --secondary: 240 18% 14%;
+    --secondary-foreground: 36 30% 78%;
+
+    --muted: 240 14% 16%;
+    --muted-foreground: 36 15% 58%;
+
+    --accent: 33 86% 48%;
+    --accent-foreground: 240 33% 4%;
+
+    --destructive: 0 75% 42%;
+    --destructive-foreground: 36 80% 96%;
+
+    --border: 33 86% 48% / 0.15;
+    --input: 33 86% 48% / 0.15;
+    --ring: 33 86% 48%;
+
+    --radius: 0.875rem;
+
+    --sidebar-background: 240 28% 6%;
+    --sidebar-foreground: 36 80% 92%;
+    --sidebar-primary: 33 86% 48%;
+    --sidebar-primary-foreground: 240 33% 4%;
+    --sidebar-accent: 33 86% 48%;
+    --sidebar-accent-foreground: 240 33% 4%;
+    --sidebar-border: 33 86% 48% / 0.12;
+    --sidebar-ring: 33 86% 48%;
+
+    --chart-1: 33 86% 48%;
+    --chart-2: 28 80% 55%;
+    --chart-3: 42 80% 62%;
+    --chart-4: 260 60% 55%;
+    --chart-5: 220 25% 50%;
+
+    --sidebar: 240 25% 8%;
+
+    --font-sans: 'Jost', ui-sans-serif, system-ui, sans-serif;
+    --font-serif: 'Cormorant Garamond', ui-serif, Georgia, serif;
+    --font-display: 'Cinzel', 'Cormorant Garamond', ui-serif, Georgia, serif;
+    --font-mono: 'Fira Code', ui-monospace, monospace;
+
+    --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.1);
+    --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.1);
+    --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.15), 0 1px 2px -1px hsl(0 0% 0% / 0.15);
+    --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.15), 0 1px 2px -1px hsl(0 0% 0% / 0.15);
+    --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.15), 0 2px 4px -1px hsl(0 0% 0% / 0.15);
+    --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.15), 0 4px 6px -1px hsl(0 0% 0% / 0.15);
+    --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.15), 0 8px 10px -1px hsl(0 0% 0% / 0.15);
+    --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.35);
+
+    --tracking-normal: 0em;
+    --spacing: 0.25rem;
+  }
+
+  /* Dark class is now a no-op — we're always in sacred dark mode */
+  .dark {
+    /* inherits :root */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    background: hsl(var(--ink));
+    color: hsl(var(--text-primary));
+    font-family: var(--font-sans);
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* ── ANIMATIONS ── */
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.05); }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes rotate-slow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes pulse-gold {
+  0% { box-shadow: 0 0 0 0 hsl(var(--gold) / 0.5); }
+  60% { box-shadow: 0 0 0 8px hsl(var(--gold) / 0); }
+  100% { box-shadow: 0 0 0 0 hsl(var(--gold) / 0); }
+}
+
+@keyframes sacred-fade-in {
+  from { opacity: 0; transform: translateY(16px); filter: blur(4px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+@keyframes aura-ring {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+@keyframes text-reveal {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes gentle-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.animate-fade-in-up {
+  animation: fadeSlideUp 0.8s ease both;
+}
+
+/* ── NEBULA BACKGROUND — cool indigo glow at corners with saffron warmth ── */
+.nebula-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 40% at 8% 5%, hsl(260 55% 22% / 0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 35% at 92% 95%, hsl(33 86% 35% / 0.08) 0%, transparent 55%);
+}
+
+/* Center darkening overlay — gives cards a calm dark canvas to sit on */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 20% 15%;
+  background: radial-gradient(ellipse at center, hsl(240 33% 3% / 0.55) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── GLASS CARD (Premium) — softer borders, more grounded background ── */
+.glass-card-premium {
+  background: hsl(240 25% 6% / 0.62);
+  border: 0.5px solid hsl(var(--gold) / 0.10);
+  border-radius: 1.25rem;
+  padding: 1.75rem 2rem;
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card-premium::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, hsl(var(--gold) / 0.04) 0%, transparent 60%);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.glass-card-premium:hover {
+  border-color: hsl(var(--gold) / 0.22);
+  transform: translateY(-1px);
+}
+
+/* ── Legacy sacred-card — same refinement cascade ── */
+.sacred-card {
+  background: hsl(240 25% 6% / 0.62);
+  border: 0.5px solid hsl(var(--gold) / 0.10);
+  border-radius: 1.25rem;
+  padding: 1.75rem 2rem;
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.35s ease, transform 0.35s ease;
+}
+
+.sacred-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, hsl(var(--gold) / 0.04) 0%, transparent 60%);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.sacred-card:hover {
+  border-color: hsl(var(--gold) / 0.22);
+  transform: translateY(-1px);
+}
+
+/* Elite-only cards — thin gold top-edge accent in lieu of inline badge */
+.elite-card {
+  border-top: 2px solid hsl(var(--gold) / 0.45) !important;
+}
+
+/* Cosmic Guidance prose treatment — editorial breathing room */
+.dash-prose {
+  max-width: 62ch;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  line-height: 1.85;
+  color: hsl(0 0% 100% / 0.55);
+}
+
+/* Highlighted action insight breaking long prose */
+.dash-pullquote {
+  margin: 1rem 0;
+  padding: 0.25rem 0 0.25rem 0.85rem;
+  border-left: 2px solid hsl(var(--gold) / 0.55);
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.55;
+  color: hsl(var(--gold-light));
+}
+
+/* Mobile: bump legacy cards slightly for readability over starfield */
+@media (max-width: 480px) {
+  .sacred-card,
+  .glass-card-premium {
+    background: hsl(240 25% 6% / 0.72);
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   SACRED PORTAL — Login / Auth temple-entry styles
+   ═══════════════════════════════════════════════ */
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+@keyframes logoPulse {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50%      { opacity: 1;    transform: scale(1.06); }
+}
+@keyframes fadeInSoft {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes shineSweep {
+  0%   { transform: translateX(-130%) skewX(-18deg); }
+  100% { transform: translateX(130%)  skewX(-18deg); }
+}
+@keyframes mandalaSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* The card itself: floats, with a soft gold + indigo aura */
+.sacred-portal-card {
+  animation: floatCard 6s ease-in-out infinite;
+  box-shadow:
+    0 0 60px hsl(var(--gold) / 0.10),
+    0 0 140px hsl(240 60% 30% / 0.20),
+    inset 0 0 80px hsl(var(--gold) / 0.04);
+}
+/* Divine glow border — masked conic ring rotating very slowly */
+.sacred-portal-card::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from 0deg,
+    hsl(var(--gold) / 0.55),
+    hsl(var(--gold) / 0.05),
+    hsl(38 75% 70% / 0.45),
+    hsl(var(--gold) / 0.05),
+    hsl(var(--gold) / 0.55)
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.6;
+  animation: mandalaSpin 18s linear infinite;
+}
+
+/* Logo halo — soft radial pulse behind the brand mark */
+.logo-halo {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.logo-halo::before {
+  content: '';
+  position: absolute;
+  width: 140%;
+  height: 140%;
+  border-radius: 50%;
+  background: radial-gradient(circle, hsl(var(--gold) / 0.35) 0%, hsl(var(--gold) / 0.10) 35%, transparent 70%);
+  filter: blur(14px);
+  animation: logoPulse 4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+.logo-halo > * { position: relative; z-index: 1; }
+
+/* Input wrapper with leading icon + gold focus ring */
+.sacred-input {
+  position: relative;
+  border-radius: 0.75rem;
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.sacred-input > svg {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  color: hsl(var(--gold) / 0.65);
+  pointer-events: none;
+  z-index: 1;
+}
+.sacred-input input {
+  padding-left: 2.4rem !important;
+  background: hsl(240 25% 4% / 0.55) !important;
+  border: 1px solid hsl(var(--gold) / 0.18) !important;
+  color: hsl(var(--text-primary)) !important;
+}
+.sacred-input:focus-within {
+  box-shadow: 0 0 0 1px hsl(var(--gold) / 0.5), 0 0 14px hsl(var(--gold) / 0.18);
+}
+.sacred-input:focus-within > svg { color: hsl(var(--gold)); }
+
+/* Sign In CTA — gradient saffron with sweep shine */
+.sacred-cta {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(38 80% 60%) 100%) !important;
+  color: hsl(var(--ink)) !important;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  box-shadow: 0 8px 24px -10px hsl(var(--gold) / 0.55), 0 0 0 1px hsl(var(--gold) / 0.35) inset;
+  transition: transform 0.2s ease, box-shadow 0.25s ease, filter 0.25s ease;
+}
+.sacred-cta:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 12px 30px -10px hsl(var(--gold) / 0.65), 0 0 0 1px hsl(var(--gold) / 0.5) inset;
+}
+.sacred-cta::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, hsl(0 0% 100% / 0.35), transparent);
+  transform: translateX(-130%) skewX(-18deg);
+  pointer-events: none;
+}
+.sacred-cta:hover:not(:disabled)::after {
+  animation: shineSweep 0.9s ease;
+}
+
+/* Mandala watermark behind the card */
+.mandala-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(520px, 90vw);
+  height: min(520px, 90vw);
+  opacity: 0.06;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 0;
+}
+.mandala-watermark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  animation: mandalaSpin 120s linear infinite;
+  filter: drop-shadow(0 0 24px hsl(var(--gold) / 0.4));
+}
+
+/* Trust strip below the card */
+.sacred-trust-strip {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: hsl(var(--gold) / 0.55);
+}
+.sacred-trust-strip span + span::before {
+  content: '·';
+  margin: 0 0.6rem;
+  color: hsl(var(--gold) / 0.4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sacred-portal-card,
+  .sacred-portal-card::after,
+  .logo-halo::before,
+  .mandala-watermark img,
+  .sacred-cta::after { animation: none !important; }
+}
+
+/* ── SECTION TITLE ── */
+.sacred-section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: hsl(var(--gold));
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.sacred-section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, hsl(var(--gold) / 0.4), transparent);
+}
+
+/* ── SACRED HELPERS ── */
+.sacred-divider {
+  height: 0.5px;
+  background: linear-gradient(90deg, transparent, hsl(var(--glass-border)), transparent);
+  margin: 1.5rem 0;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SACRED WIDE — editorial 3-rail layout system
+   Replaces the old max-w-[1160px] "A4 paper" cage.
+   ═══════════════════════════════════════════════════════════ */
+.sacred-wide {
+  width: 100%;
+  max-width: 1640px;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+@media (min-width: 768px) {
+  .sacred-wide { padding-inline: 2rem; }
+}
+@media (min-width: 1280px) {
+  .sacred-wide { padding-inline: 3rem; }
+}
+
+/* The 3-rail grid: collapses gracefully on smaller screens */
+.sacred-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+@media (min-width: 1024px) {
+  .sacred-grid {
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: 2.25rem;
+  }
+}
+@media (min-width: 1280px) {
+  .sacred-grid {
+    grid-template-columns: 240px minmax(0, 1fr) 320px;
+    gap: 2.5rem;
+  }
+}
+
+/* Variant: prose + right rail only (no left rail) */
+.sacred-grid-no-left {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+@media (min-width: 1280px) {
+  .sacred-grid-no-left {
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 2.5rem;
+  }
+}
+
+/* Variant: left rail + prose only (no right rail) */
+.sacred-grid-no-right {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+@media (min-width: 1024px) {
+  .sacred-grid-no-right {
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: 2.25rem;
+  }
+}
+.sacred-rail {
+  position: relative;
+}
+@media (min-width: 1024px) {
+  .sacred-rail {
+    position: sticky;
+    top: 96px;
+    align-self: start;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--gold) / 0.2) transparent;
+  }
+  .sacred-rail::-webkit-scrollbar { width: 4px; }
+  .sacred-rail::-webkit-scrollbar-thumb {
+    background: hsl(var(--gold) / 0.2);
+    border-radius: 4px;
+  }
+}
+
+.sacred-rail-left { display: none; }
+@media (min-width: 1024px) { .sacred-rail-left { display: block; } }
+
+.sacred-rail-right { display: none; }
+@media (min-width: 1280px) { .sacred-rail-right { display: block; } }
+
+/* Hairline column separators — the "newspaper feel" */
+@media (min-width: 1024px) {
+  .sacred-grid > .sacred-rail-left {
+    border-right: 0.5px solid hsl(var(--gold) / 0.06);
+    padding-right: 1.25rem;
+  }
+}
+@media (min-width: 1280px) {
+  .sacred-grid > .sacred-rail-right {
+    border-left: 0.5px solid hsl(var(--gold) / 0.06);
+    padding-left: 1.25rem;
+  }
+}
+
+/* The center reading column — keeps prose at a comfortable measure */
+.sacred-prose {
+  width: 100%;
+  min-width: 0;
+}
+
+/* Mobile overflow safety net — no stray long token (UUID, URL, hash) should
+   ever force the page wider than the viewport. */
+@media (max-width: 767px) {
+  html, body { overflow-x: clip; }
+  .sacred-wide, .sacred-prose { overflow-x: clip; max-width: 100vw; }
+  .sacred-prose * { min-width: 0; }
+  .sacred-prose p, .sacred-prose h1, .sacred-prose h2, .sacred-prose h3 {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+}
+
+
+/* Compact glass card variant for rails (tighter padding, lighter chrome) */
+.rail-card {
+  background: hsl(240 25% 6% / 0.5);
+  backdrop-filter: blur(14px) saturate(110%);
+  -webkit-backdrop-filter: blur(14px) saturate(110%);
+  border: 0.5px solid hsl(var(--glass-border-soft));
+  border-radius: 16px;
+  padding: 1rem 1.1rem;
+  position: relative;
+  overflow: hidden;
+}
+.rail-card + .rail-card { margin-top: 0.85rem; }
+.rail-card-title {
+  font-family: 'Jost', sans-serif;
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: hsl(var(--text-muted));
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.rail-card-title::before {
+  content: '';
+  width: 14px;
+  height: 1px;
+  background: hsl(var(--gold) / 0.5);
+}
+
+/* Rail action button — quick links inside the right rail */
+.rail-action {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 12px;
+  border: 0.5px solid hsl(var(--glass-border-soft));
+  background: hsl(0 0% 100% / 0.015);
+  color: hsl(var(--text-secondary));
+  font-size: 13px;
+  letter-spacing: 0.01em;
+  transition: all 220ms ease;
+}
+.rail-action:hover {
+  border-color: hsl(var(--gold) / 0.28);
+  background: hsl(var(--gold) / 0.06);
+  color: hsl(var(--gold-light));
+  transform: translateX(2px);
+}
+.rail-action .rail-action-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: hsl(var(--gold) / 0.10);
+  border: 0.5px solid hsl(var(--gold) / 0.14);
+  color: hsl(var(--gold));
+  flex-shrink: 0;
+}
+
+/* Rail "stat" line — label · value */
+.rail-stat {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 0.45rem 0;
+  border-bottom: 0.5px dashed hsl(var(--glass-border-soft));
+  font-size: 12.5px;
+}
+.rail-stat:last-child { border-bottom: none; }
+.rail-stat-label {
+  color: hsl(var(--text-muted));
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 9.5px;
+}
+.rail-stat-value {
+  color: hsl(var(--gold-light));
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+}
+
+
+.sacred-quote {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 1.25rem;
+  line-height: 1.7;
+  color: hsl(var(--text-primary));
+}
+
+.sacred-label {
+  font-size: 0.65rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: hsl(var(--text-muted));
+}
+
+.sacred-body {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: hsl(var(--text-secondary));
+}
+
+/* ── SACRED GEOMETRY (rotating bg) ── */
+.sacred-geometry {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  opacity: 0.03;
+  animation: rotate-slow 120s linear infinite;
+  pointer-events: none;
+}
+
+/* ── SACRED REVEAL ── */
+.sacred-reveal {
+  opacity: 0;
+  animation: sacred-fade-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ── SACRED STAR ── */
+.sacred-star {
+  position: absolute;
+  border-radius: 50%;
+  background: hsl(var(--gold) / var(--op, 0.3));
+  animation: twinkle var(--dur, 4s) ease-in-out infinite;
+}
+
+/* ── KEY DATES TIMELINE ── */
+.sacred-timeline {
+  position: relative;
+  padding-left: 1.5rem;
+}
+.sacred-timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  width: 1px;
+  background: linear-gradient(180deg, hsl(var(--gold) / 0.4), hsl(var(--gold) / 0.1));
+}
+.sacred-timeline-dot {
+  position: absolute;
+  left: -0.25rem;
+  top: 0.35rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: hsl(var(--gold));
+  box-shadow: 0 0 6px hsl(var(--gold) / 0.5);
+}
+
+/* ── QUARTER STRIPE ── */
+.sacred-quarter-stripe {
+  border-left: 3px solid hsl(var(--gold) / 0.5);
+}
+
+/* ── OM WATERMARK ── */
+.sacred-om-watermark {
+  font-size: 8rem;
+  line-height: 1;
+  color: hsl(var(--gold) / 0.06);
+  position: absolute;
+  bottom: -1rem;
+  right: 0.5rem;
+  pointer-events: none;
+  font-family: serif;
+}
+
+/* ── PILL TABS ── */
+.sacred-pills .bg-background\/80 {
+  border-color: hsl(var(--gold) / 0.6) !important;
+  color: hsl(var(--gold)) !important;
+  box-shadow: 0 0 12px hsl(var(--gold) / 0.25) !important;
+}
+
+/* ── PULSE DOT ── */
+.pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: hsl(var(--gold));
+  box-shadow: 0 0 0 0 hsl(var(--gold) / 0.5);
+  animation: pulse-gold 2.5s infinite;
+  flex-shrink: 0;
+}
+
+/* ── GOLD LINE SEPARATOR ── */
+.gold-line {
+  width: 48px;
+  height: 1px;
+  background: linear-gradient(90deg, hsl(var(--gold)), transparent);
+}
+
+/* ── VIEW LINK (arrow slides on hover) ── */
+.view-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: hsl(var(--gold));
+  text-decoration: none;
+  transition: gap 0.35s ease, opacity 0.35s ease;
+  opacity: 0.8;
+}
+.view-link:hover { gap: 10px; opacity: 1; }
+.view-link::after { content: '→'; }
+
+/* ── QUICK CARD ── */
+.quick-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  background: hsl(var(--glass));
+  border: 0.5px solid hsl(var(--glass-border-soft));
+  border-radius: 1.25rem;
+  text-decoration: none;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.quick-card:hover {
+  border-color: hsl(var(--glass-border));
+  background: hsl(var(--gold) / 0.05);
+  transform: translateY(-2px);
+}
+
+.quick-card:hover .quick-arrow {
+  color: hsl(var(--gold));
+  transform: translateX(3px);
+}
+
+.quick-arrow {
+  color: hsl(var(--text-muted));
+  transition: color 0.35s ease, transform 0.35s ease;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: hsl(var(--ink)); }
+::-webkit-scrollbar-thumb { background: hsl(var(--gold) / 0.25); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--gold) / 0.45); }
+
+/* ── SCROLLBAR HIDE ── */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ── HEADING GLOW ── */
+h1, h2 {
+  text-shadow: 0 0 30px hsl(var(--gold) / 0.08);
+}
+
+/* ── INPUT FOCUS GLOW ── */
+input:focus, textarea:focus, select:focus {
+  box-shadow: 0 0 0 3px hsl(var(--gold) / 0.1);
+}
+
+/* ── SHIMMER SKELETON ── */
+.shimmer {
+  background: linear-gradient(90deg, hsl(var(--muted) / 0.3) 25%, hsl(var(--muted) / 0.5) 50%, hsl(var(--muted) / 0.3) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* ── SCROLL REVEAL ── */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+.scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── GLASS-CARD (legacy compat) — routed to MIST so starfield shows through ── */
+.glass-card {
+  background: hsl(240 25% 6% / 0.42);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border: 0.5px solid hsl(var(--gold) / 0.18);
+}
+
+/* ──────────────────────────────────────────────────────────
+   Token-level translucency overrides — let the starfield
+   breathe through every Tailwind `bg-card` / `bg-popover`
+   surface across the entire app (Birth Chart, Muhurta,
+   Timeline, Remedies, Profile, etc.). Single block cascade.
+   ────────────────────────────────────────────────────────── */
+.bg-card {
+  background-color: hsl(var(--card) / 0.42) !important;
+  backdrop-filter: blur(14px) saturate(1.15);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+}
+.bg-card\/50 {
+  background-color: hsl(var(--card) / 0.25) !important;
+  backdrop-filter: blur(14px) saturate(1.15);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+}
+.bg-card\/60 {
+  background-color: hsl(var(--card) / 0.30) !important;
+  backdrop-filter: blur(14px) saturate(1.15);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+}
+.bg-card\/70 {
+  background-color: hsl(var(--card) / 0.40) !important;
+  backdrop-filter: blur(14px) saturate(1.15);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+}
+.bg-card\/80 {
+  background-color: hsl(var(--card) / 0.50) !important;
+  backdrop-filter: blur(14px) saturate(1.15);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+}
+/* Dropdowns / popovers — slightly more opaque for menu legibility */
+.bg-popover {
+  background-color: hsl(var(--popover) / 0.55) !important;
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+}
+
+/* Form inputs should stay readable — keep them solid even though they may
+   inherit `bg-background` or be wrapped inside translucent cards. */
+input.bg-card,
+textarea.bg-card,
+select.bg-card {
+  background-color: hsl(var(--card) / 0.85) !important;
+  backdrop-filter: none;
+}
+
+/* ── GRADIENT BORDER TOP ── */
+.gradient-border-top {
+  position: relative;
+}
+.gradient-border-top::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, hsl(var(--gold) / 0.5), transparent);
+  border-radius: 2px;
+}
+
+/* ── HOROSCOPE SACRED ── */
+.horoscope-sacred {
+  font-family: 'Cormorant Garamond', var(--font-serif);
+}
+
+/* ═══════════════════════════════════════════════
+   COSMIC TRANSPARENCY — 3-Tier Glass System
+   Stars breathe through every surface
+   ═══════════════════════════════════════════════ */
+
+/* Tier 1: VEIL — barely there, for chrome (top bar, hero wrappers) */
+.glass-veil {
+  background: hsl(240 33% 5% / 0.35);
+  border: 0.5px solid hsl(var(--gold) / 0.10);
+  backdrop-filter: blur(14px) saturate(1.15);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+}
+
+/* Tier 2: MIST — soft glass, default for cards & dropdowns */
+.glass-mist {
+  background: hsl(240 28% 6% / 0.42);
+  border: 0.5px solid hsl(var(--gold) / 0.18);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  position: relative;
+}
+.glass-mist::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(135deg, hsl(var(--gold) / 0.05) 0%, transparent 60%);
+  border-radius: inherit;
+}
+
+/* Tier 3: STONE — readable surface, for forms / dense data / modals */
+.glass-stone {
+  background: hsl(240 25% 7% / 0.72);
+  border: 0.5px solid hsl(var(--gold) / 0.22);
+  backdrop-filter: blur(20px) saturate(1.25);
+  -webkit-backdrop-filter: blur(20px) saturate(1.25);
+}
+
+/* Mobile: bump mist toward stone for better readability over starfield */
+@media (max-width: 480px) {
+  .glass-mist {
+    background: hsl(240 25% 6% / 0.58);
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   TWINKLE TYPOGRAPHY — words breathe like stars
+   ═══════════════════════════════════════════════ */
+
+@keyframes twinkle-subtle {
+  0%, 100% {
+    opacity: 0.88;
+    text-shadow: 0 0 6px hsl(var(--gold) / 0.10);
+  }
+  50% {
+    opacity: 1;
+    text-shadow: 0 0 10px hsl(var(--gold) / 0.18);
+  }
+}
+
+@keyframes twinkle-aura {
+  0%, 100% {
+    opacity: 0.85;
+    text-shadow:
+      0 0 8px hsl(var(--gold) / 0.18),
+      0 0 16px hsl(var(--gold) / 0.06);
+  }
+  50% {
+    opacity: 1;
+    text-shadow:
+      0 0 14px hsl(var(--gold) / 0.32),
+      0 0 28px hsl(var(--gold) / 0.12);
+  }
+}
+
+@keyframes twinkle-star {
+  0%, 100% {
+    opacity: 0.88;
+    text-shadow:
+      0 0 10px hsl(var(--gold) / 0.25),
+      0 0 22px hsl(var(--gold) / 0.10);
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    text-shadow:
+      0 0 18px hsl(var(--gold) / 0.45),
+      0 0 36px hsl(var(--gold) / 0.18);
+    transform: scale(1.005);
+  }
+}
+
+.twinkle-subtle {
+  animation: twinkle-subtle 6s ease-in-out infinite;
+  will-change: opacity, text-shadow;
+}
+
+.twinkle-aura {
+  animation: twinkle-aura 4s ease-in-out infinite;
+  will-change: opacity, text-shadow;
+}
+
+.twinkle-star {
+  display: inline-block;
+  animation: twinkle-star 3.2s ease-in-out infinite;
+  will-change: opacity, text-shadow, transform;
+  transform-origin: center;
+}
+
+/* Reduced motion: stop the shimmer but keep the gold glow */
+@media (prefers-reduced-motion: reduce) {
+  .twinkle-subtle,
+  .twinkle-aura,
+  .twinkle-star {
+    animation: none;
+    opacity: 1;
+    text-shadow: 0 0 12px hsl(var(--gold) / 0.22);
+    transform: none;
+  }
+}
+
+
+/* ── SACRED PAGE WRAPPER ── */
+.sacred-page {
+  color: hsl(var(--text-primary));
+}
+
+.sacred-page .sacred-heading {
+  font-family: 'Cormorant Garamond', serif;
+  color: hsl(var(--gold));
+}
+
+.sacred-page .sacred-body-text {
+  font-family: 'Cormorant Garamond', serif;
+  color: hsl(var(--text-secondary));
+  line-height: 1.8;
+}
+
+/* ── SACRED PAGE OVERRIDES ── */
+.sacred-page .bg-card,
+.sacred-page [class*="bg-card"] {
+  background: hsl(var(--ink-2)) !important;
+  border-color: hsl(var(--glass-border)) !important;
+  color: hsl(var(--text-primary)) !important;
+}
+
+.sacred-page .text-foreground {
+  color: hsl(var(--text-primary)) !important;
+}
+
+.sacred-page .text-muted-foreground {
+  color: hsl(var(--text-secondary)) !important;
+}
+
+.sacred-page .text-primary {
+  color: hsl(var(--gold)) !important;
+}
+
+.sacred-page .bg-primary\/10,
+.sacred-page .bg-primary\/5 {
+  background: hsl(var(--gold) / 0.1) !important;
+}
+
+.sacred-page .border-primary\/20,
+.sacred-page .border-primary\/30 {
+  border-color: hsl(var(--gold) / 0.15) !important;
+}
+
+.sacred-page .border-border\/30,
+.sacred-page .border-border\/50,
+.sacred-page .border-border {
+  border-color: hsl(var(--gold) / 0.1) !important;
+}
+
+.sacred-page .bg-secondary\/50,
+.sacred-page .bg-secondary {
+  background: hsl(var(--gold) / 0.06) !important;
+}
+
+.sacred-page .bg-muted\/30,
+.sacred-page .bg-muted {
+  background: hsl(var(--gold) / 0.04) !important;
+}
+
+.sacred-page .ring-primary {
+  --tw-ring-color: hsl(var(--gold) / 0.3) !important;
+}
+
+/* Sacred input styles */
+.sacred-page input,
+.sacred-page textarea,
+.sacred-page select,
+.sacred-page [role="combobox"] {
+  background: hsl(var(--gold) / 0.04) !important;
+  border-color: hsl(var(--gold) / 0.15) !important;
+  color: hsl(var(--text-primary)) !important;
+}
+
+.sacred-page input:focus,
+.sacred-page textarea:focus {
+  box-shadow: 0 0 0 3px hsl(var(--gold) / 0.1) !important;
+}
+
+/* Sacred button overrides */
+.sacred-page .bg-primary {
+  background: hsl(var(--gold)) !important;
+  color: hsl(var(--ink)) !important;
+}
+
+.sacred-page .hover\:bg-primary\/10:hover {
+  background: hsl(var(--gold) / 0.1) !important;
+}
+
+/* Sacred badge */
+.sacred-page [class*="badge"],
+.sacred-page .inline-flex[class*="rounded-full"] {
+  border-color: hsl(var(--gold) / 0.2);
+}
+
+/* Sacred progress bar */
+.sacred-page [role="progressbar"] > div {
+  background: linear-gradient(90deg, hsl(var(--gold)), hsl(var(--gold-light))) !important;
+}
+
+/* Sacred skeleton */
+.sacred-page [class*="skeleton"],
+.sacred-page .animate-pulse {
+  background: hsl(var(--gold) / 0.08) !important;
+}
+
+/* Sacred separator */
+.sacred-page [data-orientation="horizontal"] {
+  background: hsl(var(--gold) / 0.12) !important;
+}
+
+/* ── MANDALA ACCENT ── */
+.mandala-accent {
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 200px;
+  height: 200px;
+  opacity: 0.035;
+  pointer-events: none;
+}
+
+/* ── STARFIELD (old DOM-based, kept for compat) ── */
+.starfield {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: hsl(var(--gold) / 0.4);
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+/* ═══ HOROSCOPE PREMIUM GLASS CARD ═══ */
+.horo-glass-card {
+  background: rgba(255, 255, 255, 0.032);
+  border: 0.5px solid rgba(201, 168, 76, 0.16);
+  border-radius: 20px;
+  padding: 1.5rem 1.75rem;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.35s ease, transform 0.35s ease;
+}
+
+.horo-glass-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(201, 168, 76, 0.03) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.horo-glass-card:hover {
+  border-color: rgba(201, 168, 76, 0.28);
+  transform: translateY(-1px);
+}
+
+/* ═══ MOOD-OF-THE-DAY THEMING ═══ */
+/* Each mood retains the cosmic glass aesthetic but shifts accent + ambient glow */
+[data-mood="solar"] {
+  --mood-accent: 42 65% 55%;          /* warm gold */
+  --mood-glow-1: rgba(201, 168, 76, 0.18);
+  --mood-glow-2: rgba(255, 200, 100, 0.10);
+  --mood-tint: rgba(201, 168, 76, 0.04);
+  --mood-label: "Solar";
+}
+[data-mood="lunar"] {
+  --mood-accent: 215 40% 65%;         /* soft silver-blue */
+  --mood-glow-1: rgba(150, 180, 220, 0.16);
+  --mood-glow-2: rgba(200, 220, 240, 0.08);
+  --mood-tint: rgba(150, 180, 220, 0.04);
+  --mood-label: "Lunar";
+}
+[data-mood="fiery"] {
+  --mood-accent: 18 75% 55%;          /* deep amber */
+  --mood-glow-1: rgba(224, 92, 58, 0.18);
+  --mood-glow-2: rgba(255, 130, 80, 0.10);
+  --mood-tint: rgba(224, 92, 58, 0.04);
+  --mood-label: "Fiery";
+}
+[data-mood="mystic"] {
+  --mood-accent: 270 45% 60%;         /* deep violet */
+  --mood-glow-1: rgba(156, 99, 200, 0.18);
+  --mood-glow-2: rgba(180, 120, 220, 0.10);
+  --mood-tint: rgba(156, 99, 200, 0.04);
+  --mood-label: "Mystic";
+}
+[data-mood="earthen"] {
+  --mood-accent: 130 30% 50%;         /* sage green */
+  --mood-glow-1: rgba(120, 170, 130, 0.16);
+  --mood-glow-2: rgba(160, 200, 160, 0.10);
+  --mood-tint: rgba(120, 170, 130, 0.04);
+  --mood-label: "Earthen";
+}
+
+/* Subtle ambient halo at the top of the page that picks up the mood */
+.mood-halo {
+  position: absolute;
+  top: -120px; left: 50%; transform: translateX(-50%);
+  width: 720px; height: 380px;
+  background: radial-gradient(ellipse at center, var(--mood-glow-1, transparent) 0%, var(--mood-glow-2, transparent) 40%, transparent 70%);
+  filter: blur(36px);
+  pointer-events: none;
+  z-index: 0;
+  animation: moodPulse 14s ease-in-out infinite;
+}
+@keyframes moodPulse {
+  0%, 100% { opacity: 0.55; transform: translateX(-50%) scale(1); }
+  50%      { opacity: 0.85; transform: translateX(-50%) scale(1.04); }
+}
+
+/* Hero card uses the mood accent for its glow + border */
+.daily-hero-card {
+  background:
+    radial-gradient(circle at 20% 0%, var(--mood-glow-1, rgba(201,168,76,0.12)) 0%, transparent 55%),
+    radial-gradient(circle at 90% 100%, var(--mood-glow-2, rgba(201,168,76,0.06)) 0%, transparent 50%),
+    rgba(255, 255, 255, 0.03);
+  border: 0.5px solid hsl(var(--mood-accent, 42 65% 55%) / 0.28);
+  border-radius: 24px;
+  padding: 1.75rem 1.75rem;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.daily-hero-card::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 60%, var(--mood-tint, transparent));
+  pointer-events: none;
+}
+.mood-accent-text { color: hsl(var(--mood-accent, 42 65% 55%)); }
+.mood-accent-bg-soft { background: var(--mood-tint, rgba(201,168,76,0.04)); border-color: hsl(var(--mood-accent, 42 65% 55%) / 0.3); }
+
+/* ═══════════════════════════════════════════════
+   PREMIUM HEADER — Sacred Almanac Ribbon
+   ═══════════════════════════════════════════════ */
+
+/* Soft horizon-line bottom border for the main nav row */
+.header-horizon {
+  position: relative;
+}
+.header-horizon::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    hsl(var(--gold) / 0.30) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+/* Subtle 60px shadow that lifts content "below" the header in 3D */
+.header-shadow {
+  position: relative;
+}
+.header-shadow::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 60px;
+  background: linear-gradient(
+    180deg,
+    hsl(var(--ink) / 0.40) 0%,
+    hsl(var(--ink) / 0.0) 100%
+  );
+  pointer-events: none;
+}
+
+/* Wordmark gold underline flourish */
+.wordmark-flourish {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.wordmark-flourish::after {
+  content: '';
+  position: absolute;
+  left: 38px;
+  right: -6px;
+  bottom: -5px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    hsl(var(--gold) / 0.70) 0%,
+    hsl(var(--gold) / 0.20) 70%,
+    transparent 100%
+  );
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+/* Notification bell unread dot — twinkles like a star */
+.notif-dot {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: hsl(var(--gold));
+  box-shadow:
+    0 0 8px hsl(var(--gold) / 0.65),
+    0 0 2px hsl(var(--gold));
+  animation: twinkle-star 3.2s ease-in-out infinite;
+}
+
+/* Cosmic ribbon collapse animation when scrolled */
+.cosmic-ribbon {
+  overflow: hidden;
+  transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.3s ease;
+  height: 28px;
+  opacity: 1;
+}
+.cosmic-ribbon.collapsed {
+  height: 0;
+  opacity: 0;
+}
+
+/* Main header condense state — slightly more opaque on scroll */
+.header-main {
+  transition: backdrop-filter 0.3s ease, background-color 0.3s ease;
+}
+.header-main.condensed {
+  background: hsl(240 25% 6% / 0.62) !important;
+  backdrop-filter: blur(20px) saturate(1.25);
+  -webkit-backdrop-filter: blur(20px) saturate(1.25);
+}
+
+/* ── BRAND WORDMARK (Cinzel, spaced) ── */
+.brand-wordmark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: hsl(var(--gold));
+}
+.brand-wordmark .brand-letter {
+  display: inline-block;
+  color: hsl(var(--gold));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cosmic-ribbon { transition: none; }
+  .notif-dot { animation: none; }
+}
+
+/* ═══════════════════════════════════════════════
+   iPhone notch / Dynamic Island safe-area helpers
+   ═══════════════════════════════════════════════ */
+@supports (padding: env(safe-area-inset-top)) {
+  .safe-top    { padding-top: env(safe-area-inset-top); }
+  .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+  .safe-x      { padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); }
+}
+
+/* ═══════════════════════════════════════════════
+   Footer — Professional editorial layout
+   ═══════════════════════════════════════════════ */
+.app-footer {
+  position: relative;
+  border-top: 1px solid hsl(var(--gold) / 0.14);
+  background: linear-gradient(180deg, hsl(var(--ink) / 0.0) 0%, hsl(var(--ink-2) / 0.55) 60%, hsl(var(--ink) / 0.85) 100%);
+}
+.app-footer::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: -1px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, hsl(var(--gold) / 0.45) 50%, transparent 100%);
+  pointer-events: none;
+}
+.footer-link {
+  font-family: 'Jost', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: hsl(var(--text-muted));
+  transition: color 0.25s ease, transform 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.footer-link:hover {
+  color: hsl(var(--gold-light));
+}
+.footer-heading {
+  font-family: 'Jost', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: hsl(var(--gold) / 0.75);
+  margin-bottom: 0.875rem;
+}
+.footer-social {
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0.5px solid hsl(var(--gold) / 0.20);
+  color: hsl(var(--gold-light));
+  transition: all 0.25s ease;
+}
+.footer-social:hover {
+  border-color: hsl(var(--gold) / 0.55);
+  background: hsl(var(--gold) / 0.08);
+  transform: translateY(-1px);
+}
+
+/* ═══════════════════════════════════════════════
+   Mobile Bottom Dock — footer-styled fixed nav
+   Always-on-screen primary navigation for mobile.
+   Reuses the editorial footer language: ink gradient,
+   thin gold flourish, Jost labels, gold active state.
+   ═══════════════════════════════════════════════ */
+.mobile-dock {
+  background: linear-gradient(
+    180deg,
+    hsl(var(--ink) / 0.78) 0%,
+    hsl(var(--ink-2) / 0.92) 55%,
+    hsl(var(--ink) / 0.96) 100%
+  );
+  border-top: 1px solid hsl(var(--gold) / 0.16);
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  padding-bottom: env(safe-area-inset-bottom);
+  box-shadow:
+    0 -10px 30px -16px hsl(0 0% 0% / 0.55),
+    0 -1px 0 hsl(var(--gold) / 0.04) inset;
+}
+
+.mobile-dock-flourish {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    hsl(var(--gold) / 0.55) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.mobile-dock-tab {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 3.75rem;
+  padding: 8px 8px 6px;
+  border-radius: 12px;
+  color: hsl(var(--text-muted));
+  transition: color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-dock-tab:hover {
+  color: hsl(var(--gold-light));
+}
+
+.mobile-dock-icon {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 0.5px solid transparent;
+  background: transparent;
+  transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.mobile-dock-tab:hover .mobile-dock-icon {
+  background: hsl(var(--gold) / 0.06);
+  border-color: hsl(var(--gold) / 0.18);
+}
+
+.mobile-dock-tab.is-active {
+  color: hsl(var(--gold));
+}
+
+.mobile-dock-tab.is-active .mobile-dock-icon {
+  background: hsl(var(--gold) / 0.12);
+  border-color: hsl(var(--gold) / 0.32);
+  box-shadow: 0 0 14px -4px hsl(var(--gold) / 0.45);
+}
+
+.mobile-dock-label {
+  font-family: 'Jost', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.mobile-dock-active-dot {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 18px;
+  height: 2px;
+  border-radius: 9999px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    hsl(var(--gold)) 50%,
+    transparent
+  );
+  box-shadow: 0 0 8px hsl(var(--gold) / 0.6);
+}
+
+/* ═══════════════════════════════════════════════
+   TEXT LEGIBILITY — make words brighter without
+   changing their color. Driven by html[data-lumen]
+   set by UniverseBackground from the appearance config.
+   ═══════════════════════════════════════════════ */
+
+:root {
+  /* 0..1 darkness of contrast veil behind text blocks */
+  --text-scrim: 0;
+}
+
+/* The halo always uses the glyph's own color (currentColor),
+   so gold stays gold, parchment stays parchment, white stays white.
+   We add light around the strokes — never repaint them. */
+
+html[data-lumen="soft"] :where(h1, h2, h3, h4, .lumen-target) {
+  text-shadow:
+    0 0 6px color-mix(in oklab, currentColor 28%, transparent),
+    0 0 14px color-mix(in oklab, currentColor 12%, transparent);
+}
+html[data-lumen="soft"] :where(p, li, span, label, .lumen-body) {
+  text-shadow: 0 0 4px color-mix(in oklab, currentColor 18%, transparent);
+}
+
+html[data-lumen="bright"] :where(h1, h2, h3, h4, .lumen-target) {
+  text-shadow:
+    0 0 8px color-mix(in oklab, currentColor 42%, transparent),
+    0 0 18px color-mix(in oklab, currentColor 22%, transparent),
+    0 0 36px color-mix(in oklab, currentColor 10%, transparent);
+}
+html[data-lumen="bright"] :where(p, li, span, label, .lumen-body) {
+  text-shadow:
+    0 0 5px color-mix(in oklab, currentColor 30%, transparent),
+    0 0 12px color-mix(in oklab, currentColor 12%, transparent);
+}
+
+html[data-lumen="radiant"] :where(h1, h2, h3, h4, .lumen-target) {
+  text-shadow:
+    0 0 10px color-mix(in oklab, currentColor 55%, transparent),
+    0 0 22px color-mix(in oklab, currentColor 32%, transparent),
+    0 0 44px color-mix(in oklab, currentColor 16%, transparent),
+    0 0 80px color-mix(in oklab, currentColor 8%, transparent);
+}
+html[data-lumen="radiant"] :where(p, li, span, label, .lumen-body) {
+  text-shadow:
+    0 0 6px color-mix(in oklab, currentColor 38%, transparent),
+    0 0 14px color-mix(in oklab, currentColor 18%, transparent);
+}
+
+/* "off" deliberately wipes any inherited shadow */
+html[data-lumen="off"] :where(h1, h2, h3, h4, .lumen-target),
+html[data-lumen="off"] :where(p, li, span, label, .lumen-body) {
+  text-shadow: none;
+}
+
+/* Don't double-glow inside frosted cards — they already provide contrast. */
+.glass-card :where(h1, h2, h3, h4, p, li, span, label) {
+  text-shadow: none;
+}
+
+/* Weight & antialiasing boost: thicker strokes => perceived as brighter,
+   without changing pigment. Toggled via .text-weight-boost on <html>. */
+html.text-weight-boost {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: geometricPrecision;
+}
+html.text-weight-boost :where(h1, h2, h3, h4, .lumen-target) {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+html.text-weight-boost :where(p, li, label, .lumen-body) {
+  font-weight: 450;
+}
+
+/* Heading twinkle — animates opacity (brightness), not color. */
+html.text-twinkle-on :where(h1, h2, .lumen-target.twinkle) {
+  animation: twinkle-aura 6s ease-in-out infinite;
+  will-change: opacity, text-shadow;
+}
+@media (prefers-reduced-motion: reduce) {
+  html.text-twinkle-on :where(h1, h2, .lumen-target.twinkle) {
+    animation: none;
+  }
+}
+
+/* Contrast scrim — soft dark veil behind text blocks, modulated by --text-scrim.
+   The text color is unchanged; only the background behind it darkens. */
+.text-scrim {
+  position: relative;
+  isolation: isolate;
+}
+.text-scrim::before {
+  content: "";
+  position: absolute;
+  inset: -10% -6%;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    hsl(var(--ink) / calc(0.55 * var(--text-scrim, 0))) 0%,
+    hsl(var(--ink) / calc(0.32 * var(--text-scrim, 0))) 40%,
+    transparent 75%
+  );
+  filter: blur(14px);
+  opacity: var(--text-scrim, 0);
+  transition: opacity 240ms ease;
+}
+
+/* Auto-scrim hooks: once scrim > 0, the .sacred-page main blocks pick it up
+   without any per-component edits. Cards opt out (they already have a backdrop). */
+html[style*="--text-scrim"] .sacred-page > section,
+html[style*="--text-scrim"] .sacred-page > div > section,
+html[style*="--text-scrim"] .lumen-block {
+  position: relative;
+}
+html[style*="--text-scrim"] .sacred-page > section:not(.glass-card)::before,
+html[style*="--text-scrim"] .sacred-page > div > section:not(.glass-card)::before,
+html[style*="--text-scrim"] .lumen-block:not(.glass-card)::before {
+  content: "";
+  position: absolute;
+  inset: -8% -4%;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    hsl(var(--ink) / calc(0.5 * var(--text-scrim, 0))) 0%,
+    hsl(var(--ink) / calc(0.28 * var(--text-scrim, 0))) 45%,
+    transparent 78%
+  );
+  filter: blur(18px);
+  opacity: var(--text-scrim, 0);
+}
+
+/* ─── Oracle Chamber ─── */
+@keyframes guru-breathing {
+  0%, 100% { transform: scale(1); opacity: 0.65; }
+  50%      { transform: scale(1.05); opacity: 0.95; }
+}
+@keyframes guru-orbit {
+  from { transform: rotate(0deg) translateX(var(--orbit-r, 110px)) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(var(--orbit-r, 110px)) rotate(-360deg); }
+}
+@keyframes oracle-shimmer {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.oracle-vignette-active {
+  position: relative;
+}
+.oracle-vignette-active::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 38%, transparent 32%, hsl(var(--background) / 0.45) 75%);
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  z-index: 1;
+}
+.oracle-vignette-active[data-focused="true"]::before {
+  opacity: 1;
+}

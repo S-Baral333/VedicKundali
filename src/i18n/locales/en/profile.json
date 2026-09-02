@@ -1,0 +1,8 @@
+{
+  "title": "Your Profile",
+  "languageCardTitle": "Language & Region",
+  "languageCardSubtitle": "Pick the language you'd like to read in.",
+  "languageHelper": "You can change this anytime. Mantras always remain in Sanskrit — tap the ⓘ next to any mantra to see its meaning in your language.",
+  "languageUpdated": "Language updated",
+  "languageUpdatedDesc": "The app will now speak {{language}}."
+}

@@ -1,0 +1,71 @@
+{
+  "horoscope": {
+    "title": "Your Horoscope",
+    "subtitle": "Personalised daily, weekly and monthly readings.",
+    "refresh": "Refresh",
+    "refreshing": "Refreshing…",
+    "retry": "Try again",
+    "locked": "Upgrade to unlock this period.",
+    "preparing": "Preparing your reading…",
+    "periods": {
+      "daily": "Today",
+      "tomorrow": "Tomorrow",
+      "weekly": "This week",
+      "monthly": "This month",
+      "yearly": "This year"
+    }
+  },
+  "oracle": {
+    "title": "Ask the Oracle",
+    "subtitle": "One clear question, one grounded answer.",
+    "placeholder": "What weighs on you right now?",
+    "ask": "Ask",
+    "asking": "Consulting the chart…",
+    "goDeeper": "Go deeper",
+    "modes": {
+      "decision": "Decision",
+      "reflection": "Reflection",
+      "timing": "Timing"
+    },
+    "history": "Previous questions"
+  },
+  "dreams": {
+    "title": "Dream Interpretation",
+    "subtitle": "Swapna Shastra — symbolic meaning of your dreams.",
+    "describePlaceholder": "Describe your dream in as much detail as you remember…",
+    "interpret": "Interpret",
+    "interpreting": "Listening to the dream…",
+    "history": "Your dream journal",
+    "timeOfNight": "When did the dream happen?"
+  },
+  "remedies": {
+    "title": "Remedies",
+    "subtitle": "Classical practices to balance your chart.",
+    "markComplete": "Mark complete",
+    "completed": "Completed",
+    "filters": "Filters",
+    "all": "All"
+  },
+  "compatibility": {
+    "title": "Compatibility",
+    "subtitle": "36-point Guna Milan and synastry."
+  },
+  "timeline": {
+    "title": "Destiny Timeline",
+    "subtitle": "Your next 12 months at a glance."
+  },
+  "muhurta": {
+    "title": "Muhurta",
+    "subtitle": "Find the most auspicious moment."
+  },
+  "chart": {
+    "title": "Your Birth Chart",
+    "subtitle": "Janma Kundali — the cosmic blueprint of your birth."
+  },
+  "dashboard": {
+    "greetingMorning": "Good morning",
+    "greetingAfternoon": "Good afternoon",
+    "greetingEvening": "Good evening",
+    "greetingNight": "Good night"
+  }
+}

@@ -1,0 +1,28 @@
+project_id = "brhafkgjmdwmzuakheod"
+
+[functions.generate-chart]
+verify_jwt = false
+
+[functions.generate-reading]
+verify_jwt = false
+
+[functions.interpret-dream]
+verify_jwt = false
+
+[functions.generate-compatibility]
+verify_jwt = false
+
+[functions.generate-onboarding-insight]
+verify_jwt = false
+
+[functions.generate-horoscope]
+verify_jwt = false
+
+[functions.generate-predictions]
+verify_jwt = false
+
+[functions.generate-timeline]
+verify_jwt = false
+
+[functions.generate-preview]
+verify_jwt = false

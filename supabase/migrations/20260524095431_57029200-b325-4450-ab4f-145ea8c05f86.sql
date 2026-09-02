@@ -1,0 +1,1 @@
+ALTER TABLE public.horoscope_reactions ADD COLUMN IF NOT EXISTS ritual_completed boolean NOT NULL DEFAULT false;

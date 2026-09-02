@@ -1,0 +1,1 @@
+ALTER TABLE public.oracle_readings ADD COLUMN IF NOT EXISTS feedback text;

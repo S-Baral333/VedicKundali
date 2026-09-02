@@ -1,0 +1,3650 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="100%"
+   viewBox="0 0 680 800"
+   role="img"
+   version="1.1"
+   id="svg292"
+   sodipodi:docname="NO edit Final Kundali.svg"
+   inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <sodipodi:namedview
+     id="namedview292"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showguides="false"
+     inkscape:zoom="0.82911298"
+     inkscape:cx="48.24433"
+     inkscape:cy="179.71013"
+     inkscape:window-width="1680"
+     inkscape:window-height="997"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg292" />
+  <title
+     id="title1">Kundali — Sacred Wheel Sanskrit Premium Logo</title>
+  <desc
+     id="desc1">Complete 360-degree Sanskrit inscription wheel with Gayatri and Navagraha mantras, Vedic mandala, gold on dark</desc>
+  <defs
+     id="defs27">
+    <radialGradient
+       id="gmetal"
+       cx="38%"
+       cy="32%"
+       r="68%">
+      <stop
+         offset="0%"
+         stop-color="#FFF5B0"
+         id="stop1" />
+      <stop
+         offset="28%"
+         stop-color="#F5D060"
+         id="stop2" />
+      <stop
+         offset="62%"
+         stop-color="#D4920C"
+         id="stop3" />
+      <stop
+         offset="100%"
+         stop-color="#4A2E00"
+         id="stop4" />
+    </radialGradient>
+    <linearGradient
+       id="gring"
+       x1="0"
+       y1="0"
+       x2="0"
+       y2="1">
+      <stop
+         offset="0%"
+         stop-color="#FFF5B0"
+         id="stop5" />
+      <stop
+         offset="45%"
+         stop-color="#D4920C"
+         id="stop6" />
+      <stop
+         offset="100%"
+         stop-color="#8B5A00"
+         id="stop7" />
+    </linearGradient>
+    <linearGradient
+       id="gpetal"
+       x1="0"
+       y1="1"
+       x2="0"
+       y2="0">
+      <stop
+         offset="0%"
+         stop-color="#4A2E00"
+         stop-opacity="0.5"
+         id="stop8" />
+      <stop
+         offset="55%"
+         stop-color="#D4920C"
+         stop-opacity="0.85"
+         id="stop9" />
+      <stop
+         offset="100%"
+         stop-color="#FFF8E8"
+         stop-opacity="0.9"
+         id="stop10" />
+    </linearGradient>
+    <linearGradient
+       id="gpetal2"
+       x1="0"
+       y1="1"
+       x2="0"
+       y2="0">
+      <stop
+         offset="0%"
+         stop-color="#8B5A00"
+         stop-opacity="0.6"
+         id="stop11" />
+      <stop
+         offset="100%"
+         stop-color="#F5D060"
+         stop-opacity="0.9"
+         id="stop12" />
+    </linearGradient>
+    <radialGradient
+       id="gcenter"
+       cx="50%"
+       cy="50%"
+       r="50%">
+      <stop
+         offset="0%"
+         stop-color="#FFF8E8"
+         id="stop13" />
+      <stop
+         offset="35%"
+         stop-color="#F5D060"
+         id="stop14" />
+      <stop
+         offset="70%"
+         stop-color="#D4920C"
+         id="stop15" />
+      <stop
+         offset="100%"
+         stop-color="#4A0808"
+         id="stop16" />
+    </radialGradient>
+    <linearGradient
+       id="gtxt"
+       x1="-45.269256"
+       y1="1594.2124"
+       x2="-45.269256"
+       y2="1915.3294"
+       gradientTransform="matrix(2.9513285,0,0,0.33883046,5.690473,75.227014)"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0%"
+         stop-color="#FFF8E8"
+         id="stop17" />
+      <stop
+         offset="38%"
+         stop-color="#F5D060"
+         id="stop18" />
+      <stop
+         offset="75%"
+         stop-color="#D4920C"
+         id="stop19" />
+      <stop
+         offset="100%"
+         stop-color="#8B5A00"
+         id="stop20" />
+    </linearGradient>
+    <linearGradient
+       id="gmaroon"
+       x1="0"
+       y1="0"
+       x2="1"
+       y2="1">
+      <stop
+         offset="0%"
+         stop-color="#CC3A3A"
+         stop-opacity="0.8"
+         id="stop21" />
+      <stop
+         offset="100%"
+         stop-color="#4A0808"
+         stop-opacity="0.95"
+         id="stop22" />
+    </linearGradient>
+    <radialGradient
+       id="gbg"
+       cx="50%"
+       cy="50%"
+       r="50%">
+      <stop
+         offset="0%"
+         stop-color="#2A1000"
+         stop-opacity="1"
+         id="stop23" />
+      <stop
+         offset="100%"
+         stop-color="#0C0404"
+         stop-opacity="1"
+         id="stop24" />
+    </radialGradient>
+    <filter
+       id="fglow"
+       x="-4.2"
+       y="-4.2"
+       width="9.4"
+       height="9.4">
+      <feGaussianBlur
+         stdDeviation="7"
+         result="blur"
+         id="feGaussianBlur24" />
+      <feMerge
+         id="feMerge25">
+        <feMergeNode
+           in="blur"
+           id="feMergeNode24" />
+        <feMergeNode
+           in="SourceGraphic"
+           id="feMergeNode25" />
+      </feMerge>
+    </filter>
+    <filter
+       id="fglow2"
+       x="-0.60454545"
+       y="-0.60454545"
+       width="2.2090909"
+       height="2.2090909">
+      <feGaussianBlur
+         stdDeviation="2.5"
+         result="blur"
+         id="feGaussianBlur25" />
+      <feMerge
+         id="feMerge27">
+        <feMergeNode
+           in="blur"
+           id="feMergeNode26" />
+        <feMergeNode
+           in="SourceGraphic"
+           id="feMergeNode27" />
+      </feMerge>
+    </filter>
+    <path
+       id="arcGayatri"
+       d="M 78,320 A 262,262 0 0,1 602,320"
+       fill="none" />
+    <path
+       id="arcNavagraha"
+       d="M 590,320 A 250,250 0 0,0 90,320"
+       fill="none" />
+    <path
+       id="arcSep"
+       d="M 84,320 A 256,256 0 0,1 596,320"
+       fill="none" />
+    <path
+       id="arcGayatri-1"
+       d="m 78,320 a 262,262 0 0 1 524,0"
+       fill="none" />
+    <path
+       id="arcGayatri-1-7"
+       d="m 78,320 a 262,262 0 0 1 524,0"
+       fill="none" />
+    <path
+       id="arcGayatri-1-4"
+       d="m 78,320 a 262,262 0 0 1 524,0"
+       fill="none" />
+    <path
+       id="arcGayatri-1-9"
+       d="m 78,320 a 262,262 0 0 1 524,0"
+       fill="none" />
+    <path
+       id="arcGayatri-1-9-7"
+       d="m 78,320 a 262,262 0 0 1 524,0"
+       fill="none" />
+    <path
+       id="arcGayatri-1-9-9"
+       d="m 78,320 a 262,262 0 0 1 524,0"
+       fill="none" />
+  </defs>
+  <ellipse
+     cx="343.37881"
+     cy="328.88028"
+     fill="none"
+     stroke="#d4920c"
+     stroke-width="95.9507"
+     stroke-opacity="0.035"
+     id="circle28"
+     rx="257.29984"
+     ry="259.50043" />
+  <polygon
+     points="52,34 64,46 52,58 40,46"
+     fill="#D4920C"
+     fill-opacity="0.5"
+     id="polygon28" />
+  <circle
+     cx="52"
+     cy="46"
+     r="5"
+     fill="#8B5A00"
+     fill-opacity="0.8"
+     id="circle29" />
+  <circle
+     cx="52"
+     cy="46"
+     r="2"
+     fill="#F5D060"
+     fill-opacity="0.9"
+     id="circle30" />
+  <line
+     x1="52"
+     y1="46"
+     x2="52"
+     y2="26"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     stroke-opacity="0.45"
+     id="line30" />
+  <line
+     x1="52"
+     y1="46"
+     x2="52"
+     y2="66"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     stroke-opacity="0.45"
+     id="line31" />
+  <line
+     x1="52"
+     y1="46"
+     x2="32"
+     y2="46"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     stroke-opacity="0.45"
+     id="line32" />
+  <line
+     x1="52"
+     y1="46"
+     x2="72"
+     y2="46"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     stroke-opacity="0.45"
+     id="line33" />
+  <circle
+     cx="52"
+     cy="26"
+     r="1.5"
+     fill="#D4920C"
+     fill-opacity="0.5"
+     id="circle33" />
+  <circle
+     cx="52"
+     cy="66"
+     r="1.5"
+     fill="#D4920C"
+     fill-opacity="0.5"
+     id="circle34" />
+  <circle
+     cx="32"
+     cy="46"
+     r="1.5"
+     fill="#D4920C"
+     fill-opacity="0.5"
+     id="circle35" />
+  <circle
+     cx="72"
+     cy="46"
+     r="1.5"
+     fill="#D4920C"
+     fill-opacity="0.5"
+     id="circle36" />
+  <polygon
+     points="628,34 640,46 628,58 616,46"
+     fill="#D4920C"
+     fill-opacity="0.5"
+     id="polygon36" />
+  <circle
+     cx="628"
+     cy="46"
+     r="5"
+     fill="#8B5A00"
+     fill-opacity="0.8"
+     id="circle37" />
+  <circle
+     cx="628"
+     cy="46"
+     r="2"
+     fill="#F5D060"
+     fill-opacity="0.9"
+     id="circle38" />
+  <line
+     x1="628"
+     y1="46"
+     x2="628"
+     y2="26"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     stroke-opacity="0.45"
+     id="line38" />
+  <line
+     x1="628"
+     y1="46"
+     x2="628"
+     y2="66"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     stroke-opacity="0.45"
+     id="line39" />
+  <line
+     x1="628"
+     y1="46"
+     x2="608"
+     y2="46"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     stroke-opacity="0.45"
+     id="line40" />
+  <line
+     x1="628"
+     y1="46"
+     x2="648"
+     y2="46"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     stroke-opacity="0.45"
+     id="line41" />
+  <circle
+     cx="628"
+     cy="26"
+     r="1.5"
+     fill="#D4920C"
+     fill-opacity="0.5"
+     id="circle41" />
+  <circle
+     cx="628"
+     cy="66"
+     r="1.5"
+     fill="#D4920C"
+     fill-opacity="0.5"
+     id="circle42" />
+  <circle
+     cx="608"
+     cy="46"
+     r="1.5"
+     fill="#D4920C"
+     fill-opacity="0.5"
+     id="circle43" />
+  <circle
+     cx="651.94751"
+     cy="44.026234"
+     r="1.5"
+     fill="#d4920c"
+     fill-opacity="0.5"
+     id="circle44" />
+  <polygon
+     points="52,710 64,722 52,734 40,722"
+     fill="#D4920C"
+     fill-opacity="0.5"
+     id="polygon44" />
+  <circle
+     cx="52"
+     cy="722"
+     r="5"
+     fill="#8B5A00"
+     fill-opacity="0.8"
+     id="circle45" />
+  <circle
+     cx="52"
+     cy="722"
+     r="2"
+     fill="#F5D060"
+     fill-opacity="0.9"
+     id="circle46" />
+  <line
+     x1="52"
+     y1="722"
+     x2="52"
+     y2="702"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     stroke-opacity="0.45"
+     id="line46" />
+  <line
+     x1="52"
+     y1="722"
+     x2="52"
+     y2="742"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     stroke-opacity="0.45"
+     id="line47" />
+  <line
+     x1="52"
+     y1="722"
+     x2="32"
+     y2="722"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     stroke-opacity="0.45"
+     id="line48" />
+  <line
+     x1="52"
+     y1="722"
+     x2="72"
+     y2="722"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     stroke-opacity="0.45"
+     id="line49" />
+  <circle
+     cx="52"
+     cy="702"
+     r="1.5"
+     fill="#D4920C"
+     fill-opacity="0.5"
+     id="circle49" />
+  <circle
+     cx="52"
+     cy="742"
+     r="1.5"
+     fill="#D4920C"
+     fill-opacity="0.5"
+     id="circle50" />
+  <circle
+     cx="32"
+     cy="722"
+     r="1.5"
+     fill="#D4920C"
+     fill-opacity="0.5"
+     id="circle51" />
+  <circle
+     cx="72"
+     cy="722"
+     r="1.5"
+     fill="#D4920C"
+     fill-opacity="0.5"
+     id="circle52" />
+  <polygon
+     points="628,710 640,722 628,734 616,722"
+     fill="#D4920C"
+     fill-opacity="0.5"
+     id="polygon52" />
+  <circle
+     cx="628"
+     cy="722"
+     r="5"
+     fill="#8B5A00"
+     fill-opacity="0.8"
+     id="circle53" />
+  <circle
+     cx="628"
+     cy="722"
+     r="2"
+     fill="#F5D060"
+     fill-opacity="0.9"
+     id="circle54" />
+  <line
+     x1="628"
+     y1="722"
+     x2="628"
+     y2="702"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     stroke-opacity="0.45"
+     id="line54" />
+  <line
+     x1="628"
+     y1="722"
+     x2="628"
+     y2="742"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     stroke-opacity="0.45"
+     id="line55" />
+  <line
+     x1="628"
+     y1="722"
+     x2="608"
+     y2="722"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     stroke-opacity="0.45"
+     id="line56" />
+  <line
+     x1="628"
+     y1="722"
+     x2="648"
+     y2="722"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     stroke-opacity="0.45"
+     id="line57" />
+  <circle
+     cx="628"
+     cy="702"
+     r="1.5"
+     fill="#D4920C"
+     fill-opacity="0.5"
+     id="circle57" />
+  <circle
+     cx="628"
+     cy="742"
+     r="1.5"
+     fill="#D4920C"
+     fill-opacity="0.5"
+     id="circle58" />
+  <circle
+     cx="608"
+     cy="722"
+     r="1.5"
+     fill="#D4920C"
+     fill-opacity="0.5"
+     id="circle59" />
+  <circle
+     cx="648"
+     cy="722"
+     r="1.5"
+     fill="#D4920C"
+     fill-opacity="0.5"
+     id="circle60" />
+  <line
+     x1="72"
+     y1="46"
+     x2="112"
+     y2="46"
+     stroke="#8B5A00"
+     stroke-width="0.7"
+     stroke-opacity="0.35"
+     id="line60" />
+  <line
+     x1="52"
+     y1="66"
+     x2="52"
+     y2="106"
+     stroke="#8B5A00"
+     stroke-width="0.7"
+     stroke-opacity="0.35"
+     id="line61" />
+  <line
+     x1="629.41345"
+     y1="35.293282"
+     x2="589.41345"
+     y2="35.293282"
+     stroke="#8b5a00"
+     stroke-width="0.7"
+     stroke-opacity="0.35"
+     id="line62" />
+  <line
+     x1="628"
+     y1="66"
+     x2="628"
+     y2="106"
+     stroke="#8B5A00"
+     stroke-width="0.7"
+     stroke-opacity="0.35"
+     id="line63" />
+  <line
+     x1="72"
+     y1="722"
+     x2="112"
+     y2="722"
+     stroke="#8B5A00"
+     stroke-width="0.7"
+     stroke-opacity="0.35"
+     id="line64" />
+  <line
+     x1="52"
+     y1="702"
+     x2="52"
+     y2="662"
+     stroke="#8B5A00"
+     stroke-width="0.7"
+     stroke-opacity="0.35"
+     id="line65" />
+  <line
+     x1="608"
+     y1="722"
+     x2="568"
+     y2="722"
+     stroke="#8B5A00"
+     stroke-width="0.7"
+     stroke-opacity="0.35"
+     id="line66" />
+  <line
+     x1="628"
+     y1="702"
+     x2="628"
+     y2="662"
+     stroke="#8B5A00"
+     stroke-width="0.7"
+     stroke-opacity="0.35"
+     id="line67" />
+  <circle
+     cx="340"
+     cy="320"
+     r="270"
+     fill="none"
+     stroke="#8B5A00"
+     stroke-width="24"
+     stroke-opacity="0.18"
+     id="circle67" />
+  <circle
+     cx="340"
+     cy="320"
+     r="272"
+     fill="none"
+     stroke="#D4920C"
+     stroke-width="1.5"
+     filter="url(#fglow2)"
+     id="circle68" />
+  <circle
+     cx="340"
+     cy="320"
+     r="274"
+     fill="none"
+     stroke="#8B5A00"
+     stroke-width="0.5"
+     stroke-dasharray="2 5"
+     id="circle69" />
+  <circle
+     cx="340"
+     cy="320"
+     r="258"
+     fill="none"
+     stroke="#D4920C"
+     stroke-width="1.5"
+     filter="url(#fglow2)"
+     id="circle70" />
+  <circle
+     cx="340"
+     cy="320"
+     r="256"
+     fill="none"
+     stroke="#8B5A00"
+     stroke-width="0.5"
+     stroke-dasharray="1.5 4"
+     id="circle71" />
+  <circle
+     cx="340.0"
+     cy="40.0"
+     r="5.5"
+     fill="#F5D060"
+     stroke="#8B5A00"
+     stroke-width="1.3"
+     filter="url(#fglow2)"
+     id="circle72" />
+  <circle
+     cx="340.0"
+     cy="40.0"
+     r="2.2"
+     fill="#FFF5B0"
+     id="circle73" />
+  <circle
+     cx="404.6"
+     cy="47.5"
+     r="2.0"
+     fill="#8B5A00"
+     stroke="#8B5A00"
+     stroke-width="0"
+     id="circle74" />
+  <circle
+     cx="465.7"
+     cy="69.8"
+     r="2.0"
+     fill="#8B5A00"
+     stroke="#8B5A00"
+     stroke-width="0"
+     id="circle75" />
+  <circle
+     cx="520.0"
+     cy="105.5"
+     r="3.2"
+     fill="#D4920C"
+     stroke="#8B5A00"
+     stroke-width="0.7"
+     id="circle76" />
+  <circle
+     cx="564.6"
+     cy="152.8"
+     r="2.0"
+     fill="#8B5A00"
+     stroke="#8B5A00"
+     stroke-width="0"
+     id="circle77" />
+  <circle
+     cx="597.1"
+     cy="209.1"
+     r="2.0"
+     fill="#8B5A00"
+     stroke="#8B5A00"
+     stroke-width="0"
+     id="circle78" />
+  <circle
+     cx="615.7"
+     cy="271.4"
+     r="3.2"
+     fill="#D4920C"
+     stroke="#8B5A00"
+     stroke-width="0.7"
+     id="circle79" />
+  <circle
+     cx="619.5"
+     cy="336.3"
+     r="2.0"
+     fill="#8B5A00"
+     stroke="#8B5A00"
+     stroke-width="0"
+     id="circle80" />
+  <circle
+     cx="608.2"
+     cy="400.3"
+     r="2.0"
+     fill="#8B5A00"
+     stroke="#8B5A00"
+     stroke-width="0"
+     id="circle81" />
+  <circle
+     cx="582.5"
+     cy="460.0"
+     r="5.5"
+     fill="#F5D060"
+     stroke="#8B5A00"
+     stroke-width="1.3"
+     filter="url(#fglow2)"
+     id="circle82" />
+  <circle
+     cx="582.5"
+     cy="460.0"
+     r="2.2"
+     fill="#FFF5B0"
+     id="circle83" />
+  <circle
+     cx="543.7"
+     cy="512.1"
+     r="2.0"
+     fill="#8B5A00"
+     stroke="#8B5A00"
+     stroke-width="0"
+     id="circle84" />
+  <circle
+     cx="493.9"
+     cy="553.9"
+     r="2.0"
+     fill="#8B5A00"
+     stroke="#8B5A00"
+     stroke-width="0"
+     id="circle85" />
+  <circle
+     cx="435.8"
+     cy="583.1"
+     r="3.2"
+     fill="#D4920C"
+     stroke="#8B5A00"
+     stroke-width="0.7"
+     id="circle86" />
+  <circle
+     cx="372.5"
+     cy="598.1"
+     r="2.0"
+     fill="#8B5A00"
+     stroke="#8B5A00"
+     stroke-width="0"
+     id="circle87" />
+  <circle
+     cx="307.5"
+     cy="598.1"
+     r="2.0"
+     fill="#8B5A00"
+     stroke="#8B5A00"
+     stroke-width="0"
+     id="circle88" />
+  <circle
+     cx="244.2"
+     cy="583.1"
+     r="3.2"
+     fill="#D4920C"
+     stroke="#8B5A00"
+     stroke-width="0.7"
+     id="circle89" />
+  <circle
+     cx="186.1"
+     cy="553.9"
+     r="2.0"
+     fill="#8B5A00"
+     stroke="#8B5A00"
+     stroke-width="0"
+     id="circle90" />
+  <circle
+     cx="136.3"
+     cy="512.1"
+     r="2.0"
+     fill="#8B5A00"
+     stroke="#8B5A00"
+     stroke-width="0"
+     id="circle91" />
+  <circle
+     cx="97.5"
+     cy="460.0"
+     r="5.5"
+     fill="#F5D060"
+     stroke="#8B5A00"
+     stroke-width="1.3"
+     filter="url(#fglow2)"
+     id="circle92" />
+  <circle
+     cx="97.5"
+     cy="460.0"
+     r="2.2"
+     fill="#FFF5B0"
+     id="circle93" />
+  <circle
+     cx="71.8"
+     cy="400.3"
+     r="2.0"
+     fill="#8B5A00"
+     stroke="#8B5A00"
+     stroke-width="0"
+     id="circle94" />
+  <circle
+     cx="60.5"
+     cy="336.3"
+     r="2.0"
+     fill="#8B5A00"
+     stroke="#8B5A00"
+     stroke-width="0"
+     id="circle95" />
+  <circle
+     cx="64.3"
+     cy="271.4"
+     r="3.2"
+     fill="#D4920C"
+     stroke="#8B5A00"
+     stroke-width="0.7"
+     id="circle96" />
+  <circle
+     cx="82.9"
+     cy="209.1"
+     r="2.0"
+     fill="#8B5A00"
+     stroke="#8B5A00"
+     stroke-width="0"
+     id="circle97" />
+  <circle
+     cx="115.4"
+     cy="152.8"
+     r="2.0"
+     fill="#8B5A00"
+     stroke="#8B5A00"
+     stroke-width="0"
+     id="circle98" />
+  <circle
+     cx="160.0"
+     cy="105.5"
+     r="3.2"
+     fill="#D4920C"
+     stroke="#8B5A00"
+     stroke-width="0.7"
+     id="circle99" />
+  <circle
+     cx="214.3"
+     cy="69.8"
+     r="2.0"
+     fill="#8B5A00"
+     stroke="#8B5A00"
+     stroke-width="0"
+     id="circle100" />
+  <circle
+     cx="275.4"
+     cy="47.5"
+     r="2.0"
+     fill="#8B5A00"
+     stroke="#8B5A00"
+     stroke-width="0"
+     id="circle101" />
+  <line
+     x1="340.0"
+     y1="62.0"
+     x2="340.0"
+     y2="48.0"
+     stroke="#D4920C"
+     stroke-width="1.5"
+     id="line101" />
+  <circle
+     cx="340.0"
+     cy="48.0"
+     r="2.5"
+     fill="#F5D060"
+     stroke="#8B5A00"
+     stroke-width="0.5"
+     id="circle102" />
+  <line
+     x1="469.0"
+     y1="96.6"
+     x2="476.0"
+     y2="84.4"
+     stroke="#D4920C"
+     stroke-width="1.5"
+     id="line102" />
+  <circle
+     cx="476.0"
+     cy="84.4"
+     r="2.5"
+     fill="#F5D060"
+     stroke="#8B5A00"
+     stroke-width="0.5"
+     id="circle103" />
+  <line
+     x1="563.4"
+     y1="191.0"
+     x2="575.6"
+     y2="184.0"
+     stroke="#D4920C"
+     stroke-width="1.5"
+     id="line103" />
+  <circle
+     cx="575.6"
+     cy="184.0"
+     r="2.5"
+     fill="#F5D060"
+     stroke="#8B5A00"
+     stroke-width="0.5"
+     id="circle104" />
+  <line
+     x1="598.0"
+     y1="320.0"
+     x2="612.0"
+     y2="320.0"
+     stroke="#D4920C"
+     stroke-width="1.5"
+     id="line104" />
+  <circle
+     cx="612.0"
+     cy="320.0"
+     r="2.5"
+     fill="#F5D060"
+     stroke="#8B5A00"
+     stroke-width="0.5"
+     id="circle105" />
+  <line
+     x1="563.4"
+     y1="449.0"
+     x2="575.6"
+     y2="456.0"
+     stroke="#D4920C"
+     stroke-width="1.5"
+     id="line105" />
+  <circle
+     cx="575.6"
+     cy="456.0"
+     r="2.5"
+     fill="#F5D060"
+     stroke="#8B5A00"
+     stroke-width="0.5"
+     id="circle106" />
+  <line
+     x1="469.0"
+     y1="543.4"
+     x2="476.0"
+     y2="555.6"
+     stroke="#D4920C"
+     stroke-width="1.5"
+     id="line106" />
+  <circle
+     cx="476.0"
+     cy="555.6"
+     r="2.5"
+     fill="#F5D060"
+     stroke="#8B5A00"
+     stroke-width="0.5"
+     id="circle107" />
+  <line
+     x1="340.0"
+     y1="578.0"
+     x2="340.0"
+     y2="592.0"
+     stroke="#D4920C"
+     stroke-width="1.5"
+     id="line107" />
+  <circle
+     cx="340.0"
+     cy="592.0"
+     r="2.5"
+     fill="#F5D060"
+     stroke="#8B5A00"
+     stroke-width="0.5"
+     id="circle108" />
+  <line
+     x1="211.0"
+     y1="543.4"
+     x2="204.0"
+     y2="555.6"
+     stroke="#D4920C"
+     stroke-width="1.5"
+     id="line108" />
+  <circle
+     cx="204.0"
+     cy="555.6"
+     r="2.5"
+     fill="#F5D060"
+     stroke="#8B5A00"
+     stroke-width="0.5"
+     id="circle109" />
+  <line
+     x1="116.6"
+     y1="449.0"
+     x2="104.4"
+     y2="456.0"
+     stroke="#D4920C"
+     stroke-width="1.5"
+     id="line109" />
+  <circle
+     cx="104.4"
+     cy="456.0"
+     r="2.5"
+     fill="#F5D060"
+     stroke="#8B5A00"
+     stroke-width="0.5"
+     id="circle110" />
+  <line
+     x1="82.0"
+     y1="320.0"
+     x2="68.0"
+     y2="320.0"
+     stroke="#D4920C"
+     stroke-width="1.5"
+     id="line110" />
+  <circle
+     cx="68.0"
+     cy="320.0"
+     r="2.5"
+     fill="#F5D060"
+     stroke="#8B5A00"
+     stroke-width="0.5"
+     id="circle111" />
+  <line
+     x1="116.6"
+     y1="191.0"
+     x2="104.4"
+     y2="184.0"
+     stroke="#D4920C"
+     stroke-width="1.5"
+     id="line111" />
+  <circle
+     cx="104.4"
+     cy="184.0"
+     r="2.5"
+     fill="#F5D060"
+     stroke="#8B5A00"
+     stroke-width="0.5"
+     id="circle112" />
+  <line
+     x1="211.0"
+     y1="96.6"
+     x2="204.0"
+     y2="84.4"
+     stroke="#D4920C"
+     stroke-width="1.5"
+     id="line112" />
+  <circle
+     cx="204.0"
+     cy="84.4"
+     r="2.5"
+     fill="#F5D060"
+     stroke="#8B5A00"
+     stroke-width="0.5"
+     id="circle113" />
+  <line
+     x1="407.3"
+     y1="68.9"
+     x2="408.3"
+     y2="65.0"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     stroke-opacity="0.5"
+     id="line113" />
+  <line
+     x1="523.8"
+     y1="136.2"
+     x2="526.7"
+     y2="133.3"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     stroke-opacity="0.5"
+     id="line114" />
+  <line
+     x1="591.1"
+     y1="252.7"
+     x2="595.0"
+     y2="251.7"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     stroke-opacity="0.5"
+     id="line115" />
+  <line
+     x1="591.1"
+     y1="387.3"
+     x2="595.0"
+     y2="388.3"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     stroke-opacity="0.5"
+     id="line116" />
+  <line
+     x1="523.8"
+     y1="503.8"
+     x2="526.7"
+     y2="506.7"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     stroke-opacity="0.5"
+     id="line117" />
+  <line
+     x1="407.3"
+     y1="571.1"
+     x2="408.3"
+     y2="575.0"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     stroke-opacity="0.5"
+     id="line118" />
+  <line
+     x1="272.7"
+     y1="571.1"
+     x2="271.7"
+     y2="575.0"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     stroke-opacity="0.5"
+     id="line119" />
+  <line
+     x1="156.2"
+     y1="503.8"
+     x2="153.3"
+     y2="506.7"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     stroke-opacity="0.5"
+     id="line120" />
+  <line
+     x1="88.9"
+     y1="387.3"
+     x2="85.0"
+     y2="388.3"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     stroke-opacity="0.5"
+     id="line121" />
+  <line
+     x1="88.9"
+     y1="252.7"
+     x2="85.0"
+     y2="251.7"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     stroke-opacity="0.5"
+     id="line122" />
+  <line
+     x1="156.2"
+     y1="136.2"
+     x2="153.3"
+     y2="133.3"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     stroke-opacity="0.5"
+     id="line123" />
+  <line
+     x1="272.7"
+     y1="68.9"
+     x2="271.7"
+     y2="65.0"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     stroke-opacity="0.5"
+     id="line124" />
+  <line
+     x1="78"
+     y1="320"
+     x2="602"
+     y2="320"
+     stroke="#8B5A00"
+     stroke-width="0.6"
+     stroke-opacity="0.4"
+     id="line125" />
+  <polygon
+     points="78,316 82,320 78,324 74,320"
+     fill="#D4920C"
+     fill-opacity="0.6"
+     id="polygon125" />
+  <polygon
+     points="602,316 606,320 602,324 598,320"
+     fill="#D4920C"
+     fill-opacity="0.6"
+     id="polygon126" />
+  <text
+     font-family="'Noto Serif Devanagari', 'Kohinoor Devanagari', 'Sanskrit 2003', serif"
+     font-size="13.5px"
+     fill="#f5d060"
+     fill-opacity="0.95"
+     letter-spacing="3.5"
+     font-weight="400"
+     id="text126"
+     transform="matrix(-0.34921144,0.99628552,-0.99733409,-0.44336158,796.32207,108.77116)"><textPath
+       href="#arcGayatri"
+       startOffset="2%"
+       id="textPath126">ॐ भूर्भुवः स्वः । तत्सवितुर्वरेण्यम् । भर्गो देवस्य धीमहि । धियो यो नः प्रचोदयात् । ॐ</textPath></text>
+  <text
+     font-family="'Noto Serif Devanagari', 'Kohinoor Devanagari', serif"
+     font-size="13.5px"
+     fill="#fff5b0"
+     fill-opacity="0.25"
+     letter-spacing="3.5"
+     filter="url(#fglow2)"
+     id="text127"
+     transform="matrix(0.97203913,0,0,0.99848841,14.098574,13.55493)"><textPath
+       href="#arcGayatri"
+       startOffset="2%"
+       id="textPath127">ॐ भूर्भुवः स्वः । तत्सवितुर्वरेण्यम् । भर्गो देवस्य धीमहि । धियो यो नः प्रचोदयात् । ॐ</textPath></text>
+  <text
+     font-family="'Noto Serif Devanagari', 'Kohinoor Devanagari', 'Sanskrit 2003', serif"
+     font-size="11.5px"
+     fill="#d4920c"
+     fill-opacity="0.85"
+     letter-spacing="2.5"
+     font-weight="400"
+     id="text128"
+     transform="matrix(-1.0360985,0.00298402,0.01219964,-1.0623786,688.85392,651.19799)"
+     inkscape:transform-center-x="-2.2331116"
+     inkscape:transform-center-y="6.6993347"><textPath
+       href="#arcNavagraha"
+       startOffset="0.99999998%"
+       id="textPath128">ॐ आदित्याय नमः · सोमाय नमः · मङ्गलाय नमः · बुधाय नमः · बृहस्पतये नमः · शुक्राय नमः · शनये नमः · राहवे नमः · केतवे नमः · ॐ</textPath></text>
+  <circle
+     cx="340"
+     cy="320.74438"
+     r="246"
+     fill="none"
+     stroke="#d4920c"
+     stroke-width="2"
+     filter="url(#fglow2)"
+     id="circle128" />
+  <circle
+     cx="340"
+     cy="320"
+     r="243"
+     fill="none"
+     stroke="#FFF5B0"
+     stroke-width="0.4"
+     stroke-opacity="0.35"
+     id="circle129" />
+  <circle
+     cx="340"
+     cy="320"
+     r="240"
+     fill="none"
+     stroke="#8B5A00"
+     stroke-width="0.4"
+     stroke-dasharray="1.2 4"
+     id="circle130" />
+  <polygon
+     points="325.5,98.5 354.5,98.5 340.0,87.0"
+     fill="#F5D060"
+     fill-opacity="0.65"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon130" />
+  <polygon
+     points="354.5,98.5 383.3,102.3 370.4,89.0"
+     fill="#D4920C"
+     fill-opacity="0.45"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon131" />
+  <polygon
+     points="383.3,102.3 411.4,109.8 400.3,94.9"
+     fill="#F5D060"
+     fill-opacity="0.65"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon132" />
+  <polygon
+     points="411.4,109.8 438.2,120.9 429.2,104.7"
+     fill="#D4920C"
+     fill-opacity="0.45"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon133" />
+  <polygon
+     points="438.2,120.9 463.3,135.4 456.5,118.2"
+     fill="#F5D060"
+     fill-opacity="0.65"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon134" />
+  <polygon
+     points="463.3,135.4 486.4,153.1 481.8,135.1"
+     fill="#D4920C"
+     fill-opacity="0.45"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon135" />
+  <polygon
+     points="486.4,153.1 506.9,173.6 504.8,155.2"
+     fill="#F5D060"
+     fill-opacity="0.65"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon136" />
+  <polygon
+     points="506.9,173.6 524.6,196.7 524.9,178.2"
+     fill="#D4920C"
+     fill-opacity="0.45"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon137" />
+  <polygon
+     points="524.6,196.7 539.1,221.8 541.8,203.5"
+     fill="#F5D060"
+     fill-opacity="0.65"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon138" />
+  <polygon
+     points="539.1,221.8 550.2,248.6 555.3,230.8"
+     fill="#D4920C"
+     fill-opacity="0.45"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon139" />
+  <polygon
+     points="550.2,248.6 557.7,276.7 565.1,259.7"
+     fill="#F5D060"
+     fill-opacity="0.65"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon140" />
+  <polygon
+     points="557.7,276.7 561.5,305.5 571.0,289.6"
+     fill="#D4920C"
+     fill-opacity="0.45"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon141" />
+  <polygon
+     points="561.5,305.5 561.5,334.5 573.0,320.0"
+     fill="#F5D060"
+     fill-opacity="0.65"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon142" />
+  <polygon
+     points="561.5,334.5 557.7,363.3 571.0,350.4"
+     fill="#D4920C"
+     fill-opacity="0.45"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon143" />
+  <polygon
+     points="557.7,363.3 550.2,391.4 565.1,380.3"
+     fill="#F5D060"
+     fill-opacity="0.65"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon144" />
+  <polygon
+     points="550.2,391.4 539.1,418.2 555.3,409.2"
+     fill="#D4920C"
+     fill-opacity="0.45"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon145" />
+  <polygon
+     points="539.1,418.2 524.6,443.3 541.8,436.5"
+     fill="#F5D060"
+     fill-opacity="0.65"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon146" />
+  <polygon
+     points="524.6,443.3 506.9,466.4 524.9,461.8"
+     fill="#D4920C"
+     fill-opacity="0.45"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon147" />
+  <polygon
+     points="506.9,466.4 486.4,486.9 504.8,484.8"
+     fill="#F5D060"
+     fill-opacity="0.65"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon148" />
+  <polygon
+     points="486.4,486.9 463.3,504.6 481.8,504.9"
+     fill="#D4920C"
+     fill-opacity="0.45"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon149" />
+  <polygon
+     points="463.3,504.6 438.2,519.1 456.5,521.8"
+     fill="#F5D060"
+     fill-opacity="0.65"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon150" />
+  <polygon
+     points="438.2,519.1 411.4,530.2 429.2,535.3"
+     fill="#D4920C"
+     fill-opacity="0.45"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon151" />
+  <polygon
+     points="411.4,530.2 383.3,537.7 400.3,545.1"
+     fill="#F5D060"
+     fill-opacity="0.65"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon152" />
+  <polygon
+     points="383.3,537.7 354.5,541.5 370.4,551.0"
+     fill="#D4920C"
+     fill-opacity="0.45"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon153" />
+  <polygon
+     points="354.5,541.5 325.5,541.5 340.0,553.0"
+     fill="#F5D060"
+     fill-opacity="0.65"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon154" />
+  <polygon
+     points="325.5,541.5 296.7,537.7 309.6,551.0"
+     fill="#D4920C"
+     fill-opacity="0.45"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon155" />
+  <polygon
+     points="296.7,537.7 268.6,530.2 279.7,545.1"
+     fill="#F5D060"
+     fill-opacity="0.65"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon156" />
+  <polygon
+     points="268.6,530.2 241.8,519.1 250.8,535.3"
+     fill="#D4920C"
+     fill-opacity="0.45"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon157" />
+  <polygon
+     points="241.8,519.1 216.7,504.6 223.5,521.8"
+     fill="#F5D060"
+     fill-opacity="0.65"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon158" />
+  <polygon
+     points="216.7,504.6 193.6,486.9 198.2,504.9"
+     fill="#D4920C"
+     fill-opacity="0.45"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon159" />
+  <polygon
+     points="193.6,486.9 173.1,466.4 175.2,484.8"
+     fill="#F5D060"
+     fill-opacity="0.65"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon160" />
+  <polygon
+     points="173.1,466.4 155.4,443.3 155.1,461.8"
+     fill="#D4920C"
+     fill-opacity="0.45"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon161" />
+  <polygon
+     points="155.4,443.3 140.9,418.2 138.2,436.5"
+     fill="#F5D060"
+     fill-opacity="0.65"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon162" />
+  <polygon
+     points="140.9,418.2 129.8,391.4 124.7,409.2"
+     fill="#D4920C"
+     fill-opacity="0.45"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon163" />
+  <polygon
+     points="129.8,391.4 122.3,363.3 114.9,380.3"
+     fill="#F5D060"
+     fill-opacity="0.65"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon164" />
+  <polygon
+     points="122.3,363.3 118.5,334.5 109.0,350.4"
+     fill="#D4920C"
+     fill-opacity="0.45"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon165" />
+  <polygon
+     points="118.5,334.5 118.5,305.5 107.0,320.0"
+     fill="#F5D060"
+     fill-opacity="0.65"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon166" />
+  <polygon
+     points="118.5,305.5 122.3,276.7 109.0,289.6"
+     fill="#D4920C"
+     fill-opacity="0.45"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon167" />
+  <polygon
+     points="122.3,276.7 129.8,248.6 114.9,259.7"
+     fill="#F5D060"
+     fill-opacity="0.65"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon168" />
+  <polygon
+     points="129.8,248.6 140.9,221.8 124.7,230.8"
+     fill="#D4920C"
+     fill-opacity="0.45"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon169" />
+  <polygon
+     points="140.9,221.8 155.4,196.7 138.2,203.5"
+     fill="#F5D060"
+     fill-opacity="0.65"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon170" />
+  <polygon
+     points="155.4,196.7 173.1,173.6 155.1,178.2"
+     fill="#D4920C"
+     fill-opacity="0.45"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon171" />
+  <polygon
+     points="173.1,173.6 193.6,153.1 175.2,155.2"
+     fill="#F5D060"
+     fill-opacity="0.65"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon172" />
+  <polygon
+     points="193.6,153.1 216.7,135.4 198.2,135.1"
+     fill="#D4920C"
+     fill-opacity="0.45"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon173" />
+  <polygon
+     points="216.7,135.4 241.8,120.9 223.5,118.2"
+     fill="#F5D060"
+     fill-opacity="0.65"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon174" />
+  <polygon
+     points="241.8,120.9 268.6,109.8 250.8,104.7"
+     fill="#D4920C"
+     fill-opacity="0.45"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon175" />
+  <polygon
+     points="268.6,109.8 296.7,102.3 279.7,94.9"
+     fill="#F5D060"
+     fill-opacity="0.65"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon176" />
+  <polygon
+     points="296.7,102.3 325.5,98.5 309.6,89.0"
+     fill="#D4920C"
+     fill-opacity="0.45"
+     stroke="#8B5A00"
+     stroke-width="0.25"
+     id="polygon177" />
+  <circle
+     cx="340"
+     cy="320"
+     r="218"
+     fill="none"
+     stroke="#D4920C"
+     stroke-width="2.2"
+     filter="url(#fglow2)"
+     id="circle177" />
+  <circle
+     cx="340"
+     cy="320"
+     r="216"
+     fill="none"
+     stroke="#FFF5B0"
+     stroke-width="0.5"
+     stroke-opacity="0.4"
+     id="circle178" />
+  <circle
+     cx="340"
+     cy="320"
+     r="213"
+     fill="none"
+     stroke="#8B5A00"
+     stroke-width="0.4"
+     stroke-dasharray="1 4"
+     id="circle179" />
+  <line
+     x1="340.0"
+     y1="107.0"
+     x2="340.0"
+     y2="102.0"
+     stroke="#F5D060"
+     stroke-width="2.5"
+     id="line179" />
+  <line
+     x1="446.5"
+     y1="135.5"
+     x2="449.0"
+     y2="131.2"
+     stroke="#F5D060"
+     stroke-width="2.5"
+     id="line180" />
+  <line
+     x1="524.5"
+     y1="213.5"
+     x2="528.8"
+     y2="211.0"
+     stroke="#F5D060"
+     stroke-width="2.5"
+     id="line181" />
+  <line
+     x1="553.0"
+     y1="320.0"
+     x2="558.0"
+     y2="320.0"
+     stroke="#F5D060"
+     stroke-width="2.5"
+     id="line182" />
+  <line
+     x1="524.5"
+     y1="426.5"
+     x2="528.8"
+     y2="429.0"
+     stroke="#F5D060"
+     stroke-width="2.5"
+     id="line183" />
+  <line
+     x1="446.5"
+     y1="504.5"
+     x2="449.0"
+     y2="508.8"
+     stroke="#F5D060"
+     stroke-width="2.5"
+     id="line184" />
+  <line
+     x1="340.0"
+     y1="533.0"
+     x2="340.0"
+     y2="538.0"
+     stroke="#F5D060"
+     stroke-width="2.5"
+     id="line185" />
+  <line
+     x1="233.5"
+     y1="504.5"
+     x2="231.0"
+     y2="508.8"
+     stroke="#F5D060"
+     stroke-width="2.5"
+     id="line186" />
+  <line
+     x1="155.5"
+     y1="426.5"
+     x2="151.2"
+     y2="429.0"
+     stroke="#F5D060"
+     stroke-width="2.5"
+     id="line187" />
+  <line
+     x1="127.0"
+     y1="320.0"
+     x2="122.0"
+     y2="320.0"
+     stroke="#F5D060"
+     stroke-width="2.5"
+     id="line188" />
+  <line
+     x1="155.5"
+     y1="213.5"
+     x2="151.2"
+     y2="211.0"
+     stroke="#F5D060"
+     stroke-width="2.5"
+     id="line189" />
+  <line
+     x1="233.5"
+     y1="135.5"
+     x2="231.0"
+     y2="131.2"
+     stroke="#F5D060"
+     stroke-width="2.5"
+     id="line190" />
+  <line
+     x1="395.6"
+     y1="112.3"
+     x2="396.4"
+     y2="109.4"
+     stroke="#D4920C"
+     stroke-width="0.9"
+     stroke-opacity="0.6"
+     id="line191" />
+  <line
+     x1="492.0"
+     y1="168.0"
+     x2="494.1"
+     y2="165.9"
+     stroke="#D4920C"
+     stroke-width="0.9"
+     stroke-opacity="0.6"
+     id="line192" />
+  <line
+     x1="547.7"
+     y1="264.4"
+     x2="550.6"
+     y2="263.6"
+     stroke="#D4920C"
+     stroke-width="0.9"
+     stroke-opacity="0.6"
+     id="line193" />
+  <line
+     x1="547.7"
+     y1="375.6"
+     x2="550.6"
+     y2="376.4"
+     stroke="#D4920C"
+     stroke-width="0.9"
+     stroke-opacity="0.6"
+     id="line194" />
+  <line
+     x1="492.0"
+     y1="472.0"
+     x2="494.1"
+     y2="474.1"
+     stroke="#D4920C"
+     stroke-width="0.9"
+     stroke-opacity="0.6"
+     id="line195" />
+  <line
+     x1="395.6"
+     y1="527.7"
+     x2="396.4"
+     y2="530.6"
+     stroke="#D4920C"
+     stroke-width="0.9"
+     stroke-opacity="0.6"
+     id="line196" />
+  <line
+     x1="284.4"
+     y1="527.7"
+     x2="283.6"
+     y2="530.6"
+     stroke="#D4920C"
+     stroke-width="0.9"
+     stroke-opacity="0.6"
+     id="line197" />
+  <line
+     x1="188.0"
+     y1="472.0"
+     x2="185.9"
+     y2="474.1"
+     stroke="#D4920C"
+     stroke-width="0.9"
+     stroke-opacity="0.6"
+     id="line198" />
+  <line
+     x1="132.3"
+     y1="375.6"
+     x2="129.4"
+     y2="376.4"
+     stroke="#D4920C"
+     stroke-width="0.9"
+     stroke-opacity="0.6"
+     id="line199" />
+  <line
+     x1="132.3"
+     y1="264.4"
+     x2="129.4"
+     y2="263.6"
+     stroke="#D4920C"
+     stroke-width="0.9"
+     stroke-opacity="0.6"
+     id="line200" />
+  <line
+     x1="188.0"
+     y1="168.0"
+     x2="185.9"
+     y2="165.9"
+     stroke="#D4920C"
+     stroke-width="0.9"
+     stroke-opacity="0.6"
+     id="line201" />
+  <line
+     x1="284.4"
+     y1="112.3"
+     x2="283.6"
+     y2="109.4"
+     stroke="#D4920C"
+     stroke-width="0.9"
+     stroke-opacity="0.6"
+     id="line202" />
+  <g
+     transform="rotate(-90.00,340,320)"
+     id="g203">
+    <path
+       d="M340,152 C358,138 354,116 340,112 C326,116 322,138 340,152Z"
+       fill="url(#gpetal)"
+       stroke="#8B5A00"
+       stroke-width="0.6"
+       id="path202" />
+    <line
+       x1="340"
+       y1="150"
+       x2="340"
+       y2="115"
+       stroke="#8B5A00"
+       stroke-width="0.4"
+       stroke-dasharray="2 2"
+       stroke-opacity="0.5"
+       id="line203" />
+  </g>
+  <g
+     transform="rotate(-67.50,340,320)"
+     id="g204">
+    <path
+       d="M340,152 C358,138 354,116 340,112 C326,116 322,138 340,152Z"
+       fill="url(#gpetal)"
+       stroke="#8B5A00"
+       stroke-width="0.6"
+       id="path203" />
+    <line
+       x1="340"
+       y1="150"
+       x2="340"
+       y2="115"
+       stroke="#8B5A00"
+       stroke-width="0.4"
+       stroke-dasharray="2 2"
+       stroke-opacity="0.5"
+       id="line204" />
+  </g>
+  <g
+     transform="rotate(-45.00,340,320)"
+     id="g205">
+    <path
+       d="M340,152 C358,138 354,116 340,112 C326,116 322,138 340,152Z"
+       fill="url(#gpetal)"
+       stroke="#8B5A00"
+       stroke-width="0.6"
+       id="path204" />
+    <line
+       x1="340"
+       y1="150"
+       x2="340"
+       y2="115"
+       stroke="#8B5A00"
+       stroke-width="0.4"
+       stroke-dasharray="2 2"
+       stroke-opacity="0.5"
+       id="line205" />
+  </g>
+  <g
+     transform="rotate(-22.50,340,320)"
+     id="g206">
+    <path
+       d="M340,152 C358,138 354,116 340,112 C326,116 322,138 340,152Z"
+       fill="url(#gpetal)"
+       stroke="#8B5A00"
+       stroke-width="0.6"
+       id="path205" />
+    <line
+       x1="340"
+       y1="150"
+       x2="340"
+       y2="115"
+       stroke="#8B5A00"
+       stroke-width="0.4"
+       stroke-dasharray="2 2"
+       stroke-opacity="0.5"
+       id="line206" />
+  </g>
+  <g
+     transform="rotate(0.00,340,320)"
+     id="g207">
+    <path
+       d="M340,152 C358,138 354,116 340,112 C326,116 322,138 340,152Z"
+       fill="url(#gpetal)"
+       stroke="#8B5A00"
+       stroke-width="0.6"
+       id="path206" />
+    <line
+       x1="340"
+       y1="150"
+       x2="340"
+       y2="115"
+       stroke="#8B5A00"
+       stroke-width="0.4"
+       stroke-dasharray="2 2"
+       stroke-opacity="0.5"
+       id="line207" />
+  </g>
+  <g
+     transform="rotate(22.50,340,320)"
+     id="g208">
+    <path
+       d="M340,152 C358,138 354,116 340,112 C326,116 322,138 340,152Z"
+       fill="url(#gpetal)"
+       stroke="#8B5A00"
+       stroke-width="0.6"
+       id="path207" />
+    <line
+       x1="340"
+       y1="150"
+       x2="340"
+       y2="115"
+       stroke="#8B5A00"
+       stroke-width="0.4"
+       stroke-dasharray="2 2"
+       stroke-opacity="0.5"
+       id="line208" />
+  </g>
+  <g
+     transform="rotate(45.00,340,320)"
+     id="g209">
+    <path
+       d="M340,152 C358,138 354,116 340,112 C326,116 322,138 340,152Z"
+       fill="url(#gpetal)"
+       stroke="#8B5A00"
+       stroke-width="0.6"
+       id="path208" />
+    <line
+       x1="340"
+       y1="150"
+       x2="340"
+       y2="115"
+       stroke="#8B5A00"
+       stroke-width="0.4"
+       stroke-dasharray="2 2"
+       stroke-opacity="0.5"
+       id="line209" />
+  </g>
+  <g
+     transform="rotate(67.50,340,320)"
+     id="g210">
+    <path
+       d="M340,152 C358,138 354,116 340,112 C326,116 322,138 340,152Z"
+       fill="url(#gpetal)"
+       stroke="#8B5A00"
+       stroke-width="0.6"
+       id="path209" />
+    <line
+       x1="340"
+       y1="150"
+       x2="340"
+       y2="115"
+       stroke="#8B5A00"
+       stroke-width="0.4"
+       stroke-dasharray="2 2"
+       stroke-opacity="0.5"
+       id="line210" />
+  </g>
+  <g
+     transform="rotate(90.00,340,320)"
+     id="g211">
+    <path
+       d="M340,152 C358,138 354,116 340,112 C326,116 322,138 340,152Z"
+       fill="url(#gpetal)"
+       stroke="#8B5A00"
+       stroke-width="0.6"
+       id="path210" />
+    <line
+       x1="340"
+       y1="150"
+       x2="340"
+       y2="115"
+       stroke="#8B5A00"
+       stroke-width="0.4"
+       stroke-dasharray="2 2"
+       stroke-opacity="0.5"
+       id="line211" />
+  </g>
+  <g
+     transform="rotate(112.50,340,320)"
+     id="g212">
+    <path
+       d="M340,152 C358,138 354,116 340,112 C326,116 322,138 340,152Z"
+       fill="url(#gpetal)"
+       stroke="#8B5A00"
+       stroke-width="0.6"
+       id="path211" />
+    <line
+       x1="340"
+       y1="150"
+       x2="340"
+       y2="115"
+       stroke="#8B5A00"
+       stroke-width="0.4"
+       stroke-dasharray="2 2"
+       stroke-opacity="0.5"
+       id="line212" />
+  </g>
+  <g
+     transform="rotate(135.00,340,320)"
+     id="g213">
+    <path
+       d="M340,152 C358,138 354,116 340,112 C326,116 322,138 340,152Z"
+       fill="url(#gpetal)"
+       stroke="#8B5A00"
+       stroke-width="0.6"
+       id="path212" />
+    <line
+       x1="340"
+       y1="150"
+       x2="340"
+       y2="115"
+       stroke="#8B5A00"
+       stroke-width="0.4"
+       stroke-dasharray="2 2"
+       stroke-opacity="0.5"
+       id="line213" />
+  </g>
+  <g
+     transform="rotate(157.50,340,320)"
+     id="g214">
+    <path
+       d="M340,152 C358,138 354,116 340,112 C326,116 322,138 340,152Z"
+       fill="url(#gpetal)"
+       stroke="#8B5A00"
+       stroke-width="0.6"
+       id="path213" />
+    <line
+       x1="340"
+       y1="150"
+       x2="340"
+       y2="115"
+       stroke="#8B5A00"
+       stroke-width="0.4"
+       stroke-dasharray="2 2"
+       stroke-opacity="0.5"
+       id="line214" />
+  </g>
+  <g
+     transform="rotate(180.00,340,320)"
+     id="g215">
+    <path
+       d="M340,152 C358,138 354,116 340,112 C326,116 322,138 340,152Z"
+       fill="url(#gpetal)"
+       stroke="#8B5A00"
+       stroke-width="0.6"
+       id="path214" />
+    <line
+       x1="340"
+       y1="150"
+       x2="340"
+       y2="115"
+       stroke="#8B5A00"
+       stroke-width="0.4"
+       stroke-dasharray="2 2"
+       stroke-opacity="0.5"
+       id="line215" />
+  </g>
+  <g
+     transform="rotate(202.50,340,320)"
+     id="g216">
+    <path
+       d="M340,152 C358,138 354,116 340,112 C326,116 322,138 340,152Z"
+       fill="url(#gpetal)"
+       stroke="#8B5A00"
+       stroke-width="0.6"
+       id="path215" />
+    <line
+       x1="340"
+       y1="150"
+       x2="340"
+       y2="115"
+       stroke="#8B5A00"
+       stroke-width="0.4"
+       stroke-dasharray="2 2"
+       stroke-opacity="0.5"
+       id="line216" />
+  </g>
+  <g
+     transform="rotate(225.00,340,320)"
+     id="g217">
+    <path
+       d="M340,152 C358,138 354,116 340,112 C326,116 322,138 340,152Z"
+       fill="url(#gpetal)"
+       stroke="#8B5A00"
+       stroke-width="0.6"
+       id="path216" />
+    <line
+       x1="340"
+       y1="150"
+       x2="340"
+       y2="115"
+       stroke="#8B5A00"
+       stroke-width="0.4"
+       stroke-dasharray="2 2"
+       stroke-opacity="0.5"
+       id="line217" />
+  </g>
+  <g
+     transform="rotate(247.50,340,320)"
+     id="g218">
+    <path
+       d="M340,152 C358,138 354,116 340,112 C326,116 322,138 340,152Z"
+       fill="url(#gpetal)"
+       stroke="#8B5A00"
+       stroke-width="0.6"
+       id="path217" />
+    <line
+       x1="340"
+       y1="150"
+       x2="340"
+       y2="115"
+       stroke="#8B5A00"
+       stroke-width="0.4"
+       stroke-dasharray="2 2"
+       stroke-opacity="0.5"
+       id="line218" />
+  </g>
+  <circle
+     cx="340"
+     cy="320"
+     r="165"
+     fill="none"
+     stroke="#D4920C"
+     stroke-width="2.0"
+     filter="url(#fglow2)"
+     id="circle218" />
+  <circle
+     cx="340"
+     cy="320"
+     r="163"
+     fill="none"
+     stroke="#FFF5B0"
+     stroke-width="0.4"
+     stroke-opacity="0.35"
+     id="circle219" />
+  <circle
+     cx="340"
+     cy="320"
+     r="160"
+     fill="none"
+     stroke="#8B5A00"
+     stroke-width="0.5"
+     stroke-dasharray="1.5 3.5"
+     id="circle220" />
+  <circle
+     cx="340"
+     cy="320"
+     r="155"
+     fill="none"
+     stroke="#D4920C"
+     stroke-width="1.4"
+     id="circle223" />
+  <circle
+     cx="340"
+     cy="320"
+     r="115"
+     fill="none"
+     stroke="#8B1A1A"
+     stroke-width="1.6"
+     id="circle224" />
+  <line
+     x1="340.0"
+     y1="205.0"
+     x2="340.0"
+     y2="165.0"
+     stroke="#8B5A00"
+     stroke-width="0.9"
+     id="line224" />
+  <line
+     x1="397.5"
+     y1="220.4"
+     x2="417.5"
+     y2="185.8"
+     stroke="#8B5A00"
+     stroke-width="0.9"
+     id="line225" />
+  <line
+     x1="439.6"
+     y1="262.5"
+     x2="474.2"
+     y2="242.5"
+     stroke="#8B5A00"
+     stroke-width="0.9"
+     id="line226" />
+  <line
+     x1="455.0"
+     y1="320.0"
+     x2="495.0"
+     y2="320.0"
+     stroke="#8B5A00"
+     stroke-width="0.9"
+     id="line227" />
+  <line
+     x1="439.6"
+     y1="377.5"
+     x2="474.2"
+     y2="397.5"
+     stroke="#8B5A00"
+     stroke-width="0.9"
+     id="line228" />
+  <line
+     x1="397.5"
+     y1="419.6"
+     x2="417.5"
+     y2="454.2"
+     stroke="#8B5A00"
+     stroke-width="0.9"
+     id="line229" />
+  <line
+     x1="340.0"
+     y1="435.0"
+     x2="340.0"
+     y2="475.0"
+     stroke="#8B5A00"
+     stroke-width="0.9"
+     id="line230" />
+  <line
+     x1="282.5"
+     y1="419.6"
+     x2="262.5"
+     y2="454.2"
+     stroke="#8B5A00"
+     stroke-width="0.9"
+     id="line231" />
+  <line
+     x1="240.4"
+     y1="377.5"
+     x2="205.8"
+     y2="397.5"
+     stroke="#8B5A00"
+     stroke-width="0.9"
+     id="line232" />
+  <line
+     x1="225.0"
+     y1="320.0"
+     x2="185.0"
+     y2="320.0"
+     stroke="#8B5A00"
+     stroke-width="0.9"
+     id="line233" />
+  <line
+     x1="240.4"
+     y1="262.5"
+     x2="205.8"
+     y2="242.5"
+     stroke="#8B5A00"
+     stroke-width="0.9"
+     id="line234" />
+  <line
+     x1="282.5"
+     y1="220.4"
+     x2="262.5"
+     y2="185.8"
+     stroke="#8B5A00"
+     stroke-width="0.9"
+     id="line235" />
+  <circle
+     cx="340"
+     cy="320"
+     r="135"
+     fill="none"
+     stroke="#4A2E00"
+     stroke-width="0.5"
+     stroke-dasharray="1.5 4"
+     stroke-opacity="0.5"
+     id="circle235" />
+  <circle
+     cx="340.0"
+     cy="165.0"
+     r="4"
+     fill="#F5D060"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     id="circle236" />
+  <circle
+     cx="340.0"
+     cy="165.0"
+     r="1.8"
+     fill="#8B1A1A"
+     id="circle237" />
+  <circle
+     cx="495.0"
+     cy="320.0"
+     r="4"
+     fill="#F5D060"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     id="circle238" />
+  <circle
+     cx="495.0"
+     cy="320.0"
+     r="1.8"
+     fill="#8B1A1A"
+     id="circle239" />
+  <circle
+     cx="340.0"
+     cy="475.0"
+     r="4"
+     fill="#F5D060"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     id="circle240" />
+  <circle
+     cx="340.0"
+     cy="475.0"
+     r="1.8"
+     fill="#8B1A1A"
+     id="circle241" />
+  <circle
+     cx="185.0"
+     cy="320.0"
+     r="4"
+     fill="#F5D060"
+     stroke="#8B5A00"
+     stroke-width="0.8"
+     id="circle242" />
+  <circle
+     cx="185.0"
+     cy="320.0"
+     r="1.8"
+     fill="#8B1A1A"
+     id="circle243" />
+  <circle
+     cx="340"
+     cy="320"
+     r="111"
+     fill="none"
+     stroke="#8B1A1A"
+     stroke-width="2.0"
+     id="circle244" />
+  <circle
+     cx="340"
+     cy="320"
+     r="109"
+     fill="none"
+     stroke="#CC3A3A"
+     stroke-width="0.5"
+     stroke-opacity="0.4"
+     id="circle245" />
+  <rect
+     x="268"
+     y="248"
+     width="144"
+     height="144"
+     fill="none"
+     stroke="#8B1A1A"
+     stroke-width="2.2"
+     id="rect246" />
+  <rect
+     x="271"
+     y="251"
+     width="138"
+     height="138"
+     fill="none"
+     stroke="#CC3A3A"
+     stroke-width="0.6"
+     stroke-opacity="0.5"
+     id="rect247" />
+  <polygon
+     points="340,248 412,320 340,392 268,320"
+     fill="none"
+     stroke="#8B1A1A"
+     stroke-width="1.8"
+     id="polygon247" />
+  <line
+     x1="268"
+     y1="248"
+     x2="340"
+     y2="320"
+     stroke="#8B1A1A"
+     stroke-width="1.4"
+     id="line247" />
+  <line
+     x1="412"
+     y1="248"
+     x2="340"
+     y2="320"
+     stroke="#8B1A1A"
+     stroke-width="1.4"
+     id="line248" />
+  <line
+     x1="412"
+     y1="392"
+     x2="340"
+     y2="320"
+     stroke="#8B1A1A"
+     stroke-width="1.4"
+     id="line249" />
+  <line
+     x1="268"
+     y1="392"
+     x2="340"
+     y2="320"
+     stroke="#8B1A1A"
+     stroke-width="1.4"
+     id="line250" />
+  <circle
+     cx="340"
+     cy="248"
+     r="3"
+     fill="#F5D060"
+     stroke="#8B5A00"
+     stroke-width="0.6"
+     id="circle250" />
+  <circle
+     cx="412"
+     cy="320"
+     r="3"
+     fill="#F5D060"
+     stroke="#8B5A00"
+     stroke-width="0.6"
+     id="circle251" />
+  <circle
+     cx="340"
+     cy="392"
+     r="3"
+     fill="#F5D060"
+     stroke="#8B5A00"
+     stroke-width="0.6"
+     id="circle252" />
+  <circle
+     cx="268"
+     cy="320"
+     r="3"
+     fill="#F5D060"
+     stroke="#8B5A00"
+     stroke-width="0.6"
+     id="circle253" />
+  <polygon
+     points="340.0,270.0 383.3,345.0 296.7,345.0"
+     fill="#8B1A1A"
+     fill-opacity="0.35"
+     stroke="#D4920C"
+     stroke-width="1.4"
+     id="polygon253" />
+  <polygon
+     points="340.0,370.0 383.3,295.0 296.7,295.0"
+     fill="#4A0808"
+     fill-opacity="0.35"
+     stroke="#D4920C"
+     stroke-width="1.4"
+     id="polygon254" />
+  <circle
+     cx="340"
+     cy="320"
+     r="29"
+     fill="none"
+     stroke="#D4920C"
+     stroke-width="0.8"
+     stroke-dasharray="2 2.5"
+     stroke-opacity="0.6"
+     id="circle254" />
+  <circle
+     cx="340.0"
+     cy="291.0"
+     r="1.8"
+     fill="#D4920C"
+     id="circle255" />
+  <circle
+     cx="365.1"
+     cy="305.5"
+     r="1.8"
+     fill="#D4920C"
+     id="circle256" />
+  <circle
+     cx="365.1"
+     cy="334.5"
+     r="1.8"
+     fill="#D4920C"
+     id="circle257" />
+  <circle
+     cx="340.0"
+     cy="349.0"
+     r="1.8"
+     fill="#D4920C"
+     id="circle258" />
+  <circle
+     cx="314.9"
+     cy="334.5"
+     r="1.8"
+     fill="#D4920C"
+     id="circle259" />
+  <circle
+     cx="314.9"
+     cy="305.5"
+     r="1.8"
+     fill="#D4920C"
+     id="circle260" />
+  <g
+     transform="rotate(-90.00,340,320)"
+     id="g260">
+    <path
+       d="M340,304 C349,302 348,295 340,293 C332,295 331,302 340,304Z"
+       fill="url(#gpetal2)"
+       stroke="#8B5A00"
+       stroke-width="0.5"
+       id="path260" />
+  </g>
+  <g
+     transform="rotate(-45.00,340,320)"
+     id="g261">
+    <path
+       d="M340,304 C349,302 348,295 340,293 C332,295 331,302 340,304Z"
+       fill="url(#gpetal2)"
+       stroke="#8B5A00"
+       stroke-width="0.5"
+       id="path261" />
+  </g>
+  <g
+     transform="rotate(0.00,340,320)"
+     id="g262">
+    <path
+       d="M340,304 C349,302 348,295 340,293 C332,295 331,302 340,304Z"
+       fill="url(#gpetal2)"
+       stroke="#8B5A00"
+       stroke-width="0.5"
+       id="path262" />
+  </g>
+  <g
+     transform="rotate(45.00,340,320)"
+     id="g263">
+    <path
+       d="M340,304 C349,302 348,295 340,293 C332,295 331,302 340,304Z"
+       fill="url(#gpetal2)"
+       stroke="#8B5A00"
+       stroke-width="0.5"
+       id="path263" />
+  </g>
+  <g
+     transform="rotate(90.00,340,320)"
+     id="g264">
+    <path
+       d="M340,304 C349,302 348,295 340,293 C332,295 331,302 340,304Z"
+       fill="url(#gpetal2)"
+       stroke="#8B5A00"
+       stroke-width="0.5"
+       id="path264" />
+  </g>
+  <g
+     transform="rotate(135.00,340,320)"
+     id="g265">
+    <path
+       d="M340,304 C349,302 348,295 340,293 C332,295 331,302 340,304Z"
+       fill="url(#gpetal2)"
+       stroke="#8B5A00"
+       stroke-width="0.5"
+       id="path265" />
+  </g>
+  <g
+     transform="rotate(180.00,340,320)"
+     id="g266">
+    <path
+       d="M340,304 C349,302 348,295 340,293 C332,295 331,302 340,304Z"
+       fill="url(#gpetal2)"
+       stroke="#8B5A00"
+       stroke-width="0.5"
+       id="path266" />
+  </g>
+  <g
+     transform="rotate(225.00,340,320)"
+     id="g267">
+    <path
+       d="M340,304 C349,302 348,295 340,293 C332,295 331,302 340,304Z"
+       fill="url(#gpetal2)"
+       stroke="#8B5A00"
+       stroke-width="0.5"
+       id="path267" />
+  </g>
+  <circle
+     cx="340"
+     cy="320"
+     r="18"
+     fill="#4A0808"
+     filter="url(#fglow)"
+     id="circle267" />
+  <circle
+     cx="340"
+     cy="320"
+     r="17"
+     fill="url(#gcenter)"
+     id="circle268" />
+  <circle
+     cx="340"
+     cy="320"
+     r="13"
+     fill="#4A0808"
+     id="circle269" />
+  <text
+     x="340"
+     y="327"
+     text-anchor="middle"
+     font-family="'Noto Serif Devanagari',serif"
+     font-size="17"
+     fill="#F5D060"
+     font-weight="bold"
+     filter="url(#fglow)"
+     id="text269">ॐ</text>
+  <circle
+     cx="340"
+     cy="320"
+     r="2"
+     fill="#FFF5B0"
+     filter="url(#fglow)"
+     id="circle270" />
+  <circle
+     cx="340.0"
+     cy="40.0"
+     r="7.5"
+     fill="#D4920C"
+     stroke="#8B5A00"
+     stroke-width="1.2"
+     filter="url(#fglow2)"
+     id="circle271" />
+  <circle
+     cx="340.0"
+     cy="40.0"
+     r="4"
+     fill="#4A0808"
+     id="circle272" />
+  <circle
+     cx="340.0"
+     cy="40.0"
+     r="1.8"
+     fill="#F5D060"
+     id="circle273" />
+  <circle
+     cx="620.0"
+     cy="320.0"
+     r="7.5"
+     fill="#D4920C"
+     stroke="#8B5A00"
+     stroke-width="1.2"
+     filter="url(#fglow2)"
+     id="circle274" />
+  <circle
+     cx="620.0"
+     cy="320.0"
+     r="4"
+     fill="#4A0808"
+     id="circle275" />
+  <circle
+     cx="620.0"
+     cy="320.0"
+     r="1.8"
+     fill="#F5D060"
+     id="circle276" />
+  <circle
+     cx="340.0"
+     cy="600.0"
+     r="7.5"
+     fill="#D4920C"
+     stroke="#8B5A00"
+     stroke-width="1.2"
+     filter="url(#fglow2)"
+     id="circle277" />
+  <circle
+     cx="340.0"
+     cy="600.0"
+     r="4"
+     fill="#4A0808"
+     id="circle278" />
+  <circle
+     cx="340.0"
+     cy="600.0"
+     r="1.8"
+     fill="#F5D060"
+     id="circle279" />
+  <circle
+     cx="60.0"
+     cy="320.0"
+     r="7.5"
+     fill="#D4920C"
+     stroke="#8B5A00"
+     stroke-width="1.2"
+     filter="url(#fglow2)"
+     id="circle280" />
+  <circle
+     cx="60.0"
+     cy="320.0"
+     r="4"
+     fill="#4A0808"
+     id="circle281" />
+  <circle
+     cx="60.0"
+     cy="320.0"
+     r="1.8"
+     fill="#F5D060"
+     id="circle282" />
+  <polygon
+     points="538.0,116.5 543.5,122.0 538.0,127.5 532.5,122.0"
+     fill="#F5D060"
+     fill-opacity="0.7"
+     stroke="#8B5A00"
+     stroke-width="0.6"
+     id="polygon282" />
+  <circle
+     cx="538.0"
+     cy="122.0"
+     r="1.5"
+     fill="#8B5A00"
+     id="circle283" />
+  <polygon
+     points="538.0,512.5 543.5,518.0 538.0,523.5 532.5,518.0"
+     fill="#F5D060"
+     fill-opacity="0.7"
+     stroke="#8B5A00"
+     stroke-width="0.6"
+     id="polygon283" />
+  <circle
+     cx="538.0"
+     cy="518.0"
+     r="1.5"
+     fill="#8B5A00"
+     id="circle284" />
+  <polygon
+     points="142.0,512.5 147.5,518.0 142.0,523.5 136.5,518.0"
+     fill="#F5D060"
+     fill-opacity="0.7"
+     stroke="#8B5A00"
+     stroke-width="0.6"
+     id="polygon284" />
+  <circle
+     cx="142.0"
+     cy="518.0"
+     r="1.5"
+     fill="#8B5A00"
+     id="circle285" />
+  <polygon
+     points="142.0,116.5 147.5,122.0 142.0,127.5 136.5,122.0"
+     fill="#F5D060"
+     fill-opacity="0.7"
+     stroke="#8B5A00"
+     stroke-width="0.6"
+     id="polygon285" />
+  <circle
+     cx="142.0"
+     cy="122.0"
+     r="1.5"
+     fill="#8B5A00"
+     id="circle286" />
+  <text
+     x="331.56866"
+     y="630.12146"
+     text-anchor="middle"
+     font-family="'Noto Serif Devanagari', serif"
+     font-size="16px"
+     fill="#d4920c"
+     fill-opacity="0.85"
+     letter-spacing="5"
+     id="text286">✦ कुण्डली ✦</text>
+  <line
+     x1="222.45279"
+     y1="636.60455"
+     x2="432.45279"
+     y2="636.60455"
+     stroke="#8b5a00"
+     stroke-width="0.6"
+     stroke-opacity="0.45"
+     id="line286" />
+  <text
+     x="347.16345"
+     y="693.61127"
+     text-anchor="middle"
+     font-family="'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif"
+     font-size="70px"
+     font-weight="700"
+     letter-spacing="14"
+     fill="#4a0808"
+     fill-opacity="0.6"
+     id="text287">KUNDALI</text>
+  <text
+     x="345.69043"
+     y="693.22699"
+     text-anchor="middle"
+     font-family="'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif"
+     font-size="70px"
+     font-weight="700"
+     letter-spacing="14"
+     fill="url(#gtxt)"
+     filter="url(#fglow2)"
+     id="text288"
+     style="fill:url(#gtxt)">KUNDALI</text>
+  <line
+     x1="142.09732"
+     y1="724.06653"
+     x2="249.09731"
+     y2="724.06653"
+     stroke="#d4920c"
+     stroke-width="0.9"
+     stroke-opacity="0.7"
+     id="line288" />
+  <line
+     x1="419.59488"
+     y1="724.1756"
+     x2="526.59485"
+     y2="724.1756"
+     stroke="#d4920c"
+     stroke-width="0.9"
+     stroke-opacity="0.7"
+     id="line289" />
+  <circle
+     cx="261.62302"
+     cy="724.07159"
+     r="2.5"
+     fill="#d4920c"
+     fill-opacity="0.7"
+     id="circle289" />
+  <circle
+     cx="390.49072"
+     cy="725.11688"
+     fill="#d4920c"
+     fill-opacity="0.7"
+     id="circle290"
+     r="2.5" />
+  <polygon
+     points="340,630 346,636 340,642 334,636 "
+     fill="#f5d060"
+     stroke="#8b5a00"
+     stroke-width="0.5"
+     filter="url(#fglow2)"
+     id="polygon290"
+     transform="translate(-7.8234708,88.299901)" />
+  <polygon
+     points="320,632.5 313,636 320,639.5 "
+     fill="#d4920c"
+     fill-opacity="0.65"
+     id="polygon291"
+     transform="translate(-21.15626,88.452901)" />
+  <polygon
+     points="360,632.5 367,636 360,639.5 "
+     fill="#d4920c"
+     fill-opacity="0.65"
+     id="polygon292"
+     transform="translate(3.4405173,89.069298)" />
+  <text
+     x="332.9715"
+     y="713.65143"
+     text-anchor="middle"
+     font-family="'Palatino Linotype', Palatino, Georgia, serif"
+     font-size="12.5px"
+     fill="#8b5a00"
+     fill-opacity="0.9"
+     letter-spacing="5"
+     id="text292">VEDIC BIRTH CHART · JYOTISH</text>
+  <line
+     x1="212.0779"
+     y1="778.4411"
+     x2="468.07791"
+     y2="778.4411"
+     stroke="#4a2e00"
+     stroke-width="0.4"
+     stroke-opacity="0.45"
+     id="line292" />
+  <text
+     font-family="'Noto Serif Devanagari', 'Kohinoor Devanagari', 'Sanskrit 2003', serif"
+     font-size="13.5px"
+     fill="#f5d060"
+     fill-opacity="0.95"
+     letter-spacing="3.5"
+     font-weight="400"
+     id="text126-3"
+     transform="matrix(1.2668194,0.00719321,0.13480107,1.2494112,-93.257447,-45.855881)"><textPath
+       href="#arcGayatri-1"
+       startOffset="2%"
+       id="textPath126-5">ॐ गणेशाय नमः ॐब्रह्मणे नमः ॐविष्णवे नमः ॐमहेश्वराय नमः ॐ</textPath></text>
+  <metadata
+     id="metadata292">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>Kundali — Sacred Wheel Sanskrit Premium Logo</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <!-- ══ INJECTED UPGRADES ══ -->
+  <text
+     font-family="'Noto Serif Devanagari', 'Kohinoor Devanagari', serif"
+     font-size="12px"
+     fill="#d4920c"
+     fill-opacity="0.88"
+     letter-spacing="2.8"
+     font-weight="400"
+     id="text1"
+     transform="matrix(1.0123777,0.02007375,-0.02029015,1.0015806,2.4513493,-13.675478)"><textPath
+       href="#arcNavagraha"
+       startOffset="2%"
+       id="textPath1">ॐ आदित्याय नमः · सोमाय नमः · मङ्गलाय नमः · बुधाय नमः · बृहस्पतये नमः · शुक्राय नमः · शनये नमः · राहवे नमः · केतवे नमः · ॐ</textPath></text>
+  <text
+     font-family="'Noto Serif Devanagari', 'Kohinoor Devanagari', serif"
+     font-size="12px"
+     fill="#fff5b0"
+     fill-opacity="0.18"
+     letter-spacing="2.8"
+     font-weight="400"
+     filter="url(#fglow2)"
+     id="text2"
+     transform="translate(15.903388,40.227895)"><textPath
+       href="#arcNavagraha"
+       startOffset="2%"
+       id="textPath2">ॐ आदित्याय नमः · सोमाय नमः · मङ्गलाय नमः · बुधाय नमः · बृहस्पतये नमः · शुक्राय नमः · शनये नमः · राहवे नमः · केतवे नमः · ॐ</textPath></text>
+  <text
+     x="412.12061"
+     y="87.399513"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="'Noto Serif Devanagari', serif"
+     font-size="9px"
+     fill="#d4920c"
+     fill-opacity="0.9"
+     transform="rotate(15)"
+     id="text3">मेष</text>
+  <text
+     x="466.95319"
+     y="-149.00346"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="'Noto Serif Devanagari', serif"
+     font-size="9px"
+     fill="#d4920c"
+     fill-opacity="0.9"
+     transform="rotate(45)"
+     id="text4">वृष</text>
+  <text
+     x="397.87115"
+     y="-379.41638"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="'Noto Serif Devanagari', serif"
+     font-size="9px"
+     fill="#d4920c"
+     fill-opacity="0.9"
+     transform="rotate(75)"
+     id="text5">मिथुन</text>
+  <text
+     x="-222.34962"
+     y="547.79462"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="'Noto Serif Devanagari', serif"
+     font-size="9px"
+     fill="#d4920c"
+     fill-opacity="0.9"
+     transform="rotate(-75)"
+     id="text6">कर्क</text>
+  <text
+     x="15.14396"
+     y="601.74786"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="'Noto Serif Devanagari', serif"
+     font-size="9px"
+     fill="#d4920c"
+     fill-opacity="0.9"
+     transform="rotate(-45)"
+     id="text7">सिंह</text>
+  <text
+     x="245.49237"
+     y="532.31232"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="'Noto Serif Devanagari', serif"
+     font-size="9px"
+     fill="#d4920c"
+     fill-opacity="0.9"
+     transform="rotate(-15)"
+     id="text8">कन्या</text>
+  <text
+     x="447.00647"
+     y="311.42801"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="'Noto Serif Devanagari', serif"
+     font-size="9px"
+     fill="#d4920c"
+     fill-opacity="0.9"
+     transform="rotate(21.044101)"
+     id="text9">तुला</text>
+  <text
+     x="467.52518"
+     y="121.61083"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="'Noto Serif Devanagari', serif"
+     font-size="9px"
+     fill="#d4920c"
+     fill-opacity="0.9"
+     transform="rotate(45)"
+     id="text10">वृश्चिक</text>
+  <text
+     x="397.55865"
+     y="-111.04532"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="'Noto Serif Devanagari', serif"
+     font-size="9px"
+     fill="#d4920c"
+     fill-opacity="0.9"
+     transform="rotate(75)"
+     id="text11">धनु</text>
+  <text
+     x="-221.54507"
+     y="276.54901"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="'Noto Serif Devanagari', serif"
+     font-size="9px"
+     fill="#d4920c"
+     fill-opacity="0.9"
+     transform="rotate(-75)"
+     id="text12">मकर</text>
+  <text
+     x="13.892823"
+     y="332.17191"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="'Noto Serif Devanagari', serif"
+     font-size="9px"
+     fill="#d4920c"
+     fill-opacity="0.9"
+     transform="rotate(-45)"
+     id="text13">कुम्भ</text>
+  <text
+     x="247.38278"
+     y="262.94275"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="'Noto Serif Devanagari', serif"
+     font-size="9px"
+     fill="#d4920c"
+     fill-opacity="0.9"
+     transform="rotate(-15)"
+     id="text14">मीन</text>
+  <text
+     x="377.5"
+     y="179.9"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="serif"
+     font-size="6.5"
+     fill="#8B5A00"
+     fill-opacity="0.65"
+     transform="rotate(15.0,377.5,179.9)"
+     id="text15">1</text>
+  <text
+     x="442.5"
+     y="217.5"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="serif"
+     font-size="6.5"
+     fill="#8B5A00"
+     fill-opacity="0.65"
+     transform="rotate(45.0,442.5,217.5)"
+     id="text16">2</text>
+  <text
+     x="480.1"
+     y="282.5"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="serif"
+     font-size="6.5"
+     fill="#8B5A00"
+     fill-opacity="0.65"
+     transform="rotate(75.0,480.1,282.5)"
+     id="text17">3</text>
+  <text
+     x="480.1"
+     y="357.5"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="serif"
+     font-size="6.5"
+     fill="#8B5A00"
+     fill-opacity="0.65"
+     transform="rotate(-75.0,480.1,357.5)"
+     id="text18">4</text>
+  <text
+     x="442.5"
+     y="422.5"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="serif"
+     font-size="6.5"
+     fill="#8B5A00"
+     fill-opacity="0.65"
+     transform="rotate(-45.0,442.5,422.5)"
+     id="text19">5</text>
+  <text
+     x="377.5"
+     y="460.1"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="serif"
+     font-size="6.5"
+     fill="#8B5A00"
+     fill-opacity="0.65"
+     transform="rotate(-15.0,377.5,460.1)"
+     id="text20">6</text>
+  <text
+     x="302.5"
+     y="460.1"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="serif"
+     font-size="6.5"
+     fill="#8B5A00"
+     fill-opacity="0.65"
+     transform="rotate(15.0,302.5,460.1)"
+     id="text21">7</text>
+  <text
+     x="237.5"
+     y="422.5"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="serif"
+     font-size="6.5"
+     fill="#8B5A00"
+     fill-opacity="0.65"
+     transform="rotate(45.0,237.5,422.5)"
+     id="text22">8</text>
+  <text
+     x="199.9"
+     y="357.5"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="serif"
+     font-size="6.5"
+     fill="#8B5A00"
+     fill-opacity="0.65"
+     transform="rotate(75.0,199.9,357.5)"
+     id="text23">9</text>
+  <text
+     x="199.9"
+     y="282.5"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="serif"
+     font-size="6.5"
+     fill="#8B5A00"
+     fill-opacity="0.65"
+     transform="rotate(-75.0,199.9,282.5)"
+     id="text24">10</text>
+  <text
+     x="237.5"
+     y="217.5"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="serif"
+     font-size="6.5"
+     fill="#8B5A00"
+     fill-opacity="0.65"
+     transform="rotate(-45.0,237.5,217.5)"
+     id="text25">11</text>
+  <text
+     x="302.5"
+     y="179.9"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="serif"
+     font-size="6.5"
+     fill="#8B5A00"
+     fill-opacity="0.65"
+     transform="rotate(-15.0,302.5,179.9)"
+     id="text26">12</text>
+  <!-- Surya -->
+  <text
+     x="277.8674"
+     y="354.97943"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="'Noto Serif Devanagari', serif"
+     font-size="8.5px"
+     fill="#d4920c"
+     fill-opacity="0.75"
+     id="text27">सू</text>
+  <!-- Chandra -->
+  <text
+     x="401.17627"
+     y="273.86087"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="'Noto Serif Devanagari', serif"
+     font-size="8.5px"
+     fill="#d4920c"
+     fill-opacity="0.75"
+     id="text28">च</text>
+  <!-- Mangal -->
+  <text
+     x="300.60703"
+     y="265.73541"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="'Noto Serif Devanagari', serif"
+     font-size="8.5px"
+     fill="#d4920c"
+     fill-opacity="0.75"
+     id="text29">मं</text>
+  <!-- Budha -->
+  <text
+     x="394.43103"
+     y="358.15579"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="'Noto Serif Devanagari', serif"
+     font-size="8.5px"
+     fill="#d4920c"
+     fill-opacity="0.75"
+     id="text30">बु</text>
+  <!-- Guru -->
+  <text
+     x="377.32367"
+     y="377.14386"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="'Noto Serif Devanagari', serif"
+     font-size="8.5px"
+     fill="#d4920c"
+     fill-opacity="0.75"
+     id="text31">गु</text>
+  <!-- Shukra -->
+  <text
+     x="303.29919"
+     y="375.38553"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="'Noto Serif Devanagari', serif"
+     font-size="8.5px"
+     fill="#d4920c"
+     fill-opacity="0.75"
+     id="text32">शु</text>
+  <!-- Shani -->
+  <text
+     x="339.97333"
+     y="261.80969"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="'Noto Serif Devanagari', serif"
+     font-size="8.5px"
+     fill="#d4920c"
+     fill-opacity="0.75"
+     id="text33">श</text>
+  <!-- Rahu -->
+  <text
+     x="280.33844"
+     y="323.74066"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="'Noto Serif Devanagari', serif"
+     font-size="8.5px"
+     fill="#d4920c"
+     fill-opacity="0.75"
+     id="text34">रा</text>
+  <!-- Ketu -->
+  <text
+     x="396.10553"
+     y="323.53415"
+     text-anchor="middle"
+     dominant-baseline="middle"
+     font-family="'Noto Serif Devanagari', serif"
+     font-size="8.5px"
+     fill="#d4920c"
+     fill-opacity="0.75"
+     id="text35">के</text>
+  <line
+     x1="210"
+     y1="738"
+     x2="470"
+     y2="738"
+     stroke="#4A2E00"
+     stroke-width="0.4"
+     stroke-opacity="0.4"
+     id="line35" />
+  <text
+     x="340"
+     y="754"
+     text-anchor="middle"
+     font-family="'Noto Serif Devanagari','Kohinoor Devanagari',serif"
+     font-size="11"
+     fill="#8B5A00"
+     fill-opacity="0.75"
+     letter-spacing="3"
+     id="text36">यत्र विश्वं भवत्येकनीडम्</text>
+  <text
+     x="340"
+     y="768"
+     text-anchor="middle"
+     font-family="'Palatino Linotype',Palatino,Georgia,serif"
+     font-size="8.5"
+     fill="#8B5A00"
+     fill-opacity="0.5"
+     letter-spacing="2.5"
+     font-style="italic"
+     id="text37">WHERE THE UNIVERSE BECOMES ONE</text>
+  <polygon
+     points="340.0,61.8 342.2,64.0 340.0,66.2 337.8,64.0"
+     fill="#8B5A00"
+     fill-opacity="0.35"
+     id="polygon37" />
+  <circle
+     cx="384.5"
+     cy="67.9"
+     r="0.9"
+     fill="#4A2E00"
+     fill-opacity="0.3"
+     id="circle39" />
+  <circle
+     cx="427.6"
+     cy="79.4"
+     r="0.9"
+     fill="#4A2E00"
+     fill-opacity="0.3"
+     id="circle40" />
+  <polygon
+     points="468.0,96.1 470.2,98.3 468.0,100.5 465.8,98.3"
+     fill="#8B5A00"
+     fill-opacity="0.35"
+     id="polygon40" />
+  <circle
+     cx="504.6"
+     cy="123.9"
+     r="0.9"
+     fill="#4A2E00"
+     fill-opacity="0.3"
+     id="circle47" />
+  <circle
+     cx="536.1"
+     cy="155.4"
+     r="0.9"
+     fill="#4A2E00"
+     fill-opacity="0.3"
+     id="circle48" />
+  <polygon
+     points="561.7,189.8 563.9,192.0 561.7,194.2 559.5,192.0"
+     fill="#8B5A00"
+     fill-opacity="0.35"
+     id="polygon48" />
+  <circle
+     cx="580.6"
+     cy="232.4"
+     r="0.9"
+     fill="#4A2E00"
+     fill-opacity="0.3"
+     id="circle55" />
+  <circle
+     cx="592.1"
+     cy="275.5"
+     r="0.9"
+     fill="#4A2E00"
+     fill-opacity="0.3"
+     id="circle56" />
+  <polygon
+     points="596.0,317.8 598.2,320.0 596.0,322.2 593.8,320.0"
+     fill="#8B5A00"
+     fill-opacity="0.35"
+     id="polygon56" />
+  <circle
+     cx="592.1"
+     cy="364.5"
+     r="0.9"
+     fill="#4A2E00"
+     fill-opacity="0.3"
+     id="circle61" />
+  <circle
+     cx="580.6"
+     cy="407.6"
+     r="0.9"
+     fill="#4A2E00"
+     fill-opacity="0.3"
+     id="circle62" />
+  <polygon
+     points="561.7,445.8 563.9,448.0 561.7,450.2 559.5,448.0"
+     fill="#8B5A00"
+     fill-opacity="0.35"
+     id="polygon62" />
+  <circle
+     cx="536.1"
+     cy="484.6"
+     r="0.9"
+     fill="#4A2E00"
+     fill-opacity="0.3"
+     id="circle63" />
+  <circle
+     cx="504.6"
+     cy="516.1"
+     r="0.9"
+     fill="#4A2E00"
+     fill-opacity="0.3"
+     id="circle64" />
+  <polygon
+     points="468.0,539.5 470.2,541.7 468.0,543.9 465.8,541.7"
+     fill="#8B5A00"
+     fill-opacity="0.35"
+     id="polygon64" />
+  <circle
+     cx="427.6"
+     cy="560.6"
+     r="0.9"
+     fill="#4A2E00"
+     fill-opacity="0.3"
+     id="circle65" />
+  <circle
+     cx="384.5"
+     cy="572.1"
+     r="0.9"
+     fill="#4A2E00"
+     fill-opacity="0.3"
+     id="circle66" />
+  <polygon
+     points="340.0,573.8 342.2,576.0 340.0,578.2 337.8,576.0"
+     fill="#8B5A00"
+     fill-opacity="0.35"
+     id="polygon66" />
+  <circle
+     cx="295.5"
+     cy="572.1"
+     r="0.9"
+     fill="#4A2E00"
+     fill-opacity="0.3"
+     id="circle114" />
+  <circle
+     cx="252.4"
+     cy="560.6"
+     r="0.9"
+     fill="#4A2E00"
+     fill-opacity="0.3"
+     id="circle115" />
+  <polygon
+     points="212.0,539.5 214.2,541.7 212.0,543.9 209.8,541.7"
+     fill="#8B5A00"
+     fill-opacity="0.35"
+     id="polygon115" />
+  <circle
+     cx="175.4"
+     cy="516.1"
+     r="0.9"
+     fill="#4A2E00"
+     fill-opacity="0.3"
+     id="circle116" />
+  <circle
+     cx="143.9"
+     cy="484.6"
+     r="0.9"
+     fill="#4A2E00"
+     fill-opacity="0.3"
+     id="circle117" />
+  <polygon
+     points="118.3,445.8 120.5,448.0 118.3,450.2 116.1,448.0"
+     fill="#8B5A00"
+     fill-opacity="0.35"
+     id="polygon117" />
+  <circle
+     cx="99.4"
+     cy="407.6"
+     r="0.9"
+     fill="#4A2E00"
+     fill-opacity="0.3"
+     id="circle118" />
+  <circle
+     cx="87.9"
+     cy="364.5"
+     r="0.9"
+     fill="#4A2E00"
+     fill-opacity="0.3"
+     id="circle119" />
+  <polygon
+     points="84.0,317.8 86.2,320.0 84.0,322.2 81.8,320.0"
+     fill="#8B5A00"
+     fill-opacity="0.35"
+     id="polygon119" />
+  <circle
+     cx="87.9"
+     cy="275.5"
+     r="0.9"
+     fill="#4A2E00"
+     fill-opacity="0.3"
+     id="circle120" />
+  <circle
+     cx="99.4"
+     cy="232.4"
+     r="0.9"
+     fill="#4A2E00"
+     fill-opacity="0.3"
+     id="circle121" />
+  <polygon
+     points="118.3,189.8 120.5,192.0 118.3,194.2 116.1,192.0"
+     fill="#8B5A00"
+     fill-opacity="0.35"
+     id="polygon121" />
+  <circle
+     cx="143.9"
+     cy="155.4"
+     r="0.9"
+     fill="#4A2E00"
+     fill-opacity="0.3"
+     id="circle122" />
+  <circle
+     cx="175.4"
+     cy="123.9"
+     r="0.9"
+     fill="#4A2E00"
+     fill-opacity="0.3"
+     id="circle123" />
+  <polygon
+     points="212.0,96.1 214.2,98.3 212.0,100.5 209.8,98.3"
+     fill="#8B5A00"
+     fill-opacity="0.35"
+     id="polygon123" />
+  <circle
+     cx="252.4"
+     cy="79.4"
+     r="0.9"
+     fill="#4A2E00"
+     fill-opacity="0.3"
+     id="circle124" />
+  <circle
+     cx="295.5"
+     cy="67.9"
+     r="0.9"
+     fill="#4A2E00"
+     fill-opacity="0.3"
+     id="circle125" />
+</svg>

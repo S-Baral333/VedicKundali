@@ -1,0 +1,1 @@
+DROP POLICY "Service role can insert notifications" ON user_notifications;

@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IM+Fell+English:ital@0;1&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+
+    <!-- Viewport — viewport-fit=cover fills iPhone notch/Dynamic Island -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+    <!-- PWA core -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#0A0A14" />
+
+    <!-- iOS / iPadOS PWA behaviour -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Kundali" />
+    <meta name="application-name" content="Kundali" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <!-- Apple touch icons -->
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152.png" />
+    <link rel="apple-touch-icon" sizes="167x167" href="/icons/icon-180.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-180.png" />
+
+    <!-- Favicons -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/icons/icon-32.png" sizes="32x32" type="image/png" />
+    <link rel="icon" href="/icons/icon-16.png" sizes="16x16" type="image/png" />
+
+    <!-- iOS Launch / Splash screens -->
+    <link rel="apple-touch-startup-image"
+          media="screen and (device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+          href="/splash/splash-iphone-se.png" />
+    <link rel="apple-touch-startup-image"
+          media="screen and (device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+          href="/splash/splash-iphone-8.png" />
+    <link rel="apple-touch-startup-image"
+          media="screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+          href="/splash/splash-iphone-x.png" />
+    <link rel="apple-touch-startup-image"
+          media="screen and (device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+          href="/splash/splash-iphone-14.png" />
+    <link rel="apple-touch-startup-image"
+          media="screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+          href="/splash/splash-iphone-14-pro.png" />
+    <link rel="apple-touch-startup-image"
+          media="screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+          href="/splash/splash-iphone-14-pro-max.png" />
+    <link rel="apple-touch-startup-image"
+          media="screen and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+          href="/splash/splash-ipad-air.png" />
+    <link rel="apple-touch-startup-image"
+          media="screen and (device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+          href="/splash/splash-ipad-pro-11.png" />
+    <link rel="apple-touch-startup-image"
+          media="screen and (device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+          href="/splash/splash-ipad-pro-12-9.png" />
+
+    <!-- SEO / Social -->
+    <title>Kundali – Free Vedic Birth Chart, Janam Kundali & AI Horoscope</title>
+    <meta name="description" content="Free Vedic Kundali online. Generate your Janam Kundali birth chart, daily horoscope, dasha analysis & dream interpretation — powered by authentic Jyotish and AI." />
+    <meta name="keywords" content="kundali, janam kundali, vedic kundali, vedic astrology, birth chart, jyotish, free kundali, online kundali, dasha, nakshatra, horoscope, vedic horoscope, ai astrology" />
+    <meta name="author" content="VedicKundali" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <link rel="canonical" href="https://vedickundali.app/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://vedickundali.app/" />
+    <meta property="og:site_name" content="VedicKundali" />
+    <meta property="og:title" content="Kundali – Free Vedic Birth Chart & AI Horoscope" />
+    <meta property="og:description" content="Generate your free Janam Kundali, decode dreams, and unlock daily Vedic guidance — rooted in authentic Jyotish, powered by AI." />
+    <meta property="og:image" content="https://vedickundali.app/og-image.png" />
+    <meta property="og:locale" content="en_US" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Kundali – Free Vedic Birth Chart & AI Horoscope" />
+    <meta name="twitter:description" content="Generate your free Janam Kundali, decode dreams, and unlock daily Vedic guidance." />
+    <meta name="twitter:image" content="https://vedickundali.app/og-image.png" />
+
+    <!-- Structured data: WebApplication + Organization + FAQ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://vedickundali.app/#org",
+          "name": "VedicKundali",
+          "url": "https://vedickundali.app/",
+          "logo": "https://vedickundali.app/icons/icon-180.png"
+        },
+        {
+          "@type": "WebApplication",
+          "@id": "https://vedickundali.app/#app",
+          "name": "Kundali – Vedic Astrology AI",
+          "url": "https://vedickundali.app/",
+          "description": "Free online Vedic Kundali generator with AI-powered birth chart analysis, daily horoscope, dasha cycles, dream interpretation and remedies based on authentic Jyotish.",
+          "applicationCategory": "LifestyleApplication",
+          "operatingSystem": "Web, iOS, Android (PWA)",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+          "publisher": { "@id": "https://vedickundali.app/#org" }
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What is a Kundali?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "A Kundali (also called Janam Kundali or Janam Patrika) is a Vedic birth chart that maps the exact position of the Sun, Moon, and planets in the 12 houses and 27 nakshatras at the moment of your birth. It is the foundation of Jyotish — Vedic astrology — and reveals your personality, life path, karmic patterns, and timing of major events."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How is a Vedic Kundali different from Western astrology?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Vedic astrology uses the sidereal zodiac with the Lahiri Ayanamsa, which tracks the actual position of stars in the sky, while Western astrology uses the tropical zodiac fixed to the seasons. Vedic Kundali also uses the Vimshottari Dasha system to predict the timing of life events, the Moon-based Rashi as your primary sign, and 27 nakshatras for deeper accuracy."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is the Kundali on VedicKundali.app really free?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Generating your Vedic Kundali, viewing your daily horoscope and trying our dream interpretation oracle is completely free — no credit card required. Premium tiers unlock divisional charts, Sade Sati tracking and unlimited AI guidance."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What information do I need to create my Janam Kundali?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "You need three things: your exact date of birth, the precise time of birth (down to the minute, from your birth certificate), and your birth city. The more accurate your birth time, the more precise your Vedic chart, dasha periods, and predictions will be."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can a Kundali predict my future?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "A Kundali reveals strong tendencies, karmic timing through dashas and transits, and areas of life requiring attention — but Vedic philosophy honors free will. Our AI provides ethical, non-fatalistic guidance: insights and remedies that empower you to make wiser choices, not deterministic predictions."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+
+    <style>
+      html, body {
+        overscroll-behavior: none;
+        -webkit-overflow-scrolling: touch;
+      }
+      @media (display-mode: standalone) {
+        body { height: 100dvh; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

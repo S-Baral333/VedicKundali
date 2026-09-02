@@ -1,0 +1,1 @@
+DELETE FROM public.daily_horoscopes WHERE valid_date >= CURRENT_DATE - INTERVAL '1 day';

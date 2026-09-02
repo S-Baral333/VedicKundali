@@ -1,0 +1,29 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /onboarding
+Disallow: /chart
+Disallow: /dreams
+Disallow: /compatibility
+Disallow: /horoscope
+Disallow: /remedies
+Disallow: /timeline
+Disallow: /ask
+Disallow: /muhurta
+Disallow: /profile
+Disallow: /reset-password
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+Sitemap: https://vedickundali.app/sitemap.xml
