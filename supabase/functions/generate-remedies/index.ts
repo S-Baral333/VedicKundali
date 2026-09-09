@@ -8,7 +8,8 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { normalizeLanguage, buildLanguageInstruction } from "../_shared/languages.ts";
 import { resolveGuruContext, applyGuru } from "../_shared/guru.ts";
-import { isSuperAdmin } from "../_shared/access.ts";
+import { resolveAccess } from "../_shared/access.ts";
+import { modelForTier } from "../_shared/tiers.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -350,18 +351,13 @@ serve(async (req) => {
       return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
-    // Tier gate — Premium or Elite only.
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("subscription_tier")
-      .eq("user_id", user.id)
-      .maybeSingle();
-    const tier = (profile?.subscription_tier || "free").toLowerCase();
-    const superAdmin = await isSuperAdmin(supabase, user.id);
-    if (!superAdmin && tier !== "premium" && tier !== "elite") {
-      return new Response(
-        JSON.stringify({ error: "premium_required", message: "Prescription-grade remedies require a Premium or Elite subscription." }),
-        { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    // Tier gate — Sadhaka and above (mirrors the client's isPremium check).
+    const access = await resolveAccess(supabase, user.id, corsHeaders);
+    const tier = access.tier;
+    if (!access.can("prescription_remedies")) {
+      return access.denyFeature(
+        "prescription_remedies",
+        "Prescription-grade remedies require a Sadhaka subscription.",
       );
     }
 
@@ -431,7 +427,7 @@ serve(async (req) => {
       ai_skipped = true;
     } else if (prescriptions.length > 0) {
       try {
-        const model = tier === "elite" ? "claude-sonnet-5" : "claude-haiku-4-5-20251001";
+        const model = modelForTier(tier);
         const summary = prescriptions.map(p =>
           `${p.priority.toUpperCase()} — ${p.planet}: ${p.affliction.reasons.join(", ")}. Gem: ${p.gemstone.primary} (${p.gemstone.carat_min}-${p.gemstone.carat_max} ct). Mantra: ${p.mantra.beej}. Fast: ${p.fasting.vara}.`
         ).join("\n");

@@ -2,7 +2,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { resolveGuruContext, applyGuru } from "../_shared/guru.ts";
 import { normalizeLanguage, buildLanguageInstruction } from "../_shared/languages.ts";
-import { isSuperAdmin } from "../_shared/access.ts";
+import { resolveAccess } from "../_shared/access.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -285,24 +285,12 @@ serve(async (req) => {
       });
     }
 
-    // ─── Premium-Only Feature Check ───
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("subscription_tier")
-      .eq("user_id", user.id)
-      .maybeSingle();
-
-    const tier = (profile?.subscription_tier as "free" | "premium" | "elite") || "free";
-    const superAdmin = await isSuperAdmin(supabase, user.id);
-    if (!superAdmin && tier === "free") {
-      return new Response(
-        JSON.stringify({
-          error: "Compatibility analysis requires a Premium subscription.",
-          upgrade_required: true,
-          feature: "compatibility",
-        }),
-        { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+    // ─── Tier gate ───
+    // Kundali Milan is a Grihastha feature (client TIERS marks compatibility
+    // false for sadhaka); the previous check only excluded the free tier.
+    const access = await resolveAccess(supabase, user.id, corsHeaders);
+    if (!access.can("compatibility")) {
+      return access.denyFeature("compatibility", "Kundali Milan requires a Grihastha subscription.");
     }
 
     const { chart_a_id, chart_b_id, language: langInput } = await req.json();

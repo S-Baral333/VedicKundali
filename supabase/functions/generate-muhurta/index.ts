@@ -3,7 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { Body, EclipticLongitude, MakeTime, GeoVector, Ecliptic } from "https://esm.sh/astronomy-engine@2.1.19";
 import { normalizeLanguage, buildLanguageInstruction } from "../_shared/languages.ts";
 import { resolveGuruContext, applyGuru } from "../_shared/guru.ts";
-import { isSuperAdmin } from "../_shared/access.ts";
+import { resolveAccess } from "../_shared/access.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -196,24 +196,10 @@ serve(async (req) => {
     }
     const userId = claims.claims.sub as string;
 
-    // ─── Premium-Only Feature Check ───
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("subscription_tier")
-      .eq("user_id", userId)
-      .maybeSingle();
-
-    const tier = (profile?.subscription_tier as "free" | "premium" | "elite") || "free";
-    const superAdmin = await isSuperAdmin(supabase, userId);
-    if (!superAdmin && tier === "free") {
-      return new Response(
-        JSON.stringify({
-          error: "Muhurta (auspicious timing) requires a Premium subscription.",
-          upgrade_required: true,
-          feature: "muhurta",
-        }),
-        { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+    // ─── Tier gate ───
+    const access = await resolveAccess(supabase, userId, corsHeaders);
+    if (!access.can("muhurta_calculator")) {
+      return access.denyFeature("muhurta_calculator", "Muhurta (auspicious timing) requires a Sadhaka subscription.");
     }
 
     const { activity = "general", startDate, endDate, chart_id, language: langInput } = await req.json();

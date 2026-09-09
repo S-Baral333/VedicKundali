@@ -18,7 +18,7 @@ import {
   StandardFonts,
 } from "npm:pdf-lib@1.17.1";
 import fontkit from "npm:@pdf-lib/fontkit@1.1.1";
-import { isSuperAdmin } from "../_shared/access.ts";
+import { resolveAccess } from "../_shared/access.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -782,15 +782,13 @@ Deno.serve(async (req: Request) => {
       if (body?.chart_id) chartId = body.chart_id as string;
     } catch { /* no body */ }
 
-    // Tier check (server-side authoritative)
-    const { data: profile } = await supabase
-      .from("profiles").select("subscription_tier").eq("user_id", userId).maybeSingle();
-    const tier = (profile?.subscription_tier || "free") as string;
-    const superAdmin = await isSuperAdmin(supabase, userId);
-    if (!superAdmin && tier !== "elite") {
-      return new Response(JSON.stringify({ error: "elite_required", message: "Sacred Kundali PDF is an Elite ritual." }), {
-        status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+    // Tier check (server-side authoritative).
+    // pdf_download is unlimited from Sadhaka up and blocked (0) on the free
+    // tier; the previous check required the legacy "elite" value, which denied
+    // every subscriber once tiers were renamed.
+    const access = await resolveAccess(supabase, userId, corsHeaders);
+    if (access.limit("pdf_download") === 0) {
+      return access.denyFeature("white_label_pdf", "The Sacred Kundali PDF requires a Sadhaka subscription.");
     }
 
     // Resolve chart

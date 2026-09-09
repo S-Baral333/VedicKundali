@@ -2,7 +2,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { normalizeLanguage, buildLanguageInstruction } from "../_shared/languages.ts";
 import { resolveGuruContext, applyGuru } from "../_shared/guru.ts";
-import { isSuperAdmin } from "../_shared/access.ts";
+import { resolveAccess } from "../_shared/access.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -172,7 +172,7 @@ serve(async (req) => {
       .eq("user_id", userId)
       .maybeSingle();
 
-    const tier = (profile?.subscription_tier as "free" | "premium" | "elite") || "free";
+    const access = await resolveAccess(supabase, userId, corsHeaders);
     const rawUsage = profile?.feature_usage as { dreams_count?: number; oracle_count?: number; period_start?: string | null } | null;
     const usage = rawUsage || { dreams_count: 0, oracle_count: 0, period_start: null };
 
@@ -185,21 +185,15 @@ serve(async (req) => {
       usage.period_start = startOfMonth.toISOString();
     }
 
-    // Define limits
-    const limits = { free: 3, premium: 20, elite: 999 };
-    const limit = limits[tier];
-
-    const superAdmin = await isSuperAdmin(supabase, userId);
-    if (!superAdmin && (usage.dreams_count || 0) >= limit) {
-      return new Response(
-        JSON.stringify({
-          error: tier === "free"
-            ? "You've reached your free dream interpretation limit (3/month). Upgrade to Premium for more."
-            : "You've reached your dream interpretation limit for this month.",
-          upgrade_required: tier === "free",
-          feature: "dreams",
-        }),
-        { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    // Monthly dream allowance, driven by the shared tier table.
+    const dreamsUsed = usage.dreams_count || 0;
+    if (!access.withinQuota("dream", dreamsUsed)) {
+      return access.denyQuota(
+        "dream",
+        dreamsUsed,
+        access.tier === "darshana"
+          ? `You've reached your free dream interpretation limit (${access.limit("dream")}/month). Upgrade for more.`
+          : "You've reached your dream interpretation limit for this month.",
       );
     }
 

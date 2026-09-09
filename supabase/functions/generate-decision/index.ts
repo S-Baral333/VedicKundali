@@ -3,7 +3,8 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { Body, EclipticLongitude, MakeTime, GeoVector, Ecliptic } from "https://esm.sh/astronomy-engine@2.1.19";
 import { normalizeLanguage, buildLanguageInstruction } from "../_shared/languages.ts";
 import { resolveGuruContext, type GuruContext } from "../_shared/guru.ts";
-import { isSuperAdmin } from "../_shared/access.ts";
+import { resolveAccess } from "../_shared/access.ts";
+import { modelForTier, type Tier } from "../_shared/tiers.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -472,7 +473,7 @@ async function runOracleDecisionJob(args: {
   previous_context?: any;
   ai_model?: string;
   chart_id?: string;
-  tier: "free" | "premium" | "elite";
+  tier: Tier;
   usage: { dreams_count?: number; oracle_count?: number; period_start?: string | null };
   language?: string;
 }) {
@@ -564,10 +565,7 @@ async function runOracleDecisionJob(args: {
   const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY");
   if (!ANTHROPIC_API_KEY) throw new Error("ANTHROPIC_API_KEY not configured");
 
-  const chosenModel = ai_model
-    || (tier === "elite" ? "claude-sonnet-5"
-      : tier === "premium" ? "claude-haiku-4-5-20251001"
-      : "claude-haiku-4-5-20251001");
+  const chosenModel = ai_model || modelForTier(tier);
 
   await sleep(LAYER_DWELL_MS);
   await updateOracleJob(serviceClient, jobId, {
@@ -918,7 +916,7 @@ async function runOracleStream(args: {
   previous_context?: any;
   ai_model?: string;
   chart_id?: string;
-  tier: "free" | "premium" | "elite";
+  tier: Tier;
   usage: { dreams_count?: number; oracle_count?: number; period_start?: string | null };
   language?: string;
 }): Promise<Response> {
@@ -959,10 +957,7 @@ async function runOracleStream(args: {
     });
   }
 
-  const chosenModel = ai_model
-    || (tier === "elite" ? "claude-sonnet-5"
-      : tier === "premium" ? "claude-haiku-4-5-20251001"
-      : "claude-haiku-4-5-20251001");
+  const chosenModel = ai_model || modelForTier(tier);
 
   const aiRes = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
@@ -1142,7 +1137,8 @@ serve(async (req) => {
       .eq("user_id", userId)
       .maybeSingle();
 
-    const tier = (profile?.subscription_tier as "free" | "premium" | "elite") || "free";
+    const access = await resolveAccess(supabase, userId, corsHeaders);
+    const tier = access.tier;
     const rawUsage = profile?.feature_usage as { dreams_count?: number; oracle_count?: number; period_start?: string | null } | null;
     const usage = rawUsage || { dreams_count: 0, oracle_count: 0, period_start: null };
     const periodStart = usage.period_start ? new Date(usage.period_start) : null;
@@ -1153,16 +1149,16 @@ serve(async (req) => {
       usage.period_start = startOfMonth.toISOString();
     }
 
-    const limits = { free: 1, premium: 15, elite: 999 };
-    const limit = limits[tier];
-    const superAdmin = await isSuperAdmin(supabase, userId);
-    if (!superAdmin && (usage.oracle_count || 0) >= limit) {
-      return new Response(JSON.stringify({
-        error: tier === "free"
-          ? "You've used your free Oracle question (1/month). Upgrade to Premium for more."
+    // Monthly Oracle allowance, driven by the shared tier table.
+    const oracleUsed = usage.oracle_count || 0;
+    if (!access.withinQuota("ai_chat", oracleUsed)) {
+      return access.denyQuota(
+        "ai_chat",
+        oracleUsed,
+        access.tier === "darshana"
+          ? `You've used your free Oracle questions (${access.limit("ai_chat")}/month). Upgrade for more.`
           : "You've reached your Oracle question limit for this month.",
-        upgrade_required: tier === "free", feature: "oracle",
-      }), { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      );
     }
 
     // ─── NEW: SSE streaming path (preferred for live UI) ───
