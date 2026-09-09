@@ -6,9 +6,9 @@ import { useAuth } from "@/hooks/useAuth";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Bell, Loader2 } from "lucide-react";
+import { Bell, Loader2, MoreHorizontal } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import InstallPromptBanner from "@/components/InstallPromptBanner";
 import CosmicRibbon from "@/components/header/CosmicRibbon";
@@ -34,6 +34,12 @@ const SHORTCUT_PATHS = [
   ...MORE_ITEMS.map((i) => i.path),
 ];
 
+// Mobile bottom dock: 4 fixed destinations + a "More" sheet holding the rest.
+// A phone is ~375px wide, so 10 scrolling tabs left labels overlapping and the
+// first/last tabs clipped; 5 equal tabs fit comfortably.
+const DOCK_ITEMS = PRIMARY_ITEMS.slice(0, 4);
+const DOCK_MORE_ITEMS = [...PRIMARY_ITEMS.slice(4), ...MORE_ITEMS];
+
 export default function UserLayout() {
   const { isLoading } = useAuth();
   const { t } = useTranslation();
@@ -42,10 +48,17 @@ export default function UserLayout() {
   const navigate = useNavigate();
   const [isStandalone, setIsStandalone] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
+  const isMoreActive = DOCK_MORE_ITEMS.some((i) => i.path === location.pathname);
 
   useEffect(() => {
     setIsStandalone(window.matchMedia("(display-mode: standalone)").matches);
   }, []);
+
+  // Close the mobile "More" sheet whenever navigation happens
+  useEffect(() => {
+    setMoreOpen(false);
+  }, [location.pathname]);
 
   // Scroll-condense behavior: collapse ribbon and firm up header past 40px
   useEffect(() => {
@@ -134,7 +147,7 @@ export default function UserLayout() {
     <Sheet open={notifOpen} onOpenChange={setNotifOpen}>
       <SheetTrigger asChild>
         <button
-          className="relative w-9 h-9 rounded-full flex items-center justify-center border transition-all duration-300 hover:bg-[hsl(var(--gold)/0.12)] hover:border-[hsl(var(--gold)/0.30)]"
+          className="relative w-10 h-10 rounded-full flex items-center justify-center border transition-all duration-300 hover:bg-[hsl(var(--gold)/0.12)] hover:border-[hsl(var(--gold)/0.30)]"
           style={{
             borderColor: "hsl(var(--glass-border-soft))",
             color: "hsl(var(--text-secondary))",
@@ -162,7 +175,7 @@ export default function UserLayout() {
             )}
           </div>
         </SheetHeader>
-        <ScrollArea className="h-[calc(100vh-100px)] mt-4">
+        <ScrollArea className="h-[calc(100dvh-100px)] mt-4">
           {notifications.length === 0 ? (
             <p className="text-sm text-center py-8 text-muted-foreground">No notifications yet.</p>
           ) : (
@@ -196,7 +209,7 @@ export default function UserLayout() {
     return (
       <Link
         to="/dashboard"
-        className="wordmark-flourish shrink-0 group"
+        className="wordmark-flourish shrink-0 group flex items-center min-h-[44px]"
         aria-label="Kundali home"
       >
         <KundaliMark size={dims.mark} glow={false} className="transition-transform duration-500 group-hover:rotate-[8deg]" />
@@ -265,7 +278,18 @@ export default function UserLayout() {
         </header>
       )}
 
-      <main className={`relative z-10 ${isMobile ? "pb-24" : ""}`}>
+      <main
+        className="relative z-10"
+        style={
+          isMobile
+            ? {
+                // Keep content clear of the fixed dock, the notch inset and (when shown) the install banner
+                paddingBottom:
+                  "calc(var(--mobile-dock-h, 64px) + env(safe-area-inset-bottom, 0px) + var(--install-banner-h, 0px) + 16px)",
+              }
+            : undefined
+        }
+      >
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}
@@ -290,36 +314,106 @@ export default function UserLayout() {
           {/* Hairline gold flourish (mirrors footer top accent) */}
           <span aria-hidden className="mobile-dock-flourish" />
 
-          <div className="relative">
-            {/* Edge fade hints for horizontal overflow */}
-            <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-6 z-10" style={{ background: "linear-gradient(to right, hsl(var(--ink) / 0.65), transparent)" }} />
-            <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-6 z-10" style={{ background: "linear-gradient(to left, hsl(var(--ink) / 0.65), transparent)" }} />
+          <div className="mobile-dock-tabs">
+            {DOCK_ITEMS.map((item) => {
+              const active = location.pathname === item.path;
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  aria-current={active ? "page" : undefined}
+                  className={`mobile-dock-tab ${active ? "is-active" : ""}`}
+                >
+                  <span className="mobile-dock-icon">
+                    <Icon className="h-[18px] w-[18px]" />
+                  </span>
+                  <span className="mobile-dock-label">{t(item.dockKey ?? item.i18nKey, item.dockLabel ?? item.label)}</span>
+                  {active && <span aria-hidden className="mobile-dock-active-dot" />}
+                </Link>
+              );
+            })}
 
-            <div className="flex items-center overflow-x-auto scrollbar-hide h-[74px] px-4 gap-1 snap-x snap-mandatory">
-              {[...PRIMARY_ITEMS, ...MORE_ITEMS].map((item) => {
-                const active = location.pathname === item.path;
-                const Icon = (item as any).icon;
-                return (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    aria-current={active ? "page" : undefined}
-                    className={`mobile-dock-tab snap-start ${active ? "is-active" : ""}`}
-                  >
-                    <span className="mobile-dock-icon">
-                      {Icon ? (
-                        <Icon className="h-[18px] w-[18px]" />
-                      ) : (
-                        <span className="text-[13px]">✦</span>
-                      )}
-                    </span>
-                    <span className="mobile-dock-label">{t(item.i18nKey, item.label)}</span>
-                    {active && <span aria-hidden className="mobile-dock-active-dot" />}
-                  </Link>
-                );
-              })}
-            </div>
+            {/* "More" — opens a bottom sheet with the remaining destinations */}
+            <button
+              type="button"
+              onClick={() => setMoreOpen(true)}
+              aria-haspopup="dialog"
+              aria-expanded={moreOpen}
+              className={`mobile-dock-tab ${isMoreActive ? "is-active" : ""}`}
+            >
+              <span className="mobile-dock-icon">
+                <MoreHorizontal className="h-[18px] w-[18px]" />
+              </span>
+              <span className="mobile-dock-label">{t("nav:dock.more", "More")}</span>
+              {isMoreActive && <span aria-hidden className="mobile-dock-active-dot" />}
+            </button>
           </div>
+
+          <Sheet open={moreOpen} onOpenChange={setMoreOpen}>
+            <SheetContent
+              side="bottom"
+              aria-describedby={undefined}
+              className="glass-stone rounded-t-2xl border-t p-4 pb-[calc(1rem+env(safe-area-inset-bottom,0px))]"
+              style={{ borderColor: "hsl(var(--gold) / 0.22)", color: "hsl(var(--text-primary))" }}
+            >
+              <SheetHeader className="mb-3 text-left">
+                <SheetTitle
+                  className="text-lg"
+                  style={{ fontFamily: "'Cormorant Garamond', serif", color: "hsl(var(--gold))", fontWeight: 500 }}
+                >
+                  {t("nav:dock.moreTitle", "Explore")}
+                </SheetTitle>
+              </SheetHeader>
+
+              <div className="grid grid-cols-2 gap-2">
+                {DOCK_MORE_ITEMS.map((item) => {
+                  const active = location.pathname === item.path;
+                  const Icon = item.icon;
+                  return (
+                    <SheetClose asChild key={item.path}>
+                      <Link
+                        to={item.path}
+                        aria-current={active ? "page" : undefined}
+                        className="flex items-center gap-3 rounded-xl px-3 min-h-[60px] border transition-colors"
+                        style={{
+                          background: active ? "hsl(var(--gold) / 0.12)" : "hsl(var(--gold) / 0.04)",
+                          borderColor: active ? "hsl(var(--gold) / 0.35)" : "hsl(var(--gold) / 0.14)",
+                        }}
+                      >
+                        <span
+                          className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+                          style={{
+                            background: "hsl(var(--gold) / 0.08)",
+                            border: "0.5px solid hsl(var(--gold) / 0.18)",
+                            color: active ? "hsl(var(--gold))" : "hsl(var(--gold-light))",
+                          }}
+                        >
+                          <Icon className="h-4 w-4" />
+                        </span>
+                        <span className="min-w-0 flex-1">
+                          <span
+                            className="block text-[14px] leading-tight truncate"
+                            style={{
+                              color: active ? "hsl(var(--gold))" : "hsl(var(--text-primary))",
+                              fontFamily: "'Jost', sans-serif",
+                            }}
+                          >
+                            {t(item.i18nKey, item.label)}
+                          </span>
+                          {item.desc && (
+                            <span className="block text-[11px] mt-0.5 truncate" style={{ color: "hsl(var(--text-muted))" }}>
+                              {item.desc}
+                            </span>
+                          )}
+                        </span>
+                      </Link>
+                    </SheetClose>
+                  );
+                })}
+              </div>
+            </SheetContent>
+          </Sheet>
         </nav>
       )}
     </div>

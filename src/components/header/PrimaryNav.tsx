@@ -16,12 +16,14 @@ import {
 } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
+// `dockKey`/`dockLabel` are the short labels used by the mobile bottom dock,
+// where a 5-tab bar leaves ~70px per tab — "Compatibility" does not fit.
 export const PRIMARY_ITEMS = [
-  { label: "Home",    i18nKey: "nav:dashboard",     path: "/dashboard",     icon: Home },
-  { label: "Today",   i18nKey: "nav:horoscope",     path: "/horoscope",     icon: Sun },
-  { label: "Destiny", i18nKey: "nav:chart",         path: "/chart",         icon: Compass },
-  { label: "Dreams",  i18nKey: "nav:dreams",        path: "/dreams",        icon: Moon },
-  { label: "Match",   i18nKey: "nav:compatibility", path: "/compatibility", icon: HeartHandshake },
+  { label: "Home",    i18nKey: "nav:dashboard",     path: "/dashboard",     icon: Home,           dockKey: "nav:dock.home",   dockLabel: "Home" },
+  { label: "Today",   i18nKey: "nav:horoscope",     path: "/horoscope",     icon: Sun,            dockKey: "nav:dock.today",  dockLabel: "Today" },
+  { label: "Destiny", i18nKey: "nav:chart",         path: "/chart",         icon: Compass,        dockKey: "nav:dock.chart",  dockLabel: "Chart" },
+  { label: "Dreams",  i18nKey: "nav:dreams",        path: "/dreams",        icon: Moon,           dockKey: "nav:dock.dreams", dockLabel: "Dreams" },
+  { label: "Match",   i18nKey: "nav:compatibility", path: "/compatibility", icon: HeartHandshake, desc: "Kundali Milan — match your charts" },
 ];
 
 export const MORE_ITEMS = [

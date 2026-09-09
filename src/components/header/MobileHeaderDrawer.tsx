@@ -212,7 +212,7 @@ export default function MobileHeaderDrawer({
     <Sheet>
       <SheetTrigger asChild>
         <button
-          className="w-9 h-9 rounded-full flex items-center justify-center border transition-all duration-300 hover:bg-[hsl(var(--gold)/0.12)] hover:border-[hsl(var(--gold)/0.30)]"
+          className="w-10 h-10 rounded-full flex items-center justify-center border transition-all duration-300 hover:bg-[hsl(var(--gold)/0.12)] hover:border-[hsl(var(--gold)/0.30)]"
           style={{
             borderColor: "hsl(var(--glass-border-soft))",
             color: "hsl(var(--gold-light))",
@@ -365,13 +365,13 @@ export default function MobileHeaderDrawer({
           }}
         />
 
-        <ScrollArea className="h-[calc(100vh-260px)] px-4 pt-4">
+        <ScrollArea className="h-[calc(100dvh-260px)] px-4 pt-4">
           <div className="space-y-5 pb-8">
             {/* Reading As */}
             <section>
               <SectionLabel>Reading As</SectionLabel>
               <div className="px-1">
-                <ChartSwitcher />
+                <ChartSwitcher expanded />
               </div>
             </section>
 

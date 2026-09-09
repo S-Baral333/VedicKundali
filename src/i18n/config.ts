@@ -35,6 +35,15 @@ const enNav = {
   profile: "Profile",
   billing: "Billing",
   pricing: "Pricing",
+  // Short labels for the mobile bottom dock (5 tabs, ~70px each)
+  dock: {
+    home: "Home",
+    today: "Today",
+    chart: "Chart",
+    dreams: "Dreams",
+    more: "More",
+    moreTitle: "Explore",
+  },
 };
 const enProfile = {
   title: "Your Profile",
@@ -70,16 +79,9 @@ const enOnboarding = {
 };
 
 const enPages = {
-  horoscope: {
-    title: "Your Horoscope",
-    subtitle: "Personalised daily, weekly and monthly readings.",
-    refresh: "Refresh",
-    refreshing: "Refreshing…",
-    retry: "Try again",
-    locked: "Upgrade to unlock this period.",
-    preparing: "Preparing your reading…",
-    periods: { daily: "Today", tomorrow: "Tomorrow", weekly: "This week", monthly: "This month", yearly: "This year" },
-  },
+  // NOTE: `horoscope` and `compatibility` are defined in full further down this
+  // object. Duplicate keys here would be silently overwritten, so they live in
+  // exactly one place.
   oracle: {
     title: "Ask the Oracle",
     subtitle: "One clear question, one grounded answer.",
@@ -107,7 +109,6 @@ const enPages = {
     filters: "Filters",
     all: "All",
   },
-  compatibility: { title: "Compatibility", subtitle: "36-point Guna Milan and synastry." },
   timeline: { title: "Destiny Timeline", subtitle: "Your next 12 months at a glance." },
   muhurta: { title: "Muhurta", subtitle: "Find the most auspicious moment." },
   chart: { title: "Your Birth Chart", subtitle: "Janma Kundali — the cosmic blueprint of your birth." },

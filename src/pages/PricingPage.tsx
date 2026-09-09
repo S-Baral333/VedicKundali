@@ -81,16 +81,16 @@ export default function PricingPage() {
 
         {/* Tier cards */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {VISIBLE.map((t) => {
-            const cfg = TIERS[t];
-            const Icon = TIER_ICONS[t];
-            const isCurrent = tier === t;
-            const isPopular = t === "grihastha";
+          {VISIBLE.map((tierKey) => {
+            const cfg = TIERS[tierKey];
+            const Icon = TIER_ICONS[tierKey];
+            const isCurrent = tier === tierKey;
+            const isPopular = tierKey === "grihastha";
             const price = annual ? cfg.priceAnnualAud / 12 : cfg.priceMonthlyAud;
 
             return (
               <Card
-                key={t}
+                key={tierKey}
                 className={`relative ${isPopular ? "border-primary/50 shadow-xl shadow-primary/10" : "border-border/60"}`}
               >
                 {isPopular && (
@@ -125,9 +125,9 @@ export default function PricingPage() {
                     {isCurrent ? t("pricing.currentPlan") : price === 0 ? t("pricing.startFree") : t("pricing.paymentsSoon")}
                   </Button>
                   <ul className="text-left text-sm space-y-2 pt-2">
-                    {(t === "darshana"
+                    {(tierKey === "darshana"
                       ? ["1 birth chart", "Daily horoscope", "Reading preview", "3 Guru questions to try"]
-                      : t === "sadhaka"
+                      : tierKey === "sadhaka"
                       ? ["Up to 3 charts", "Full Vedic reading", "Destiny Timeline & Muhurta", "30 Guru / 20 dreams per month", "Sacred Kundali PDF"]
                       : ["Up to 7 charts", "All divisional charts", "Kundali Milan & Sade Sati", "50 Guru / 50 dreams per month", "Hindi Guru, transit overlays"]
                     ).map((b) => (
@@ -151,8 +151,8 @@ export default function PricingPage() {
               <thead>
                 <tr className="border-b border-border/60">
                   <th className="text-left p-3 font-medium text-muted-foreground">{t("pricing.featureColLabel")}</th>
-                  {VISIBLE.map((t) => (
-                    <th key={t} className="text-center p-3 font-serif text-primary">{TIERS[t].sanskrit}</th>
+                  {VISIBLE.map((tierKey) => (
+                    <th key={tierKey} className="text-center p-3 font-serif text-primary">{TIERS[tierKey].sanskrit}</th>
                   ))}
                 </tr>
               </thead>
@@ -160,9 +160,9 @@ export default function PricingPage() {
                 {FEATURES.map((row) => (
                   <tr key={row.name} className="border-b border-border/30 last:border-0">
                     <td className="p-3">{t(`pricing.features.${row.name}`)}</td>
-                    {VISIBLE.map((t) => (
-                      <td key={t} className="text-center p-3">
-                        <Cell v={row.values[t]} />
+                    {VISIBLE.map((tierKey) => (
+                      <td key={tierKey} className="text-center p-3">
+                        <Cell v={row.values[tierKey]} />
                       </td>
                     ))}
                   </tr>

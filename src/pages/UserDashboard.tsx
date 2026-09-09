@@ -289,8 +289,7 @@ const UserDashboard = React.forwardRef<HTMLDivElement>((_props, ref) => {
       {!isPremium && (
         <Button
           variant="outline"
-          size="sm"
-          className="w-full gap-2 mt-3"
+          className="w-full gap-2 mt-3 h-11"
           style={{ borderColor: "hsl(var(--gold) / 0.3)", color: "hsl(var(--gold))", background: "transparent" }}
           onClick={() => setPaywallOpen(true)}
         >
@@ -319,7 +318,8 @@ const UserDashboard = React.forwardRef<HTMLDivElement>((_props, ref) => {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-6 w-6 ml-2 hover:bg-transparent"
+                aria-label="Refresh dashboard"
+                className="h-10 w-10 ml-1 -my-2 hover:bg-transparent"
                 style={{ color: "hsl(var(--text-muted))" }}
                 onClick={() => { sessionStorage.removeItem(CACHE_KEY); setLoading(true); loadDashboard(); }}
               >

@@ -28,7 +28,7 @@ export default function PillTabs({ items, value, onValueChange, className }: Pil
             onClick={() => onValueChange(item.value)}
             disabled={item.disabled}
             className={cn(
-              "flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-300 disabled:opacity-50",
+              "flex items-center gap-1.5 px-4 py-2.5 min-h-[40px] rounded-full text-sm font-medium whitespace-nowrap transition-all duration-300 disabled:opacity-50",
               isActive
                 ? "bg-background/80 text-primary border border-primary/60 shadow-[0_0_12px_hsl(var(--primary)/0.3)]"
                 : "text-muted-foreground hover:text-foreground hover:bg-background/40 border border-transparent"

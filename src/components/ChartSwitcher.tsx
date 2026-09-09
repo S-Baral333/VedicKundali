@@ -5,39 +5,45 @@ import { useActiveChart } from "@/hooks/useActiveChart";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
-export default function ChartSwitcher() {
+interface ChartSwitcherProps {
+  /** Always show the text label, even on mobile (e.g. inside the drawer where there is room). */
+  expanded?: boolean;
+}
+
+export default function ChartSwitcher({ expanded = false }: ChartSwitcherProps) {
   const { charts, activeChart, isLoading, setActiveChart } = useActiveChart();
   const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);
 
+  // Compact (icon-only) treatment only when squeezed into the mobile header
+  const compact = isMobile && !expanded;
+
   if (isLoading) return null;
 
-  // Empty state — encourage chart creation (visible on mobile as compact icon, expanded on desktop)
+  // Empty state — encourage chart creation (icon-only when compact, labelled otherwise)
   if (charts.length === 0) {
     return (
       <Link
         to="/chart"
-        className="flex items-center gap-1.5 h-9 rounded-full border transition-all duration-300 hover:bg-[hsl(var(--gold)/0.15)]"
+        className="flex items-center gap-1.5 h-10 rounded-full border transition-all duration-300 hover:bg-[hsl(var(--gold)/0.15)]"
         style={{
           borderColor: "hsl(var(--glass-border-soft))",
           color: "hsl(var(--gold-light))",
           fontSize: "12px",
           letterSpacing: "0.04em",
-          paddingLeft: isMobile ? "10px" : "12px",
-          paddingRight: isMobile ? "10px" : "12px",
+          paddingLeft: compact ? "10px" : "12px",
+          paddingRight: compact ? "10px" : "14px",
         }}
         aria-label="Create your birth chart"
         title="Create your birth chart"
       >
         <Sparkles className="h-3.5 w-3.5 shrink-0" />
-        {!isMobile && <span>Create chart</span>}
+        {!compact && <span>Create chart</span>}
       </Link>
     );
   }
 
   const labelName = activeChart?.full_name || "Select chart";
-  // Mobile compact: only icon + first name first letter
-  const compact = isMobile;
 
   // Show the active person's first name on the trigger pill (no star).
   const firstName = labelName.trim().split(/\s+/)[0] || labelName;

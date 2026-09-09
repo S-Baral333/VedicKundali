@@ -324,6 +324,9 @@ export default function RemediesPage() {
 }
 
 function RemediesSkeleton() {
+  // Needs its own translation hook — this is a sibling component, not nested
+  // inside RemediesPage, so it has no access to that component's `t`.
+  const { t } = useTranslation("pages");
   return (
     <SacredPageShell
       leftRail={<PageNavRail title={t("remediesPage.navTitle")} hint={t("remediesPage.navHint")} />}

@@ -430,7 +430,7 @@ export default function DailyHoroscopePage() {
 
   const copyReading = async () => {
     if (!horoscope) return;
-    let text = `${t(`horoscope.period.title.${period}`)} — ${sign !== "General" ? t("horoscope.subtitle.moonIn", { sign }) : "General"}\n${validDate}\n\n`;
+    let text = `${t(`horoscope.period.title.${period}`)} — ${sign && sign !== "General" ? t("horoscope.subtitle.moonIn", { sign }) : "General"}\n${validDate}\n\n`;
     if (horoscope.greeting) text += `${horoscope.greeting}\n\n`;
     text += `${horoscope.guidance}\n\n`;
     if (horoscope.mantra_of_the_day) text += `Mantra: ${horoscope.mantra_of_the_day}\n`;
@@ -507,7 +507,7 @@ export default function DailyHoroscopePage() {
         {/* ─── 2. PAGE HEADER ─── */}
         <div className="sacred-reveal" style={{ animationDelay: "0.06s" }}>
           <p className="text-[10px] tracking-[0.18em] uppercase mb-2" style={{ color: "hsl(var(--text-muted))" }}>
-            {sign !== "General" ? t("horoscope.subtitle.moonIn", { sign }) : t("horoscope.subtitle.generalGuidance")} · {formatDateSubtitle()}
+            {sign && sign !== "General" ? t("horoscope.subtitle.moonIn", { sign }) : t("horoscope.subtitle.generalGuidance")} · {formatDateSubtitle()}
           </p>
           <div className="flex items-center justify-between">
             <h1 className="text-4xl md:text-[48px] font-light twinkle-aura" style={{ fontFamily: "'Cormorant Garamond', serif", color: "hsl(var(--gold-pale))", lineHeight: 1.1 }}>
@@ -574,7 +574,7 @@ export default function DailyHoroscopePage() {
             nakshatra={meta.nakshatra_of_day}
             mood={meta.mood || "solar"}
             voiceLabel={meta.voice_label || t("horoscope.voiceFallback")}
-            signLabel={sign !== "General" ? t("horoscope.subtitle.moonIn", { sign }) : t("horoscope.subtitle.generalGuidance")}
+            signLabel={sign && sign !== "General" ? t("horoscope.subtitle.moonIn", { sign }) : t("horoscope.subtitle.generalGuidance")}
             dateLabel={formatDateSubtitle()}
           />
         )}

@@ -1,5 +1,6 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import guruAsset from "@/assets/guru-lotus-mudra.png.asset.json";
+import KundaliMark from "@/components/KundaliMark";
 
 type Intensity = "idle" | "focused" | "consulting";
 
@@ -17,6 +18,9 @@ export default function GuruPortrait({ intensity = "idle", size = 220 }: Props) 
   const auraOpacity = intensity === "consulting" ? 0.95 : intensity === "focused" ? 0.75 : 0.5;
   const haloScale   = intensity === "consulting" ? 1.18 : intensity === "focused" ? 1.10 : 1.0;
   const showParticles = intensity !== "idle";
+  // If the portrait asset can't be loaded (e.g. missing on this host), show a
+  // sacred-mark fallback instead of letting the alt text spill inside the ring.
+  const [imgFailed, setImgFailed] = useState(false);
 
   const particles = useMemo(
     () => Array.from({ length: 6 }, (_, i) => ({
@@ -100,23 +104,38 @@ export default function GuruPortrait({ intensity = "idle", size = 220 }: Props) 
           border: "1px solid hsl(var(--primary) / 0.35)",
         }}
       >
-        <img
-          src={guruAsset.url}
-          alt="Rishi Guru in deep meditation"
-          loading="eager"
-          decoding="async"
-          className="w-full h-full object-cover"
-          style={{
-            objectPosition: "center 18%",
-            filter:
-              intensity === "consulting"
-                ? "brightness(1.06) saturate(1.05)"
-                : intensity === "focused"
-                ? "brightness(1.03)"
-                : "brightness(0.96)",
-            transition: "filter 1.2s ease",
-          }}
-        />
+        {imgFailed ? (
+          <div
+            role="img"
+            aria-label="Rishi Guru in deep meditation"
+            className="w-full h-full flex items-center justify-center"
+            style={{
+              background:
+                "radial-gradient(circle at 50% 40%, hsl(var(--primary) / 0.28) 0%, hsl(var(--primary) / 0.08) 45%, hsl(var(--background) / 0.9) 100%)",
+            }}
+          >
+            <KundaliMark size={Math.round(size * 0.42)} glow />
+          </div>
+        ) : (
+          <img
+            src={guruAsset.url}
+            alt="Rishi Guru in deep meditation"
+            loading="eager"
+            decoding="async"
+            onError={() => setImgFailed(true)}
+            className="w-full h-full object-cover"
+            style={{
+              objectPosition: "center 18%",
+              filter:
+                intensity === "consulting"
+                  ? "brightness(1.06) saturate(1.05)"
+                  : intensity === "focused"
+                  ? "brightness(1.03)"
+                  : "brightness(0.96)",
+              transition: "filter 1.2s ease",
+            }}
+          />
+        )}
         {/* Soft inner vignette for sacred mood */}
         <div
           className="absolute inset-0 pointer-events-none"

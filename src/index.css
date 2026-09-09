@@ -1557,6 +1557,12 @@ select.bg-card {
    Reuses the editorial footer language: ink gradient,
    thin gold flourish, Jost labels, gold active state.
    ═══════════════════════════════════════════════ */
+:root {
+  /* Height of the mobile dock's tab row (excludes the safe-area inset). Shared
+     with the page shell padding and the install banner offset. */
+  --mobile-dock-h: 64px;
+}
+
 .mobile-dock {
   background: linear-gradient(
     180deg,
@@ -1588,23 +1594,38 @@ select.bg-card {
   pointer-events: none;
 }
 
+/* Five equal-width tabs across the full width — no horizontal scrolling */
+.mobile-dock-tabs {
+  display: flex;
+  align-items: stretch;
+  height: var(--mobile-dock-h);
+  padding: 0 4px;
+}
+
 .mobile-dock-tab {
   position: relative;
   display: flex;
+  flex: 1 1 0;
+  min-width: 0;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  min-width: 3.75rem;
-  padding: 8px 8px 6px;
+  gap: 3px;
+  padding: 6px 2px 5px;
   border-radius: 12px;
   color: hsl(var(--text-muted));
-  transition: color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+  background: transparent;
+  border: 0;
+  transition: color 0.25s ease, background 0.25s ease, transform 0.15s ease;
   -webkit-tap-highlight-color: transparent;
 }
 
 .mobile-dock-tab:hover {
   color: hsl(var(--gold-light));
+}
+
+.mobile-dock-tab:active {
+  transform: scale(0.94);
 }
 
 .mobile-dock-icon {
@@ -1636,11 +1657,16 @@ select.bg-card {
 
 .mobile-dock-label {
   font-family: 'Jost', sans-serif;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.10em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   line-height: 1;
+  /* Guard against long translations — never let labels collide */
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .mobile-dock-active-dot {
