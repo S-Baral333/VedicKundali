@@ -18,6 +18,7 @@ import {
   StandardFonts,
 } from "npm:pdf-lib@1.17.1";
 import fontkit from "npm:@pdf-lib/fontkit@1.1.1";
+import { isSuperAdmin } from "../_shared/access.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -785,7 +786,8 @@ Deno.serve(async (req: Request) => {
     const { data: profile } = await supabase
       .from("profiles").select("subscription_tier").eq("user_id", userId).maybeSingle();
     const tier = (profile?.subscription_tier || "free") as string;
-    if (tier !== "elite") {
+    const superAdmin = await isSuperAdmin(supabase, userId);
+    if (!superAdmin && tier !== "elite") {
       return new Response(JSON.stringify({ error: "elite_required", message: "Sacred Kundali PDF is an Elite ritual." }), {
         status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });

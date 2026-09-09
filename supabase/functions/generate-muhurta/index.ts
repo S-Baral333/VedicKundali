@@ -3,6 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { Body, EclipticLongitude, MakeTime, GeoVector, Ecliptic } from "https://esm.sh/astronomy-engine@2.1.19";
 import { normalizeLanguage, buildLanguageInstruction } from "../_shared/languages.ts";
 import { resolveGuruContext, applyGuru } from "../_shared/guru.ts";
+import { isSuperAdmin } from "../_shared/access.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -203,7 +204,8 @@ serve(async (req) => {
       .maybeSingle();
 
     const tier = (profile?.subscription_tier as "free" | "premium" | "elite") || "free";
-    if (tier === "free") {
+    const superAdmin = await isSuperAdmin(supabase, userId);
+    if (!superAdmin && tier === "free") {
       return new Response(
         JSON.stringify({
           error: "Muhurta (auspicious timing) requires a Premium subscription.",

@@ -8,6 +8,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { normalizeLanguage, buildLanguageInstruction } from "../_shared/languages.ts";
 import { resolveGuruContext, applyGuru } from "../_shared/guru.ts";
+import { isSuperAdmin } from "../_shared/access.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -356,7 +357,8 @@ serve(async (req) => {
       .eq("user_id", user.id)
       .maybeSingle();
     const tier = (profile?.subscription_tier || "free").toLowerCase();
-    if (tier !== "premium" && tier !== "elite") {
+    const superAdmin = await isSuperAdmin(supabase, user.id);
+    if (!superAdmin && tier !== "premium" && tier !== "elite") {
       return new Response(
         JSON.stringify({ error: "premium_required", message: "Prescription-grade remedies require a Premium or Elite subscription." }),
         { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } }

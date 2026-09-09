@@ -3,6 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { Body, EclipticLongitude, MakeTime, GeoVector, Ecliptic } from "https://esm.sh/astronomy-engine@2.1.19";
 import { normalizeLanguage, buildLanguageInstruction } from "../_shared/languages.ts";
 import { resolveGuruContext, type GuruContext } from "../_shared/guru.ts";
+import { isSuperAdmin } from "../_shared/access.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -1154,7 +1155,8 @@ serve(async (req) => {
 
     const limits = { free: 1, premium: 15, elite: 999 };
     const limit = limits[tier];
-    if ((usage.oracle_count || 0) >= limit) {
+    const superAdmin = await isSuperAdmin(supabase, userId);
+    if (!superAdmin && (usage.oracle_count || 0) >= limit) {
       return new Response(JSON.stringify({
         error: tier === "free"
           ? "You've used your free Oracle question (1/month). Upgrade to Premium for more."

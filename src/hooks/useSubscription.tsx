@@ -84,7 +84,7 @@ function normalizeResource(r: ResourceKey | "dreams" | "oracle"): ResourceKey {
 }
 
 export function SubscriptionProvider({ children }: { children: ReactNode }) {
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const [tier, setTier] = useState<Tier>("darshana");
   const [status, setStatus] = useState<SubscriptionRow["status"]>("active");
   const [trialEndsAt, setTrialEndsAt] = useState<string | null>(null);
@@ -178,10 +178,16 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => { fetchAll(); }, [fetchAll]);
 
-  const config = TIERS[tier];
+  // Super admins (the `admin` role in user_roles) bypass subscriptions entirely:
+  // they resolve to the top tier, whose limits are all -1 (unlimited) and whose
+  // feature flags are all true. The edge functions apply the same bypass server
+  // side, so this only unlocks UI that the backend will actually honour.
+  const effectiveTier: Tier = isAdmin ? "jyotisha" : tier;
 
-  const isPremium = useMemo(() => tierAtLeast(tier, "sadhaka"), [tier]);
-  const isElite = useMemo(() => tierAtLeast(tier, "jyotisha"), [tier]);
+  const config = TIERS[effectiveTier];
+
+  const isPremium = useMemo(() => tierAtLeast(effectiveTier, "sadhaka"), [effectiveTier]);
+  const isElite = useMemo(() => tierAtLeast(effectiveTier, "jyotisha"), [effectiveTier]);
 
   const gate = useCallback((feature: FeatureKey): GateResult => {
     if (isLoading) {
@@ -200,9 +206,9 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
     }
 
     // feature gate
-    const allowed = tierAtLeast(tier, required);
+    const allowed = tierAtLeast(effectiveTier, required);
     return { allowed, reason: allowed ? "ok" : "tier_required", requiredTier: required, current: 0, limit: 0 };
-  }, [config, isLoading, tier, usage]);
+  }, [config, isLoading, effectiveTier, usage]);
 
   const hasFeature = useCallback((feature: FeatureKey) => gate(feature).allowed, [gate]);
 
@@ -238,7 +244,7 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
 
   return (
     <SubscriptionContext.Provider value={{
-      tier, status, trialEndsAt, periodEndsAt, isLoading, usage, config,
+      tier: effectiveTier, status, trialEndsAt, periodEndsAt, isLoading, usage, config,
       isPremium, isElite, limits, canUseDreams, canUseOracle,
       gate, hasFeature, incrementUsage, refreshUsage: fetchAll, openUpgrade,
     }}>

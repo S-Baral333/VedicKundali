@@ -2,6 +2,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { normalizeLanguage, buildLanguageInstruction } from "../_shared/languages.ts";
 import { resolveGuruContext, applyGuru } from "../_shared/guru.ts";
+import { isSuperAdmin } from "../_shared/access.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -188,7 +189,8 @@ serve(async (req) => {
     const limits = { free: 3, premium: 20, elite: 999 };
     const limit = limits[tier];
 
-    if ((usage.dreams_count || 0) >= limit) {
+    const superAdmin = await isSuperAdmin(supabase, userId);
+    if (!superAdmin && (usage.dreams_count || 0) >= limit) {
       return new Response(
         JSON.stringify({
           error: tier === "free"
