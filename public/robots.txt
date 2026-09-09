@@ -26,4 +26,4 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
-Sitemap: https://vedickundali.app/sitemap.xml
+Sitemap: https://www.gurukundali.com/sitemap.xml
