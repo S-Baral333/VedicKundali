@@ -100,6 +100,8 @@ interface HoroscopeData {
   mood?: Mood;
   voice_label?: string;
   mode?: "guru" | "standard";
+  /** The computed factors the reading was actually built from. */
+  technical_basis?: string[];
   // Phase 4 upgrades:
   three_acts?: { morning?: string; afternoon?: string; evening?: string };
   micro_ritual?: string;
@@ -432,9 +434,17 @@ export default function DailyHoroscopePage() {
     if (!horoscope) return;
     let text = `${t(`horoscope.period.title.${period}`)} — ${sign && sign !== "General" ? t("horoscope.subtitle.moonIn", { sign }) : "General"}\n${validDate}\n\n`;
     if (horoscope.greeting) text += `${horoscope.greeting}\n\n`;
-    text += `${horoscope.guidance}\n\n`;
+    // Day readings carry their narrative in three_acts rather than a single
+    // guidance blob, so fall back to the acts instead of copying "undefined".
+    if (horoscope.guidance) {
+      text += `${horoscope.guidance}\n\n`;
+    } else if (horoscope.three_acts) {
+      const { morning, afternoon, evening } = horoscope.three_acts;
+      text += [morning, afternoon, evening].filter(Boolean).join("\n\n") + "\n\n";
+    }
+    if (horoscope.watch_for) text += `Watch for: ${horoscope.watch_for}\n`;
     if (horoscope.mantra_of_the_day) text += `Mantra: ${horoscope.mantra_of_the_day}\n`;
-    text += `\nCosmic Advice: ${horoscope.cosmic_advice}`;
+    if (horoscope.cosmic_advice) text += `\nCosmic Advice: ${horoscope.cosmic_advice}`;
     await navigator.clipboard.writeText(text);
     toast({ title: t("horoscope.toast.copied") });
   };
@@ -647,15 +657,47 @@ export default function DailyHoroscopePage() {
                   </div>
                 )}
 
-                <div className="text-[1.02rem] leading-[1.85] whitespace-pre-line" style={{ fontFamily: "'Jost', sans-serif", fontWeight: 300, color: "hsl(var(--text-secondary))" }}>
-                  <AstroText text={horoscope.guidance} />
-                </div>
+                {/* Day readings deliver their narrative through three_acts
+                    below; only longer periods return a single guidance blob.
+                    Rendering both restated the same day twice. */}
+                {horoscope.guidance && (
+                  <div className="text-[1.02rem] leading-[1.85] whitespace-pre-line" style={{ fontFamily: "'Jost', sans-serif", fontWeight: 300, color: "hsl(var(--text-secondary))" }}>
+                    <AstroText text={horoscope.guidance} />
+                  </div>
+                )}
 
                 {/* Three acts (daily/tomorrow only) */}
                 {(period === "daily" || period === "tomorrow") && horoscope.three_acts && (
                   <div className="mt-5">
                     <ThreeActsStrip acts={horoscope.three_acts} />
                   </div>
+                )}
+
+                {/* The computed factors this reading was built from. Showing the
+                    working is what separates a real reading from a generic one. */}
+                {!!horoscope.technical_basis?.length && (
+                  <details className="mt-5 group">
+                    <summary
+                      className="cursor-pointer list-none flex items-center gap-2 text-[11px] uppercase"
+                      style={{ color: "hsl(var(--gold) / 0.75)", letterSpacing: "0.18em", fontFamily: "'Jost', sans-serif" }}
+                    >
+                      <Compass className="h-3.5 w-3.5" />
+                      Built from {horoscope.technical_basis.length} computed {horoscope.technical_basis.length === 1 ? "factor" : "factors"}
+                      <ChevronDown className="h-3.5 w-3.5 transition-transform group-open:rotate-180" />
+                    </summary>
+                    <ul className="mt-3 flex flex-col gap-1.5">
+                      {horoscope.technical_basis.map((factor, i) => (
+                        <li
+                          key={i}
+                          className="flex items-start gap-2 text-[12.5px] leading-[1.6]"
+                          style={{ color: "hsl(var(--text-muted))", fontFamily: "'Jost', sans-serif" }}
+                        >
+                          <span aria-hidden className="shrink-0 mt-1.5 w-1 h-1 rounded-full" style={{ background: "hsl(var(--gold) / 0.6)" }} />
+                          {factor}
+                        </li>
+                      ))}
+                    </ul>
+                  </details>
                 )}
 
                 {/* If/Then choreography */}

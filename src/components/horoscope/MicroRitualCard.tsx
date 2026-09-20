@@ -57,17 +57,19 @@ export default function MicroRitualCard({ text, userId, validDate, period }: Pro
 
   if (!text) return null;
   return (
+    // The card sits inside nested padding and is only ~278px on a phone. Beside
+    // the text, the fixed-width button left ~100px for the ritual itself, which
+    // wrapped to one word per line — so it drops below the text when narrow.
     <div
-      className="rounded-2xl p-4 flex items-start gap-3 transition-all"
+      className="rounded-2xl p-4 flex flex-col sm:flex-row sm:items-start gap-3 transition-all"
       style={{
         background: done ? "rgba(201,168,76,0.08)" : "rgba(201,168,76,0.04)",
         border: "0.5px solid hsl(var(--gold) / 0.28)",
       }}
     >
-      <div className="mt-0.5">
-        <Flame className="h-4 w-4" style={{ color: "hsl(var(--gold))" }} />
-      </div>
-      <div className="flex-1 min-w-0">
+      <div className="flex items-start gap-3 min-w-0 flex-1">
+        <Flame className="h-4 w-4 mt-0.5 shrink-0" style={{ color: "hsl(var(--gold))" }} />
+        <div className="min-w-0 flex-1">
         <p className="text-[11px] tracking-[0.18em] uppercase mb-1.5" style={{ color: "hsl(var(--gold))" }}>
           60-Second Ritual
         </p>
@@ -82,11 +84,12 @@ export default function MicroRitualCard({ text, userId, validDate, period }: Pro
         >
           {text}
         </p>
+        </div>
       </div>
       <button
         onClick={toggle}
         disabled={busy}
-        className="shrink-0 inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] tracking-wider uppercase border transition-colors disabled:opacity-60"
+        className="shrink-0 self-end sm:self-auto inline-flex items-center gap-1 px-2.5 py-1.5 min-h-[32px] rounded-full text-[11px] tracking-wider uppercase border transition-colors disabled:opacity-60"
         style={{
           color: done ? "hsl(var(--background))" : "hsl(var(--gold))",
           background: done ? "hsl(var(--gold))" : "transparent",

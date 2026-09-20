@@ -6,7 +6,6 @@ import {
   assembleGuruSystemPrompt,
   assembleGuruWritingRules,
   GURU_EXTRA_JSON,
-  COMMON_EXTRA_JSON,
 } from "../_shared/guru.ts";
 import { normalizeLanguage, buildLanguageInstruction } from "../_shared/languages.ts";
 
@@ -345,52 +344,46 @@ function getPeriodPromptConfig(period: Period) {
   const configs: Record<Period, { model: string; depthInstruction: string; jsonFormat: string }> = {
     daily: {
       model: "claude-haiku-4-5-20251001",
-      depthInstruction: "Write a 5-6 sentence flowing narrative telling the story of their day from morning to evening.",
-      jsonFormat: `Format as JSON:
+      depthInstruction: "Target 300 words of narrative TOTAL across three_acts and watch_for combined. Each act is one tight paragraph of 55-75 words. Do not pad to reach the target.",
+      jsonFormat: `Format as JSON. Every field below has ONE job — do not let any two overlap:
 {
-  "period_theme": "One sentence overarching theme for today",
-  "greeting": "A warm, personalized opening line referencing today's cosmic energy",
-  "watch_for": "The ONE most important thing to watch for today",
-  "guidance": "5-6 sentence flowing narrative telling the story of their day",
-  "planetary_story": "2-3 sentence narrative about what the planets are doing today",
-  "emotional_forecast": "1-2 sentence emotional/mental energy forecast",
+  "three_acts": {
+    "morning": "55-75 words. What the morning actually asks of them, and the cited factor driving it.",
+    "afternoon": "55-75 words. How the day turns. A DIFFERENT cited factor from the morning.",
+    "evening": "55-75 words. Where it lands. A DIFFERENT cited factor again."
+  },
+  "watch_for": "One specific thing to watch for — a subject NOT covered by any of the three acts. 25-40 words.",
+  "micro_ritual": "One action doable in 60 seconds, tied to a named factor. Under 30 words.",
+  "technical_basis": ["Direct restatement of each evidence item you cited, e.g. 'Saturn transits house 2 at 28/56 bindus'"],
   "energy_level": "high" | "moderate" | "low",
   "best_hours": ["HH:MM-HH:MM"],
   "caution_hours": ["HH:MM-HH:MM"],
-  "action_items": ["advice 1", "advice 2", "advice 3"],
-  "mantra_of_the_day": "Sanskrit mantra with brief meaning",
-  "remedial_tip": "One practical Vedic remedy",
-  "lucky_color": "...",
+  "mantra_of_the_day": "Sanskrit, English meaning, when and how many times to chant",
+  "lucky_color": "Colour plus the one-clause reason, tied to a named planet",
   "lucky_number": N,
-  "direction": "...",
-  "risk_alerts": ["short risk warning"],
-  "opportunity_flags": ["short opportunity"],
-  "cosmic_advice": "Closing inspirational line"
+  "direction": "Direction plus the one-clause reason"
 }`,
     },
     tomorrow: {
       model: "claude-haiku-4-5-20251001",
-      depthInstruction: "Write a 5-6 sentence flowing narrative telling the story of what awaits them TOMORROW, from morning to evening. Use future tense — this is a preview of the next day. Focus on preparation and what to expect.",
-      jsonFormat: `Format as JSON:
+      depthInstruction: "Target 300 words of narrative TOTAL across three_acts and watch_for combined. Each act is one tight paragraph of 55-75 words. Future tense throughout — this previews the next day. Do not pad to reach the target.",
+      jsonFormat: `Format as JSON. Every field below has ONE job — do not let any two overlap:
 {
-  "period_theme": "One sentence overarching theme for tomorrow",
-  "greeting": "A warm, personalized opening line about what tomorrow holds",
-  "watch_for": "The ONE most important thing to watch for tomorrow",
-  "guidance": "5-6 sentence flowing narrative previewing tomorrow's energy and events",
-  "planetary_story": "2-3 sentence narrative about what the planets will be doing tomorrow",
-  "emotional_forecast": "1-2 sentence emotional/mental energy forecast for tomorrow",
+  "three_acts": {
+    "morning": "55-75 words, future tense. What tomorrow morning will ask of them, and the cited factor driving it.",
+    "afternoon": "55-75 words, future tense. How the day will turn. A DIFFERENT cited factor from the morning.",
+    "evening": "55-75 words, future tense. Where it will land. A DIFFERENT cited factor again."
+  },
+  "watch_for": "One specific thing to watch for tomorrow — a subject NOT covered by any of the three acts. 25-40 words.",
+  "micro_ritual": "One preparation doable tonight in 60 seconds, tied to a named factor. Under 30 words.",
+  "technical_basis": ["Direct restatement of each evidence item you cited"],
   "energy_level": "high" | "moderate" | "low",
   "best_hours": ["HH:MM-HH:MM"],
   "caution_hours": ["HH:MM-HH:MM"],
-  "action_items": ["preparation advice 1", "advice 2", "advice 3"],
-  "mantra_of_the_day": "Sanskrit mantra with brief meaning to prepare with tonight",
-  "remedial_tip": "One practical Vedic remedy to do tonight or tomorrow morning",
-  "lucky_color": "...",
+  "mantra_of_the_day": "Sanskrit, English meaning, when and how many times to chant",
+  "lucky_color": "Colour plus the one-clause reason, tied to a named planet",
   "lucky_number": N,
-  "direction": "...",
-  "risk_alerts": ["short risk warning for tomorrow"],
-  "opportunity_flags": ["short opportunity for tomorrow"],
-  "cosmic_advice": "Closing inspirational line about tomorrow"
+  "direction": "Direction plus the one-clause reason"
 }`,
     },
     weekly: {
@@ -676,11 +669,16 @@ serve(async (req) => {
 
     let transitContext = "";
     let sadeSatiInfo = { active: false, phase: "" };
+    // Structured mirror of the prose context below, used to build the ranked
+    // evidence block. Every entry is a real computed value, never a guess.
+    const evidence: { weight: number; factor: string }[] = [];
+    let natalAspects: { transit: string; natal: string; aspect: string }[] = [];
 
     if (chartData && moonSign) {
       const result = computeTransitAspects(transits, moonSign, chartData.planets || []);
       transitContext = result.transitContext;
       sadeSatiInfo = result.sadeSati;
+      natalAspects = result.aspects || [];
     } else {
       transitContext = `Current planetary transits (Swiss Ephemeris, sidereal/Lahiri):\n` +
         transits.map(t => `- ${t.name}: ${t.sign} ${t.degree.toFixed(1)}°${t.is_retrograde ? " (R)" : ""}`).join("\n");
@@ -726,6 +724,11 @@ serve(async (req) => {
         const taraName = TARA_NAMES[taraNum];
         const taraQuality = TARA_QUALITY[taraNum];
         tarabalaContext = `\n\nTARABALA (today's auspiciousness from natal Janma Nakshatra ${natalNakName}): Today is ${todayNakName} → ${taraName} Tara (${taraQuality}). Weave this into the day's tone.`;
+        // Non-neutral tara is one of the sharpest day-level signals available.
+        evidence.push({
+          weight: taraQuality === "neutral" ? 5 : 8,
+          factor: `Tarabala: Moon in ${todayNakName} is ${taraName} Tara (${taraQuality}) from natal Janma Nakshatra ${natalNakName}`,
+        });
       }
     }
 
@@ -753,6 +756,12 @@ serve(async (req) => {
           ? `kakshya ${kakshyaIdx + 1}/8 (lord ${kakshyaLord}, ${lordBindu}/8 bindus)`
           : `kakshya ${kakshyaIdx + 1}/8 (lord ${kakshyaLord})`;
         keyTransitNotes.push(`${tp.name} transits house ${houseFromLagna} with ${bindus}/56 bindus (${verdict}), ${kakshyaPhrase}`);
+        // Weight by how far the bindu count sits from the 25/56 midpoint —
+        // a decisively strong or weak transit says more than an average one.
+        evidence.push({
+          weight: 4 + Math.min(5, Math.round(Math.abs(bindus - 25) / 2)),
+          factor: `${tp.name} transits house ${houseFromLagna} at ${bindus}/56 bindus (${verdict}), ${kakshyaPhrase}`,
+        });
       }
       if (keyTransitNotes.length) {
         ashtakavargaContext = `\n\nASHTAKAVARGA TRANSIT STRENGTH: ${keyTransitNotes.join("; ")}. Use this to make predictions specific — high SAV bindus = the transit's effects manifest favourably; low bindus = expect friction. The kakshya lord's own bindu count refines whether THIS sub-period within the transit is supportive.`;
@@ -779,8 +788,16 @@ serve(async (req) => {
         );
         if (blocker) {
           vedhaNotes.push(`${planet} transit house ${houseFromMoon} from Moon is BLOCKED by natal ${blocker.name} in ${vSign} (vedha house ${vHouse})`);
+          evidence.push({
+            weight: 7,
+            factor: `${planet} transiting house ${houseFromMoon} from Moon is blocked by natal ${blocker.name} in ${vSign} (vedha house ${vHouse}) — its effect is muted`,
+          });
         } else {
           vedhaNotes.push(`${planet} transit house ${houseFromMoon} from Moon — no vedha (effect manifests freely)`);
+          evidence.push({
+            weight: 6,
+            factor: `${planet} transiting house ${houseFromMoon} from Moon is unblocked — its effect lands directly`,
+          });
         }
       }
       if (vedhaNotes.length) {
@@ -789,6 +806,38 @@ serve(async (req) => {
     }
 
 
+
+    // ─── Ranked evidence block ───
+    // The rest of the prompt hands the model loose prose and hopes it says
+    // something specific. This gives it a scored shortlist of the day's real
+    // signals, which the writing rules then require it to cite by name and
+    // value — the same technique that makes generate-decision concrete.
+    if (sadeSatiInfo.active) {
+      const saturn = transits.find((t) => t.name === "Saturn");
+      evidence.push({
+        weight: 10,
+        factor: `Sade Sati ${sadeSatiInfo.phase} — Saturn in ${saturn?.sign ?? "?"} relative to natal Moon in ${moonSign}`,
+      });
+    }
+    for (const a of natalAspects) {
+      // Hard aspects are more narratively useful than soft ones on a single day.
+      const w = a.aspect === "conjunction" ? 9 : a.aspect === "opposition" ? 8 : a.aspect === "square" ? 8 : 6;
+      evidence.push({ weight: w, factor: `Transit ${a.transit} ${a.aspect} natal ${a.natal}` });
+    }
+    if (chartData?.dasha?.maha_dasha) {
+      const d = chartData.dasha;
+      evidence.push({
+        weight: 7,
+        factor: `Running ${d.maha_dasha} Mahadasha / ${d.antar_dasha} Antardasha${d.pratyantar_dasha ? ` / ${d.pratyantar_dasha} Pratyantar` : ""}`,
+      });
+    }
+
+    const rankedEvidence = evidence.sort((a, b) => b.weight - a.weight).slice(0, 7);
+    const evidenceBlock = rankedEvidence.length
+      ? `\n\nTODAY'S COMPUTED EVIDENCE — ranked by weight. These are calculated, not guessed:\n` +
+        rankedEvidence.map((e, i) => `${i + 1}. [weight ${e.weight}/10] ${e.factor}`).join("\n") +
+        `\n\nThese are the ONLY astrological claims you may make. Do not introduce placements, aspects or houses that do not appear above.`
+      : "";
 
     const periodConfig = getPeriodPromptConfig(period);
 
@@ -803,40 +852,39 @@ serve(async (req) => {
     }
 
     // ── Default writing style rules (used when Guru is OFF) ──
+    //
+    // These rules deliberately carry NO worked example of a finished sentence.
+    // The previous version shipped a "GOOD example" ending "don't make big
+    // decisions before noon — journal instead", and the model reproduced that
+    // advice near-verbatim for every user on every day. Examples here describe
+    // SHAPE only, never content a reader could actually receive.
     const defaultWritingRules = `
 WRITING STYLE — MANDATORY:
-You write like a warm, wise elder — like a knowledgeable grandmother who happens to know the stars. Encouraging, grounded, never clinical.
+Warm, direct and specific — a seasoned astrologer who respects the reader's time. Never clinical, never mystical filler.
 
-NEVER use technical jargon without explaining it in plain words. Specifically:
-- "transit" → say "planet moving through your sky"
-- "opposition" → say "two planets pulling in opposite directions"
-- "dasha" → say "your current life chapter"
-- "nakshatra" → say "star cluster"
-- "lagna/ascendant" → say "your rising sign (how the world sees you)"
-- "antardasha" → say "the sub-chapter within your life chapter"
-- "atmakaraka" → say "your soul's primary planet"
-- "trine" → say "two planets in a helpful, flowing relationship"
-- "square" → say "two planets creating productive tension"
-- "conjunction" → say "two planets sitting together, amplifying each other"
+═══ GROUNDING — THE RULE THAT MATTERS MOST ═══
 
-STRUCTURE every section like this:
+Every claim you make about this person's day must trace to a numbered item in TODAY'S COMPUTED EVIDENCE.
 
-"period_theme": One sentence. Feel-first. Example: "Today is about slowing down to hear what you actually need." NOT: "Moon in Bharani nakshatra creates introspective tendencies."
+1. Each narrative field must cite at least ONE evidence item by its real name and value — the actual planet, house number, bindu count, tara, nakshatra or dasha lord. Name the number whenever the evidence carries one.
+2. NEVER invent a placement, aspect, degree or house that is not in the evidence block. If you want to say something the evidence does not support, say something else.
+3. Translate the term, keep the fact. Name the real placement and then explain what it means in plain words. Do not replace a specific fact with a vague gesture at "heavy energy" — the reader should be able to check you.
 
-"guidance" paragraphs: Sentence 1 = what you will FEEL. Sentence 2 = the simple planetary reason WHY. Sentence 3 = what this MEANS practically. Sentence 4 (optional) = what to DO about it.
+FORBIDDEN — these phrases are what make every horoscope sound identical. Never use them:
+"the universe is", "the energy of", "suggests", "tends to", "may", "might", "could indicate", "is wired for", "appears to", "cosmic energies", "the planets are telling you", "trust the process", "embrace the journey".
+Write declaratively. You have computed evidence — speak from it.
 
-BAD example (never write like this): "Transit Moon at 22° Aries forms a square to natal Moon-Ketu axis activating the 6th/12th house polarity during Rahu Pratyantar."
-GOOD example (write like this): "You might feel more restless than usual this morning — almost like your mind is running ahead of your body. That's because the Moon moving through Aries today is bumping up against your own Moon's position, creating a kind of internal tug-of-war. It will ease by afternoon. What to do: don't make big decisions before noon — journal instead."
+SPECIFICITY TEST — before returning, check every narrative field:
+Could this sentence appear unchanged in a stranger's horoscope? If yes, rewrite it using a real value from the evidence block. A reading that would fit anyone is a failed reading.
 
-"action_items": Always start with a verb. Max 15 words each. Include a specific time if possible ("before noon", "after 6 PM").
+═══ NO REPETITION ═══
+Each field has exactly ONE job. An insight stated in one field must NOT reappear in another, even reworded. If the morning act covers a decision, then watch_for must cover something else entirely. Restatement is the fastest way to make a reading feel padded, and readers notice it immediately.
 
-"remedial_tip": Explain WHY in one simple sentence before giving the action. Example: "Saturn is a bit heavy on you today, so cooling rituals help. Offer a small cup of water to any plant before breakfast."
+═══ JARGON ═══
+Give the plain meaning alongside the term the first time it appears, then use the term plainly. Explain the technical fact — never strip it.
 
-"mantra_of_the_day": Always include the English meaning immediately after the Sanskrit. Include how long to chant and what time of day.
-
-"energy_level": Describe with a human metaphor, not just a word. Example: "Moderate — like a cloudy day with occasional sunshine breaking through"
-
-"emotional_forecast": Lead with the feeling, then explain the planetary reason.
+"mantra_of_the_day": Sanskrit, then its English meaning, then when and how many times to chant.
+"energy_level": exactly one of high | moderate | low.
 `;
 
     const writingRules = guruBundle
@@ -860,12 +908,18 @@ DAY FLAVOUR (use these to colour your reading naturally — do not just list the
         ? `\n\nTODAY'S VOICE — "${VOICE_PROMPTS[voice].label}":\n${VOICE_PROMPTS[voice].instruction}\nApply this voice to greeting, period_theme, guidance, watch_for, planetary_story, emotional_forecast, action_items, cosmic_advice and the new cosmic_headline. The plain-language no-jargon rule still applies regardless of voice.`
         : "";
 
-    const headlineRule = `\n\nALSO RETURN a "cosmic_headline": one bold, magazine-style sentence of 7–14 words. Punchy, surprising, written in today's voice. Examples of the SHAPE (not content): "Mercury whispers: speak less, listen more." / "A small yes today opens a door on Thursday." / "The moon is restless tonight — guard your sleep."
+    const isDayPeriod = period === "daily" || period === "tomorrow";
 
-ALSO RETURN a "narrative" field: 220–340 words of flowing prose (NOT bullet points). This is what the reader will actually read for depth. It MUST cite at least TWO specific items from the astronomical context above — name the actual transit, dasha lord, nakshatra, or natal placement you are drawing from. No vague "the planets suggest" filler. Write like a letter to this one person on this one day, in today's voice. Do NOT repeat the other JSON fields verbatim — go DEEPER than them.`;
-
+    const headlineRule = `\n\nALSO RETURN a "cosmic_headline": one bold, magazine-style sentence of 7–14 words. Punchy, surprising, written in today's voice, and built on a named factor from the evidence block. Examples of the SHAPE (not content): "Mercury whispers: speak less, listen more." / "A small yes today opens a door on Thursday." / "The moon is restless tonight — guard your sleep."`
+      // A day reading is already 300 words across three_acts; a second long
+      // narrative field could only restate them. Longer periods still get it.
+      + (isDayPeriod ? "" : `\n\nALSO RETURN a "narrative" field: 220–340 words of flowing prose (NOT bullet points). This is what the reader will actually read for depth. It MUST cite at least TWO items from the computed evidence block by name and value. No vague "the planets suggest" filler. Write like a letter to this one person, in today's voice. Do NOT repeat the other JSON fields — go DEEPER than them.`);
     // Extra JSON fields: common (daily/tomorrow only) + guru-only.
-    const commonExtras = (period === "daily" || period === "tomorrow") ? COMMON_EXTRA_JSON : "";
+    // daily/tomorrow now specify three_acts and micro_ritual in their own schema,
+    // with longer acts and an explicit no-overlap rule. COMMON_EXTRA_JSON would
+    // re-specify them as "1-2 sentence vignettes" and re-add if_then, which
+    // restated the acts as conditionals — the worst of the duplication.
+    const commonExtras = "";
     const guruExtras   = guruOn ? GURU_EXTRA_JSON : "";
 
     const prompt = moonSign
@@ -873,7 +927,7 @@ ALSO RETURN a "narrative" field: 220–340 words of flowing prose (NOT bullet po
 
 ${transitContext}
 ${natalContext ? `\n${natalContext}` : ""}
-${sadeSatiContext}${tarabalaContext}${ashtakavargaContext}${vedhaContext}
+${sadeSatiContext}${tarabalaContext}${ashtakavargaContext}${vedhaContext}${evidenceBlock}
 ${dayFlavorContext}${previousThreadContext}${voiceInstruction}${headlineRule}
 
 All transit positions above are computed by Swiss Ephemeris (arc-second accuracy). Do NOT modify or recalculate them.
@@ -887,7 +941,7 @@ ${styleMap[guidanceStyle] || styleMap.balanced}
 ${periodConfig.jsonFormat}${commonExtras}${guruExtras}`
       : `You are giving a general ${periodLabel[period]} Vedic astrology consultation. ${priorityContext} Today's date is ${today}. This reading covers the ${period} period starting ${validDate}.
 
-${transitContext}
+${transitContext}${evidenceBlock}
 ${dayFlavorContext}${voiceInstruction}${headlineRule}
 
 ${writingRules}
