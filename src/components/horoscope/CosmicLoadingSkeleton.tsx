@@ -46,9 +46,27 @@ const MESSAGES: Record<Period, string[]> = {
 
 interface Props {
   period: Period;
+  /** Real chart context, surfaced in the step list so the wait shows actual work. */
+  chartName?: string | null;
+  moonSign?: string | null;
+  dasha?: { maha_dasha?: string; antar_dasha?: string; pratyantar_dasha?: string } | null;
+  dateLabel?: string;
 }
 
-export default function CosmicLoadingSkeleton({ period }: Props) {
+/**
+ * Relative cost of each pipeline step. The final AI composition dominates the
+ * wall clock, so the earlier steps must not be spread evenly across the
+ * estimate or they would crawl while the real work is still queued.
+ */
+const STEP_WEIGHTS = [0.08, 0.12, 0.1, 0.1, 0.6];
+
+export default function CosmicLoadingSkeleton({
+  period,
+  chartName,
+  moonSign,
+  dasha,
+  dateLabel,
+}: Props) {
   const [elapsed, setElapsed] = useState(0);
 
   const expectedWait = PERIOD_WAIT_SECONDS[period];
@@ -80,14 +98,35 @@ export default function CosmicLoadingSkeleton({ period }: Props) {
       ? `${period === "yearly" ? "Yearly" : period === "monthly" ? "Monthly" : "Weekly"} readings are generated fresh and take around ${expectedWait} seconds.`
       : "Composing your personalised reading…";
 
-  const shimmerLines = [
-    { w: "45%", h: 20 },
-    { w: "100%", h: 14 },
-    { w: "100%", h: 14 },
-    { w: "88%", h: 14 },
-    { w: "100%", h: 14 },
-    { w: "72%", h: 14 },
+  // The steps below mirror what generate-horoscope actually does, in order, and
+  // name the reader's real placements where we already have them client-side.
+  // Nothing here is invented: if a value is missing we fall back to the generic
+  // phrasing rather than inventing a placement.
+  const dashaLine = [dasha?.maha_dasha && `${dasha.maha_dasha} mahadasha`, dasha?.antar_dasha && `${dasha.antar_dasha} antardasha`]
+    .filter(Boolean)
+    .join(" · ");
+
+  const steps: string[] = [
+    chartName ? `Locating ${chartName}'s chart` : "Locating your birth chart",
+    dateLabel ? `Computing planetary transits for ${dateLabel}` : "Computing planetary transits",
+    dashaLine ? `Tracing ${dashaLine}` : "Tracing your dasha periods",
+    moonSign ? `Weighing Moon in ${moonSign} against the natal chart` : "Weighing transits against the natal chart",
+    "Composing your reading",
   ];
+
+  // Walk the weighted timeline to find which step the elapsed time lands in.
+  let stepIndex = 0;
+  {
+    let acc = 0;
+    for (let i = 0; i < STEP_WEIGHTS.length; i++) {
+      acc += STEP_WEIGHTS[i];
+      if (ratio < acc) { stepIndex = i; break; }
+      stepIndex = i;
+    }
+  }
+  // Once past the estimate we hold on the final step rather than ticking
+  // everything to done — the work demonstrably isn't finished.
+  const activeStep = overrunning ? steps.length - 1 : stepIndex;
 
   return (
     <div className="w-full sacred-reveal" style={{ animationDelay: "0.05s" }}>
@@ -189,11 +228,8 @@ export default function CosmicLoadingSkeleton({ period }: Props) {
         </div>
       </div>
 
-      {/* Sacred manuscript shimmer card */}
-      <div
-        className="relative overflow-hidden horo-glass-card"
-        style={{ borderRadius: 20 }}
-      >
+      {/* Live pipeline — shows the real work behind the wait */}
+      <div className="relative overflow-hidden horo-glass-card" style={{ borderRadius: 20 }}>
         {/* Corner ornaments */}
         {[
           { top: 10, left: 10, borderTop: 1, borderLeft: 1 },
@@ -219,69 +255,81 @@ export default function CosmicLoadingSkeleton({ period }: Props) {
           />
         ))}
 
-        {/* Shimmer sweep */}
-        <div
-          className="absolute inset-0 pointer-events-none"
+        <p
+          className="text-[11px] uppercase mb-4"
           style={{
-            background:
-              "linear-gradient(105deg, transparent 35%, hsl(var(--gold) / 0.05) 50%, transparent 65%)",
-            animation: "cosmicLoaderSweep 2.4s ease-in-out infinite",
+            color: "hsl(var(--gold) / 0.7)",
+            letterSpacing: "0.2em",
+            fontFamily: "'Jost', sans-serif",
           }}
-          aria-hidden
-        />
+        >
+          Casting your chart
+        </p>
 
-        {/* Title shimmer */}
-        <div
-          style={{
-            height: 18,
-            width: "55%",
-            margin: "0 auto 1.25rem",
-            borderRadius: 6,
-            background: "hsl(var(--gold) / 0.08)",
-            animation: "cosmicLoaderFade 1.8s ease-in-out infinite",
-          }}
-        />
-
-        {/* Divider ornament */}
-        <div className="flex items-center gap-2 mb-5 opacity-30">
-          <div className="flex-1" style={{ height: 1, background: "hsl(var(--gold) / 0.4)" }} />
-          <div style={{ width: 5, height: 5, borderRadius: "50%", background: "hsl(var(--gold) / 0.5)" }} />
-          <div className="flex-1" style={{ height: 1, background: "hsl(var(--gold) / 0.4)" }} />
-        </div>
-
-        {/* Text line shimmers */}
-        <div className="flex flex-col gap-2.5">
-          {shimmerLines.map((line, i) => (
-            <div
-              key={i}
-              style={{
-                height: line.h,
-                width: line.w,
-                borderRadius: 4,
-                background: "hsl(var(--text-secondary) / 0.06)",
-                animation: "cosmicLoaderFade 1.8s ease-in-out infinite",
-                animationDelay: `${i * 0.12}s`,
-              }}
-            />
-          ))}
-        </div>
-
-        {/* Planet chips shimmer row */}
-        <div className="flex flex-wrap gap-2 mt-6">
-          {[80, 65, 90, 70].map((w, i) => (
-            <div
-              key={i}
-              style={{
-                height: 26,
-                width: w,
-                borderRadius: 13,
-                background: "hsl(var(--gold) / 0.07)",
-                animation: "cosmicLoaderFade 1.8s ease-in-out infinite",
-                animationDelay: `${0.7 + i * 0.15}s`,
-              }}
-            />
-          ))}
-        </div>
+        <ol className="flex flex-col gap-3" aria-live="polite">
+          {steps.map((label, i) => {
+            const done = i < activeStep;
+            const active = i === activeStep;
+            return (
+              <li key={label} className="flex items-start gap-3">
+                <span
+                  aria-hidden
+                  className="flex items-center justify-center shrink-0"
+                  style={{ width: 16, height: 16, marginTop: 2 }}
+                >
+                  {done ? (
+                    <svg viewBox="0 0 16 16" width="14" height="14" fill="none">
+                      <path
+                        d="M3.5 8.5l3 3 6-7"
+                        stroke="hsl(var(--gold) / 0.85)"
+                        strokeWidth="1.6"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  ) : active ? (
+                    <span
+                      className="cosmic-step-spinner"
+                      style={{
+                        width: 12,
+                        height: 12,
+                        borderRadius: "50%",
+                        border: "1.5px solid hsl(var(--gold) / 0.25)",
+                        borderTopColor: "hsl(var(--gold))",
+                        display: "block",
+                      }}
+                    />
+                  ) : (
+                    <span
+                      style={{
+                        width: 5,
+                        height: 5,
+                        borderRadius: "50%",
+                        background: "hsl(var(--text-muted) / 0.35)",
+                        display: "block",
+                      }}
+                    />
+                  )}
+                </span>
+                <span
+                  style={{
+                    fontSize: "0.82rem",
+                    lineHeight: 1.45,
+                    fontFamily: "'Jost', sans-serif",
+                    color: active
+                      ? "hsl(var(--text-primary))"
+                      : done
+                        ? "hsl(var(--text-secondary) / 0.75)"
+                        : "hsl(var(--text-muted) / 0.55)",
+                    transition: "color 0.4s ease",
+                  }}
+                >
+                  {label}
+                </span>
+              </li>
+            );
+          })}
+        </ol>
       </div>
 
       <style>{`
@@ -321,10 +369,15 @@ export default function CosmicLoadingSkeleton({ period }: Props) {
           0%   { transform: translateX(-100%); }
           100% { transform: translateX(250%); }
         }
+        .cosmic-step-spinner { animation: cosmicStepSpin 0.9s linear infinite; }
+        @keyframes cosmicStepSpin {
+          to { transform: rotate(360deg); }
+        }
         @media (prefers-reduced-motion: reduce) {
           .cosmic-loader-fade,
           .cosmic-loader-sheen::after { animation: none !important; }
           .cosmic-loader-indeterminate { animation-duration: 3s; }
+          .cosmic-step-spinner { animation-duration: 2.4s; }
         }
       `}</style>
     </div>

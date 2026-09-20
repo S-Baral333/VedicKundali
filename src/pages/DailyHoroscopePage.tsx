@@ -590,7 +590,13 @@ export default function DailyHoroscopePage() {
 
         {/* ─── CONTENT ─── */}
         {loading && !horoscope ? (
-          <CosmicLoadingSkeleton period={period} />
+          <CosmicLoadingSkeleton
+            period={period}
+            chartName={activeChart?.full_name?.trim().split(/\s+/)[0]}
+            moonSign={sign && sign !== "General" ? sign : null}
+            dasha={dashaInfo}
+            dateLabel={formatDateSubtitle()}
+          />
         ) : fetchError && !horoscope ? (
           <GlassCard delay={0.2} className="text-center !py-8">
             <p className="mb-3" style={{ color: "hsl(var(--text-muted))" }}>{t("horoscope.toast.loadFailed")}.</p>

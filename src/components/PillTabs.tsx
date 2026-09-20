@@ -1,4 +1,5 @@
-import { useEffect, useRef, type LucideIcon } from "react";
+import { useEffect, useRef } from "react";
+import { type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export interface PillTabItem {
