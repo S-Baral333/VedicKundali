@@ -63,7 +63,22 @@ export default function CosmicLoadingSkeleton({ period }: Props) {
   const ratio = elapsed / expectedWait;
   const phase = ratio >= 0.75 ? 3 : ratio >= 0.45 ? 2 : ratio >= 0.2 ? 1 : 0;
   const messageIndex = Math.min(phase, messages.length - 1);
-  const progressPct = Math.min(100, (elapsed / expectedWait) * 100);
+
+  // The estimate is only a guess, so the bar must never sit at a full 100%
+  // while the reading is still being generated — that reads as "stuck". It
+  // fills to 90% over the expected wait, then hands over to an indeterminate
+  // sweep that keeps moving for as long as the request actually takes.
+  const overrunning = elapsed >= expectedWait;
+  const progressPct = Math.min(90, ratio * 90);
+
+  // Long readings are genuinely slow, so set the expectation immediately
+  // rather than waiting until the user is already wondering if it broke.
+  const isLongPeriod = period === "weekly" || period === "monthly" || period === "yearly";
+  const helperText = overrunning
+    ? "Still composing — this one is taking a little longer than usual."
+    : isLongPeriod
+      ? `${period === "yearly" ? "Yearly" : period === "monthly" ? "Monthly" : "Weekly"} readings are generated fresh and take around ${expectedWait} seconds.`
+      : "Composing your personalised reading…";
 
   const shimmerLines = [
     { w: "45%", h: 20 },
@@ -77,12 +92,12 @@ export default function CosmicLoadingSkeleton({ period }: Props) {
   return (
     <div className="w-full sacred-reveal" style={{ animationDelay: "0.05s" }}>
       {/* Guru meditation indicator */}
-      <div className="flex flex-col items-center gap-4 mb-7 text-center">
+      <div className="flex flex-col items-center gap-3 sm:gap-4 mb-5 sm:mb-7 text-center">
         <div
-          className="relative flex items-center justify-center"
+          className="relative flex items-center justify-center shrink-0"
           style={{
-            width: 72,
-            height: 72,
+            width: 60,
+            height: 60,
             borderRadius: "50%",
             border: "1px solid hsl(var(--gold) / 0.22)",
             fontFamily: "'Cormorant Garamond', serif",
@@ -121,38 +136,56 @@ export default function CosmicLoadingSkeleton({ period }: Props) {
 
         <div className="w-full" style={{ maxWidth: 320 }}>
           <div
+            role="progressbar"
+            aria-label="Generating your reading"
+            aria-valuetext={overrunning ? "Still generating" : `About ${Math.round(progressPct)}% complete`}
             style={{
-              height: 2,
-              background: "hsl(var(--gold) / 0.08)",
-              borderRadius: 2,
+              height: 4,
+              background: "hsl(var(--gold) / 0.16)",
+              borderRadius: 4,
               overflow: "hidden",
             }}
           >
-            <div
-              style={{
-                height: "100%",
-                width: `${progressPct}%`,
-                background:
-                  "linear-gradient(90deg, hsl(var(--gold) / 0.3), hsl(var(--gold) / 0.85))",
-                borderRadius: 2,
-                transition: "width 0.9s ease",
-              }}
-            />
+            {overrunning ? (
+              // Indeterminate: a sweep that never implies a finish line.
+              <div
+                className="cosmic-loader-indeterminate"
+                style={{
+                  height: "100%",
+                  width: "40%",
+                  background:
+                    "linear-gradient(90deg, transparent, hsl(var(--gold) / 0.85), transparent)",
+                  borderRadius: 4,
+                }}
+              />
+            ) : (
+              <div
+                className="cosmic-loader-sheen"
+                style={{
+                  position: "relative",
+                  height: "100%",
+                  width: `${progressPct}%`,
+                  background:
+                    "linear-gradient(90deg, hsl(var(--gold) / 0.45), hsl(var(--gold) / 0.9))",
+                  borderRadius: 4,
+                  transition: "width 0.9s ease",
+                  overflow: "hidden",
+                }}
+              />
+            )}
           </div>
-          {phase >= 2 && (
-            <p
-              className="cosmic-loader-fade mt-2 italic"
-              style={{
-                fontSize: "0.7rem",
-                color: "hsl(var(--text-muted))",
-                fontFamily: "'Jost', sans-serif",
-              }}
-            >
-              {period === "yearly" || period === "monthly"
-                ? "Longer readings are generated fresh and may take up to a minute."
-                : "Composing your personalised reading — almost there."}
-            </p>
-          )}
+          <p
+            key={helperText}
+            className="cosmic-loader-fade mt-2.5 italic"
+            style={{
+              fontSize: "0.72rem",
+              lineHeight: 1.5,
+              color: "hsl(var(--text-muted))",
+              fontFamily: "'Jost', sans-serif",
+            }}
+          >
+            {helperText}
+          </p>
         </div>
       </div>
 
@@ -269,8 +302,29 @@ export default function CosmicLoadingSkeleton({ period }: Props) {
           from { opacity: 0; transform: translateY(4px); }
           to   { opacity: 1; transform: translateY(0); }
         }
+        /* Travelling highlight so a slow-filling bar still reads as alive */
+        .cosmic-loader-sheen::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(90deg, transparent, hsl(0 0% 100% / 0.35), transparent);
+          animation: cosmicLoaderSheen 1.6s ease-in-out infinite;
+        }
+        @keyframes cosmicLoaderSheen {
+          0%   { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
+        .cosmic-loader-indeterminate {
+          animation: cosmicLoaderIndeterminate 1.5s ease-in-out infinite;
+        }
+        @keyframes cosmicLoaderIndeterminate {
+          0%   { transform: translateX(-100%); }
+          100% { transform: translateX(250%); }
+        }
         @media (prefers-reduced-motion: reduce) {
-          .cosmic-loader-fade { animation: none !important; }
+          .cosmic-loader-fade,
+          .cosmic-loader-sheen::after { animation: none !important; }
+          .cosmic-loader-indeterminate { animation-duration: 3s; }
         }
       `}</style>
     </div>
