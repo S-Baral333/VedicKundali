@@ -23,7 +23,7 @@ export default function GuruCitationsFooter({ citations, dharmicClose, lifeAreaL
         <div className="mb-3 space-y-2.5">
           {lifeAreaLens.map((l, i) => (
             <div key={i}>
-              <span className="inline-block text-[9px] tracking-[0.18em] uppercase mb-1 px-1.5 py-0.5 rounded"
+              <span className="inline-block text-[11px] tracking-[0.18em] uppercase mb-1 px-1.5 py-0.5 rounded"
                 style={{ background: "hsl(var(--gold) / 0.10)", color: "hsl(var(--gold))" }}>
                 {l.area}
               </span>
@@ -47,7 +47,7 @@ export default function GuruCitationsFooter({ citations, dharmicClose, lifeAreaL
       {!!citations?.length && (
         <button
           onClick={() => setOpen(o => !o)}
-          className="w-full flex items-center justify-between gap-2 text-[10px] tracking-[0.18em] uppercase pt-2"
+          className="w-full flex items-center justify-between gap-2 text-[11px] tracking-[0.18em] uppercase pt-2"
           style={{ color: "hsl(var(--text-muted))", borderTop: "0.5px solid hsl(var(--gold) / 0.14)" }}
         >
           <span className="flex items-center gap-2">

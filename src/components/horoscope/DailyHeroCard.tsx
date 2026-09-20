@@ -38,11 +38,11 @@ export default function DailyHeroCard({
     <div className="daily-hero-card sacred-reveal" style={{ animationDelay: "0.04s" }}>
       {/* Top meta line */}
       <div className="flex items-center justify-between gap-3 mb-4">
-        <p className="text-[10px] tracking-[0.18em] uppercase" style={{ color: "hsl(var(--text-muted))" }}>
+        <p className="text-[11px] tracking-[0.18em] uppercase" style={{ color: "hsl(var(--text-muted))" }}>
           {signLabel} · {dateLabel}
         </p>
         <span
-          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] tracking-[0.14em] uppercase mood-accent-bg-soft border"
+          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] tracking-[0.14em] uppercase mood-accent-bg-soft border"
           style={{ color: "hsl(var(--mood-accent))" }}
           title={`Today's tonal mood: ${MOOD_DESC[mood]}`}
         >
@@ -67,7 +67,7 @@ export default function DailyHeroCard({
       {/* Voice chip — surprise of the day */}
       <div className="flex items-center gap-2 mb-5">
         <Sparkles className="h-3.5 w-3.5" style={{ color: "hsl(var(--mood-accent))" }} />
-        <span className="text-[10px] tracking-[0.16em] uppercase" style={{ color: "hsl(var(--text-muted))" }}>
+        <span className="text-[11px] tracking-[0.16em] uppercase" style={{ color: "hsl(var(--text-muted))" }}>
           Today's voice:
         </span>
         <span
@@ -84,7 +84,7 @@ export default function DailyHeroCard({
           className="rounded-2xl px-4 py-3.5"
           style={{ background: "rgba(255,255,255,0.025)", border: "0.5px solid hsl(var(--gold) / 0.12)" }}
         >
-          <p className="text-[9px] tracking-[0.18em] uppercase mb-1.5" style={{ color: "hsl(var(--text-muted))" }}>
+          <p className="text-[11px] tracking-[0.18em] uppercase mb-1.5" style={{ color: "hsl(var(--text-muted))" }}>
             Lunar day
           </p>
           <p className="text-base font-medium" style={{ fontFamily: "'Cormorant Garamond', serif", color: "hsl(var(--gold))" }}>
@@ -99,7 +99,7 @@ export default function DailyHeroCard({
           className="rounded-2xl px-4 py-3.5"
           style={{ background: "rgba(255,255,255,0.025)", border: "0.5px solid hsl(var(--gold) / 0.12)" }}
         >
-          <p className="text-[9px] tracking-[0.18em] uppercase mb-1.5 flex items-center gap-1.5" style={{ color: "hsl(var(--text-muted))" }}>
+          <p className="text-[11px] tracking-[0.18em] uppercase mb-1.5 flex items-center gap-1.5" style={{ color: "hsl(var(--text-muted))" }}>
             <Moon className="h-3 w-3" /> Moon's nakshatra
           </p>
           <p className="text-base font-medium" style={{ fontFamily: "'Cormorant Garamond', serif", color: "hsl(var(--gold))" }}>

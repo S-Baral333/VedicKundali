@@ -144,7 +144,7 @@ function NorthIndianChart({ chartData, hoveredHouse, onHoverHouse }: { chartData
             return (
               <div key={idx} className="col-span-2 row-span-2 flex items-center justify-center rounded-xl bg-gradient-to-br from-primary/15 via-card to-primary/5 border border-primary/30 p-3 relative" style={{ animation: "card-glow 4s ease-in-out infinite" }}>
                 <div className="text-center">
-                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-0.5">Lagna</p>
+                  <p className="text-[11px] uppercase tracking-widest text-muted-foreground mb-0.5">Lagna</p>
                   <p className="text-3xl mb-0.5">{ZODIAC_GLYPHS[ascSign] || "✦"}</p>
                   <p className="font-serif font-semibold text-foreground">{ascSign}</p>
                   <p className="text-xs text-muted-foreground">{chartData.ascendant.degree.toFixed(1)}°</p>
@@ -253,7 +253,7 @@ function PlanetPillsRow({ chartData }: { chartData: ChartData }) {
             <span className={`text-base ${PLANET_COLORS[p.name] || ""}`}>{PLANET_GLYPHS[p.name]}</span>
             <span className="text-xs font-medium">{p.name}</span>
             <span className="text-[10px] opacity-80">· {p.sign} · H{p.house}</span>
-            <span className="text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-background/40">{status.label}</span>
+            <span className="text-[11px] uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-background/40">{status.label}</span>
           </div>
         );
       })}
@@ -832,7 +832,7 @@ export default function BirthChartPage() {
             {/* Quick stats card */}
             {cd && (
               <div className="rounded-2xl border border-primary/15 bg-card/55 backdrop-blur-md p-4 space-y-2.5">
-                <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground mb-1">{t("birthChart.sidebar.quickStats")}</p>
+                <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground mb-1">{t("birthChart.sidebar.quickStats")}</p>
                 {[
                   { label: t("birthChart.sidebar.ascendant"), val: `${cd.ascendant.sign} ${ZODIAC_GLYPHS[cd.ascendant.sign] || ""}` },
                   { label: t("birthChart.sidebar.moon"), val: `${cd.moon_sign} ${ZODIAC_GLYPHS[cd.moon_sign] || ""}` },
@@ -906,7 +906,7 @@ export default function BirthChartPage() {
                     <NorthIndianChart chartData={cd} hoveredHouse={hoveredHouse} onHoverHouse={setHoveredHouse} />
                     {/* Legend */}
                     <div className="rounded-xl border border-primary/15 bg-background/30 p-3 space-y-1">
-                      <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground mb-2">Planets</p>
+                      <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground mb-2">Planets</p>
                       {cd.planets.map(p => (
                         <div
                           key={p.name}

@@ -68,7 +68,7 @@ export default function MicroRitualCard({ text, userId, validDate, period }: Pro
         <Flame className="h-4 w-4" style={{ color: "hsl(var(--gold))" }} />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-[10px] tracking-[0.18em] uppercase mb-1.5" style={{ color: "hsl(var(--gold))" }}>
+        <p className="text-[11px] tracking-[0.18em] uppercase mb-1.5" style={{ color: "hsl(var(--gold))" }}>
           60-Second Ritual
         </p>
         <p
@@ -86,7 +86,7 @@ export default function MicroRitualCard({ text, userId, validDate, period }: Pro
       <button
         onClick={toggle}
         disabled={busy}
-        className="shrink-0 inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] tracking-wider uppercase border transition-colors disabled:opacity-60"
+        className="shrink-0 inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] tracking-wider uppercase border transition-colors disabled:opacity-60"
         style={{
           color: done ? "hsl(var(--background))" : "hsl(var(--gold))",
           background: done ? "hsl(var(--gold))" : "transparent",

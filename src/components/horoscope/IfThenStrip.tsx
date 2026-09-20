@@ -8,7 +8,7 @@ export default function IfThenStrip({ items }: { items?: IfThen[] }) {
     <div>
       <div className="flex items-center gap-2 mb-3">
         <GitBranch className="h-3.5 w-3.5" style={{ color: "hsl(var(--gold))" }} />
-        <span className="text-[10px] tracking-[0.18em] uppercase" style={{ color: "hsl(var(--text-muted))" }}>
+        <span className="text-[11px] tracking-[0.18em] uppercase" style={{ color: "hsl(var(--text-muted))" }}>
           Today's Choreography
         </span>
       </div>
@@ -20,20 +20,20 @@ export default function IfThenStrip({ items }: { items?: IfThen[] }) {
             style={{ background: "rgba(255,255,255,0.025)", border: "0.5px solid hsl(var(--gold) / 0.14)" }}
           >
             {it.when && (
-              <span className="inline-block px-2 py-0.5 rounded-full text-[9px] tracking-[0.16em] uppercase mb-2"
+              <span className="inline-block px-2 py-0.5 rounded-full text-[11px] tracking-[0.16em] uppercase mb-2"
                 style={{ background: "hsl(var(--gold) / 0.10)", color: "hsl(var(--gold))" }}>
                 {it.when}
               </span>
             )}
             {it.if && (
               <p className="text-[12px] leading-snug mb-1.5" style={{ color: "hsl(var(--text-muted))", fontFamily: "'Jost', sans-serif" }}>
-                <span className="uppercase tracking-wider text-[9px] mr-1.5" style={{ color: "hsl(var(--gold))" }}>If</span>
+                <span className="uppercase tracking-wider text-[11px] mr-1.5" style={{ color: "hsl(var(--gold))" }}>If</span>
                 {it.if}
               </p>
             )}
             {it.then && (
               <p className="text-[13.5px] leading-snug" style={{ color: "hsl(var(--text-primary))", fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic" }}>
-                <span className="uppercase tracking-wider text-[9px] not-italic mr-1.5" style={{ color: "hsl(var(--gold))", fontFamily: "'Jost', sans-serif" }}>Then</span>
+                <span className="uppercase tracking-wider text-[11px] not-italic mr-1.5" style={{ color: "hsl(var(--gold))", fontFamily: "'Jost', sans-serif" }}>Then</span>
                 {it.then}
               </p>
             )}

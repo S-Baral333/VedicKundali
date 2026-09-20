@@ -88,7 +88,7 @@ export default function JournalPin({ userId, validDate, period }: Props) {
       style={{ background: "var(--mood-tint, rgba(201,168,76,0.04))", border: "0.5px solid hsl(var(--mood-accent, 42 65% 55%) / 0.22)" }}
     >
       <div className="flex items-center justify-between mb-1.5">
-        <p className="text-[10px] tracking-[0.16em] uppercase" style={{ color: "hsl(var(--mood-accent))" }}>
+        <p className="text-[11px] tracking-[0.16em] uppercase" style={{ color: "hsl(var(--mood-accent))" }}>
           Today's note
         </p>
         {saved && (

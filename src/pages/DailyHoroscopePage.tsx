@@ -165,7 +165,7 @@ function GlassCard({ children, delay = 0, className = "", style = {} }: { childr
 /* ─── Section label ─── */
 function SectionLabel({ icon: Icon, children, color }: { icon: typeof Sun; children: React.ReactNode; color?: string }) {
   return (
-    <div className="flex items-center gap-2 mb-3" style={{ fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase", color: color || "hsl(var(--gold))" }}>
+    <div className="flex items-center gap-2 mb-3" style={{ fontSize: "0.6875rem", fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase", color: color || "hsl(var(--gold))" }}>
       <Icon className="h-3.5 w-3.5" />
       <span>{children}</span>
       <span className="flex-1 h-px" style={{ background: `linear-gradient(90deg, ${color || "hsl(var(--gold))"} 30%, transparent)`, opacity: 0.4 }} />
@@ -489,7 +489,7 @@ export default function DailyHoroscopePage() {
                   <span className="text-lg leading-none" style={{ color: "hsl(var(--gold))" }}>
                     {PLANET_SYMBOLS[p.name] || "✦"}
                   </span>
-                  <span className="text-[9px] font-medium tracking-[0.12em] uppercase mt-1" style={{ color: "hsl(var(--text-muted))" }}>
+                  <span className="text-[11px] font-medium tracking-[0.12em] uppercase mt-1" style={{ color: "hsl(var(--text-muted))" }}>
                     {p.name}{p.is_retrograde ? " (R)" : ""}
                   </span>
                   <span className="text-[13px] mt-0.5" style={{ fontFamily: "'Cormorant Garamond', serif", color: "hsl(var(--gold))" }}>{p.sign}</span>
@@ -506,7 +506,7 @@ export default function DailyHoroscopePage() {
 
         {/* ─── 2. PAGE HEADER ─── */}
         <div className="sacred-reveal" style={{ animationDelay: "0.06s" }}>
-          <p className="text-[10px] tracking-[0.18em] uppercase mb-2" style={{ color: "hsl(var(--text-muted))" }}>
+          <p className="text-[11px] tracking-[0.18em] uppercase mb-2" style={{ color: "hsl(var(--text-muted))" }}>
             {sign && sign !== "General" ? t("horoscope.subtitle.moonIn", { sign }) : t("horoscope.subtitle.generalGuidance")} · {formatDateSubtitle()}
           </p>
           <div className="flex items-center justify-between">
@@ -518,7 +518,7 @@ export default function DailyHoroscopePage() {
             </Button>
           </div>
           {headerSubLine && (
-            <p className="text-[10px] tracking-[0.14em] uppercase mt-2" style={{ color: "hsl(var(--text-muted))" }}>
+            <p className="text-[11px] tracking-[0.14em] uppercase mt-2" style={{ color: "hsl(var(--text-muted))" }}>
               {headerSubLine}
             </p>
           )}
@@ -556,7 +556,7 @@ export default function DailyHoroscopePage() {
                 { label: t("horoscope.dasha.daysRemaining"), value: dashaDays != null ? String(dashaDays) : "—" },
               ].map((item, i) => (
                 <div key={item.label} className="text-center py-2" style={{ borderRight: i < 3 ? "0.5px solid hsl(var(--gold) / 0.1)" : "none" }}>
-                  <p className="text-[9px] tracking-[0.14em] uppercase" style={{ color: "hsl(var(--text-muted))" }}>{item.label}</p>
+                  <p className="text-[11px] tracking-[0.14em] uppercase" style={{ color: "hsl(var(--text-muted))" }}>{item.label}</p>
                   <p className={`mt-1 ${item.label === "Days Remaining" ? "text-2xl font-light" : "text-sm font-medium"}`} style={{ fontFamily: "'Cormorant Garamond', serif", color: "hsl(var(--gold))" }}>{item.value}</p>
                 </div>
               ))}
@@ -624,7 +624,7 @@ export default function DailyHoroscopePage() {
                     </p>
                     <div className="mt-3 flex items-center gap-2 pl-4">
                       <span className="w-8 h-px" style={{ background: "hsl(var(--gold) / 0.4)" }} />
-                      <span className="text-[10px] tracking-[0.14em] uppercase" style={{ color: "hsl(var(--gold))" }}>Your Astrologer</span>
+                      <span className="text-[11px] tracking-[0.14em] uppercase" style={{ color: "hsl(var(--gold))" }}>Your Astrologer</span>
                     </div>
                   </div>
                 </GlassCard>
@@ -705,7 +705,7 @@ export default function DailyHoroscopePage() {
                   </SectionLabel>
                   <div className="space-y-2">
                     {horoscope.energy_level && (
-                      <span className="inline-block px-2.5 py-1 rounded-full text-[10px] font-medium tracking-wider uppercase" style={{ background: `${energyColor}15`, color: energyColor, border: `0.5px solid ${energyColor}30` }}>
+                      <span className="inline-block px-2.5 py-1 rounded-full text-[11px] font-medium tracking-wider uppercase" style={{ background: `${energyColor}15`, color: energyColor, border: `0.5px solid ${energyColor}30` }}>
                         {horoscope.energy_level} energy
                       </span>
                     )}
@@ -719,7 +719,7 @@ export default function DailyHoroscopePage() {
                 <GlassCard delay={0.42} className="text-center !py-8">
                   <div className="flex items-center justify-center gap-3 mb-4">
                     <span className="w-12 h-px" style={{ background: "linear-gradient(90deg, transparent, hsl(var(--gold) / 0.5))" }} />
-                    <span className="text-[10px] tracking-[0.2em] uppercase" style={{ color: "hsl(var(--text-muted))" }}>
+                    <span className="text-[11px] tracking-[0.2em] uppercase" style={{ color: "hsl(var(--text-muted))" }}>
                       {period === "daily" || period === "tomorrow" ? t("horoscope.section.mantraDay") : period === "weekly" ? t("horoscope.section.mantraWeek") : period === "monthly" ? t("horoscope.section.mantraMonth") : t("horoscope.section.mantraYear")}
                     </span>
                     <span className="w-12 h-px" style={{ background: "linear-gradient(90deg, hsl(var(--gold) / 0.5), transparent)" }} />
@@ -756,7 +756,7 @@ export default function DailyHoroscopePage() {
                         <CollapsibleTrigger className="w-full flex items-center justify-between">
                           <div className="text-left">
                             <p className="text-sm font-semibold" style={{ fontFamily: "'Cormorant Garamond', serif", color: "hsl(var(--text-primary))" }}>{q.quarter}</p>
-                            <p className="text-[10px] tracking-wider uppercase mt-0.5" style={{ color: "hsl(var(--text-muted))" }}>{q.theme}</p>
+                            <p className="text-[11px] tracking-wider uppercase mt-0.5" style={{ color: "hsl(var(--text-muted))" }}>{q.theme}</p>
                           </div>
                           <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform" />
                         </CollapsibleTrigger>
@@ -833,16 +833,16 @@ export default function DailyHoroscopePage() {
                   <div className="grid grid-cols-3 gap-3">
                     {/* Lucky Color with swatch */}
                     <div className="text-center">
-                      <p className="text-[9px] tracking-widest uppercase mb-2" style={{ color: "hsl(var(--text-muted))" }}>Lucky Color</p>
+                      <p className="text-[11px] tracking-widest uppercase mb-2" style={{ color: "hsl(var(--text-muted))" }}>Lucky Color</p>
                       <div className="w-6 h-6 rounded-full mx-auto mb-1.5 border" style={{ background: getColorHex(horoscope.lucky_color), borderColor: "hsl(var(--gold) / 0.3)", boxShadow: `0 0 10px ${getColorHex(horoscope.lucky_color)}40` }} />
                       <p className="text-xs font-medium" style={{ fontFamily: "'Cormorant Garamond', serif", color: "hsl(var(--text-primary))" }}>{horoscope.lucky_color}</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-[9px] tracking-widest uppercase mb-2" style={{ color: "hsl(var(--text-muted))" }}>Lucky Number</p>
+                      <p className="text-[11px] tracking-widest uppercase mb-2" style={{ color: "hsl(var(--text-muted))" }}>Lucky Number</p>
                       <p className="text-2xl font-light" style={{ fontFamily: "'Cormorant Garamond', serif", color: "hsl(var(--gold))" }}>{horoscope.lucky_number}</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-[9px] tracking-widest uppercase mb-2" style={{ color: "hsl(var(--text-muted))" }}>Direction</p>
+                      <p className="text-[11px] tracking-widest uppercase mb-2" style={{ color: "hsl(var(--text-muted))" }}>Direction</p>
                       <Compass className="h-5 w-5 mx-auto mb-1" style={{ color: "hsl(var(--gold) / 0.6)" }} />
                       <p className="text-xs font-medium" style={{ fontFamily: "'Cormorant Garamond', serif", color: "hsl(var(--text-primary))" }}>{horoscope.direction}</p>
                     </div>
@@ -892,7 +892,7 @@ export default function DailyHoroscopePage() {
                     {horoscope.key_dates.map((kd, i) => (
                       <div key={i} className="relative pl-2">
                         <div className="sacred-timeline-dot" />
-                        <p className="text-[10px] tracking-widest uppercase" style={{ color: "hsl(var(--gold))" }}>
+                        <p className="text-[11px] tracking-widest uppercase" style={{ color: "hsl(var(--gold))" }}>
                           {new Date(kd.date + "T00:00").toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                         </p>
                         <p className="text-sm mt-0.5 leading-relaxed" style={{ fontFamily: "'Jost', sans-serif", fontWeight: 300, color: "hsl(var(--text-secondary))" }}>{kd.description}</p>

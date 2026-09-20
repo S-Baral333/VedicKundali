@@ -62,7 +62,7 @@ export default function ReactionStrip({ userId, validDate, period }: Props) {
 
   return (
     <div className="flex flex-col items-center gap-3 pt-2">
-      <p className="text-[10px] tracking-[0.18em] uppercase" style={{ color: "hsl(var(--text-muted))" }}>
+      <p className="text-[11px] tracking-[0.18em] uppercase" style={{ color: "hsl(var(--text-muted))" }}>
         Did this reading resonate?
       </p>
       <div className="flex items-center gap-2">

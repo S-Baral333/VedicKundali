@@ -52,11 +52,11 @@ export function VerificationStrip({ ascendantSign, ascendantDegree, ayanamsha = 
         {segments.map((s, i) => (
           <div key={s.label} className="flex items-center gap-3">
             {i > 0 && <span className="text-primary/50">·</span>}
-            <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{s.label}</span>
+            <span className="text-[11px] uppercase tracking-wider text-muted-foreground">{s.label}</span>
             <span className="text-sm text-foreground font-medium">{s.value}</span>
           </div>
         ))}
-        <span className="ml-3 inline-flex items-center gap-1.5 rounded-full border border-primary/40 bg-primary/10 px-2.5 py-1 text-[10px] uppercase tracking-wider text-primary">
+        <span className="ml-3 inline-flex items-center gap-1.5 rounded-full border border-primary/40 bg-primary/10 px-2.5 py-1 text-[11px] uppercase tracking-wider text-primary">
           <span className="relative inline-flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
@@ -100,7 +100,7 @@ export function PanchangaGrid({ panchanga, moonSign }: { panchanga?: PanchangaIn
           className="group relative rounded-2xl border border-primary/15 bg-card/60 backdrop-blur-md p-4 transition-all hover:-translate-y-0.5 hover:border-primary/35 hover:shadow-[0_8px_24px_-12px_hsl(var(--primary)/0.4)]"
         >
           <div className="flex items-start justify-between mb-1">
-            <span className="text-[9px] uppercase tracking-[0.18em] text-primary/80">{c.label}</span>
+            <span className="text-[11px] uppercase tracking-[0.18em] text-primary/80">{c.label}</span>
             <span className="text-base text-primary/60">{PANCHANGA_GLYPHS[c.label]}</span>
           </div>
           <p className="font-serif text-base text-foreground leading-tight">{c.value}</p>
@@ -124,7 +124,7 @@ export function DashaTimeline({ periods, current }: { periods: DashaPeriod[]; cu
   if (!periods.length) return null;
   return (
     <div className="space-y-3">
-      <p className="text-[10px] text-muted-foreground uppercase tracking-wider text-center">▼ Current life position</p>
+      <p className="text-[11px] text-muted-foreground uppercase tracking-wider text-center">▼ Current life position</p>
       <div className="relative">
         <div className="flex gap-2 overflow-x-auto pb-3 snap-x scroll-smooth -mx-1 px-1">
           {periods.map((p) => {
@@ -144,7 +144,7 @@ export function DashaTimeline({ periods, current }: { periods: DashaPeriod[]; cu
               >
                 <p className="font-serif font-semibold text-sm">{p.planet}</p>
                 <p className="text-[10px] mt-0.5 tabular-nums">{p.startYear}–{p.endYear}</p>
-                {isNow && <p className="text-[9px] text-primary mt-1 uppercase tracking-wider">You are here</p>}
+                {isNow && <p className="text-[11px] text-primary mt-1 uppercase tracking-wider">You are here</p>}
               </div>
             );
           })}
@@ -177,17 +177,17 @@ export function MangalFeatureCard({ active, startYear, endYear }: { active?: boo
             <p className="text-[11px] text-muted-foreground">Mars Major Period · {status}</p>
           </div>
         </div>
-        <Badge className="text-[10px] uppercase tracking-wider bg-red-500/20 text-red-300 border border-red-500/40">
+        <Badge className="text-[11px] uppercase tracking-wider bg-red-500/20 text-red-300 border border-red-500/40">
           {active ? "Active" : "Enrolled"}
         </Badge>
       </div>
       <div className="grid grid-cols-2 gap-3 text-sm mb-3">
         <div>
-          <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Duration</p>
+          <p className="text-[11px] uppercase tracking-wider text-muted-foreground">Duration</p>
           <p className="font-medium text-foreground">{total} years · {startYear}–{endYear}</p>
         </div>
         <div>
-          <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Progress</p>
+          <p className="text-[11px] uppercase tracking-wider text-muted-foreground">Progress</p>
           <div className="h-2 rounded-full bg-card/80 mt-1.5 overflow-hidden">
             <div className="h-full bg-gradient-to-r from-red-500 to-orange-400 transition-all" style={{ width: `${pct}%` }} />
           </div>
@@ -262,7 +262,7 @@ export function YogasAccordionV2({ yogas }: { yogas?: YogaItem[] }) {
             <AccordionTrigger className="hover:no-underline py-3">
               <div className="flex items-center gap-3 flex-1 text-left">
                 <span className="font-serif text-sm text-foreground">{y.name}</span>
-                <span className={`text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded border ${QUALITY_STYLE[y.quality!]}`}>{y.quality}</span>
+                <span className={`text-[11px] uppercase tracking-wider px-1.5 py-0.5 rounded border ${QUALITY_STYLE[y.quality!]}`}>{y.quality}</span>
                 <span className="ml-auto flex items-center gap-0.5">
                   {Array.from({ length: 5 }).map((_, idx) => (
                     <Star key={idx} className={`h-2.5 w-2.5 ${idx < (y.strength || 0) ? "text-primary fill-primary" : "text-muted-foreground/30"}`} />
@@ -373,7 +373,7 @@ export function PersonSidebarList({
 }) {
   return (
     <div className="space-y-3">
-      <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-medium px-1">Chart for</p>
+      <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground font-medium px-1">Chart for</p>
       <div className="space-y-2">
         {people.map((p) => {
           const active = p.id === activeId;

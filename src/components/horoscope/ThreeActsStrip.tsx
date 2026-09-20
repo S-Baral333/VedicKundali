@@ -32,7 +32,7 @@ export default function ThreeActsStrip({ acts }: { acts?: Acts }) {
           >
             <div className="flex items-center gap-2 mb-2">
               <Icon className="h-3.5 w-3.5" style={{ color: "hsl(var(--gold))" }} />
-              <span className="text-[10px] tracking-[0.18em] uppercase" style={{ color: "hsl(var(--text-muted))" }}>{label}</span>
+              <span className="text-[11px] tracking-[0.18em] uppercase" style={{ color: "hsl(var(--text-muted))" }}>{label}</span>
             </div>
             <p className="text-[14px] leading-[1.65]" style={{ fontFamily: "'Jost', sans-serif", fontWeight: 300, color: "hsl(var(--text-secondary))" }}>
               <AstroText text={txt} />

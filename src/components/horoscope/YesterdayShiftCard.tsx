@@ -94,7 +94,7 @@ export default function YesterdayShiftCard({ signName, todayTransits, validDate 
 
   return (
     <div className="horo-glass-card sacred-reveal" style={{ animationDelay: "0.22s", background: "var(--mood-tint)", borderColor: "hsl(var(--mood-accent) / 0.22)" }}>
-      <div className="flex items-center gap-2 mb-3" style={{ fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase", color: "hsl(var(--mood-accent))" }}>
+      <div className="flex items-center gap-2 mb-3" style={{ fontSize: "0.6875rem", fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase", color: "hsl(var(--mood-accent))" }}>
         <GitBranch className="h-3.5 w-3.5" />
         <span>Since yesterday</span>
         <span className="flex-1 h-px" style={{ background: "linear-gradient(90deg, hsl(var(--mood-accent) / 0.4) 30%, transparent)" }} />

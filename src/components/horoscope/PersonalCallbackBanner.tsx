@@ -12,7 +12,7 @@ export default function PersonalCallbackBanner({ text }: { text?: string }) {
     >
       <Flame className="h-4 w-4 mt-1 shrink-0" style={{ color: "hsl(var(--gold))" }} />
       <div>
-        <p className="text-[10px] tracking-[0.2em] uppercase mb-1.5" style={{ color: "hsl(var(--gold))" }}>
+        <p className="text-[11px] tracking-[0.2em] uppercase mb-1.5" style={{ color: "hsl(var(--gold))" }}>
           Rishi Guru · Reading From Your Chart
         </p>
         <p

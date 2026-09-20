@@ -128,7 +128,7 @@ function HoroscopePreviewCard({ chartId }: { chartId: string | null }) {
         )}
         {bestHours.length > 0 && (
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg mb-5 text-[12.5px]" style={{ background: "hsl(var(--gold) / 0.06)", border: "0.5px solid hsl(var(--gold) / 0.14)", color: "hsl(var(--gold-light))", letterSpacing: "0.03em" }}>
-            <span className="text-[9.5px] uppercase tracking-[0.22em]" style={{ color: "hsl(var(--text-muted))" }}>{t("dashboard.bestHoursLabel")}</span>
+            <span className="text-[11px] uppercase tracking-[0.22em]" style={{ color: "hsl(var(--text-muted))" }}>{t("dashboard.bestHoursLabel")}</span>
             {bestHours.slice(0, 2).join(" · ")}
           </div>
         )}
@@ -312,7 +312,7 @@ const UserDashboard = React.forwardRef<HTMLDivElement>((_props, ref) => {
         <main className="sacred-prose">
           {/* ── HERO GREETING (re-mounts on chart switch so the swap is felt) ── */}
           <div key={activeChart?.id || "no-chart"} className="animate-fade-in-up mb-10">
-            <div className="flex items-center gap-2.5 mb-4" style={{ color: "hsl(var(--text-muted) / 0.85)", fontSize: "9.5px", letterSpacing: "0.22em", fontFamily: "'Jost', sans-serif", textTransform: "uppercase" }}>
+            <div className="flex items-center gap-2.5 mb-4" style={{ color: "hsl(var(--text-muted) / 0.85)", fontSize: "11px", letterSpacing: "0.22em", fontFamily: "'Jost', sans-serif", textTransform: "uppercase" }}>
               <span className="w-7 h-px" style={{ background: "hsl(var(--gold) / 0.5)" }} />
               <span>{t("dashboard.sacredLabel")}</span>
               <Button
@@ -342,7 +342,7 @@ const UserDashboard = React.forwardRef<HTMLDivElement>((_props, ref) => {
                 <>
                   <span style={{ color: "hsl(var(--text-muted) / 0.6)" }}>·</span>
                   <span>
-                    <span style={{ color: "hsl(var(--text-muted))", fontSize: "10.5px", letterSpacing: "0.18em", textTransform: "uppercase", fontFamily: "'Jost', sans-serif", marginRight: "6px" }}>
+                    <span style={{ color: "hsl(var(--text-muted))", fontSize: "11px", letterSpacing: "0.18em", textTransform: "uppercase", fontFamily: "'Jost', sans-serif", marginRight: "6px" }}>
                       {t("dashboard.readingAs")}
                     </span>
                     <span style={{ color: "hsl(var(--gold-light))", fontFamily: "'Cormorant Garamond', serif", fontSize: "15px", fontStyle: "italic" }}>
@@ -420,7 +420,7 @@ const UserDashboard = React.forwardRef<HTMLDivElement>((_props, ref) => {
                         background: "hsl(0 0% 100% / 0.025)",
                         border: "0.5px solid hsl(var(--glass-border-soft))",
                       }}>
-                        <p className="text-[10px] uppercase tracking-[0.14em] mb-2" style={{ color: "hsl(var(--text-muted))" }}>{item.label}</p>
+                        <p className="text-[11px] uppercase tracking-[0.14em] mb-2" style={{ color: "hsl(var(--text-muted))" }}>{item.label}</p>
                         <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "19px", fontWeight: 400, color: "hsl(var(--gold-light))", letterSpacing: "0.02em" }}>{item.value || "—"}</p>
                       </div>
                     ))}
