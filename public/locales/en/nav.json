@@ -10,5 +10,13 @@
   "muhurta": "Muhurta",
   "profile": "Profile",
   "billing": "Billing",
-  "pricing": "Pricing"
+  "pricing": "Pricing",
+  "dock": {
+    "home": "Home",
+    "today": "Today",
+    "chart": "Chart",
+    "dreams": "Dreams",
+    "more": "More",
+    "moreTitle": "Explore"
+  }
 }

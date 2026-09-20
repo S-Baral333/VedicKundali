@@ -10,5 +10,13 @@
   "muhurta": "মুহূর্ত",
   "profile": "প্রোফাইল",
   "billing": "বিলিং",
-  "pricing": "মূল্য"
+  "pricing": "মূল্য",
+  "dock": {
+    "home": "হোম",
+    "today": "আজ",
+    "chart": "কুণ্ডলী",
+    "dreams": "স্বপ্ন",
+    "more": "আরও",
+    "moreTitle": "অন্বেষণ"
+  }
 }

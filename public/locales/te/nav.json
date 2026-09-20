@@ -10,5 +10,13 @@
   "muhurta": "ముహూర్తం",
   "profile": "ప్రొఫైల్",
   "billing": "బిల్లింగ్",
-  "pricing": "ధర"
+  "pricing": "ధర",
+  "dock": {
+    "home": "హోమ్",
+    "today": "నేడు",
+    "chart": "కుండలి",
+    "dreams": "కలలు",
+    "more": "మరిన్ని",
+    "moreTitle": "అన్వేషించు"
+  }
 }

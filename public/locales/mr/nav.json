@@ -10,5 +10,13 @@
   "muhurta": "मुहूर्त",
   "profile": "प्रोफाइल",
   "billing": "बिलिंग",
-  "pricing": "किंमत"
+  "pricing": "किंमत",
+  "dock": {
+    "home": "होम",
+    "today": "आज",
+    "chart": "कुंडली",
+    "dreams": "स्वप्ने",
+    "more": "अधिक",
+    "moreTitle": "शोधा"
+  }
 }
