@@ -149,6 +149,34 @@ export function modelForTier(tier: Tier): string {
     : "claude-haiku-4-5-20251001";
 }
 
+/**
+ * Models these functions are allowed to call. Every one is an Anthropic id,
+ * because every AI call in this project goes to api.anthropic.com.
+ */
+const ALLOWED_MODELS = new Set([
+  "claude-opus-5",
+  "claude-sonnet-5",
+  "claude-haiku-4-5-20251001",
+]);
+
+/**
+ * Decide which model to call.
+ *
+ * A caller-supplied model is only honoured when it is on the allowlist above.
+ * The client used to pass ids from a previous AI gateway ("google/gemini-…"),
+ * which were forwarded verbatim to the Anthropic API and failed every request;
+ * anything unrecognised is therefore ignored in favour of the tier default
+ * rather than trusted. The model also drives cost, so the server — not the
+ * caller — gets the final say.
+ */
+export function resolveModel(requested: string | null | undefined, tier: Tier): string {
+  if (requested && ALLOWED_MODELS.has(requested)) return requested;
+  if (requested) {
+    console.warn(`[models] ignoring unsupported model "${requested}", falling back to tier default`);
+  }
+  return modelForTier(tier);
+}
+
 /** Lowest tier that enables a feature — used to tell the client what to upsell. */
 export function requiredTierFor(feature: FeatureKey): Tier {
   for (const t of TIER_ORDER) {

@@ -3,6 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { normalizeLanguage, buildLanguageInstruction } from "../_shared/languages.ts";
 import { resolveGuruContext, applyGuru } from "../_shared/guru.ts";
 import { resolveAccess } from "../_shared/access.ts";
+import { resolveModel } from "../_shared/tiers.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -272,7 +273,7 @@ First, extract the key symbols and classify this dream.`;
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: ai_model || "claude-haiku-4-5-20251001",
+          model: resolveModel(ai_model, access.tier),
           max_tokens: 1024,
           system: applyGuru(SWAPNA_SHASTRA_SYSTEM_PROMPT, guru),
           messages: [{ role: "user", content: dreamPrompt }],
@@ -369,7 +370,7 @@ Provide the complete layered interpretation following the exact output structure
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: ai_model || "claude-haiku-4-5-20251001",
+          model: resolveModel(ai_model, access.tier),
           max_tokens: 8192,
           stream: true,
           system: applyGuru(SWAPNA_SHASTRA_SYSTEM_PROMPT + languageInstruction, guru),

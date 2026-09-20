@@ -259,12 +259,22 @@ export function useSubscription() {
   return ctx;
 }
 
-/** Tier-aware AI model routing. */
+/**
+ * Tier-aware AI model routing.
+ *
+ * @deprecated The edge functions decide which model to call — the server owns
+ * this because the model drives cost and every AI call goes to Anthropic.
+ * Do not send the result as `ai_model` in a request body.
+ *
+ * Kept only so existing imports keep type-checking, and corrected to Anthropic
+ * ids to match supabase/functions/_shared/tiers.ts. It previously returned
+ * "google/gemini-…" ids left over from an earlier AI gateway, which the
+ * functions forwarded verbatim to api.anthropic.com and which failed every
+ * Oracle and dream request.
+ */
 export function getModelForTier(tier: Tier | string): string {
   const t = normalizeTier(tier as any);
-  if (t === "jyotisha") return "google/gemini-2.5-pro";
-  if (t === "grihastha") return "google/gemini-2.5-pro";
-  return "google/gemini-3-flash-preview";
+  return tierAtLeast(t, "grihastha") ? "claude-sonnet-5" : "claude-haiku-4-5-20251001";
 }
 
 export { TIER_ORDER };

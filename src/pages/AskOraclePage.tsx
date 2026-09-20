@@ -18,7 +18,6 @@ import PageNavRail from "@/components/layout/PageNavRail";
 import CosmicFieldCard from "@/components/layout/CosmicFieldCard";
 import PaywallModal from "@/components/PaywallModal";
 import { useSubscription } from "@/hooks/useSubscription";
-import { getModelForTier } from "@/hooks/useSubscription";
 import { useRishiGuru } from "@/hooks/useRishiGuru";
 import LiveOracleStream from "@/components/oracle/LiveOracleStream";
 import GuruWatchingPanel from "@/components/oracle/GuruWatchingPanel";
@@ -654,7 +653,6 @@ export default function AskOraclePage() {
         question: q,
         category: effectiveCategory,
         mode: effectiveMode,
-        ai_model: getModelForTier(tier),
         chart_id: activeChart?.id,
         stream: true,
         language: getCurrentLanguage(),

@@ -25,7 +25,6 @@ import { Moon, Sparkles, Eye, ChevronDown, Loader2, Trash2, Copy, MoonStar, Clou
 import UsageIndicator from "@/components/UsageIndicator";
 import PaywallModal from "@/components/PaywallModal";
 import { useSubscription } from "@/hooks/useSubscription";
-import { getModelForTier } from "@/hooks/useSubscription";
 import TwinkleText from "@/components/TwinkleText";
 import SacredPageShell from "@/components/layout/SacredPageShell";
 import PageNavRail from "@/components/layout/PageNavRail";
@@ -194,7 +193,6 @@ export default function DreamInterpretationPage() {
             is_lucid: isLucid,
             life_context: lifeContext || null,
             birth_chart_id: birthChartId || null,
-            ai_model: getModelForTier(tier),
             language: getCurrentLanguage(),
           }),
         }

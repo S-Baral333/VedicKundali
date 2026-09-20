@@ -4,7 +4,7 @@ import { Body, EclipticLongitude, MakeTime, GeoVector, Ecliptic } from "https://
 import { normalizeLanguage, buildLanguageInstruction } from "../_shared/languages.ts";
 import { resolveGuruContext, type GuruContext } from "../_shared/guru.ts";
 import { resolveAccess } from "../_shared/access.ts";
-import { modelForTier, type Tier } from "../_shared/tiers.ts";
+import { resolveModel, type Tier } from "../_shared/tiers.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -565,7 +565,7 @@ async function runOracleDecisionJob(args: {
   const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY");
   if (!ANTHROPIC_API_KEY) throw new Error("ANTHROPIC_API_KEY not configured");
 
-  const chosenModel = ai_model || modelForTier(tier);
+  const chosenModel = resolveModel(ai_model, tier);
 
   await sleep(LAYER_DWELL_MS);
   await updateOracleJob(serviceClient, jobId, {
@@ -957,7 +957,7 @@ async function runOracleStream(args: {
     });
   }
 
-  const chosenModel = ai_model || modelForTier(tier);
+  const chosenModel = resolveModel(ai_model, tier);
 
   const aiRes = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
