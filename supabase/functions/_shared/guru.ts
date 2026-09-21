@@ -109,6 +109,9 @@ GOD-MODE EXTRA FIELDS — REQUIRED in addition to the format above:
   "life_area_lens": [
     { "area": "career|love|health|finances|spirituality", "guidance": "2 sentences specific to this life area" }
   ],
+  // life_area_lens rules: "area" must be exactly one of the five words above
+  // (never a priority key like "major_decision"). Each entry must cite a
+  // DIFFERENT evidence item from any used in three_acts — never restate an act.
   "citations": [
     "Short footnote-style attribution, e.g. 'BPHS Ch. 47 — Saturn 12th from Moon (Sade Sati Rising)'",
     "2 to 4 entries total"

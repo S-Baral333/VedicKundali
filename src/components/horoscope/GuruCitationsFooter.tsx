@@ -25,7 +25,8 @@ export default function GuruCitationsFooter({ citations, dharmicClose, lifeAreaL
             <div key={i}>
               <span className="inline-block text-[11px] tracking-[0.18em] uppercase mb-1 px-1.5 py-0.5 rounded"
                 style={{ background: "hsl(var(--gold) / 0.10)", color: "hsl(var(--gold))" }}>
-                {l.area}
+                {/* models sometimes echo a priority key like "major_decision" */}
+                {String(l.area).replace(/_/g, " ")}
               </span>
               <p className="text-[13.5px] leading-[1.65]" style={{ fontFamily: "'Jost', sans-serif", fontWeight: 300, color: "hsl(var(--text-secondary))" }}>
                 {l.guidance}
