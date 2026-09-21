@@ -242,6 +242,16 @@ export default function DailyHoroscopePage() {
     // Defensive: strip any legacy `u:<uuid>:<sign>` cache-key form that may
     // have leaked into the `sign` field from older edge-function responses
     // or stale localStorage payloads. We only want the human moon-sign label.
+    /**
+     * Does this payload actually carry a reading?
+     *
+     * Day readings deliver their narrative through three_acts and longer
+     * periods through guidance, so testing `guidance` alone would reject every
+     * daily reading and leave the poller spinning until it timed out.
+     */
+    const hasReadingContent = (h: any): boolean =>
+      !!h && (!!h.guidance || !!(h.three_acts && (h.three_acts.morning || h.three_acts.afternoon || h.three_acts.evening)));
+
     const cleanSign = (s?: string | null): string => {
       if (!s) return "General";
       if (s.startsWith("u:") || s.startsWith("U:")) return s.split(":").pop() || "General";
@@ -267,7 +277,7 @@ export default function DailyHoroscopePage() {
     if (cached) {
       try {
         const cachedData = JSON.parse(cached);
-        if (cachedData.horoscope?.guidance) {
+        if (hasReadingContent(cachedData.horoscope)) {
           hydrate(cachedData.sign || "General", cachedData.valid_date || localDate, cachedData.horoscope, cachedData.meta || metaFromHoroscope(cachedData.horoscope, dasha));
           if (isLatest()) setLoading(false);
           hasCached = true;
@@ -275,22 +285,30 @@ export default function DailyHoroscopePage() {
       } catch { localStorage.removeItem(cacheKey); }
     }
 
-    // 2) DB fast-path: ready row
+    // 2) DB fast-path: ready row.
+    // A reading generated for someone with a chart is stored under
+    // `u:<userId>:<moonSign>`; only the shared, chart-less rows use the bare
+    // sign. Ask for both and prefer the personal one — querying the bare sign
+    // alone made this path miss every personalised reading.
     if (moonSign) {
-      const { data: dbRow } = await supabase
+      const personalKey = user?.id ? `u:${user.id}:${moonSign}` : null;
+      const candidateKeys = personalKey ? [personalKey, moonSign] : [moonSign];
+      const { data: dbRows } = await supabase
         .from("daily_horoscopes")
-        .select("content, status")
-        .eq("sign_name", moonSign)
+        .select("sign_name, content, status")
+        .in("sign_name", candidateKeys)
         .eq("valid_date", periodValidDate)
         .eq("period", selectedPeriod)
-        .eq("language", getCurrentLanguage())
-        .maybeSingle();
+        .eq("language", getCurrentLanguage());
       if (!isLatest()) return;
+      const dbRow =
+        (dbRows ?? []).find((r: any) => personalKey && r.sign_name === personalKey) ??
+        (dbRows ?? [])[0];
       if (dbRow?.content && (dbRow as any).status !== "processing" && (dbRow as any).status !== "failed") {
         try {
           const parsed = typeof dbRow.content === "string" ? JSON.parse(dbRow.content) : dbRow.content;
-          if (parsed.guidance) {
-            hydrate(moonSign, periodValidDate, parsed, metaFromHoroscope(parsed, dasha));
+          if (hasReadingContent(parsed)) {
+            hydrate((dbRow as any).sign_name || moonSign, periodValidDate, parsed, metaFromHoroscope(parsed, dasha));
             if (isLatest()) setLoading(false);
             return;
           }
@@ -304,6 +322,11 @@ export default function DailyHoroscopePage() {
     }
 
     let triggered = false;
+    // The row key the server actually wrote under. For a user with a chart this
+    // is `u:<userId>:<moonSign>`, not the bare sign, so polling by moonSign can
+    // never match. The 202 response tells us the real key — use it rather than
+    // rebuilding it here, which is how the two drifted apart to begin with.
+    let serverSignKey: string | null = null;
     try {
       const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-horoscope`, {
         method: "POST",
@@ -316,6 +339,7 @@ export default function DailyHoroscopePage() {
 
       if (res.status === 202 || data?.status === "processing") {
         triggered = true;
+        serverSignKey = data?.sign_key ?? null;
         // fall through to polling below
       } else if (!res.ok) {
         if (!hasCached) {
@@ -350,7 +374,7 @@ export default function DailyHoroscopePage() {
 
     // 4) Poll daily_horoscopes table while job is processing
     if (triggered) {
-      const targetSign = moonSign || "General";
+      const targetSign = serverSignKey || moonSign || "General";
       let attempts = 0;
       const maxAttempts = 20; // ~80s
       const poll = async () => {
@@ -369,7 +393,7 @@ export default function DailyHoroscopePage() {
         if (row && (row as any).status === "ready" && row.content) {
           try {
             const parsed = typeof row.content === "string" ? JSON.parse(row.content) : row.content;
-            if (parsed.guidance) {
+            if (hasReadingContent(parsed)) {
               hydrate(targetSign, periodValidDate, parsed, metaFromHoroscope(parsed, dasha));
               if (isLatest()) { setLoading(false); setRefreshing(false); }
               return;

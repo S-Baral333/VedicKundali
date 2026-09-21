@@ -982,7 +982,9 @@ ${(period === "monthly" || period === "yearly") ? `- For this ${period} reading,
           headers: { "x-api-key": ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json" },
           body: JSON.stringify({
             model,
-            max_tokens: 4096,
+            // Indic scripts cost several times more tokens per character than
+            // English; 4096 truncated a Nepali reading mid-string.
+            max_tokens: 8192,
             temperature: 0.9,
             system: systemPrompt,
             messages: [{ role: "user", content: prompt }],
@@ -1003,18 +1005,27 @@ ${(period === "monthly" || period === "yearly") ? `- For this ${period} reading,
         const aiData = await aiRes.json();
         const rawContent = aiData.content?.[0]?.text || "";
 
-        let parsed: any;
+        const stopReason = aiData.stop_reason;
+        let parsed: any = null;
         try {
-          const jsonMatch = rawContent.match(/\{[\s\S]*\}/);
-          parsed = JSON.parse(jsonMatch ? jsonMatch[0] : rawContent);
+          // Strip ```json fences, then take the outermost object.
+          const unfenced = rawContent.replace(/^\s*```(?:json)?\s*/i, "").replace(/\s*```\s*$/, "");
+          const jsonMatch = unfenced.match(/\{[\s\S]*\}/);
+          parsed = JSON.parse(jsonMatch ? jsonMatch[0] : unfenced);
         } catch {
-          parsed = {
-            guidance: rawContent.slice(0, 500),
-            lucky_color: "Gold",
-            lucky_number: 7,
-            direction: "East",
-            cosmic_advice: "Trust the cosmic flow.",
-          };
+          parsed = null;
+        }
+
+        // A reading that failed to parse must be marked failed, not stored as
+        // "ready" with the raw model output as its guidance — that is how a
+        // reader ended up looking at ```json and field names.
+        if (!parsed || typeof parsed !== "object") {
+          console.error(`[horoscope] unparseable output (stop_reason=${stopReason}, ${rawContent.length} chars)`);
+          throw new Error(
+            stopReason === "max_tokens"
+              ? "Reading was cut off before it finished"
+              : "Reading came back in an unreadable format",
+          );
         }
 
         parsed.transits = transits;
