@@ -438,13 +438,13 @@ function getPeriodPromptConfig(period: Period) {
     },
     yearly: {
       model: "claude-sonnet-5",
-      depthInstruction: "Write 6-8 detailed paragraphs. Cover the full dasha trajectory for the year. Discuss major Saturn, Jupiter, and Rahu/Ketu transits and their impact on each life area (career, relationships, health, finances, spirituality). Provide a quarterly breakdown. Include annual themes, turning points, and detailed remedial guidance for the year.",
+      depthInstruction: "Write 5 rich paragraphs. Cover the full dasha trajectory for the year. Discuss major Saturn, Jupiter, and Rahu/Ketu transits and their impact on each life area (career, relationships, health, finances, spirituality). Provide a quarterly breakdown. Include annual themes, turning points, and detailed remedial guidance for the year.",
       jsonFormat: `Format as JSON:
 {
   "period_theme": "The overarching theme for this year in one powerful sentence",
   "greeting": "A warm opening referencing this year's cosmic landscape",
   "watch_for": "The single most important thing to watch for this year",
-  "guidance": "6-8 detailed paragraphs covering the full year trajectory, dasha periods, major transits, and their impact on all life areas",
+  "guidance": "5 rich paragraphs covering the full year trajectory, dasha periods, major transits, and their impact on all life areas",
   "planetary_story": "5-6 sentence overview of all major planetary movements this year",
   "emotional_forecast": "3-4 sentence emotional/spiritual growth arc for the year",
   "energy_level": "high" | "moderate" | "low",
@@ -634,11 +634,12 @@ serve(async (req) => {
       );
     }
 
-    // ── If a job is already in flight (started <90s ago), tell client to poll ──
+    // ── If a job is already in flight (started <150s ago — the edge runtime's
+    // background limit), tell client to poll rather than start a duplicate ──
     if (existing && existing.status === "processing") {
       const startedAt = existing.generated_at ? new Date(existing.generated_at).getTime() : 0;
       const ageMs = Date.now() - startedAt;
-      if (ageMs < 90_000) {
+      if (ageMs < 150_000) {
         return new Response(
           JSON.stringify({ status: "processing", sign: displaySign, sign_key: signName, valid_date: validDate, period, meta: baseMeta }),
           { status: 202, headers: { ...corsHeaders, "Content-Type": "application/json" } }
@@ -977,8 +978,14 @@ ${(period === "monthly" || period === "yearly") ? `- For this ${period} reading,
     // ── Background generation ── return 202 immediately, write result asynchronously
     const generationTask = (async () => {
       try {
-        const callModel = async (model: string) => fetch("https://api.anthropic.com/v1/messages", {
+        // The edge runtime kills background work at ~150s; a killed job never
+        // reaches the catch below, so the row would sit in "processing". Bound
+        // each model call so there is always time to fall back or record failure.
+        const startedAt = Date.now();
+        const BUDGET_MS = 140_000;
+        const callModel = async (model: string, timeoutMs: number) => fetch("https://api.anthropic.com/v1/messages", {
           method: "POST",
+          signal: AbortSignal.timeout(timeoutMs),
           headers: { "x-api-key": ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json" },
           body: JSON.stringify({
             model,
@@ -991,11 +998,19 @@ ${(period === "monthly" || period === "yearly") ? `- For this ${period} reading,
           }),
         });
 
-        let aiRes = await callModel(periodConfig.model);
         // Fallback to a faster model on transient failures (timeouts, 5xx)
-        if (!aiRes.ok && aiRes.status >= 500) {
-          console.warn(`Primary model ${periodConfig.model} failed (${aiRes.status}); falling back to claude-haiku-4-5-20251001`);
-          aiRes = await callModel("claude-haiku-4-5-20251001");
+        const FALLBACK_MODEL = "claude-haiku-4-5-20251001";
+        let aiRes: Response | null = null;
+        try {
+          aiRes = await callModel(periodConfig.model, 95_000);
+        } catch (e) {
+          console.warn(`Primary model ${periodConfig.model} timed out/failed (${e}); falling back to ${FALLBACK_MODEL}`);
+        }
+        if (!aiRes || (!aiRes.ok && aiRes.status >= 500)) {
+          if (aiRes) console.warn(`Primary model ${periodConfig.model} failed (${aiRes.status}); falling back to ${FALLBACK_MODEL}`);
+          const remaining = BUDGET_MS - (Date.now() - startedAt);
+          if (remaining < 15_000) throw new Error("Reading took too long to generate");
+          aiRes = await callModel(FALLBACK_MODEL, remaining);
         }
 
         if (!aiRes.ok) {
