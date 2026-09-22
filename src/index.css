@@ -1849,3 +1849,48 @@ html[style*="--text-scrim"] .lumen-block:not(.glass-card)::before {
 .oracle-vignette-active[data-focused="true"]::before {
   opacity: 1;
 }
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE EDITORIAL — edge-to-edge reading surfaces (<640px)
+   One 20px gutter. Reading cards become full-bleed bands
+   separated by hairlines; cards nested inside them flatten so
+   text is never boxed twice. Forms/dense data (glass-stone)
+   and cards sitting in grids keep their card shape.
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 639px) {
+  .sacred-wide :is(.horo-glass-card, .glass-card-premium, .sacred-card, .glass-card, .glass-mist):not(.grid > *):not(:is(.horo-glass-card, .glass-card-premium, .sacred-card, .glass-card, .glass-mist, .glass-stone) *) {
+    margin-inline: -1.25rem;
+    padding-inline: 1.25rem;
+    padding-block: 1.5rem;
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+    border-top: 0.5px solid hsl(var(--gold) / 0.12);
+    border-bottom: 0.5px solid hsl(var(--gold) / 0.12);
+    background: hsl(240 28% 5% / 0.55);
+    transform: none;
+  }
+  .sacred-wide :is(.horo-glass-card, .glass-card-premium, .sacred-card, .glass-card, .glass-mist)::before {
+    border-radius: 0;
+  }
+  /* Consecutive bands share one hairline */
+  .sacred-wide :is(.horo-glass-card, .glass-card-premium, .sacred-card, .glass-card, .glass-mist) + :is(.horo-glass-card, .glass-card-premium, .sacred-card, .glass-card, .glass-mist) {
+    border-top-color: transparent;
+  }
+  /* Nested cards: no second box — just content with a thin divider */
+  :is(.horo-glass-card, .glass-card-premium, .sacred-card, .glass-card, .glass-mist) :is(.horo-glass-card, .glass-card-premium, .sacred-card, .glass-card, .glass-mist):not(.grid > *) {
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: 0;
+    border-top: 0.5px solid hsl(var(--gold) / 0.10);
+    border-radius: 0;
+    padding-inline: 0;
+    margin-inline: 0;
+  }
+  :is(.horo-glass-card, .glass-card-premium, .sacred-card, .glass-card, .glass-mist) :is(.horo-glass-card, .glass-card-premium, .sacred-card, .glass-card, .glass-mist)::before {
+    display: none;
+  }
+  /* No hover lift on touch */
+  :is(.horo-glass-card, .glass-card-premium, .sacred-card):hover { transform: none; }
+}
