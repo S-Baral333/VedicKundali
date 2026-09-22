@@ -341,7 +341,10 @@ function buildNatalContext(chartData: any): string {
 }
 
 function getPeriodPromptConfig(period: Period) {
-  const configs: Record<Period, { model: string; depthInstruction: string; jsonFormat: string }> = {
+  // splitFormats: long readings are generated as two halves in parallel (see
+  // the generation task). One Sonnet call for a full Nepali month/year ran past
+  // the edge runtime's ~150s background limit.
+  const configs: Record<Period, { model: string; depthInstruction: string; jsonFormat: string; splitFormats?: [string, string] }> = {
     daily: {
       model: "claude-haiku-4-5-20251001",
       depthInstruction: "Target 300 words of narrative TOTAL across three_acts and watch_for combined. Each act is one tight paragraph of 55-75 words. Do not pad to reach the target.",
@@ -435,6 +438,32 @@ function getPeriodPromptConfig(period: Period) {
   "opportunity_flags": ["opportunity for the month"],
   "cosmic_advice": "Closing wisdom for the month"
 }`,
+      splitFormats: [
+        `Format as JSON. You are writing the NARRATIVE half of this monthly reading; a second writer handles dates, remedies and practical lists — do not include those. Return ONLY these keys:
+{
+  "cosmic_headline": "One bold magazine-style sentence for the month",
+  "period_theme": "The overarching theme for this month in one powerful sentence",
+  "greeting": "A warm opening referencing this month's cosmic landscape",
+  "watch_for": "The single most important thing to watch for this month",
+  "guidance": "4-5 detailed paragraphs covering the month's trajectory, weaving transits, dasha, and natal positions into a narrative arc",
+  "planetary_story": "4-5 sentence narrative about major planetary movements this month",
+  "emotional_forecast": "2-3 sentence emotional/mental arc for the month",
+  "energy_level": "high" | "moderate" | "low",
+  "cosmic_advice": "Closing wisdom for the month"
+}`,
+        `Format as JSON. You are writing the PRACTICAL half of this monthly reading; a second writer handles the narrative, headline and guidance — do not include those. Return ONLY these keys:
+{
+  "key_dates": [{"date": "YYYY-MM-DD", "description": "What happens and why it matters"}],
+  "action_items": ["monthly advice 1", "monthly advice 2", "monthly advice 3", "monthly advice 4"],
+  "mantra_of_the_day": "Sanskrit mantra for the month with detailed meaning",
+  "remedial_tip": "Detailed monthly Vedic remedy: gemstone, ritual, mantra, or practice",
+  "lucky_color": "...",
+  "lucky_number": N,
+  "direction": "...",
+  "risk_alerts": ["risk for the month"],
+  "opportunity_flags": ["opportunity for the month"]
+}`,
+      ],
     },
     yearly: {
       model: "claude-sonnet-5",
@@ -465,6 +494,38 @@ function getPeriodPromptConfig(period: Period) {
   "opportunity_flags": ["major opportunity for the year"],
   "cosmic_advice": "Closing wisdom and blessing for the year"
 }`,
+      splitFormats: [
+        `Format as JSON. You are writing the NARRATIVE half of this yearly reading; a second writer handles the quarterly breakdown, dates, remedies and practical lists — do not include those. Return ONLY these keys:
+{
+  "cosmic_headline": "One bold magazine-style sentence for the year",
+  "period_theme": "The overarching theme for this year in one powerful sentence",
+  "greeting": "A warm opening referencing this year's cosmic landscape",
+  "watch_for": "The single most important thing to watch for this year",
+  "guidance": "5 rich paragraphs covering the full year trajectory, dasha periods, major transits, and their impact on all life areas",
+  "planetary_story": "5-6 sentence overview of all major planetary movements this year",
+  "emotional_forecast": "3-4 sentence emotional/spiritual growth arc for the year",
+  "energy_level": "high" | "moderate" | "low",
+  "cosmic_advice": "Closing wisdom and blessing for the year"
+}`,
+        `Format as JSON. You are writing the PRACTICAL half of this yearly reading; a second writer handles the narrative, headline and guidance — do not include those. Return ONLY these keys:
+{
+  "key_dates": [{"date": "YYYY-MM-DD", "description": "What happens and why it matters"}],
+  "quarterly_overview": [
+    {"quarter": "Q1 (Jan-Mar)", "theme": "Quarter theme", "guidance": "2-3 sentence guidance for this quarter"},
+    {"quarter": "Q2 (Apr-Jun)", "theme": "Quarter theme", "guidance": "2-3 sentence guidance"},
+    {"quarter": "Q3 (Jul-Sep)", "theme": "Quarter theme", "guidance": "2-3 sentence guidance"},
+    {"quarter": "Q4 (Oct-Dec)", "theme": "Quarter theme", "guidance": "2-3 sentence guidance"}
+  ],
+  "action_items": ["yearly advice 1", "yearly advice 2", "yearly advice 3", "yearly advice 4", "yearly advice 5"],
+  "mantra_of_the_day": "Primary Sanskrit mantra for the year with detailed meaning and practice instructions",
+  "remedial_tip": "Comprehensive yearly Vedic remedial plan: gemstones, rituals, mantras, lifestyle adjustments",
+  "lucky_color": "...",
+  "lucky_number": N,
+  "direction": "...",
+  "risk_alerts": ["major risk for the year"],
+  "opportunity_flags": ["major opportunity for the year"]
+}`,
+      ],
     },
   };
   return configs[period];
@@ -923,6 +984,9 @@ DAY FLAVOUR (use these to colour your reading naturally — do not just list the
     const commonExtras = "";
     const guruExtras   = guruOn ? GURU_EXTRA_JSON : "";
 
+    // The JSON spec is slotted in per call, so a long reading can be split
+    // into halves that share every other part of the prompt.
+    const FORMAT_SLOT = "@@JSON_FORMAT@@";
     const prompt = moonSign
       ? `You are giving a personal ${periodLabel[period]} Vedic astrology consultation to someone with Moon in ${moonSign}. ${priorityContext} ${dashaContext} Today's date is ${today}. This reading covers the ${period} period starting ${validDate}.
 
@@ -939,7 +1003,7 @@ ${periodConfig.depthInstruction}
 
 ${styleMap[guidanceStyle] || styleMap.balanced}
 
-${periodConfig.jsonFormat}${commonExtras}${guruExtras}`
+${FORMAT_SLOT}`
       : `You are giving a general ${periodLabel[period]} Vedic astrology consultation. ${priorityContext} Today's date is ${today}. This reading covers the ${period} period starting ${validDate}.
 
 ${transitContext}${evidenceBlock}
@@ -951,7 +1015,7 @@ ${periodConfig.depthInstruction}
 
 ${styleMap[guidanceStyle] || styleMap.balanced}
 
-${periodConfig.jsonFormat}${commonExtras}${guruExtras}`;
+${FORMAT_SLOT}`;
 
     const periodNote =
       period === "tomorrow" ? "This is a TOMORROW preview — use future tense throughout."
@@ -983,7 +1047,12 @@ ${(period === "monthly" || period === "yearly") ? `- For this ${period} reading,
         // each model call so there is always time to fall back or record failure.
         const startedAt = Date.now();
         const BUDGET_MS = 140_000;
-        const callModel = async (model: string, timeoutMs: number) => fetch("https://api.anthropic.com/v1/messages", {
+        // Sonnet 5 rejects sampling params (temperature/top_p/top_k → 400) and
+        // thinks by default. Thinking is switched off there: a horoscope doesn't
+        // need it, and it would eat the time budget and max_tokens. Haiku 4.5
+        // still takes temperature for varied daily prose.
+        const isHaiku = (model: string) => model.startsWith("claude-haiku");
+        const callModel = async (model: string, timeoutMs: number, userPrompt: string) => fetch("https://api.anthropic.com/v1/messages", {
           method: "POST",
           signal: AbortSignal.timeout(timeoutMs),
           headers: { "x-api-key": ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json" },
@@ -992,56 +1061,74 @@ ${(period === "monthly" || period === "yearly") ? `- For this ${period} reading,
             // Indic scripts cost several times more tokens per character than
             // English; 4096 truncated a Nepali reading mid-string.
             max_tokens: 8192,
-            temperature: 0.9,
+            ...(isHaiku(model) ? { temperature: 0.9 } : { thinking: { type: "disabled" } }),
             system: systemPrompt,
-            messages: [{ role: "user", content: prompt }],
+            messages: [{ role: "user", content: userPrompt }],
           }),
         });
 
         // Fallback to a faster model on transient failures (timeouts, 5xx)
         const FALLBACK_MODEL = "claude-haiku-4-5-20251001";
-        let aiRes: Response | null = null;
-        try {
-          aiRes = await callModel(periodConfig.model, 95_000);
-        } catch (e) {
-          console.warn(`Primary model ${periodConfig.model} timed out/failed (${e}); falling back to ${FALLBACK_MODEL}`);
-        }
-        if (!aiRes || (!aiRes.ok && aiRes.status >= 500)) {
-          if (aiRes) console.warn(`Primary model ${periodConfig.model} failed (${aiRes.status}); falling back to ${FALLBACK_MODEL}`);
-          const remaining = BUDGET_MS - (Date.now() - startedAt);
-          if (remaining < 15_000) throw new Error("Reading took too long to generate");
-          aiRes = await callModel(FALLBACK_MODEL, remaining);
-        }
+        const runOnce = async (userPrompt: string, part: string): Promise<Record<string, unknown>> => {
+          let aiRes: Response | null = null;
+          try {
+            aiRes = await callModel(periodConfig.model, 95_000, userPrompt);
+          } catch (e) {
+            console.warn(`Primary model ${periodConfig.model} timed out/failed (${e}); falling back to ${FALLBACK_MODEL}`);
+          }
+          if (!aiRes || (!aiRes.ok && aiRes.status >= 500)) {
+            if (aiRes) console.warn(`Primary model ${periodConfig.model} failed (${aiRes.status}); falling back to ${FALLBACK_MODEL}`);
+            const remaining = BUDGET_MS - (Date.now() - startedAt);
+            if (remaining < 15_000) throw new Error("Reading took too long to generate");
+            aiRes = await callModel(FALLBACK_MODEL, remaining, userPrompt);
+          }
 
-        if (!aiRes.ok) {
-          throw new Error(`AI gateway error: ${aiRes.status}`);
-        }
+          if (!aiRes.ok) {
+            // Log the API's reason — a bare status code hid the cause of the
+            // monthly/yearly 400s for weeks.
+            const detail = await aiRes.text().catch(() => "");
+            console.error(`[horoscope] ${period}${part} model error ${aiRes.status}: ${detail.slice(0, 500)}`);
+            throw new Error(`AI gateway error: ${aiRes.status}`);
+          }
 
-        const aiData = await aiRes.json();
-        const rawContent = aiData.content?.[0]?.text || "";
+          const aiData = await aiRes.json();
+          // Read the text block, not content[0]: a thinking block can come first.
+          const rawContent = (aiData.content ?? []).find((b: { type: string }) => b.type === "text")?.text || "";
 
-        const stopReason = aiData.stop_reason;
-        let parsed: any = null;
-        try {
-          // Strip ```json fences, then take the outermost object.
-          const unfenced = rawContent.replace(/^\s*```(?:json)?\s*/i, "").replace(/\s*```\s*$/, "");
-          const jsonMatch = unfenced.match(/\{[\s\S]*\}/);
-          parsed = JSON.parse(jsonMatch ? jsonMatch[0] : unfenced);
-        } catch {
-          parsed = null;
-        }
+          const stopReason = aiData.stop_reason;
+          let parsed: any = null;
+          try {
+            // Strip ```json fences, then take the outermost object.
+            const unfenced = rawContent.replace(/^\s*```(?:json)?\s*/i, "").replace(/\s*```\s*$/, "");
+            const jsonMatch = unfenced.match(/\{[\s\S]*\}/);
+            parsed = JSON.parse(jsonMatch ? jsonMatch[0] : unfenced);
+          } catch {
+            parsed = null;
+          }
 
-        // A reading that failed to parse must be marked failed, not stored as
-        // "ready" with the raw model output as its guidance — that is how a
-        // reader ended up looking at ```json and field names.
-        if (!parsed || typeof parsed !== "object") {
-          console.error(`[horoscope] unparseable output (stop_reason=${stopReason}, ${rawContent.length} chars)`);
-          throw new Error(
-            stopReason === "max_tokens"
-              ? "Reading was cut off before it finished"
-              : "Reading came back in an unreadable format",
-          );
-        }
+          // A reading that failed to parse must be marked failed, not stored as
+          // "ready" with the raw model output as its guidance — that is how a
+          // reader ended up looking at ```json and field names.
+          if (!parsed || typeof parsed !== "object") {
+            console.error(`[horoscope] ${period}${part} unparseable output (stop_reason=${stopReason}, ${rawContent.length} chars)`);
+            throw new Error(
+              stopReason === "max_tokens"
+                ? "Reading was cut off before it finished"
+                : "Reading came back in an unreadable format",
+            );
+          }
+          return parsed;
+        };
+
+        const formats = periodConfig.splitFormats
+          ? [periodConfig.splitFormats[0] + guruExtras, periodConfig.splitFormats[1]]
+          : [periodConfig.jsonFormat + commonExtras + guruExtras];
+        const parts = await Promise.all(
+          formats.map((f, i) => runOnce(prompt.replace(FORMAT_SLOT, f), formats.length > 1 ? ` part ${i + 1}` : "")),
+        );
+        // The narrative half is merged last so it wins any key both returned
+        // (e.g. a stray cosmic_headline from the practical half).
+        const parsed: any = Object.assign({}, ...parts.slice(1), parts[0]);
 
         parsed.transits = transits;
         parsed.tithi = tithiInfo.tithi;
