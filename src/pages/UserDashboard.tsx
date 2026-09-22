@@ -16,6 +16,8 @@ import TodaysCosmosRail from "@/components/dashboard/TodaysCosmosRail";
 import ContextRail from "@/components/dashboard/ContextRail";
 import { LIFE_PRIORITIES } from "@/lib/onboarding-constants";
 import RishiGuruBadge from "@/components/RishiGuruBadge";
+import AstroText from "@/components/AstroText";
+import { formatReadingDate, nakshatraLabels, signLabel } from "@/lib/panchanga-i18n";
 
 function computeClientValidDate(p: string): string {
   const now = new Date();
@@ -68,14 +70,30 @@ function getGreetingKey(): string {
   return "greetingEvening";
 }
 
+function localIsoDate(d = new Date()): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
 function formatTodayDate(): string {
-  return new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+  // Nepali gets the Bikram Sambat date, other languages their own locale.
+  return formatReadingDate(localIsoDate(), "daily", getCurrentLanguage());
+}
+
+/** Local date + language: a UTC date lagged Nepal until 05:45, and a
+ *  language switch would otherwise keep showing the old language's reading. */
+function dailyCacheKey(chartId: string | null): string {
+  return `horoscope-daily-${chartId ? chartId + "-" : ""}${getCurrentLanguage()}-${localIsoDate()}`;
+}
+
+/** Which of the day's three acts is "now". */
+function currentAct(): "morning" | "afternoon" | "evening" {
+  const h = new Date().getHours();
+  return h < 12 ? "morning" : h < 17 ? "afternoon" : "evening";
 }
 
 function HoroscopePreviewCard({ chartId }: { chartId: string | null }) {
   const { t } = useTranslation("pages");
-  const localDate = new Date().toISOString().slice(0, 10);
-  const cacheKey = chartId ? `horoscope-daily-${chartId}-${localDate}` : `horoscope-daily-${localDate}`;
+  const cacheKey = dailyCacheKey(chartId);
   const cached = localStorage.getItem(cacheKey);
 
   if (!cached) {
@@ -96,14 +114,19 @@ function HoroscopePreviewCard({ chartId }: { chartId: string | null }) {
 
   try {
     const data = JSON.parse(cached);
-    const horoscope = data?.horoscope;
-    const guidance = horoscope?.guidance || data?.guidance || data?.content;
+    // The Today page caches the reading as a JSON string; older entries hold an object.
+    const horoscope = typeof data?.horoscope === "string" ? JSON.parse(data.horoscope) : data?.horoscope;
     const energyLevel = horoscope?.energy_level;
-    const actionItems = horoscope?.action_items || [];
-    const bestHours = horoscope?.best_hours || [];
-
-    const guidanceText = typeof guidance === 'string' ? guidance : (guidance ? JSON.stringify(guidance) : "");
-    const pullQuote = actionItems[0] as string | undefined;
+    const actionItems: string[] = horoscope?.action_items || [];
+    const bestHours: string[] = horoscope?.best_hours || [];
+    // Day readings carry their narrative in three_acts (no "guidance" field):
+    // lead with the headline and the act for this time of day.
+    const act = currentAct();
+    const actText: string | undefined = horoscope?.three_acts?.[act];
+    const guidance = horoscope?.guidance || actText || horoscope?.watch_for || data?.guidance;
+    const guidanceText = typeof guidance === "string" ? guidance : "";
+    const headline: string | undefined = horoscope?.cosmic_headline?.trim().replace(/^["“'‘]+|["”'’]+$/g, "");
+    const pullQuote = headline || actionItems[0];
 
     return (
       <div className="glass-card-premium animate-fade-in-up">
@@ -114,16 +137,23 @@ function HoroscopePreviewCard({ chartId }: { chartId: string | null }) {
           </div>
           {energyLevel && (
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] tracking-wide" style={{ background: "hsl(var(--gold) / 0.10)", border: "0.5px solid hsl(var(--gold) / 0.18)", color: "hsl(var(--gold-light))" }}>
-              {t("dashboard.energyLabel", { level: energyLevel })}
+              {["high", "moderate", "low"].includes(energyLevel)
+                ? t(`pages:ui.dailyHoroscopePage.energy${energyLevel[0].toUpperCase()}${energyLevel.slice(1)}`)
+                : t("dashboard.energyLabel", { level: energyLevel })}
             </span>
           )}
         </div>
-        {guidanceText && (
+        {(guidanceText || pullQuote) && (
           <div className="dash-prose mb-5">
-            <p>{guidanceText}</p>
             {pullQuote && (
-              <p className="dash-pullquote">{pullQuote}</p>
+              <p className="dash-pullquote" style={{ marginTop: 0 }}>“{pullQuote}”</p>
             )}
+            {actText && !horoscope?.guidance && (
+              <p className="text-[11px] mb-1.5" style={{ color: "hsl(var(--text-muted))" }}>
+                {t(`pages:ui.threeActsStrip.${act}`, act)}
+              </p>
+            )}
+            {guidanceText && <p><AstroText text={guidanceText} /></p>}
           </div>
         )}
         {bestHours.length > 0 && (
@@ -132,7 +162,7 @@ function HoroscopePreviewCard({ chartId }: { chartId: string | null }) {
             {bestHours.slice(0, 2).join(" · ")}
           </div>
         )}
-        {actionItems.length > 1 && (
+        {actionItems.length > 1 && !headline && (
           <ul className="flex flex-col gap-2.5 mb-5">
             {actionItems.slice(1, 3).map((item: string, i: number) => (
               <li key={i} className="flex items-start gap-2.5 text-[13.5px]" style={{ color: "hsl(0 0% 100% / 0.55)", lineHeight: 1.7 }}>
@@ -215,8 +245,7 @@ const UserDashboard = React.forwardRef<HTMLDivElement>((_props, ref) => {
 
   useEffect(() => {
     if (!user || !session || !activeChart) return;
-    const localDate = new Date().toISOString().slice(0, 10);
-    const cacheKey = `horoscope-daily-${activeChart.id}-${localDate}`;
+    const cacheKey = dailyCacheKey(activeChart.id);
     // If cache exists for this chart+date, skip the fetch but still re-render the card.
     if (localStorage.getItem(cacheKey)) {
       if (horoscopePrefetched.current !== activeChart.id) {
@@ -362,7 +391,8 @@ const UserDashboard = React.forwardRef<HTMLDivElement>((_props, ref) => {
                     color: "hsl(var(--gold-light))",
                     backdropFilter: "blur(8px)",
                   }}>
-                    {p!.emoji} {t("pages:ui.userDashboard.priority_" + p!.id, p!.label)}
+                    <span aria-hidden>{p!.emoji}</span>
+                    <span>{t("pages:ui.userDashboard.priority_" + p!.id, p!.label)}</span>
                   </span>
                 ))}
               </div>
@@ -379,18 +409,6 @@ const UserDashboard = React.forwardRef<HTMLDivElement>((_props, ref) => {
               <div id="guidance" className="animate-fade-in-up mb-5" style={{ animationDelay: "0.1s" }}>
                 <HoroscopePreviewCard key={`${activeChart?.id || "none"}-${horoscopeReady}`} chartId={activeChart?.id || null} />
               </div>
-
-              {/* Plan card inline on tablet (xl rail hidden) */}
-              <div className="xl:hidden mb-5 animate-fade-in-up" style={{ animationDelay: "0.15s" }}>
-                {PlanCard}
-              </div>
-
-              {/* ── SADE SATI ── */}
-              {chartData?.moon_sign && (
-                <div id="sade-sati" className="mb-5 animate-fade-in-up" style={{ animationDelay: "0.15s" }}>
-                  <SadeSatiTracker moonSign={chartData.moon_sign} isElite={isElite} />
-                </div>
-              )}
 
               {/* ── CHART SNAPSHOT ── */}
               {chartData && (
@@ -409,14 +427,14 @@ const UserDashboard = React.forwardRef<HTMLDivElement>((_props, ref) => {
                     </div>
                     {t("dashboard.snapshotTitle", { name: chart!.full_name })}
                   </div>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 m-flat-grid2">
                     {[
-                      { label: t("dashboard.moonSign"), value: chartData.moon_sign },
-                      { label: t("dashboard.nakshatra"), value: chartData.birth_nakshatra?.name },
-                      { label: t("dashboard.ascendant"), value: chartData.ascendant?.sign },
+                      { label: t("dashboard.moonSign"), value: chartData.moon_sign && signLabel(t, chartData.moon_sign) },
+                      { label: t("dashboard.nakshatra"), value: chartData.birth_nakshatra?.name && nakshatraLabels(t, { name: chartData.birth_nakshatra.name, deity: "", symbol: "" }).name },
+                      { label: t("dashboard.ascendant"), value: chartData.ascendant?.sign && signLabel(t, chartData.ascendant.sign) },
                       { label: t("dashboard.mahaDasha"), value: chartData.dasha?.maha_dasha },
                     ].map((item, i) => (
-                      <div key={i} className="text-center p-4 rounded-xl transition-all duration-300" style={{
+                      <div key={i} className="text-center p-4 rounded-xl transition-all duration-300 m-flat" style={{
                         background: "hsl(0 0% 100% / 0.025)",
                         border: "0.5px solid hsl(var(--glass-border-soft))",
                       }}>
@@ -428,16 +446,23 @@ const UserDashboard = React.forwardRef<HTMLDivElement>((_props, ref) => {
                 </div>
               )}
 
+              {/* ── SADE SATI ── */}
+              {chartData?.moon_sign && (
+                <div id="sade-sati" className="mb-5 animate-fade-in-up" style={{ animationDelay: "0.15s" }}>
+                  <SadeSatiTracker moonSign={chartData.moon_sign} isElite={isElite} />
+                </div>
+              )}
+
               {/* ── QUICK ACCESS ── */}
-              <div id="actions" className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-5">
+              <div id="actions" className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-5 m-band m-flat-list">
                 {[
                   { to: "/chart", icon: Star, label: t("dashboard.quickBirthChart"), desc: t("dashboard.quickBirthChartDesc"), emoji: "✦" },
                   { to: "/dreams", icon: Moon, label: t("dashboard.quickDreamOracle"), desc: t("dashboard.quickDreamOracleDesc"), emoji: "🌙" },
                   { to: "/compatibility", icon: Heart, label: t("dashboard.quickCompatibility"), desc: t("dashboard.quickCompatibilityDesc"), emoji: "♡" },
                   { to: "/horoscope", icon: Sun, label: t("dashboard.quickHoroscope"), desc: t("dashboard.quickHoroscopeDesc"), emoji: "☀" },
                 ].map((item, i) => (
-                  <Link key={item.to} to={item.to} className="quick-card animate-fade-in-up" style={{ animationDelay: `${0.3 + i * 0.05}s` }}>
-                    <div className="w-11 h-11 rounded-xl flex items-center justify-center text-lg shrink-0" style={{ background: "hsl(var(--gold) / 0.15)", border: "0.5px solid hsl(var(--glass-border))" }}>
+                  <Link key={item.to} to={item.to} className="quick-card animate-fade-in-up m-flat" style={{ animationDelay: `${0.3 + i * 0.05}s` }}>
+                    <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center text-base sm:text-lg shrink-0" style={{ background: "hsl(var(--gold) / 0.15)", border: "0.5px solid hsl(var(--glass-border))" }}>
                       {item.emoji}
                     </div>
                     <div className="flex-1">
@@ -456,10 +481,10 @@ const UserDashboard = React.forwardRef<HTMLDivElement>((_props, ref) => {
                     <Moon className="h-4 w-4" style={{ color: "hsl(var(--gold))" }} />
                     {t("dashboard.recentDreams")}
                   </div>
-                  <div className="space-y-3">
+                  <div className="space-y-0 sm:space-y-3 m-divide">
                     {dreams.map(d => (
                       <Link key={d.id} to="/dreams" className="block">
-                        <div className="p-3 rounded-xl transition-all duration-300" style={{ border: "0.5px solid hsl(var(--glass-border-soft))", background: "hsl(0 0% 100% / 0.02)" }}>
+                        <div className="p-3 rounded-xl transition-all duration-300 m-flat" style={{ border: "0.5px solid hsl(var(--glass-border-soft))", background: "hsl(0 0% 100% / 0.02)" }}>
                           <div className="flex items-center gap-2 mb-1">
                             <span className="text-xs" style={{ color: "hsl(var(--text-muted))" }}>
                               {new Date(d.created_at).toLocaleDateString()}
@@ -475,6 +500,11 @@ const UserDashboard = React.forwardRef<HTMLDivElement>((_props, ref) => {
                   </div>
                 </div>
               )}
+
+              {/* Plan card inline below xl (the right rail is hidden) — last, after the content */}
+              <div className="xl:hidden mt-5 animate-fade-in-up" style={{ animationDelay: "0.45s" }}>
+                {PlanCard}
+              </div>
             </>
           )}
         </main>

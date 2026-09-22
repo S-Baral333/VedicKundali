@@ -178,6 +178,9 @@
    text-transform/tracking on "uppercase" labels does nothing useful for these
    scripts. Scoped to elements that set tracking so plain text is untouched. */
 html:is([data-lang="ne"], [data-lang="hi"], [data-lang="mr"], [data-lang="bn"], [data-lang="ta"], [data-lang="te"])
-  :is([class*="tracking-"], [style*="letter-spacing"]) {
+  :is([class*="tracking-"], [style*="letter-spacing"], h1, h2, h3, h4,
+      .sacred-cta, .sacred-trust-strip, .sacred-section-title, .sacred-label, .view-link,
+      .rail-card-title, .rail-action, .rail-stat-label, .rail-stat-value,
+      .footer-link, .footer-heading, .mobile-dock-label) {
   letter-spacing: normal !important;
 }

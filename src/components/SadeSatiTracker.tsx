@@ -5,6 +5,7 @@ import { Zap, Lock, BookOpen, Gem, Flame, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "react-i18next";
+import { signLabel } from "@/lib/panchanga-i18n";
 
 const SIGNS_ORDER = [
   "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo",
@@ -136,18 +137,18 @@ export default function SadeSatiTracker({ moonSign, isElite }: SadeSatiTrackerPr
         )}
       </div>
       <p className="mb-5" style={{ fontSize: "12.5px", letterSpacing: "0.02em", color: "hsl(var(--text-muted))" }}>
-        {t("pages:ui.sadeSatiTracker.subtitle", "Saturn transit relative to your Moon in {{sign}}", { sign: moonSign })}
+        {t("pages:ui.sadeSatiTracker.subtitle", "Saturn transit relative to your Moon in {{sign}}", { sign: signLabel(t, moonSign) })}
       </p>
 
       {/* Status grid */}
-      <div className="grid grid-cols-3 gap-3 mb-6">
+      <div className="grid grid-cols-3 gap-3 mb-6 m-flat-cols">
         {[
-          { label: t("pages:ui.sadeSatiTracker.saturnIn", "Saturn In"), value: status.saturnSign, variant: "" },
-          { label: t("pages:ui.sadeSatiTracker.yourMoon", "Your Moon"), value: moonSign, variant: "" },
+          { label: t("pages:ui.sadeSatiTracker.saturnIn", "Saturn In"), value: signLabel(t, status.saturnSign), variant: "" },
+          { label: t("pages:ui.sadeSatiTracker.yourMoon", "Your Moon"), value: signLabel(t, moonSign), variant: "" },
           { label: t("pages:ui.sadeSatiTracker.status", "Status"), value: isActive ? phaseLabel : t("pages:ui.sadeSatiTracker.inactive", "Inactive"), variant: status.phase === "peak" ? "peak" : isActive ? "" : "inactive" },
         ].map((cell, i) => (
-          <div key={i} className="p-3.5 rounded-xl" style={{ background: "hsl(0 0% 100% / 0.025)", border: "0.5px solid hsl(var(--gold) / 0.08)" }}>
-            <p className="mb-1.5" style={{ fontSize: "9.5px", letterSpacing: "0.22em", textTransform: "uppercase", color: "hsl(var(--text-muted))" }}>{cell.label}</p>
+          <div key={i} className="p-3.5 rounded-xl m-flat" style={{ background: "hsl(0 0% 100% / 0.025)", border: "0.5px solid hsl(var(--gold) / 0.08)" }}>
+            <p className="mb-1.5 text-[11px] sm:text-[9.5px]" style={{ letterSpacing: "0.22em", textTransform: "uppercase", color: "hsl(var(--text-muted))" }}>{cell.label}</p>
             <p style={{
               fontFamily: "'Cormorant Garamond', serif",
               fontSize: "20px",
@@ -163,7 +164,7 @@ export default function SadeSatiTracker({ moonSign, isElite }: SadeSatiTrackerPr
       <div className="mb-2">
         <div className="flex justify-between text-[11px] tracking-wide mb-2" style={{ color: "hsl(var(--text-muted))" }}>
           <span>{formatDate(status.saturnStart)}</span>
-          <span>{t("pages:ui.sadeSatiTracker.saturnInSign", "Saturn in {{sign}}", { sign: status.saturnSign })}</span>
+          <span>{t("pages:ui.sadeSatiTracker.saturnInSign", "Saturn in {{sign}}", { sign: signLabel(t, status.saturnSign) })}</span>
           <span>{formatDate(status.saturnEnd)}</span>
         </div>
         <div className="h-[3px] rounded-full overflow-hidden" style={{ background: "hsl(0 0% 100% / 0.06)" }}>
@@ -172,7 +173,7 @@ export default function SadeSatiTracker({ moonSign, isElite }: SadeSatiTrackerPr
       </div>
 
       {/* Guidance note */}
-      <div className="mt-4 p-3 rounded-lg text-[13px] leading-relaxed" style={{
+      <div className="mt-4 p-3 rounded-lg text-[13px] leading-relaxed m-quote" style={{
         background: "hsl(0 0% 100% / 0.02)",
         borderLeft: "2px solid hsl(var(--gold) / 0.25)",
         color: "hsl(var(--text-secondary))",
@@ -185,7 +186,7 @@ export default function SadeSatiTracker({ moonSign, isElite }: SadeSatiTrackerPr
         <div className="space-y-3 pt-4 mt-4" style={{ borderTop: "0.5px solid hsl(var(--glass-border-soft))" }}>
           <p className="text-sm" style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 500, color: "hsl(var(--text-primary))" }}>{t("pages:ui.sadeSatiTracker.remediesTitle", "♄ Saturn Pacification Remedies")}</p>
           {remedies.map((r) => (
-            <div key={r.id} className="rounded-xl p-3 space-y-2" style={{ border: "0.5px solid hsl(var(--glass-border-soft))", background: "hsl(0 0% 100% / 0.02)" }}>
+            <div key={r.id} className="rounded-xl p-3 space-y-2 m-flat" style={{ border: "0.5px solid hsl(var(--glass-border-soft))", background: "hsl(0 0% 100% / 0.02)" }}>
               <p className="text-sm font-medium" style={{ color: "hsl(var(--text-primary))" }}>{r.title}</p>
               <p className="text-xs" style={{ color: "hsl(var(--text-muted))" }}>{r.description}</p>
               <div className="grid gap-2">

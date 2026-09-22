@@ -545,12 +545,12 @@
       "elite": "एलिट",
       "lockedDesc": "तपाईंको चन्द्र राशिको तुलनामा शनिको ७.५ वर्षे गोचर हेर्नुहोस्।",
       "unlock": "अनलक गर्नुहोस्",
-      "subtitle": "{{sign}} मा रहेको तपाईंको चन्द्रको तुलनामा शनिको गोचर",
+      "subtitle": "{{sign}}मा रहेको तपाईंको चन्द्रको तुलनामा शनिको गोचर",
       "saturnIn": "शनि",
       "yourMoon": "तपाईंको चन्द्र",
       "status": "अवस्था",
       "inactive": "निष्क्रिय",
-      "saturnInSign": "{{sign}} मा शनि",
+      "saturnInSign": "{{sign}}मा शनि",
       "remediesTitle": "♄ शनि शान्तिका उपायहरू",
       "mantra": "मन्त्र",
       "gemstone": "रत्न",
@@ -588,7 +588,7 @@
       "gemstone": "रत्न",
       "carats": "{{min}}–{{max}} क्यारेट",
       "fingerHand": "दाहिने हातको {{finger}} औंला",
-      "dayDuringHora": "{{day}}, {{hora}} मा",
+      "dayDuringHora": "{{day}}, {{hora}}मा",
       "repetitionsOf": "{{n}} पटक जप: {{mantra}}",
       "mantraTitle": "मन्त्र — {{name}}",
       "dailyMala": "{{count}} (१ माला)",
@@ -779,7 +779,7 @@
       "watchForPrefix": "ध्यान दिनुहोस्:",
       "mantraPrefix": "मन्त्र:",
       "cosmicAdvicePrefix": "ब्रह्माण्डीय सल्लाह:",
-      "planetInSign": "{{sign}} मा {{planet}}",
+      "planetInSign": "{{sign}}मा {{planet}}",
       "retrogradeSuffix": " (वक्री)",
       "yourAstrologer": "तपाईंको ज्योतिषी",
       "fullReading": "पूरा पठन",
@@ -871,7 +871,7 @@
       "computingTransits": "ग्रह गोचर गणना हुँदैछ",
       "tracingDasha": "{{dasha}} हेरिँदैछ",
       "tracingYourDasha": "तपाईंको दशा अवधि हेरिँदैछ",
-      "weighingMoon": "{{sign}} मा रहेको चन्द्रमालाई जन्मकुण्डलीसँग तुलना गरिँदैछ",
+      "weighingMoon": "{{sign}}मा रहेको चन्द्रमालाई जन्मकुण्डलीसँग तुलना गरिँदैछ",
       "weighingTransits": "गोचरलाई जन्मकुण्डलीसँग तुलना गरिँदैछ",
       "composingReading": "तपाईंको पठन तयार हुँदैछ",
       "generatingAria": "तपाईंको पठन बनाइँदैछ",
@@ -904,8 +904,8 @@
       "daysHours": "{{days}} दिन {{hours}} घण्टा",
       "hoursMins": "{{hours}} घण्टा {{mins}} मिनेट",
       "mins": "{{mins}} मिनेट",
-      "nextReadingAt": "अर्को पठन {{time}} मा",
-      "refreshesIn": "{{countdown}} मा रिफ्रेस हुन्छ"
+      "nextReadingAt": "अर्को पठन {{time}}मा",
+      "refreshesIn": "{{countdown}}मा रिफ्रेस हुन्छ"
     },
     "personalCallbackBanner": {
       "readingFromChart": "तपाईंको कुण्डलीबाट पठन"
@@ -1178,7 +1178,7 @@
       "plan": "{{tier}} योजना",
       "perMonth": "/महिना",
       "annual": "वा ${{price}}/वर्ष — १७% बचत",
-      "upgradeTo": "{{tier}} मा अपग्रेड गर्नुहोस्",
+      "upgradeTo": "{{tier}}मा अपग्रेड गर्नुहोस्",
       "compare": "सबै योजना तुलना गर्नुहोस्",
       "trial": "७ दिने परीक्षण · जुनसुकै बेला रद्द",
       "feat_destiny_timeline_name": "भाग्य समयरेखा",
@@ -1320,7 +1320,7 @@
       "loadErrorDesc": "आफ्नो जडान जाँचेर रिफ्रेस गर्नुहोस्। समाधान नभएसम्म सुविधाहरू सीमित देखिन सक्छन्।"
     },
     "muhurtaPage": {
-      "moonIn": "{{sign}} मा चन्द्र",
+      "moonIn": "{{sign}}मा चन्द्र",
       "quality_excellent": "उत्कृष्ट",
       "quality_good": "राम्रो",
       "quality_average": "सामान्य",
@@ -1337,7 +1337,7 @@
     },
     "onboardingPage": {
       "born": "जन्म {{date}}",
-      "bornAt": "{{time}} मा",
+      "bornAt": "{{time}}मा",
       "settingUp": "तपाईंको ब्रह्माण्डीय इन्जिन तयार हुँदैछ…",
       "yourName": "तपाईंको नाम",
       "continue": "जारी राख्नुहोस्",
@@ -1494,7 +1494,7 @@
   "billing": {
     "title": "बिलिङ र योजना",
     "subtitle": "आफ्नो सदस्यता व्यवस्थापन गर्नुहोस् र मासिक प्रयोग हेर्नुहोस्।",
-    "trialBanner": "तपाईंको {{tier}} ट्रायलमा {{days}} दिन बाँकी। {{date}} मा सकिन्छ।",
+    "trialBanner": "तपाईंको {{tier}} ट्रायलमा {{days}} दिन बाँकी। {{date}}मा सकिन्छ।",
     "currentPlan": "हालको योजना",
     "upgradeButton": "अपग्रेड",
     "changePlan": "योजना बदल्नुहोस्",
