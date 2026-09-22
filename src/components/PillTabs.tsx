@@ -38,7 +38,7 @@ export default function PillTabs({ items, value, onValueChange, className }: Pil
     <div
       ref={rowRef}
       className={cn(
-        "flex items-center overflow-x-auto scrollbar-hide gap-1.5 p-1.5 rounded-full glass-card",
+        "pill-tabs flex items-center overflow-x-auto scrollbar-hide gap-1.5 p-1.5 rounded-full glass-card",
         className,
       )}
     >

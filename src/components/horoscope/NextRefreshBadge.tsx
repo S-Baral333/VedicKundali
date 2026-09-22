@@ -38,9 +38,9 @@ function formatCountdown(target: Date): string {
 }
 
 function formatTargetLabel(period: Period, target: Date): string {
-  if (period === "daily" || period === "tomorrow") {
-    return target.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
-  }
+  // Day readings always turn over at local midnight — "· 0:00" next to the
+  // countdown added nothing, so show the countdown alone.
+  if (period === "daily" || period === "tomorrow") return "";
   if (period === "weekly") {
     return target.toLocaleDateString([], { weekday: "long" });
   }
@@ -50,7 +50,8 @@ function formatTargetLabel(period: Period, target: Date): string {
   return target.toLocaleDateString([], { month: "short", day: "numeric", year: "numeric" });
 }
 
-export default function NextRefreshBadge({ period }: { period: Period }) {
+/** `plain` renders just the text, for quiet inline meta lines. */
+export default function NextRefreshBadge({ period, plain = false }: { period: Period; plain?: boolean }) {
   const { t } = useTranslation();
   const [, tick] = useState(0);
   useEffect(() => {
@@ -61,6 +62,10 @@ export default function NextRefreshBadge({ period }: { period: Period }) {
   const target = nextRefreshAt(period);
   const countdown = formatCountdown(target);
   const targetLabel = formatTargetLabel(period, target);
+  const text = t("pages:ui.nextRefreshBadge.refreshesIn", "Refreshes in {{countdown}}", { countdown }) + (targetLabel ? ` · ${targetLabel}` : "");
+  const title = t("pages:ui.nextRefreshBadge.nextReadingAt", "Next reading at {{time}}", { time: target.toLocaleString() });
+
+  if (plain) return <span title={title}>{text}</span>;
 
   return (
     <span
@@ -73,10 +78,10 @@ export default function NextRefreshBadge({ period }: { period: Period }) {
         textTransform: "uppercase",
         color: "hsl(var(--gold-pale))",
       }}
-      title={t("pages:ui.nextRefreshBadge.nextReadingAt", "Next reading at {{time}}", { time: target.toLocaleString() })}
+      title={title}
     >
       <Clock className="h-3 w-3" />
-      <span>{t("pages:ui.nextRefreshBadge.refreshesIn", "Refreshes in {{countdown}}", { countdown })} · {targetLabel}</span>
+      <span>{text}</span>
     </span>
   );
 }

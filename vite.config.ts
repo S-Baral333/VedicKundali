@@ -30,6 +30,10 @@ export default defineConfig(({ mode }) => ({
         navigateFallback: "/index.html",
         navigateFallbackDenylist: [/^\/~oauth/, /^\/api\//, /^\/admin/],
         globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2}"],
+        // Indic script fonts (src/styles/indic-fonts.css) load per script via
+        // unicode-range; precaching would make every install fetch all eight.
+        // They're cached on first use by the runtime rule below instead.
+        globIgnores: ["**/{noto-sans,noto-serif,tiro-devanagari}-*.woff2"],
         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
         cleanupOutdatedCaches: true,
         skipWaiting: false,
@@ -50,6 +54,15 @@ export default defineConfig(({ mode }) => ({
             options: {
               cacheName: "google-fonts-webfonts",
               expiration: { maxEntries: 30, maxAgeSeconds: 60 * 60 * 24 * 365 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          {
+            urlPattern: /\/assets\/(noto-sans|noto-serif|tiro-devanagari)-[^/]+\.woff2$/i,
+            handler: "CacheFirst",
+            options: {
+              cacheName: "indic-fonts",
+              expiration: { maxEntries: 20, maxAgeSeconds: 60 * 60 * 24 * 365 },
               cacheableResponse: { statuses: [0, 200] },
             },
           },

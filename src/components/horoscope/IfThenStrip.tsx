@@ -14,11 +14,11 @@ export default function IfThenStrip({ items }: { items?: IfThen[] }) {
           {t("pages:ui.ifThenStrip.todaysChoreography", "Today's Choreography")}
         </span>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 m-flat-list">
         {items.slice(0, 3).map((it, i) => (
           <div
             key={i}
-            className="rounded-2xl p-4"
+            className="rounded-2xl p-4 m-flat"
             style={{ background: "rgba(255,255,255,0.025)", border: "0.5px solid hsl(var(--gold) / 0.14)" }}
           >
             {it.when && (

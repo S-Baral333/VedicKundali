@@ -1,0 +1,183 @@
+/* ═══════════════════════════════════════════════════════════
+   INDIC COMPOSITE FONTS
+   The UI names its Latin faces directly ('Jost', 'Cormorant Garamond',
+   'Cinzel', 'IM Fell English' — in CSS and ~160 inline styles). None of them
+   has Indic glyphs, so Nepali/Hindi/etc. used to fall back to whatever the
+   phone had. These faces extend those same families over the Indic Unicode
+   ranges only, so every existing style gets a matched script face:
+     sans  (Jost)            → Noto Sans <script>
+     serif (Cormorant, etc.) → Tiro Devanagari / Noto Serif <script>
+   unicode-range means a file downloads only when a page has that script.
+   Devanagari is declared last so it wins the shared characters (ZWJ/ZWNJ,
+   dotted circle) — faces are matched in reverse declaration order.
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Bengali ── */
+@font-face {
+  font-family: 'Jost';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../../node_modules/@fontsource-variable/noto-sans-bengali/files/noto-sans-bengali-bengali-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0951-0952, U+0980-09FE, U+A8F1;
+}
+@font-face {
+  font-family: 'Jost';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../../node_modules/@fontsource-variable/noto-sans-bengali/files/noto-sans-bengali-bengali-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0951-0952, U+0980-09FE, U+A8F1;
+}
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../../node_modules/@fontsource-variable/noto-serif-bengali/files/noto-serif-bengali-bengali-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0951-0952, U+0980-09FE, U+A8F1;
+}
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: italic; /* Indic scripts have no italic — map italic to upright rather than faking a slant */
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../../node_modules/@fontsource-variable/noto-serif-bengali/files/noto-serif-bengali-bengali-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0951-0952, U+0980-09FE, U+A8F1;
+}
+
+/* ── Tamil ── */
+@font-face {
+  font-family: 'Jost';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../../node_modules/@fontsource-variable/noto-sans-tamil/files/noto-sans-tamil-tamil-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0B82-0BFA;
+}
+@font-face {
+  font-family: 'Jost';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../../node_modules/@fontsource-variable/noto-sans-tamil/files/noto-sans-tamil-tamil-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0B82-0BFA;
+}
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../../node_modules/@fontsource-variable/noto-serif-tamil/files/noto-serif-tamil-tamil-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0B82-0BFA;
+}
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../../node_modules/@fontsource-variable/noto-serif-tamil/files/noto-serif-tamil-tamil-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0B82-0BFA;
+}
+
+/* ── Telugu ── */
+@font-face {
+  font-family: 'Jost';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../../node_modules/@fontsource-variable/noto-sans-telugu/files/noto-sans-telugu-telugu-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0C00-0C7F;
+}
+@font-face {
+  font-family: 'Jost';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../../node_modules/@fontsource-variable/noto-sans-telugu/files/noto-sans-telugu-telugu-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0C00-0C7F;
+}
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../../node_modules/@fontsource-variable/noto-serif-telugu/files/noto-serif-telugu-telugu-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0C00-0C7F;
+}
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../../node_modules/@fontsource-variable/noto-serif-telugu/files/noto-serif-telugu-telugu-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0C00-0C7F;
+}
+
+/* ── Devanagari (Nepali, Hindi, Marathi) — declared last so it wins shared chars ── */
+@font-face {
+  font-family: 'Jost';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../../node_modules/@fontsource-variable/noto-sans-devanagari/files/noto-sans-devanagari-devanagari-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0900-097F, U+1CD0-1CF9, U+200C-200D, U+20A8, U+20B9, U+20F0, U+25CC, U+A830-A839, U+A8E0-A8FF;
+}
+@font-face {
+  font-family: 'Jost';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../../node_modules/@fontsource-variable/noto-sans-devanagari/files/noto-sans-devanagari-devanagari-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0900-097F, U+1CD0-1CF9, U+200C-200D, U+20A8, U+20B9, U+20F0, U+25CC, U+A830-A839, U+A8E0-A8FF;
+}
+/* Tiro has one weight; the range stops the browser faking bold/italic from it */
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../../node_modules/@fontsource/tiro-devanagari-hindi/files/tiro-devanagari-hindi-devanagari-400-normal.woff2') format('woff2');
+  unicode-range: U+0900-097F, U+1CD0-1CF9, U+200C-200D, U+20A8, U+20B9, U+20F0, U+25CC, U+A830-A839, U+A8E0-A8FF;
+}
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../../node_modules/@fontsource/tiro-devanagari-hindi/files/tiro-devanagari-hindi-devanagari-400-normal.woff2') format('woff2');
+  unicode-range: U+0900-097F, U+1CD0-1CF9, U+200C-200D, U+20A8, U+20B9, U+20F0, U+25CC, U+A830-A839, U+A8E0-A8FF;
+}
+@font-face {
+  font-family: 'Cinzel';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../../node_modules/@fontsource/tiro-devanagari-hindi/files/tiro-devanagari-hindi-devanagari-400-normal.woff2') format('woff2');
+  unicode-range: U+0900-097F, U+1CD0-1CF9, U+200C-200D, U+20A8, U+20B9, U+20F0, U+25CC, U+A830-A839, U+A8E0-A8FF;
+}
+@font-face {
+  font-family: 'IM Fell English';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../../node_modules/@fontsource/tiro-devanagari-hindi/files/tiro-devanagari-hindi-devanagari-400-normal.woff2') format('woff2');
+  unicode-range: U+0900-097F, U+1CD0-1CF9, U+200C-200D, U+20A8, U+20B9, U+20F0, U+25CC, U+A830-A839, U+A8E0-A8FF;
+}
+@font-face {
+  font-family: 'IM Fell English';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../../node_modules/@fontsource/tiro-devanagari-hindi/files/tiro-devanagari-hindi-devanagari-400-normal.woff2') format('woff2');
+  unicode-range: U+0900-097F, U+1CD0-1CF9, U+200C-200D, U+20A8, U+20B9, U+20F0, U+25CC, U+A830-A839, U+A8E0-A8FF;
+}
+
+/* ── Indic typesetting rules ──
+   Letter-spacing breaks the joined headline (shirorekha) and conjuncts, and
+   text-transform/tracking on "uppercase" labels does nothing useful for these
+   scripts. Scoped to elements that set tracking so plain text is untouched. */
+html:is([data-lang="ne"], [data-lang="hi"], [data-lang="mr"], [data-lang="bn"], [data-lang="ta"], [data-lang="te"])
+  :is([class*="tracking-"], [style*="letter-spacing"]) {
+  letter-spacing: normal !important;
+}

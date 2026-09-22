@@ -14,8 +14,10 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import {
   Sun, Moon, Compass, Star, ArrowRight, RefreshCw, Loader2, Copy, Clock,
   AlertTriangle, TrendingUp, Zap, CheckCircle2, Eye, BookOpen, Flower2,
-  Calendar, CalendarDays, Sparkles, ChevronDown, CloudRain, Heart
+  Calendar, CalendarDays, Sparkles, ChevronDown, CloudRain, Heart, Flame, Orbit
 } from "lucide-react";
+import { useRishiGuru } from "@/hooks/useRishiGuru";
+import { formatReadingDate, pakshaTithiLabel, signLabel } from "@/lib/panchanga-i18n";
 import { toast } from "@/hooks/use-toast";
 import PillTabs, { type PillTabItem } from "@/components/PillTabs";
 import DailyHeroCard from "@/components/horoscope/DailyHeroCard";
@@ -179,6 +181,7 @@ export default function DailyHoroscopePage() {
   const { t } = useTranslation("pages");
   const { user, session, isLoading } = useAuth();
   const { activeChart } = useActiveChart();
+  const { enabled: rishiEnabled } = useRishiGuru();
   const [period, setPeriod] = useState<Period>("daily");
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -475,14 +478,10 @@ export default function DailyHoroscopePage() {
     toast({ title: t("horoscope.toast.copied") });
   };
 
-  const formatDateSubtitle = () => {
-    if (!validDate) return "";
-    const d = new Date(validDate + "T00:00");
-    if (period === "daily" || period === "tomorrow") return d.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
-    if (period === "weekly") { const end = new Date(d); end.setDate(end.getDate() + 6); return `${d.toLocaleDateString("en-US", { month: "short", day: "numeric" })} – ${end.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}`; }
-    if (period === "monthly") return d.toLocaleDateString("en-US", { month: "long", year: "numeric" });
-    return d.getFullYear().toString();
-  };
+  const formatDateSubtitle = () => formatReadingDate(validDate, period, getCurrentLanguage());
+  const moonInLabel = sign && sign !== "General"
+    ? t("horoscope.subtitle.moonIn", { sign: signLabel(t, sign) })
+    : t("horoscope.subtitle.generalGuidance");
 
   const energyColor = horoscope?.energy_level === "high" ? "#4CAF50" : horoscope?.energy_level === "low" ? "#E05C3A" : "#C9A84C";
 
@@ -497,7 +496,7 @@ export default function DailyHoroscopePage() {
     const parts: string[] = [];
     if (dashaInfo?.maha_dasha) parts.push(`${dashaInfo.maha_dasha} Mahadasha`);
     if (dashaInfo?.antar_dasha) parts.push(`${dashaInfo.antar_dasha} Antardasha`);
-    if (meta?.paksha && meta?.tithi) parts.push(`${meta.paksha} ${meta.tithi}`);
+    if (meta?.paksha && meta?.tithi) parts.push(pakshaTithiLabel(t, meta.paksha, meta.tithi));
     return parts.join(" · ");
   })();
 
@@ -511,9 +510,9 @@ export default function DailyHoroscopePage() {
         className="space-y-5"
       >
 
-        {/* ─── 1. PLANET STRIP — real transits ─── */}
+        {/* ─── 1. PLANET STRIP — real transits (phones: see "Today's sky" below) ─── */}
         {liveTransits.length > 0 && (
-          <GlassCard delay={0.02} className="!p-0 overflow-hidden">
+          <GlassCard delay={0.02} className="!p-0 overflow-hidden hidden sm:block">
             <div className="grid grid-cols-4 sm:grid-cols-8">
               {liveTransits.slice(0, 8).map((p, i, arr) => (
                 <div
@@ -543,10 +542,10 @@ export default function DailyHoroscopePage() {
         {/* ─── 2. PAGE HEADER ─── */}
         <div className="sacred-reveal" style={{ animationDelay: "0.06s" }}>
           <p className="text-[11px] tracking-[0.18em] uppercase mb-2" style={{ color: "hsl(var(--text-muted))" }}>
-            {sign && sign !== "General" ? t("horoscope.subtitle.moonIn", { sign }) : t("horoscope.subtitle.generalGuidance")} · {formatDateSubtitle()}
+            {formatDateSubtitle()} · {moonInLabel}
           </p>
           <div className="flex items-center justify-between">
-            <h1 className="text-4xl md:text-[48px] font-light twinkle-aura" style={{ fontFamily: "'Cormorant Garamond', serif", color: "hsl(var(--gold-pale))", lineHeight: 1.1 }}>
+            <h1 className="text-[1.4rem] sm:text-4xl md:text-[48px] font-light twinkle-aura" style={{ fontFamily: "'Cormorant Garamond', serif", color: "hsl(var(--gold-pale))", lineHeight: 1.1 }}>
               {t(`horoscope.period.title.${period}`)}
             </h1>
             <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary" title={t("horoscope.button.copyReading")} onClick={copyReading}>
@@ -554,11 +553,33 @@ export default function DailyHoroscopePage() {
             </Button>
           </div>
           {headerSubLine && (
-            <p className="text-[11px] tracking-[0.14em] uppercase mt-2" style={{ color: "hsl(var(--text-muted))" }}>
+            <p className="hidden sm:block text-[11px] tracking-[0.14em] uppercase mt-2" style={{ color: "hsl(var(--text-muted))" }}>
               {headerSubLine}
             </p>
           )}
-          <div className="mt-3 flex flex-wrap items-center gap-2">
+          {/* Phones: one quiet meta line instead of three differently styled chips */}
+          <p className="sm:hidden mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12.5px]" style={{ color: "hsl(var(--text-muted))" }}>
+            {activeChart?.full_name && (
+              <>
+                <span className="inline-flex items-center gap-1.5" style={{ color: "hsl(var(--gold-pale))" }}>
+                  <span className="w-1.5 h-1.5 rounded-full" style={{ background: "hsl(var(--gold))", boxShadow: "0 0 8px hsl(var(--gold) / 0.7)" }} aria-hidden />
+                  {activeChart.full_name.trim().split(/\s+/)[0]}
+                </span>
+                <span aria-hidden>·</span>
+              </>
+            )}
+            <NextRefreshBadge period={period} plain />
+            {rishiEnabled && (
+              <>
+                <span aria-hidden>·</span>
+                <span className="inline-flex items-center gap-1" style={{ color: "hsl(var(--gold))" }} title={t("horoscope.rishiTooltip")}>
+                  <Flame className="h-3 w-3" aria-hidden /> Rishi Guru
+                </span>
+              </>
+            )}
+            {refreshing && <Loader2 className="h-3 w-3 animate-spin" aria-label={t("horoscope.button.refreshing")} />}
+          </p>
+          <div className="mt-3 hidden sm:flex flex-wrap items-center gap-2">
             <ReadingAsChip />
             <NextRefreshBadge period={period} />
             <RishiGuruBadge tooltip={t("horoscope.rishiTooltip")} />
@@ -583,7 +604,7 @@ export default function DailyHoroscopePage() {
 
         {/* ─── 3. DASHA STRIP — real values ─── */}
         {dashaInfo && (
-          <GlassCard delay={0.1} className="!py-3">
+          <GlassCard delay={0.1} className="!py-3 hidden sm:block">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-0">
               {[
                 { label: t("horoscope.dasha.mahadasha"),    value: dashaInfo.maha_dasha || "—" },
@@ -610,7 +631,7 @@ export default function DailyHoroscopePage() {
             nakshatra={meta.nakshatra_of_day}
             mood={meta.mood || "solar"}
             voiceLabel={meta.voice_label || t("horoscope.voiceFallback")}
-            signLabel={sign && sign !== "General" ? t("horoscope.subtitle.moonIn", { sign }) : t("horoscope.subtitle.generalGuidance")}
+            signLabel={moonInLabel}
             dateLabel={formatDateSubtitle()}
           />
         )}
@@ -993,6 +1014,49 @@ export default function DailyHoroscopePage() {
             </div>
           </div>
         ) : null}
+
+        {/* ─── TODAY'S SKY (phones) — planets + dasha, after the story ─── */}
+        {(liveTransits.length > 0 || dashaInfo) && (
+          <GlassCard delay={0.2} className="sm:hidden">
+            <SectionLabel icon={Orbit}>{t("pages:ui.dailyHoroscopePage.todaysSky", "Today's sky")}</SectionLabel>
+            {dashaInfo && (
+              <dl className="grid grid-cols-2 gap-x-4 gap-y-3 mb-5">
+                {[
+                  { label: t("horoscope.dasha.mahadasha"), value: dashaInfo.maha_dasha || "—" },
+                  { label: t("horoscope.dasha.antardasha"), value: dashaInfo.antar_dasha || "—" },
+                  { label: t("horoscope.dasha.pratyantar"), value: dashaInfo.pratyantar_dasha || "—" },
+                  { label: t("horoscope.dasha.daysRemaining"), value: dashaDays != null ? String(dashaDays) : "—" },
+                ].map((item) => (
+                  <div key={item.label}>
+                    <dt className="text-[12px]" style={{ color: "hsl(var(--text-muted))" }}>{item.label}</dt>
+                    <dd className="text-lg" style={{ fontFamily: "'Cormorant Garamond', serif", color: "hsl(var(--gold))" }}>{item.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            )}
+            {liveTransits.length > 0 && (
+              <div className="flex overflow-x-auto scrollbar-hide -mx-5 px-5 pt-4" style={{ borderTop: "0.5px solid hsl(var(--gold) / 0.12)" }}>
+                {liveTransits.map((p, i) => (
+                  <div
+                    key={p.name}
+                    className="shrink-0 w-[72px] flex flex-col items-center"
+                    style={{ borderLeft: i > 0 ? "0.5px solid hsl(var(--gold) / 0.1)" : "none" }}
+                    title={`${t("pages:ui.dailyHoroscopePage.planetInSign", "{{planet}} in {{sign}}", { planet: p.name, sign: p.sign })}${p.is_retrograde ? t("pages:ui.dailyHoroscopePage.retrogradeSuffix", " (retrograde)") : ""}`}
+                  >
+                    <span className="text-lg leading-none" style={{ color: "hsl(var(--gold))" }}>{PLANET_SYMBOLS[p.name] || "✦"}</span>
+                    <span className="text-[10.5px] mt-1.5" style={{ color: "hsl(var(--text-muted))" }}>{p.name}{p.is_retrograde ? " ℞" : ""}</span>
+                    <span className="text-[14px]" style={{ fontFamily: "'Cormorant Garamond', serif", color: "hsl(var(--gold-pale))" }}>{p.sign}</span>
+                    {typeof p.degree === "number" && (
+                      <span className="text-[10px] tabular-nums" style={{ color: "hsl(var(--text-muted) / 0.7)" }}>
+                        {Math.floor(p.degree)}°{String(Math.round((p.degree % 1) * 60)).padStart(2, "0")}'
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </GlassCard>
+        )}
       </SacredPageShell>
     </div>
   );

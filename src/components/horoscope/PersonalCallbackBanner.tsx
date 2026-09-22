@@ -6,7 +6,7 @@ export default function PersonalCallbackBanner({ text }: { text?: string }) {
   if (!text) return null;
   return (
     <div
-      className="rounded-2xl px-5 py-4 flex items-start gap-3 sacred-reveal"
+      className="rounded-2xl px-5 py-4 flex items-start gap-3 sacred-reveal m-quote"
       style={{
         background: "linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.02))",
         border: "0.5px solid hsl(var(--gold) / 0.32)",
@@ -21,7 +21,7 @@ export default function PersonalCallbackBanner({ text }: { text?: string }) {
           className="text-[1.1rem] leading-[1.55] italic"
           style={{ fontFamily: "'Cormorant Garamond', serif", color: "hsl(var(--text-primary))" }}
         >
-          "{text}"
+          “{text.trim().replace(/^["“'‘]+|["”'’]+$/g, "")}”
         </p>
       </div>
     </div>

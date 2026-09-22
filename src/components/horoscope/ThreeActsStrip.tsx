@@ -21,7 +21,7 @@ export default function ThreeActsStrip({ acts }: { acts?: Acts }) {
   if (filled.length === 0) return null;
   return (
     <div
-      className="grid gap-3 grid-cols-1 sm:[grid-template-columns:var(--cols)]"
+      className="grid gap-3 grid-cols-1 sm:[grid-template-columns:var(--cols)] m-flat-list"
       style={{ ["--cols" as any]: `repeat(${filled.length}, minmax(0, 1fr))` }}
     >
       {filled.map(({ key, label, Icon, tint }) => {
@@ -29,7 +29,7 @@ export default function ThreeActsStrip({ acts }: { acts?: Acts }) {
         return (
           <div
             key={key}
-            className="rounded-2xl p-4 transition-transform hover:-translate-y-[1px]"
+            className="rounded-2xl p-4 transition-transform hover:-translate-y-[1px] m-flat"
             style={{ background: tint, border: "0.5px solid hsl(var(--gold) / 0.14)" }}
           >
             <div className="flex items-center gap-2 mb-2">

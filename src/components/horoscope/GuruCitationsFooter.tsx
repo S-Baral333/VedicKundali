@@ -15,7 +15,7 @@ export default function GuruCitationsFooter({ citations, dharmicClose, lifeAreaL
 
   return (
     <div
-      className="rounded-2xl p-4 mt-2"
+      className="rounded-2xl p-4 mt-2 m-flat"
       style={{
         background: "rgba(201,168,76,0.03)",
         border: "0.5px solid hsl(var(--gold) / 0.18)",

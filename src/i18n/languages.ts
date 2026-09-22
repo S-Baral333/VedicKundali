@@ -12,12 +12,12 @@ export interface LanguageDef {
 
 export const LANGUAGES: LanguageDef[] = [
   { code: "en", name: "English",  nativeName: "English",       glyph: "A" },
-  { code: "hi", name: "Hindi",    nativeName: "हिन्दी",         glyph: "अ", fontFamily: "'Noto Sans Devanagari', 'Jost', sans-serif" },
-  { code: "ne", name: "Nepali",   nativeName: "नेपाली",         glyph: "न", fontFamily: "'Noto Sans Devanagari', 'Jost', sans-serif" },
-  { code: "mr", name: "Marathi",  nativeName: "मराठी",          glyph: "म", fontFamily: "'Noto Sans Devanagari', 'Jost', sans-serif" },
-  { code: "bn", name: "Bengali",  nativeName: "বাংলা",         glyph: "অ", fontFamily: "'Noto Sans Bengali', 'Jost', sans-serif" },
-  { code: "ta", name: "Tamil",    nativeName: "தமிழ்",          glyph: "அ", fontFamily: "'Noto Sans Tamil', 'Jost', sans-serif" },
-  { code: "te", name: "Telugu",   nativeName: "తెలుగు",         glyph: "అ", fontFamily: "'Noto Sans Telugu', 'Jost', sans-serif" },
+  { code: "hi", name: "Hindi",    nativeName: "हिन्दी",         glyph: "अ", fontFamily: "'Jost', sans-serif" },
+  { code: "ne", name: "Nepali",   nativeName: "नेपाली",         glyph: "न", fontFamily: "'Jost', sans-serif" },
+  { code: "mr", name: "Marathi",  nativeName: "मराठी",          glyph: "म", fontFamily: "'Jost', sans-serif" },
+  { code: "bn", name: "Bengali",  nativeName: "বাংলা",         glyph: "অ", fontFamily: "'Jost', sans-serif" },
+  { code: "ta", name: "Tamil",    nativeName: "தமிழ்",          glyph: "அ", fontFamily: "'Jost', sans-serif" },
+  { code: "te", name: "Telugu",   nativeName: "తెలుగు",         glyph: "అ", fontFamily: "'Jost', sans-serif" },
 ];
 
 export const DEFAULT_LANGUAGE = "en";
