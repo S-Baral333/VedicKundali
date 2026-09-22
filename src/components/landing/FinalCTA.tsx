@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Star } from "lucide-react";
@@ -6,6 +7,7 @@ import TwinkleText from "@/components/TwinkleText";
 
 export default function FinalCTA() {
   const ref = useScrollReveal();
+  const { t } = useTranslation();
 
   return (
     <section className="py-24 px-6 relative overflow-hidden">
@@ -20,18 +22,18 @@ export default function FinalCTA() {
           <span className="sacred-om-watermark">ॐ</span>
 
           <TwinkleText as="h2" intensity="star" className="text-3xl md:text-4xl font-bold mb-4 block" style={{ fontFamily: 'Cinzel, serif', color: 'hsl(38 78% 55%)' }}>
-            Unlock Your Destiny Today
+            {t("pages:ui.finalCTA.title", "Unlock Your Destiny Today")}
           </TwinkleText>
           <p className="mb-8" style={{ color: 'hsl(35 12% 55%)' }}>
-            Discover what the stars say about your future.
+            {t("pages:ui.finalCTA.subtitle", "Discover what the stars say about your future.")}
           </p>
           <Link to="/preview/oracle">
             <Button size="lg" className="gap-2 text-base px-10 border-0" style={{ background: 'linear-gradient(135deg, hsl(38 78% 55%), hsl(36 50% 45%))', color: 'hsl(30 15% 6%)' }}>
               <Star className="h-4 w-4" />
-              Get Your Free Guru Reading
+              {t("pages:ui.finalCTA.cta", "Get Your Free Guru Reading")}
             </Button>
           </Link>
-          <p className="text-xs mt-4" style={{ color: 'hsl(35 12% 55% / 0.7)' }}>Free to get started. No credit card required.</p>
+          <p className="text-xs mt-4" style={{ color: 'hsl(35 12% 55% / 0.7)' }}>{t("pages:ui.finalCTA.note", "Free to get started. No credit card required.")}</p>
         </div>
       </div>
     </section>

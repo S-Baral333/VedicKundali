@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ChartSwitcher from "@/components/ChartSwitcher";
@@ -49,6 +50,7 @@ const JUMP_LINKS = [
 ];
 
 export default function TodaysCosmosRail() {
+  const { t } = useTranslation();
   const [now, setNow] = useState<Date>(() => new Date());
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 60000);
@@ -63,21 +65,21 @@ export default function TodaysCosmosRail() {
     <div className="space-y-3 animate-fade-in-up">
       {/* Active chart switcher */}
       <div className="rail-card">
-        <div className="rail-card-title">Reading As</div>
+        <div className="rail-card-title">{t("pages:ui.todaysCosmosRail.readingAs", "Reading As")}</div>
         <ChartSwitcher />
       </div>
 
       {/* Today's cosmos */}
       <div className="rail-card">
-        <div className="rail-card-title">Today's Cosmos</div>
+        <div className="rail-card-title">{t("pages:ui.todaysCosmosRail.todaysCosmos", "Today's Cosmos")}</div>
         <div className="flex items-center gap-3 mb-3">
           <span style={{ fontSize: "26px", lineHeight: 1 }} aria-hidden>{moon.glyph}</span>
           <div>
             <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "17px", color: "hsl(var(--gold-light))", letterSpacing: "0.02em" }}>
-              {moon.label}
+              {t("pages:ui.todaysCosmosRail.moon" + moon.label.replace(/\s/g, ""), moon.label)}
             </div>
             <div className="text-[11px]" style={{ color: "hsl(var(--text-muted))" }}>
-              {moon.illumination}% illuminated
+              {t("pages:ui.todaysCosmosRail.illuminated", "{{pct}}% illuminated", { pct: moon.illumination })}
             </div>
           </div>
         </div>
@@ -90,14 +92,14 @@ export default function TodaysCosmosRail() {
           <span className="rail-stat-value">{vara.split(" ")[0]}</span>
         </div>
         <div className="rail-stat">
-          <span className="rail-stat-label">Day</span>
+          <span className="rail-stat-label">{t("pages:ui.todaysCosmosRail.day", "Day")}</span>
           <span className="rail-stat-value">{now.toLocaleDateString("en-US", { weekday: "long" })}</span>
         </div>
       </div>
 
       {/* On this page */}
       <div className="rail-card">
-        <div className="rail-card-title">On This Page</div>
+        <div className="rail-card-title">{t("pages:ui.todaysCosmosRail.onThisPage", "On This Page")}</div>
         <div className="flex flex-col gap-1.5">
           {JUMP_LINKS.map(j => (
             <a
@@ -109,7 +111,7 @@ export default function TodaysCosmosRail() {
               onMouseLeave={(e) => (e.currentTarget.style.color = "hsl(var(--text-secondary))")}
             >
               <span style={{ color: "hsl(var(--gold) / 0.5)", marginRight: 8 }}>·</span>
-              {j.label}
+              {t("pages:ui.todaysCosmosRail.jump_" + j.id.replace("-", "_"), j.label)}
             </a>
           ))}
         </div>
@@ -117,7 +119,7 @@ export default function TodaysCosmosRail() {
 
       {/* Verse */}
       <div className="rail-card">
-        <div className="rail-card-title">Daily Verse</div>
+        <div className="rail-card-title">{t("pages:ui.todaysCosmosRail.dailyVerse", "Daily Verse")}</div>
         <p style={{
           fontFamily: "'Cormorant Garamond', serif",
           fontStyle: "italic",
@@ -125,7 +127,7 @@ export default function TodaysCosmosRail() {
           lineHeight: 1.6,
           color: "hsl(var(--gold-light) / 0.85)",
         }}>
-          "As above, so below — the same rhythm that turns the stars turns the breath inside you."
+          "{t("pages:ui.todaysCosmosRail.verse", "As above, so below — the same rhythm that turns the stars turns the breath inside you.")}"
         </p>
       </div>
     </div>

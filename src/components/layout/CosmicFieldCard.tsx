@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 const VERSES = [
   "As above, so below — the same rhythm that turns the stars turns the breath inside you.",
   "The cosmos does not hurry, yet everything is accomplished.",
@@ -9,12 +10,13 @@ const VERSES = [
 ];
 
 export default function CosmicFieldCard() {
+  const { t } = useTranslation();
   const dayIndex = Math.floor(Date.now() / 86400000) % VERSES.length;
-  const verse = VERSES[dayIndex];
+  const verse = t("pages:ui.cosmicFieldCard.verse" + (dayIndex + 1), VERSES[dayIndex]);
 
   return (
     <div className="rail-card relative" style={{ overflow: "hidden" }}>
-      <div className="rail-card-title">Cosmic Field</div>
+      <div className="rail-card-title">{t("pages:ui.cosmicFieldCard.title", "Cosmic Field")}</div>
       <div className="relative" style={{ height: 70 }}>
         <svg viewBox="0 0 200 70" className="w-full h-full" aria-hidden>
           <defs>

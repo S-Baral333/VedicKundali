@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Sparkles, Moon } from "lucide-react";
 
 type Mood = "solar" | "lunar" | "fiery" | "mystic" | "earthen";
@@ -20,7 +21,7 @@ interface DailyHeroCardProps {
   dateLabel: string;          // e.g. "Tuesday, March 12"
 }
 
-const MOOD_DESC: Record<Mood, string> = {
+const MOOD_DESC: Record<Mood, string> = { // English defaults; keys ui.dailyHeroCard.mood_<mood>
   solar: "high momentum",
   lunar: "soft & reflective",
   fiery: "intense, do-not-suppress",
@@ -34,6 +35,8 @@ export default function DailyHeroCard({
   nakshatra, mood, voiceLabel,
   signLabel, dateLabel,
 }: DailyHeroCardProps) {
+  const { t } = useTranslation();
+  const moodDesc = t("pages:ui.dailyHeroCard.mood_" + mood, MOOD_DESC[mood]);
   return (
     <div className="daily-hero-card sacred-reveal" style={{ animationDelay: "0.04s" }}>
       {/* Top meta line */}
@@ -44,10 +47,10 @@ export default function DailyHeroCard({
         <span
           className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] tracking-[0.14em] uppercase mood-accent-bg-soft border"
           style={{ color: "hsl(var(--mood-accent))" }}
-          title={`Today's tonal mood: ${MOOD_DESC[mood]}`}
+          title={t("pages:ui.dailyHeroCard.tonalMood", "Today's tonal mood: {{desc}}", { desc: moodDesc })}
         >
           <span className="w-1.5 h-1.5 rounded-full" style={{ background: "hsl(var(--mood-accent))" }} />
-          {mood} · {MOOD_DESC[mood]}
+          {t("pages:ui.dailyHeroCard.moodName_" + mood, mood)} · {moodDesc}
         </span>
       </div>
 
@@ -68,7 +71,7 @@ export default function DailyHeroCard({
       <div className="flex items-center gap-2 mb-5">
         <Sparkles className="h-3.5 w-3.5" style={{ color: "hsl(var(--mood-accent))" }} />
         <span className="text-[11px] tracking-[0.16em] uppercase" style={{ color: "hsl(var(--text-muted))" }}>
-          Today's voice:
+          {t("pages:ui.dailyHeroCard.todaysVoice", "Today's voice:")}
         </span>
         <span
           className="text-[11px] tracking-wide font-medium"
@@ -85,7 +88,7 @@ export default function DailyHeroCard({
           style={{ background: "rgba(255,255,255,0.025)", border: "0.5px solid hsl(var(--gold) / 0.12)" }}
         >
           <p className="text-[11px] tracking-[0.18em] uppercase mb-1.5" style={{ color: "hsl(var(--text-muted))" }}>
-            Lunar day
+            {t("pages:ui.dailyHeroCard.lunarDay", "Lunar day")}
           </p>
           <p className="text-base font-medium" style={{ fontFamily: "'Cormorant Garamond', serif", color: "hsl(var(--gold))" }}>
             {paksha} {tithi}
@@ -100,7 +103,7 @@ export default function DailyHeroCard({
           style={{ background: "rgba(255,255,255,0.025)", border: "0.5px solid hsl(var(--gold) / 0.12)" }}
         >
           <p className="text-[11px] tracking-[0.18em] uppercase mb-1.5 flex items-center gap-1.5" style={{ color: "hsl(var(--text-muted))" }}>
-            <Moon className="h-3 w-3" /> Moon's nakshatra
+            <Moon className="h-3 w-3" /> {t("pages:ui.dailyHeroCard.moonsNakshatra", "Moon's nakshatra")}
           </p>
           <p className="text-base font-medium" style={{ fontFamily: "'Cormorant Garamond', serif", color: "hsl(var(--gold))" }}>
             {nakshatra.name}

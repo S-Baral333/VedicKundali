@@ -23,15 +23,15 @@ export const PRIMARY_ITEMS = [
   { label: "Today",   i18nKey: "nav:horoscope",     path: "/horoscope",     icon: Sun,            dockKey: "nav:dock.today",  dockLabel: "Today" },
   { label: "Destiny", i18nKey: "nav:chart",         path: "/chart",         icon: Compass,        dockKey: "nav:dock.chart",  dockLabel: "Chart" },
   { label: "Dreams",  i18nKey: "nav:dreams",        path: "/dreams",        icon: Moon,           dockKey: "nav:dock.dreams", dockLabel: "Dreams" },
-  { label: "Match",   i18nKey: "nav:compatibility", path: "/compatibility", icon: HeartHandshake, desc: "Kundali Milan — match your charts" },
+  { label: "Match",   i18nKey: "nav:compatibility", path: "/compatibility", icon: HeartHandshake, desc: "Kundali Milan — match your charts", descKey: "ui.primaryNav.match" },
 ];
 
 export const MORE_ITEMS = [
-  { label: "Remedies", i18nKey: "nav:remedies",  path: "/remedies", icon: Sparkles,                desc: "Mantras, gemstones & rituals" },
-  { label: "Timeline", i18nKey: "nav:timeline",  path: "/timeline", icon: CalendarDays,            desc: "Your 12-month cosmic roadmap" },
-  { label: "Guru",     i18nKey: "nav:oracle",    path: "/ask",      icon: MessageCircleQuestion,   desc: "Decision guidance from the stars" },
-  { label: "Muhurta",  i18nKey: "nav:muhurta",   path: "/muhurta",  icon: Timer,                   desc: "Auspicious timing windows" },
-  { label: "Profile",  i18nKey: "nav:profile",   path: "/profile",  icon: User,                    desc: "Your account & charts" },
+  { label: "Remedies", i18nKey: "nav:remedies",  path: "/remedies", icon: Sparkles,                desc: "Mantras, gemstones & rituals", descKey: "ui.primaryNav.remedies" },
+  { label: "Timeline", i18nKey: "nav:timeline",  path: "/timeline", icon: CalendarDays,            desc: "Your 12-month cosmic roadmap", descKey: "ui.primaryNav.timeline" },
+  { label: "Guru",     i18nKey: "nav:oracle",    path: "/ask",      icon: MessageCircleQuestion,   desc: "Decision guidance from the stars", descKey: "ui.primaryNav.guru" },
+  { label: "Muhurta",  i18nKey: "nav:muhurta",   path: "/muhurta",  icon: Timer,                   desc: "Auspicious timing windows", descKey: "ui.primaryNav.muhurta" },
+  { label: "Profile",  i18nKey: "nav:profile",   path: "/profile",  icon: User,                    desc: "Your account & charts", descKey: "ui.primaryNav.profile" },
 ];
 
 export default function PrimaryNav() {
@@ -133,7 +133,7 @@ export default function PrimaryNav() {
                       {t(item.i18nKey, item.label)}
                     </p>
                     <p className="text-[11px] mt-0.5" style={{ color: "hsl(var(--text-muted))" }}>
-                      {item.desc}
+                      {t("pages:" + item.descKey, item.desc)}
                     </p>
                   </div>
                 </Link>

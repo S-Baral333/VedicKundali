@@ -41,7 +41,12 @@ const FEATURES: FeatureRow[] = [
 ];
 
 function Cell({ v }: { v: string | boolean }) {
-  if (typeof v === "string") return <span className="text-sm font-medium">{v}</span>;
+  const { t } = useTranslation();
+  if (typeof v === "string") {
+    const cellKeys: Record<string, string> = { "Unlimited": "cellUnlimited", "Preview": "cellPreview", "3 preview": "cell3Preview", "3 / mo": "cell3Mo", "20 / mo": "cell20Mo", "50 / mo": "cell50Mo", "White-label": "cellWhiteLabel" };
+    const ck = cellKeys[v];
+    return <span className="text-sm font-medium">{ck ? t("pages:ui.pricingPage." + ck, v) : v}</span>;
+  }
   return v ? <Check className="h-4 w-4 text-primary mx-auto" /> : <X className="h-4 w-4 text-muted-foreground/30 mx-auto" />;
 }
 
@@ -54,7 +59,7 @@ export default function PricingPage() {
     <div className="min-h-screen relative">
       <CosmicBackground />
       <SacredPageShell
-        leftRail={<PageNavRail title="Pricing" hint="Choose the cosmic path that fits your journey." showChartSwitcher={false} sections={[{ id: "tiers", label: "Tiers" }, { id: "compare", label: "Compare" }, { id: "faq", label: "FAQ" }]} />}
+        leftRail={<PageNavRail title={t("pages:ui.pricingPage.railTitle", "Pricing")} hint={t("pages:ui.pricingPage.railHint", "Choose the cosmic path that fits your journey.")} showChartSwitcher={false} sections={[{ id: "tiers", label: t("pages:ui.pricingPage.sectionTiers", "Tiers") }, { id: "compare", label: t("pages:ui.pricingPage.sectionCompare", "Compare") }, { id: "faq", label: t("pages:ui.pricingPage.sectionFaq", "FAQ") }]} />}
         rightRail={<CosmicFieldCard />}
         className="space-y-12"
       >
@@ -104,36 +109,36 @@ export default function PricingPage() {
                   </div>
                   <CardTitle className="font-serif text-2xl">{cfg.sanskrit}</CardTitle>
                   <div className="text-lg text-primary/90 font-serif">{cfg.devanagari}</div>
-                  <p className="text-xs text-muted-foreground italic">{cfg.meaning}</p>
+                  <p className="text-xs text-muted-foreground italic">{t("pages:ui.pricingPage.meaning_" + tierKey, cfg.meaning)}</p>
                 </CardHeader>
                 <CardContent className="space-y-4 text-center">
                   <div>
                     <div className="text-4xl font-serif text-primary">
-                      {price === 0 ? t("pricing.free") : `AUD $${price.toFixed(2)}`}
+                      {price === 0 ? t("pricing.free") : t("pages:ui.pricingPage.priceAud", "AUD ${{price}}", { price: price.toFixed(2) })}
                     </div>
                     {price > 0 && <div className="text-xs text-muted-foreground">{annual ? t("pricing.perMonthBilledYearly") : t("pricing.perMonth")}</div>}
                     {annual && cfg.priceAnnualAud > 0 && (
-                      <div className="text-[11px] text-muted-foreground mt-1">${cfg.priceAnnualAud}/yr</div>
+                      <div className="text-[11px] text-muted-foreground mt-1">{t("pages:ui.pricingPage.perYear", "${{price}}/yr", { price: cfg.priceAnnualAud })}</div>
                     )}
                   </div>
                   <Button
                     className="w-full"
                     variant={isPopular ? "default" : "outline"}
                     disabled={isCurrent || price > 0}
-                    title={price > 0 ? "Payments open soon — admin can grant access in the meantime" : undefined}
+                    title={price > 0 ? t("pages:ui.pricingPage.paymentsSoonTitle", "Payments open soon — admin can grant access in the meantime") : undefined}
                   >
                     {isCurrent ? t("pricing.currentPlan") : price === 0 ? t("pricing.startFree") : t("pricing.paymentsSoon")}
                   </Button>
                   <ul className="text-left text-sm space-y-2 pt-2">
                     {(tierKey === "darshana"
-                      ? ["1 birth chart", "Daily horoscope", "Reading preview", "3 Guru questions to try"]
+                      ? [["darshana1", "1 birth chart"], ["darshana2", "Daily horoscope"], ["darshana3", "Reading preview"], ["darshana4", "3 Guru questions to try"]]
                       : tierKey === "sadhaka"
-                      ? ["Up to 3 charts", "Full Vedic reading", "Destiny Timeline & Muhurta", "30 Guru / 20 dreams per month", "Sacred Kundali PDF"]
-                      : ["Up to 7 charts", "All divisional charts", "Kundali Milan & Sade Sati", "50 Guru / 50 dreams per month", "Hindi Guru, transit overlays"]
-                    ).map((b) => (
+                      ? [["sadhaka1", "Up to 3 charts"], ["sadhaka2", "Full Vedic reading"], ["sadhaka3", "Destiny Timeline & Muhurta"], ["sadhaka4", "30 Guru / 20 dreams per month"], ["sadhaka5", "Sacred Kundali PDF"]]
+                      : [["grihastha1", "Up to 7 charts"], ["grihastha2", "All divisional charts"], ["grihastha3", "Kundali Milan & Sade Sati"], ["grihastha4", "50 Guru / 50 dreams per month"], ["grihastha5", "Hindi Guru, transit overlays"]]
+                    ).map(([bk, b]) => (
                       <li key={b} className="flex items-start gap-2">
                         <Check className="h-4 w-4 text-primary shrink-0 mt-0.5" />
-                        <span>{b}</span>
+                        <span>{t("pages:ui.pricingPage.benefit_" + bk, b)}</span>
                       </li>
                     ))}
                   </ul>

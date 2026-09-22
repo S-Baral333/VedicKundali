@@ -1,4 +1,5 @@
 import { useActiveChart } from "@/hooks/useActiveChart";
+import { useTranslation } from "react-i18next";
 
 interface ReadingAsChipProps {
   /** Override the leading label, e.g. "Primary" on compatibility. */
@@ -15,10 +16,12 @@ interface ReadingAsChipProps {
  * personalised data belongs to. Hides itself when there is no active chart.
  */
 export default function ReadingAsChip({
-  label = "Reading as",
+  label: labelProp,
   fullName = false,
   className = "",
 }: ReadingAsChipProps) {
+  const { t } = useTranslation();
+  const label = labelProp ?? t("pages:ui.readingAsChip.readingAs", "Reading as");
   const { activeChart } = useActiveChart();
   if (!activeChart) return null;
 

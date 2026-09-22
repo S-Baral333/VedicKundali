@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import ChartSwitcher from "@/components/ChartSwitcher";
 
@@ -21,6 +22,7 @@ export default function PageNavRail({
   hint,
   extras,
 }: PageNavRailProps) {
+  const { t } = useTranslation();
   const [active, setActive] = useState<string | null>(null);
 
   useEffect(() => {
@@ -42,7 +44,7 @@ export default function PageNavRail({
   return (
     <div className="space-y-3 animate-fade-in-up">
       <div className="rail-card">
-        <div className="rail-card-title">Page</div>
+        <div className="rail-card-title">{t("pages:ui.pageNavRail.page", "Page")}</div>
         <h2
           style={{
             fontFamily: "'Cormorant Garamond', serif",
@@ -64,14 +66,14 @@ export default function PageNavRail({
 
       {showChartSwitcher && (
         <div className="rail-card">
-          <div className="rail-card-title">Reading As</div>
+          <div className="rail-card-title">{t("pages:ui.pageNavRail.readingAs", "Reading As")}</div>
           <ChartSwitcher />
         </div>
       )}
 
       {sections.length > 0 && (
         <div className="rail-card">
-          <div className="rail-card-title">On This Page</div>
+          <div className="rail-card-title">{t("pages:ui.pageNavRail.onThisPage", "On This Page")}</div>
           <div className="flex flex-col gap-1">
             {sections.map((s) => {
               const isActive = active === s.id;

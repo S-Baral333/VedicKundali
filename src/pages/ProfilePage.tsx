@@ -83,7 +83,7 @@ const ProfilePage = () => {
         .maybeSingle();
 
       if (error) {
-        toast({ title: "Error loading profile", description: error.message, variant: "destructive" });
+        toast({ title: t("pages:ui.profilePage.errLoad", "Error loading profile"), description: error.message, variant: "destructive" });
       } else if (data) {
         setProfile(data);
         setFullName(data.full_name ?? "");
@@ -118,15 +118,15 @@ const ProfilePage = () => {
     setSavingGuru(false);
     if (error) {
       setRishiGuruEnabled(!next); // revert
-      toast({ title: "Failed to save", description: error.message, variant: "destructive" });
+      toast({ title: t("pages:ui.profilePage.saveFailed", "Failed to save"), description: error.message, variant: "destructive" });
     } else {
       setRishiGuruCache(user.id, next);
       sessionStorage.removeItem("dashboard-data");
       toast({
-        title: next ? "Rishi Guru Protocol activated" : "Rishi Guru Protocol disabled",
+        title: next ? t("pages:ui.profilePage.guruOn", "Rishi Guru Protocol activated") : t("pages:ui.profilePage.guruOff", "Rishi Guru Protocol disabled"),
         description: next
-          ? "The classical Vedic master now reads your chart directly."
-          : "Manual guidance preferences are active again.",
+          ? t("pages:ui.profilePage.guruOnDesc", "The classical Vedic master now reads your chart directly.")
+          : t("pages:ui.profilePage.guruOffDesc", "Manual guidance preferences are active again."),
       });
     }
   };
@@ -142,10 +142,10 @@ const ProfilePage = () => {
       .eq("user_id", user.id);
     setSavingPersonal(false);
     if (error) {
-      toast({ title: "Failed to save", description: error.message, variant: "destructive" });
+      toast({ title: t("pages:ui.profilePage.saveFailed", "Failed to save"), description: error.message, variant: "destructive" });
     } else {
       sessionStorage.removeItem("dashboard-data");
-      toast({ title: "Personal info updated" });
+      toast({ title: t("pages:ui.profilePage.personalUpdated", "Personal info updated") });
     }
   };
 
@@ -164,10 +164,10 @@ const ProfilePage = () => {
       .eq("user_id", user.id);
     setSavingBirth(false);
     if (error) {
-      toast({ title: "Failed to save", description: error.message, variant: "destructive" });
+      toast({ title: t("pages:ui.profilePage.saveFailed", "Failed to save"), description: error.message, variant: "destructive" });
     } else {
       sessionStorage.removeItem("dashboard-data");
-      toast({ title: "Birth details updated" });
+      toast({ title: t("pages:ui.profilePage.birthUpdated", "Birth details updated") });
     }
   };
 
@@ -187,10 +187,10 @@ const ProfilePage = () => {
       .eq("user_id", user.id);
     setSavingPrefs(false);
     if (error) {
-      toast({ title: "Failed to save", description: error.message, variant: "destructive" });
+      toast({ title: t("pages:ui.profilePage.saveFailed", "Failed to save"), description: error.message, variant: "destructive" });
     } else {
       sessionStorage.removeItem("dashboard-data");
-      toast({ title: "Preferences updated" });
+      toast({ title: t("pages:ui.profilePage.prefsUpdated", "Preferences updated") });
     }
   };
 
@@ -204,22 +204,22 @@ const ProfilePage = () => {
 
   const handleChangePassword = async () => {
     if (newPassword.length < 6) {
-      toast({ title: "Password too short", description: "Must be at least 6 characters", variant: "destructive" });
+      toast({ title: t("pages:ui.profilePage.pwShort", "Password too short"), description: t("pages:ui.profilePage.pwShortDesc", "Must be at least 6 characters"), variant: "destructive" });
       return;
     }
     if (newPassword !== confirmPassword) {
-      toast({ title: "Passwords don't match", variant: "destructive" });
+      toast({ title: t("pages:ui.profilePage.pwMismatch", "Passwords don't match"), variant: "destructive" });
       return;
     }
     setSavingPassword(true);
     const { error } = await supabase.auth.updateUser({ password: newPassword });
     setSavingPassword(false);
     if (error) {
-      toast({ title: "Failed to update password", description: error.message, variant: "destructive" });
+      toast({ title: t("pages:ui.profilePage.pwFailed", "Failed to update password"), description: error.message, variant: "destructive" });
     } else {
       setNewPassword("");
       setConfirmPassword("");
-      toast({ title: "Password updated successfully" });
+      toast({ title: t("pages:ui.profilePage.pwUpdated", "Password updated successfully") });
     }
   };
 
@@ -244,7 +244,7 @@ const ProfilePage = () => {
     <>
       <CosmicBackground />
       <SacredPageShell
-        leftRail={<PageNavRail title="Profile" hint="Your sacred identity and preferences." sections={[{ id: "identity", label: "Identity" }, { id: "prefs", label: "Preferences" }, { id: "sub", label: "Subscription" }]} />}
+        leftRail={<PageNavRail title={t("pages:ui.profilePage.title", "Profile")} hint={t("pages:ui.profilePage.navHint", "Your sacred identity and preferences.")} sections={[{ id: "identity", label: t("pages:ui.profilePage.navIdentity", "Identity") }, { id: "prefs", label: t("pages:ui.profilePage.navPrefs", "Preferences") }, { id: "sub", label: t("pages:ui.profilePage.navSub", "Subscription") }]} />}
         rightRail={<CosmicFieldCard />}
         className="space-y-8"
       >
@@ -257,7 +257,7 @@ const ProfilePage = () => {
         </Avatar>
         <div>
           <TwinkleText as="h1" intensity="aura" className="text-3xl font-serif font-bold text-foreground">
-            Profile
+            {t("pages:ui.profilePage.title", "Profile")}
           </TwinkleText>
           <p className="text-muted-foreground text-sm">{user?.email}</p>
         </div>
@@ -267,33 +267,33 @@ const ProfilePage = () => {
       <Card className="animate-[fade-in-up_0.6s_ease-out_0.1s_both]">
         <CardHeader>
           <CardTitle className="font-serif flex items-center gap-2">
-            <User className="h-5 w-5 text-primary" /> Personal Information
+            <User className="h-5 w-5 text-primary" /> {t("pages:ui.profilePage.personalTitle", "Personal Information")}
           </CardTitle>
-          <CardDescription>Your display name and account details</CardDescription>
+          <CardDescription>{t("pages:ui.profilePage.personalDesc", "Your display name and account details")}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="fullName">Display Name</Label>
+            <Label htmlFor="fullName">{t("pages:ui.profilePage.displayName", "Display Name")}</Label>
             <Input
               id="fullName"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              placeholder="Your name"
+              placeholder={t("pages:ui.profilePage.namePlaceholder", "Your name")}
               maxLength={100}
             />
           </div>
           <div className="space-y-2">
-            <Label className="text-muted-foreground">Email</Label>
+            <Label className="text-muted-foreground">{t("pages:ui.profilePage.email", "Email")}</Label>
             <p className="text-sm text-muted-foreground">{user?.email}</p>
           </div>
           {profile?.created_at && (
             <p className="text-xs text-muted-foreground">
-              Member since {format(new Date(profile.created_at), "MMMM d, yyyy")}
+              {t("pages:ui.profilePage.memberSince", "Member since {{date}}", { date: format(new Date(profile.created_at), "MMMM d, yyyy") })}
             </p>
           )}
           <Button onClick={handleSavePersonal} disabled={savingPersonal} className="w-full sm:w-auto">
             {savingPersonal && <Loader2 className="h-4 w-4 animate-spin" />}
-            Save
+            {t("pages:ui.profilePage.save", "Save")}
           </Button>
         </CardContent>
       </Card>
@@ -302,38 +302,38 @@ const ProfilePage = () => {
       <Card className="animate-[fade-in-up_0.6s_ease-out_0.2s_both]">
         <CardHeader>
           <CardTitle className="font-serif flex items-center gap-2">
-            <Star className="h-5 w-5 text-primary" /> Birth Details
+            <Star className="h-5 w-5 text-primary" /> {t("pages:ui.profilePage.birthTitle", "Birth Details")}
           </CardTitle>
-          <CardDescription>Used for chart generation and readings</CardDescription>
+          <CardDescription>{t("pages:ui.profilePage.birthDesc", "Used for chart generation and readings")}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="dob">Date of Birth</Label>
+              <Label htmlFor="dob">{t("pages:ui.profilePage.dob", "Date of Birth")}</Label>
               <Input id="dob" type="date" value={dateOfBirth} onChange={(e) => setDateOfBirth(e.target.value)} />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="birthTime">Birth Time</Label>
+              <Label htmlFor="birthTime">{t("pages:ui.profilePage.birthTime", "Birth Time")}</Label>
               <Input id="birthTime" type="time" value={birthTime} onChange={(e) => setBirthTime(e.target.value)} />
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="birthplace">Birthplace</Label>
-            <Input id="birthplace" value={birthplace} onChange={(e) => setBirthplace(e.target.value)} placeholder="City, Country" />
+            <Label htmlFor="birthplace">{t("pages:ui.profilePage.birthplace", "Birthplace")}</Label>
+            <Input id="birthplace" value={birthplace} onChange={(e) => setBirthplace(e.target.value)} placeholder={t("pages:ui.profilePage.birthplacePlaceholder", "City, Country")} />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="lat">Latitude</Label>
-              <Input id="lat" type="number" step="any" value={latitude} onChange={(e) => setLatitude(e.target.value)} placeholder="e.g. 28.6139" />
+              <Label htmlFor="lat">{t("pages:ui.profilePage.latitude", "Latitude")}</Label>
+              <Input id="lat" type="number" step="any" value={latitude} onChange={(e) => setLatitude(e.target.value)} placeholder={t("pages:ui.profilePage.latPlaceholder", "e.g. 28.6139")} />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="lng">Longitude</Label>
-              <Input id="lng" type="number" step="any" value={longitude} onChange={(e) => setLongitude(e.target.value)} placeholder="e.g. 77.2090" />
+              <Label htmlFor="lng">{t("pages:ui.profilePage.longitude", "Longitude")}</Label>
+              <Input id="lng" type="number" step="any" value={longitude} onChange={(e) => setLongitude(e.target.value)} placeholder={t("pages:ui.profilePage.lngPlaceholder", "e.g. 77.2090")} />
             </div>
           </div>
           <Button onClick={handleSaveBirth} disabled={savingBirth} className="w-full sm:w-auto">
             {savingBirth && <Loader2 className="h-4 w-4 animate-spin" />}
-            Save Birth Details
+            {t("pages:ui.profilePage.saveBirth", "Save Birth Details")}
           </Button>
         </CardContent>
       </Card>
@@ -352,13 +352,11 @@ const ProfilePage = () => {
               <CardTitle className="font-serif flex items-center gap-2">
                 <Flame className="h-5 w-5 text-primary" /> Rishi Guru Protocol
                 <span className="text-[10px] uppercase tracking-wider text-primary/80 border border-primary/40 rounded-full px-2 py-0.5 ml-1">
-                  God-Tier
+                  {t("pages:ui.profilePage.godTier", "God-Tier")}
                 </span>
               </CardTitle>
               <CardDescription className="mt-1.5">
-                Reads your chart as a classical Vedic master would — cited
-                placements (graha · degree · house), no hedge words, dharmic
-                close. Overrides the manual preferences below.
+                {t("pages:ui.profilePage.guruDesc", "Reads your chart as a classical Vedic master would — cited placements (graha · degree · house), no hedge words, dharmic close. Overrides the manual preferences below.")}
               </CardDescription>
             </div>
             <div className="flex flex-col items-end gap-1.5 shrink-0">
@@ -372,7 +370,7 @@ const ProfilePage = () => {
                   rishiGuruEnabled ? "text-primary" : "text-muted-foreground"
                 }`}
               >
-                {rishiGuruEnabled ? "Active" : "Off"}
+                {rishiGuruEnabled ? t("pages:ui.profilePage.active", "Active") : t("pages:ui.profilePage.off", "Off")}
               </span>
             </div>
           </div>
@@ -380,10 +378,8 @@ const ProfilePage = () => {
         {rishiGuruEnabled && (
           <CardContent className="pt-0">
             <div className="rounded-lg border border-primary/20 bg-primary/5 px-3.5 py-2.5 text-xs text-foreground/80 leading-relaxed">
-              <span className="text-primary font-medium">✦ Engaged.</span> The
-              Guru will speak directly from your computed chart — Lagna, dashas,
-              divisional confirmation. Manual preferences below are paused until
-              this is turned off.
+              <span className="text-primary font-medium">{t("pages:ui.profilePage.engagedLabel", "✦ Engaged.")}</span>{" "}
+              {t("pages:ui.profilePage.engagedBody", "The Guru will speak directly from your computed chart — Lagna, dashas, divisional confirmation. Manual preferences below are paused until this is turned off.")}
             </div>
           </CardContent>
         )}
@@ -448,16 +444,16 @@ const ProfilePage = () => {
       >
         <CardHeader>
           <CardTitle className="font-serif flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-primary" /> Guidance Preferences
+            <Sparkles className="h-5 w-5 text-primary" /> {t("pages:ui.profilePage.prefsTitle", "Guidance Preferences")}
           </CardTitle>
           <CardDescription>
-            Customize how your cosmic guidance is delivered
+            {t("pages:ui.profilePage.prefsDesc", "Customize how your cosmic guidance is delivered")}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-5">
           {/* Life priorities */}
           <div className="space-y-2">
-            <Label>Life Priorities (up to 3)</Label>
+            <Label>{t("pages:ui.profilePage.lifePriorities", "Life Priorities (up to 3)")}</Label>
             <div className="grid grid-cols-2 gap-2">
               {LIFE_PRIORITIES.map((p) => {
                 const selected = lifePriorities.includes(p.id);
@@ -472,7 +468,7 @@ const ProfilePage = () => {
                     }`}
                   >
                     <span className="mr-1.5">{p.emoji}</span>
-                    {p.label}
+                    {t(`pages:ui.profilePage.priority_${p.id}`, p.label)}
                   </button>
                 );
               })}
@@ -481,7 +477,7 @@ const ProfilePage = () => {
 
           {/* Emotional state */}
           <div className="space-y-2">
-            <Label>Current Emotional State</Label>
+            <Label>{t("pages:ui.profilePage.emotionalState", "Current Emotional State")}</Label>
             <div className="grid grid-cols-2 gap-2">
               {EMOTIONAL_STATES.map((s) => (
                 <button
@@ -493,7 +489,7 @@ const ProfilePage = () => {
                       : "border-border/50 bg-card/50 text-muted-foreground hover:border-primary/30"
                   }`}
                 >
-                  {s.label}
+                  {t(`pages:ui.profilePage.state_${s.id}`, s.label)}
                 </button>
               ))}
             </div>
@@ -501,7 +497,7 @@ const ProfilePage = () => {
 
           {/* Guidance style */}
           <div className="space-y-2">
-            <Label>Guidance Style</Label>
+            <Label>{t("pages:ui.profilePage.guidanceStyle", "Guidance Style")}</Label>
             <div className="space-y-2">
               {GUIDANCE_STYLES.map((g) => (
                 <button
@@ -514,9 +510,9 @@ const ProfilePage = () => {
                   }`}
                 >
                   <p className={`font-medium text-sm ${guidanceStyle === g.id ? "text-foreground" : "text-muted-foreground"}`}>
-                    {g.label}
+                    {t(`pages:ui.profilePage.style_${g.id}`, g.label)}
                   </p>
-                  <p className="text-xs text-muted-foreground mt-0.5">{g.desc}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">{t(`pages:ui.profilePage.styleDesc_${g.id}`, g.desc)}</p>
                 </button>
               ))}
             </div>
@@ -527,8 +523,8 @@ const ProfilePage = () => {
             <div className="flex items-center gap-3">
               <Moon className="h-5 w-5 text-primary" />
               <div>
-                <p className="text-sm font-medium text-foreground">Dream Interpretation</p>
-                <p className="text-xs text-muted-foreground">Receive Swapna Shastra insights</p>
+                <p className="text-sm font-medium text-foreground">{t("pages:ui.profilePage.dreamTitle", "Dream Interpretation")}</p>
+                <p className="text-xs text-muted-foreground">{t("pages:ui.profilePage.dreamDesc", "Receive Swapna Shastra insights")}</p>
               </div>
             </div>
             <Switch checked={dreamOptIn} onCheckedChange={setDreamOptIn} />
@@ -536,7 +532,7 @@ const ProfilePage = () => {
 
           <Button onClick={handleSavePreferences} disabled={savingPrefs} className="w-full sm:w-auto">
             {savingPrefs && <Loader2 className="h-4 w-4 animate-spin" />}
-            Save Preferences
+            {t("pages:ui.profilePage.savePrefs", "Save Preferences")}
           </Button>
         </CardContent>
       </Card>
@@ -547,32 +543,32 @@ const ProfilePage = () => {
       <Card className="animate-[fade-in-up_0.6s_ease-out_0.3s_both]">
         <CardHeader>
           <CardTitle className="font-serif flex items-center gap-2">
-            <Shield className="h-5 w-5 text-primary" /> Account Settings
+            <Shield className="h-5 w-5 text-primary" /> {t("pages:ui.profilePage.accountTitle", "Account Settings")}
           </CardTitle>
-          <CardDescription>Manage your password and account</CardDescription>
+          <CardDescription>{t("pages:ui.profilePage.accountDesc", "Manage your password and account")}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="newPw">New Password</Label>
-            <Input id="newPw" type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} placeholder="Min 6 characters" />
+            <Label htmlFor="newPw">{t("pages:ui.profilePage.newPw", "New Password")}</Label>
+            <Input id="newPw" type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} placeholder={t("pages:ui.profilePage.minChars", "Min 6 characters")} />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="confirmPw">Confirm Password</Label>
-            <Input id="confirmPw" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Re-enter password" />
+            <Label htmlFor="confirmPw">{t("pages:ui.profilePage.confirmPw", "Confirm Password")}</Label>
+            <Input id="confirmPw" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder={t("pages:ui.profilePage.reenterPw", "Re-enter password")} />
           </div>
           <Button onClick={handleChangePassword} disabled={savingPassword} className="w-full sm:w-auto">
             {savingPassword && <Loader2 className="h-4 w-4 animate-spin" />}
-            Update Password
+            {t("pages:ui.profilePage.updatePw", "Update Password")}
           </Button>
 
           <Separator className="my-4" />
 
           <div className="flex items-center justify-between">
             <p className="text-xs text-muted-foreground">
-              Account created {user?.created_at ? format(new Date(user.created_at), "MMMM d, yyyy") : ""}
+              {t("pages:ui.profilePage.accountCreated", "Account created {{date}}", { date: user?.created_at ? format(new Date(user.created_at), "MMMM d, yyyy") : "" })}
             </p>
             <Button variant="destructive" size="sm" onClick={handleSignOut}>
-              <LogOut className="h-4 w-4" /> Sign Out
+              <LogOut className="h-4 w-4" /> {t("pages:ui.profilePage.signOut", "Sign Out")}
             </Button>
           </div>
         </CardContent>

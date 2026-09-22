@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Sparkles, Moon, Heart, Calendar, Compass, MessageCircleQuestion } from "lucide-react";
 
@@ -6,14 +7,15 @@ interface ContextRailProps {
 }
 
 const QUICK = [
-  { to: "/oracle", icon: MessageCircleQuestion, label: "Ask the Oracle" },
-  { to: "/dreams", icon: Moon, label: "Interpret a Dream" },
-  { to: "/muhurta", icon: Calendar, label: "Find Auspicious Time" },
-  { to: "/compatibility", icon: Heart, label: "Check Compatibility" },
-  { to: "/chart", icon: Compass, label: "View Birth Chart" },
+  { to: "/oracle", icon: MessageCircleQuestion, label: "Ask the Oracle", labelKey: "ui.contextRail.askOracle" },
+  { to: "/dreams", icon: Moon, label: "Interpret a Dream", labelKey: "ui.contextRail.interpretDream" },
+  { to: "/muhurta", icon: Calendar, label: "Find Auspicious Time", labelKey: "ui.contextRail.findAuspiciousTime" },
+  { to: "/compatibility", icon: Heart, label: "Check Compatibility", labelKey: "ui.contextRail.checkCompatibility" },
+  { to: "/chart", icon: Compass, label: "View Birth Chart", labelKey: "ui.contextRail.viewBirthChart" },
 ];
 
 export default function ContextRail({ children }: ContextRailProps) {
+  const { t } = useTranslation();
   return (
     <div className="space-y-3 animate-fade-in-up" style={{ animationDelay: "0.15s" }}>
       {/* Plan slot (passed in by Dashboard) */}
@@ -21,14 +23,14 @@ export default function ContextRail({ children }: ContextRailProps) {
 
       {/* Quick actions */}
       <div className="rail-card">
-        <div className="rail-card-title">Quick Actions</div>
+        <div className="rail-card-title">{t("pages:ui.contextRail.quickActions", "Quick Actions")}</div>
         <div className="flex flex-col gap-1.5">
-          {QUICK.map(({ to, icon: Icon, label }) => (
+          {QUICK.map(({ to, icon: Icon, label, labelKey }) => (
             <Link key={to} to={to} className="rail-action">
               <span className="rail-action-icon">
                 <Icon className="h-3.5 w-3.5" />
               </span>
-              <span>{label}</span>
+              <span>{t("pages:" + labelKey, label)}</span>
             </Link>
           ))}
         </div>
@@ -36,7 +38,7 @@ export default function ContextRail({ children }: ContextRailProps) {
 
       {/* Cosmic field decorative */}
       <div className="rail-card relative" style={{ minHeight: 110, overflow: "hidden" }}>
-        <div className="rail-card-title">Cosmic Field</div>
+        <div className="rail-card-title">{t("pages:ui.contextRail.cosmicField", "Cosmic Field")}</div>
         <div className="relative" style={{ height: 70 }}>
           <svg viewBox="0 0 200 70" className="w-full h-full" aria-hidden>
             <defs>
@@ -71,7 +73,7 @@ export default function ContextRail({ children }: ContextRailProps) {
           </svg>
         </div>
         <p className="text-[11px] mt-2" style={{ color: "hsl(var(--text-muted))", letterSpacing: "0.04em" }}>
-          The sky moves quietly above you.
+          {t("pages:ui.contextRail.skyMoves", "The sky moves quietly above you.")}
         </p>
       </div>
     </div>

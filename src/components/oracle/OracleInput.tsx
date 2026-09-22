@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
+import { useTranslation } from "react-i18next";
 
 const ROTATING_PLACEHOLDERS = [
-  "What weighs on your heart today?",
-  "Why am I stuck?",
-  "What lesson am I learning?",
-  "What does my chart reveal?",
-  "Ask the universe…",
+  { key: "ph1", text: "What weighs on your heart today?" },
+  { key: "ph2", text: "Why am I stuck?" },
+  { key: "ph3", text: "What lesson am I learning?" },
+  { key: "ph4", text: "What does my chart reveal?" },
+  { key: "ph5", text: "Ask the universe…" },
 ];
 
 interface Props {
@@ -18,6 +19,7 @@ interface Props {
 }
 
 export default function OracleInput({ value, onChange, onFocusChange, onSubmit, disabled }: Props) {
+  const { t } = useTranslation();
   const [focused, setFocused] = useState(false);
   const [phIndex, setPhIndex] = useState(0);
   const ref = useRef<HTMLTextAreaElement>(null);
@@ -25,10 +27,10 @@ export default function OracleInput({ value, onChange, onFocusChange, onSubmit, 
   // Rotate placeholder only when empty + unfocused
   useEffect(() => {
     if (focused || value.length > 0) return;
-    const t = window.setInterval(() => {
+    const id = window.setInterval(() => {
       setPhIndex((i) => (i + 1) % ROTATING_PLACEHOLDERS.length);
     }, 3500);
-    return () => window.clearInterval(t);
+    return () => window.clearInterval(id);
   }, [focused, value]);
 
   const handleKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -72,7 +74,7 @@ export default function OracleInput({ value, onChange, onFocusChange, onSubmit, 
           onBlur={() => { setFocused(false); onFocusChange?.(false); }}
           onKeyDown={handleKey}
           disabled={disabled}
-          placeholder={ROTATING_PLACEHOLDERS[phIndex]}
+          placeholder={t("pages:ui.oracleInput." + ROTATING_PLACEHOLDERS[phIndex].key, ROTATING_PLACEHOLDERS[phIndex].text)}
           className="min-h-[140px] resize-none border-0 bg-transparent text-base md:text-lg leading-relaxed px-6 py-5 focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/60"
           style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 400 }}
           maxLength={500}

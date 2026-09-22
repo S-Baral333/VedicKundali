@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { BS_MONTHS, BS_YEAR_MIN, BS_YEAR_MAX, daysInBsMonth } from "@/lib/calendar-bs";
 
@@ -14,6 +15,7 @@ interface BSDatePickerProps {
  * Day count clamps dynamically to the selected month's actual length (29–32).
  */
 export default function BSDatePicker({ year, month, day, onChange }: BSDatePickerProps) {
+  const { t } = useTranslation();
   const years = useMemo(() => {
     const arr: number[] = [];
     for (let y = BS_YEAR_MAX; y >= BS_YEAR_MIN; y--) arr.push(y);
@@ -50,18 +52,18 @@ export default function BSDatePicker({ year, month, day, onChange }: BSDatePicke
     <div className="grid grid-cols-3 gap-2">
       <Select value={year?.toString() ?? ""} onValueChange={handleYear}>
         <SelectTrigger className="bg-card">
-          <SelectValue placeholder="Year" />
+          <SelectValue placeholder={t("pages:ui.bsDatePicker.year", "Year")} />
         </SelectTrigger>
         <SelectContent className="max-h-72">
           {years.map(y => (
-            <SelectItem key={y} value={y.toString()}>{y} BS</SelectItem>
+            <SelectItem key={y} value={y.toString()}>{t("pages:ui.bsDatePicker.yearBs", "{{year}} BS", { year: y })}</SelectItem>
           ))}
         </SelectContent>
       </Select>
 
       <Select value={month?.toString() ?? ""} onValueChange={handleMonth}>
         <SelectTrigger className="bg-card">
-          <SelectValue placeholder="Month" />
+          <SelectValue placeholder={t("pages:ui.bsDatePicker.month", "Month")} />
         </SelectTrigger>
         <SelectContent className="max-h-72">
           {BS_MONTHS.map(m => (
@@ -74,7 +76,7 @@ export default function BSDatePicker({ year, month, day, onChange }: BSDatePicke
 
       <Select value={day?.toString() ?? ""} onValueChange={handleDay} disabled={!year || !month}>
         <SelectTrigger className="bg-card">
-          <SelectValue placeholder="Day" />
+          <SelectValue placeholder={t("pages:ui.bsDatePicker.day", "Day")} />
         </SelectTrigger>
         <SelectContent className="max-h-72">
           {days.map(d => (

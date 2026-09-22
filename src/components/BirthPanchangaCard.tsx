@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Sparkles } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export interface PanchangaData {
   tithi: { number: number; name: string; paksha: "Shukla" | "Krishna" };
@@ -23,6 +24,7 @@ const Item = ({ label, value, sub }: { label: string; value: string; sub?: strin
 );
 
 export default function BirthPanchangaCard({ panchanga }: BirthPanchangaCardProps) {
+  const { t } = useTranslation();
   if (!panchanga) return null;
   const { tithi, nakshatra, yoga, karana, masa, vara } = panchanga;
 
@@ -31,19 +33,19 @@ export default function BirthPanchangaCard({ panchanga }: BirthPanchangaCardProp
       <CardHeader className="pb-3">
         <CardTitle className="font-serif text-lg flex items-center gap-2">
           <Sparkles className="h-4 w-4 text-primary" />
-          Birth Panchanga
+          {t("pages:ui.birthPanchangaCard.title", "Birth Panchanga")}
         </CardTitle>
-        <p className="text-xs text-muted-foreground">The five limbs of Vedic time at your birth moment.</p>
+        <p className="text-xs text-muted-foreground">{t("pages:ui.birthPanchangaCard.desc", "The five limbs of Vedic time at your birth moment.")}</p>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
           <Item label="Tithi" value={tithi.name} sub={`${tithi.paksha} Paksha · #${tithi.number}`} />
           <Item label="Nakshatra" value={nakshatra.name} sub={`Pada ${nakshatra.pada} · #${nakshatra.number}`} />
-          <Item label="Paksha" value={tithi.paksha} sub={tithi.paksha === "Shukla" ? "Waxing Moon" : "Waning Moon"} />
-          <Item label="Vedic Masa" value={masa.name} sub="Lunar month" />
-          <Item label="Vara" value={vara.name} sub="Weekday" />
-          <Item label="Yoga" value={yoga.name} sub={`#${yoga.number} of 27`} />
-          <Item label="Karana" value={karana.name} sub={`Half-tithi #${karana.number}`} />
+          <Item label="Paksha" value={tithi.paksha} sub={tithi.paksha === "Shukla" ? t("pages:ui.birthPanchangaCard.waxing", "Waxing Moon") : t("pages:ui.birthPanchangaCard.waning", "Waning Moon")} />
+          <Item label={t("pages:ui.birthPanchangaCard.vedicMasa", "Vedic Masa")} value={masa.name} sub={t("pages:ui.birthPanchangaCard.lunarMonth", "Lunar month")} />
+          <Item label="Vara" value={vara.name} sub={t("pages:ui.birthPanchangaCard.weekday", "Weekday")} />
+          <Item label="Yoga" value={yoga.name} sub={t("pages:ui.birthPanchangaCard.yogaOf", "#{{n}} of 27", { n: yoga.number })} />
+          <Item label="Karana" value={karana.name} sub={t("pages:ui.birthPanchangaCard.halfTithi", "Half-tithi #{{n}}", { n: karana.number })} />
         </div>
       </CardContent>
     </Card>

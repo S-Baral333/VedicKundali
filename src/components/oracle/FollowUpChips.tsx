@@ -1,4 +1,5 @@
 import { MessageCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { FOLLOW_UP_CHIPS_BY_MODE } from "@/lib/oracle-suggestions";
 
 interface Props {
@@ -8,12 +9,13 @@ interface Props {
 }
 
 export default function FollowUpChips({ mode, onPick, disabled }: Props) {
+  const { t } = useTranslation();
   const chips = FOLLOW_UP_CHIPS_BY_MODE[mode] ?? FOLLOW_UP_CHIPS_BY_MODE.insight;
   return (
     <div className="space-y-1.5 px-2">
       <p className="text-[11px] text-muted-foreground flex items-center gap-1.5">
         <MessageCircle className="h-3 w-3" />
-        Go deeper:
+        {t("pages:ui.followUpChips.goDeeper", "Go deeper:")}
       </p>
       <div className="flex flex-wrap gap-2">
         {chips.map((c) => (

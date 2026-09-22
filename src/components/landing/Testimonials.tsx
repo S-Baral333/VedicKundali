@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Star, Quote } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
@@ -5,6 +6,7 @@ import TwinkleText from "@/components/TwinkleText";
 
 const testimonials = [
   {
+    key: "t1",
     name: "Priya S.",
     location: "Sydney",
     initials: "PS",
@@ -12,6 +14,7 @@ const testimonials = [
     stars: 5,
   },
   {
+    key: "t2",
     name: "Arjun M.",
     location: "London",
     initials: "AM",
@@ -19,6 +22,7 @@ const testimonials = [
     stars: 5,
   },
   {
+    key: "t3",
     name: "Kavya R.",
     location: "Melbourne",
     initials: "KR",
@@ -29,11 +33,12 @@ const testimonials = [
 
 export default function Testimonials() {
   const ref = useScrollReveal();
+  const { t: tr } = useTranslation();
 
   return (
     <section className="py-24 px-6">
       <div ref={ref} className="scroll-reveal max-w-5xl mx-auto text-center">
-        <TwinkleText as="h2" intensity="aura" className="text-3xl font-bold mb-3 block" style={{ fontFamily: 'Cinzel, serif', color: 'hsl(35 25% 88%)' }}>What Seekers Say</TwinkleText>
+        <TwinkleText as="h2" intensity="aura" className="text-3xl font-bold mb-3 block" style={{ fontFamily: 'Cinzel, serif', color: 'hsl(35 25% 88%)' }}>{tr("pages:ui.testimonials.title", "What Seekers Say")}</TwinkleText>
         <div className="sacred-divider max-w-xs mx-auto mb-12" />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -51,8 +56,8 @@ export default function Testimonials() {
                     <Star key={j} className="h-4 w-4" style={{ fill: 'hsl(38 78% 55%)', color: 'hsl(38 78% 55%)' }} />
                   ))}
                 </div>
-                <p className="text-sm italic leading-relaxed mb-3" style={{ fontFamily: "'IM Fell English', serif", color: 'hsl(35 25% 88% / 0.7)' }}>"{t.quote}"</p>
-                <p className="text-xs font-semibold" style={{ fontFamily: 'Cinzel, serif', color: 'hsl(35 25% 88%)' }}>{t.name} — {t.location}</p>
+                <p className="text-sm italic leading-relaxed mb-3" style={{ fontFamily: "'IM Fell English', serif", color: 'hsl(35 25% 88% / 0.7)' }}>"{tr(`pages:ui.testimonials.${t.key}Quote`, t.quote)}"</p>
+                <p className="text-xs font-semibold" style={{ fontFamily: 'Cinzel, serif', color: 'hsl(35 25% 88%)' }}>{t.name} — {tr(`pages:ui.testimonials.${t.key}Location`, t.location)}</p>
               </div>
             </div>
           ))}

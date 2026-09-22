@@ -2,18 +2,20 @@ import { Progress } from "@/components/ui/progress";
 import { Infinity as InfinityIcon } from "lucide-react";
 import { FEATURE_COPY, type ResourceKey } from "@/lib/tiers";
 import { useSubscription } from "@/hooks/useSubscription";
+import { useTranslation } from "react-i18next";
 
 export default function UsageBar({ resource, compact = false }: { resource: ResourceKey; compact?: boolean }) {
+  const { t } = useTranslation();
   const { usage, config, openUpgrade } = useSubscription();
   const limit = (config.limits as any)[resource] as number;
   const used = (usage as any)[resource] as number;
-  const label = FEATURE_COPY[resource].name;
+  const label = t("pages:ui.usageBar." + resource, FEATURE_COPY[resource].name);
 
   if (limit === -1) {
     return (
       <div className="flex items-center gap-2 text-xs text-muted-foreground">
         <InfinityIcon className="h-3.5 w-3.5 text-primary" />
-        <span>Unlimited {label}</span>
+        <span>{t("pages:ui.usageBar.unlimited", "Unlimited {{feature}}", { feature: label })}</span>
       </div>
     );
   }
@@ -23,7 +25,7 @@ export default function UsageBar({ resource, compact = false }: { resource: Reso
       <div className="flex items-center justify-between text-xs">
         <span className="text-muted-foreground">{label}</span>
         <button onClick={() => openUpgrade({ feature: resource })} className="text-primary hover:underline">
-          Unlock
+          {t("pages:ui.usageBar.unlock", "Unlock")}
         </button>
       </div>
     );
@@ -46,7 +48,7 @@ export default function UsageBar({ resource, compact = false }: { resource: Reso
           onClick={() => openUpgrade({ feature: resource })}
           className="text-[11px] text-primary hover:underline"
         >
-          Limit reached — upgrade for more
+          {t("pages:ui.usageBar.limitReached", "Limit reached — upgrade for more")}
         </button>
       )}
     </div>

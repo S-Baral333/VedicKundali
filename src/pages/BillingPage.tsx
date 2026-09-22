@@ -31,7 +31,7 @@ export default function BillingPage() {
   return (
     <div className="min-h-screen sacred-page">
       <SacredPageShell
-        leftRail={<PageNavRail title="Billing" hint="Your plan, usage, and renewal." showChartSwitcher={false} sections={[{ id: "plan", label: "Plan" }, { id: "usage", label: "Usage" }, { id: "status", label: "Status" }]} />}
+        leftRail={<PageNavRail title={t("pages:ui.billingPage.railTitle", "Billing")} hint={t("pages:ui.billingPage.railHint", "Your plan, usage, and renewal.")} showChartSwitcher={false} sections={[{ id: "plan", label: t("pages:ui.billingPage.sectionPlan", "Plan") }, { id: "usage", label: t("pages:ui.billingPage.sectionUsage", "Usage") }, { id: "status", label: t("pages:ui.billingPage.sectionStatus", "Status") }]} />}
         rightRail={<CosmicFieldCard />}
         className="space-y-8"
       >
@@ -60,7 +60,7 @@ export default function BillingPage() {
                 <CardTitle className="font-serif text-2xl flex items-center gap-3">
                   {t("billing.currentPlan")} <TierBadge tier={tier} size="md" showDevanagari />
                 </CardTitle>
-                <p className="text-sm text-muted-foreground italic mt-1">{config.meaning}</p>
+                <p className="text-sm text-muted-foreground italic mt-1">{t("pages:ui.billingPage.meaning_" + tier, config.meaning)}</p>
               </div>
               <Button onClick={() => navigate("/pricing")} className="gap-2" disabled={isLoading}>
                 {tier === "darshana" ? t("billing.upgradeButton") : t("billing.changePlan")} <ArrowRight className="h-4 w-4" />
@@ -72,12 +72,12 @@ export default function BillingPage() {
               <div>
                 <div className="text-xs text-muted-foreground uppercase tracking-wider">{t("billing.priceLabel")}</div>
                 <div className="text-foreground font-medium">
-                  {config.priceMonthlyAud === 0 ? "Free" : `AUD $${config.priceMonthlyAud}/mo`}
+                  {config.priceMonthlyAud === 0 ? t("pages:ui.billingPage.free", "Free") : t("pages:ui.billingPage.pricePerMonth", "AUD ${{price}}/mo", { price: config.priceMonthlyAud })}
                 </div>
               </div>
               <div>
                 <div className="text-xs text-muted-foreground uppercase tracking-wider">{t("billing.statusLabel")}</div>
-                <div className="text-foreground font-medium capitalize">{status}</div>
+                <div className="text-foreground font-medium capitalize">{t("pages:ui.billingPage.status_" + status, status)}</div>
               </div>
               <div>
                 <div className="text-xs text-muted-foreground uppercase tracking-wider">{t("billing.renewsLabel")}</div>
@@ -119,7 +119,7 @@ export default function BillingPage() {
                 .map(([k]) => (
                   <li key={k} className="flex items-start gap-2">
                     <Sparkles className="h-3.5 w-3.5 text-primary mt-0.5 shrink-0" />
-                    <span className="text-foreground/80 capitalize">{k.replace(/_/g, " ")}</span>
+                    <span className="text-foreground/80 capitalize">{t("pages:ui.billingPage.feat_" + k, k.replace(/_/g, " "))}</span>
                   </li>
                 ))}
             </ul>

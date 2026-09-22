@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { BookOpen, ChevronDown } from "lucide-react";
 
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export default function GuruCitationsFooter({ citations, dharmicClose, lifeAreaLens }: Props) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   if (!citations?.length && !dharmicClose && !lifeAreaLens?.length) return null;
 
@@ -53,7 +55,7 @@ export default function GuruCitationsFooter({ citations, dharmicClose, lifeAreaL
         >
           <span className="flex items-center gap-2">
             <BookOpen className="h-3 w-3" />
-            Sources ({citations.length})
+            {t("pages:ui.guruCitationsFooter.sources", "Sources ({{count}})", { count: citations.length })}
           </span>
           <ChevronDown className="h-3 w-3 transition-transform" style={{ transform: open ? "rotate(180deg)" : "none" }} />
         </button>

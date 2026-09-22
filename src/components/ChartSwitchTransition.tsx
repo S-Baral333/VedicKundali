@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useActiveChart } from "@/hooks/useActiveChart";
+import { useTranslation } from "react-i18next";
 
 /**
  * Cinematic full-screen overlay shown while switching the active chart.
@@ -11,10 +12,11 @@ import { useActiveChart } from "@/hooks/useActiveChart";
  *   - "idle":    overlay is removed.
  */
 export default function ChartSwitchTransition() {
+  const { t } = useTranslation();
   const { switching } = useActiveChart();
   const visible = switching.phase !== "idle";
   const settled = switching.phase === "settled";
-  const name = switching.targetName || "Seeker";
+  const name = switching.targetName || t("pages:ui.chartSwitchTransition.seeker", "Seeker");
 
   // Acceleration: tween the pulse duration from 1.6s -> 0.55s while pulsing.
   const [pulseDuration, setPulseDuration] = useState(1.6);
@@ -157,7 +159,7 @@ export default function ChartSwitchTransition() {
                       letterSpacing: "0.32em",
                     }}
                   >
-                    Reading As
+                    {t("pages:ui.chartSwitchTransition.readingAs", "Reading As")}
                   </p>
                   <p
                     className="text-2xl md:text-3xl"
@@ -168,7 +170,7 @@ export default function ChartSwitchTransition() {
                       letterSpacing: "0.01em",
                     }}
                   >
-                    Welcome, {name}
+                    {t("pages:ui.chartSwitchTransition.welcome", "Welcome, {{name}}", { name })}
                   </p>
                 </motion.div>
               ) : (
@@ -187,7 +189,7 @@ export default function ChartSwitchTransition() {
                       letterSpacing: "0.32em",
                     }}
                   >
-                    Switching Reading
+                    {t("pages:ui.chartSwitchTransition.switching", "Switching Reading")}
                   </p>
                   <p
                     className="text-xl md:text-2xl italic"
@@ -197,7 +199,7 @@ export default function ChartSwitchTransition() {
                       fontWeight: 400,
                     }}
                   >
-                    Aligning the stars with {name}…
+                    {t("pages:ui.chartSwitchTransition.aligning", "Aligning the stars with {{name}}…", { name })}
                   </p>
                 </motion.div>
               )}

@@ -1,19 +1,21 @@
 import { useActiveChart } from "@/hooks/useActiveChart";
 import { Sparkles } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function ChartContextPreview({ godMode = false }: { godMode?: boolean }) {
   const { activeChart } = useActiveChart();
+  const { t } = useTranslation();
   if (!activeChart) return null;
   const cd: any = activeChart.chart_data || {};
-  const firstName = activeChart.full_name?.trim().split(/\s+/)[0] || "Seeker";
+  const firstName = activeChart.full_name?.trim().split(/\s+/)[0] || t("pages:ui.chartContextPreview.seeker", "Seeker");
   const lagna = cd?.ascendant?.sign;
   const moon = cd?.moon_sign;
   const dasha = cd?.dasha?.maha_dasha;
 
   const parts = [
-    lagna && `${lagna} ascendant`,
-    moon && `${moon} moon`,
-    dasha && `${dasha} dasha`,
+    lagna && t("pages:ui.chartContextPreview.ascendant", "{{sign}} ascendant", { sign: lagna }),
+    moon && t("pages:ui.chartContextPreview.moon", "{{sign}} moon", { sign: moon }),
+    dasha && t("pages:ui.chartContextPreview.dasha", "{{planet}} dasha", { planet: dasha }),
   ].filter(Boolean);
 
   return (
@@ -26,7 +28,7 @@ export default function ChartContextPreview({ godMode = false }: { godMode?: boo
     >
       <Sparkles className={`h-3 w-3 shrink-0 ${godMode ? "text-primary" : "text-primary/70"}`} />
       <span className="truncate">
-        Reading for <span className="font-medium text-foreground">{firstName}</span>
+        {t("pages:ui.chartContextPreview.readingFor", "Reading for")} <span className="font-medium text-foreground">{firstName}</span>
         {parts.length > 0 && <span className="text-muted-foreground"> · {parts.join(" · ")}</span>}
       </span>
     </div>

@@ -2,6 +2,7 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Crown } from "lucide-react";
 import { useSubscription } from "@/hooks/useSubscription";
+import { useTranslation } from "react-i18next";
 
 interface UsageIndicatorProps {
   feature: "dreams" | "oracle";
@@ -9,12 +10,13 @@ interface UsageIndicatorProps {
 }
 
 export default function UsageIndicator({ feature, label }: UsageIndicatorProps) {
+  const { t } = useTranslation();
   const { tier, usage, limits, isPremium } = useSubscription();
 
   const count = feature === "dreams" ? usage.dream : usage.ai_chat;
   const limit = limits[feature];
 
-  const featureLabel = label || (feature === "dreams" ? "Dream Interpretations" : "Guru Questions");
+  const featureLabel = label || (feature === "dreams" ? t("pages:ui.usageIndicator.dreams", "Dream Interpretations") : t("pages:ui.usageIndicator.guru", "Guru Questions"));
 
   // -1 is the unlimited sentinel. Guard it before any arithmetic: dividing by
   // it yields a negative percentage, and `max(-1 - count, 0)` is 0, which would
@@ -23,7 +25,7 @@ export default function UsageIndicator({ feature, label }: UsageIndicatorProps) 
     return (
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <Crown className="h-4 w-4 text-primary" />
-        <span>Unlimited {featureLabel}</span>
+        <span>{t("pages:ui.usageIndicator.unlimited", "Unlimited {{feature}}", { feature: featureLabel })}</span>
       </div>
     );
   }
@@ -34,7 +36,7 @@ export default function UsageIndicator({ feature, label }: UsageIndicatorProps) 
       <div className="flex items-center justify-between text-sm">
         <span className="text-muted-foreground">{featureLabel}</span>
         <Badge variant="outline" className="text-[10px] px-1.5 py-0">
-          Not included
+          {t("pages:ui.usageIndicator.notIncluded", "Not included")}
         </Badge>
       </div>
     );
@@ -46,14 +48,14 @@ export default function UsageIndicator({ feature, label }: UsageIndicatorProps) 
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between text-sm">
-        <span className="text-muted-foreground">{featureLabel} this month</span>
+        <span className="text-muted-foreground">{t("pages:ui.usageIndicator.thisMonth", "{{feature}} this month", { feature: featureLabel })}</span>
         <div className="flex items-center gap-2">
           <span className={isAtLimit ? "text-destructive font-medium" : "text-foreground"}>
             {count} / {limit}
           </span>
           {!isPremium && (
             <Badge variant="outline" className="text-[10px] px-1.5 py-0">
-              Free
+              {t("pages:ui.usageIndicator.free", "Free")}
             </Badge>
           )}
         </div>
@@ -64,7 +66,7 @@ export default function UsageIndicator({ feature, label }: UsageIndicatorProps) 
       />
       {isAtLimit && !isPremium && (
         <p className="text-xs text-destructive">
-          Monthly limit reached. Upgrade to Premium for more.
+          {t("pages:ui.usageIndicator.limitReached", "Monthly limit reached. Upgrade to Premium for more.")}
         </p>
       )}
     </div>

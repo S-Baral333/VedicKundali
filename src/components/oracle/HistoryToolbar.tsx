@@ -1,5 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export type HistoryFilter = "all" | "favorable" | "nuanced" | "neutral" | "unfavorable";
 
@@ -19,12 +20,13 @@ interface Props {
 }
 
 export default function HistoryToolbar({ search, onSearch, filter, onFilter }: Props) {
+  const { t } = useTranslation();
   return (
     <div className="space-y-2.5 pb-3 border-b border-border/40 mb-3">
       <div className="relative">
         <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
         <Input
-          placeholder="Search past readings…"
+          placeholder={t("pages:ui.historyToolbar.search", "Search past readings…")}
           value={search}
           onChange={(e) => onSearch(e.target.value)}
           className="pl-8 h-9 text-sm"
@@ -41,7 +43,7 @@ export default function HistoryToolbar({ search, onSearch, filter, onFilter }: P
                 : "bg-card/40 border-border text-muted-foreground hover:border-primary/30 hover:text-foreground"
             }`}
           >
-            {f.label}
+            {t("pages:ui.historyToolbar." + f.id, f.label)}
           </button>
         ))}
       </div>

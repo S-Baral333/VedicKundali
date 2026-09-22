@@ -318,7 +318,7 @@ const UserDashboard = React.forwardRef<HTMLDivElement>((_props, ref) => {
               <Button
                 variant="ghost"
                 size="icon"
-                aria-label="Refresh dashboard"
+                aria-label={t("pages:ui.userDashboard.refreshDashboard", "Refresh dashboard")}
                 className="h-10 w-10 ml-1 -my-2 hover:bg-transparent"
                 style={{ color: "hsl(var(--text-muted))" }}
                 onClick={() => { sessionStorage.removeItem(CACHE_KEY); setLoading(true); loadDashboard(); }}
@@ -351,7 +351,7 @@ const UserDashboard = React.forwardRef<HTMLDivElement>((_props, ref) => {
                   </span>
                 </>
               )}
-              <span className="ml-1"><RishiGuruBadge tooltip="The Rishi Guru is reading your chart directly across this app." /></span>
+              <span className="ml-1"><RishiGuruBadge tooltip={t("pages:ui.userDashboard.rishiTooltip", "The Rishi Guru is reading your chart directly across this app.")} /></span>
             </p>
             {priorityLabels.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-4">
@@ -362,7 +362,7 @@ const UserDashboard = React.forwardRef<HTMLDivElement>((_props, ref) => {
                     color: "hsl(var(--gold-light))",
                     backdropFilter: "blur(8px)",
                   }}>
-                    {p!.emoji} {p!.label}
+                    {p!.emoji} {t("pages:ui.userDashboard.priority_" + p!.id, p!.label)}
                   </span>
                 ))}
               </div>

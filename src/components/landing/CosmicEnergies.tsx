@@ -1,23 +1,25 @@
+import { useTranslation } from "react-i18next";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Progress } from "@/components/ui/progress";
 import TwinkleText from "@/components/TwinkleText";
 
 const planets = [
-  { name: "Saturn", emoji: "🪐", keyword: "Discipline", value: 65 },
-  { name: "Jupiter", emoji: "♃", keyword: "Growth", value: 88 },
-  { name: "Venus", emoji: "♀", keyword: "Relationships", value: 42 },
-  { name: "Mars", emoji: "♂", keyword: "Action", value: 71 },
+  { name: "Saturn", emoji: "🪐", keywordKey: "discipline", keyword: "Discipline", value: 65 },
+  { name: "Jupiter", emoji: "♃", keywordKey: "growth", keyword: "Growth", value: 88 },
+  { name: "Venus", emoji: "♀", keywordKey: "relationships", keyword: "Relationships", value: 42 },
+  { name: "Mars", emoji: "♂", keywordKey: "action", keyword: "Action", value: 71 },
 ];
 
 export default function CosmicEnergies() {
   const ref = useScrollReveal();
+  const { t } = useTranslation();
 
   return (
     <section className="py-24 px-6">
       <div ref={ref} className="scroll-reveal max-w-2xl mx-auto text-center">
-        <TwinkleText as="h2" intensity="aura" className="text-3xl font-bold mb-3 block" style={{ fontFamily: 'Cinzel, serif', color: 'hsl(35 25% 88%)' }}>Current Cosmic Energies</TwinkleText>
+        <TwinkleText as="h2" intensity="aura" className="text-3xl font-bold mb-3 block" style={{ fontFamily: 'Cinzel, serif', color: 'hsl(35 25% 88%)' }}>{t("pages:ui.cosmicEnergies.title", "Current Cosmic Energies")}</TwinkleText>
         <div className="sacred-divider max-w-xs mx-auto" />
-        <p className="mb-10" style={{ color: 'hsl(35 12% 55%)' }}>Live planetary influence levels based on today's transits.</p>
+        <p className="mb-10" style={{ color: 'hsl(35 12% 55%)' }}>{t("pages:ui.cosmicEnergies.subtitle", "Live planetary influence levels based on today's transits.")}</p>
 
         <div className="sacred-card rounded-2xl p-8 space-y-6">
           {planets.map((p) => (
@@ -26,7 +28,7 @@ export default function CosmicEnergies() {
               <div className="flex-1 text-left">
                 <div className="flex items-center justify-between mb-1.5">
                   <span className="text-sm font-medium" style={{ fontFamily: 'Cinzel, serif', color: 'hsl(35 25% 88%)' }}>{p.name}</span>
-                  <span className="text-xs italic" style={{ fontFamily: "'IM Fell English', serif", color: 'hsl(35 12% 55%)' }}>{p.keyword}</span>
+                  <span className="text-xs italic" style={{ fontFamily: "'IM Fell English', serif", color: 'hsl(35 12% 55%)' }}>{t("pages:ui.cosmicEnergies." + p.keywordKey, p.keyword)}</span>
                 </div>
                 <div className="w-full h-2.5 rounded-full" style={{ background: 'hsl(30 12% 15%)' }}>
                   <div className="h-full rounded-full transition-all" style={{ width: `${p.value}%`, background: 'linear-gradient(90deg, hsl(38 78% 55%), hsl(40 60% 72%))' }} />

@@ -376,7 +376,9 @@ export default function DailyHoroscopePage() {
     if (triggered) {
       const targetSign = serverSignKey || moonSign || "General";
       let attempts = 0;
-      const maxAttempts = 20; // ~80s
+      // Monthly/yearly readings are long; the server may take up to ~150s
+      // (primary model + fallback) before it marks the row ready or failed.
+      const maxAttempts = selectedPeriod === "monthly" || selectedPeriod === "yearly" ? 42 : 20; // ~170s / ~80s
       const poll = async () => {
         if (!isLatest()) return;
         attempts++;
@@ -404,7 +406,7 @@ export default function DailyHoroscopePage() {
         if (row && (row as any).status === "failed") {
           if (!isLatest()) return;
           if (!hasCached) setFetchError(true);
-          else toast({ title: "Couldn't refresh", description: "Showing your last reading.", variant: "default" });
+          else toast({ title: t("pages:ui.dailyHoroscopePage.couldntRefresh", "Couldn't refresh"), description: t("pages:ui.dailyHoroscopePage.showingLastReading", "Showing your last reading."), variant: "default" });
           setLoading(false); setRefreshing(false);
           return;
         }
@@ -456,7 +458,7 @@ export default function DailyHoroscopePage() {
 
   const copyReading = async () => {
     if (!horoscope) return;
-    let text = `${t(`horoscope.period.title.${period}`)} — ${sign && sign !== "General" ? t("horoscope.subtitle.moonIn", { sign }) : "General"}\n${validDate}\n\n`;
+    let text = `${t(`horoscope.period.title.${period}`)} — ${sign && sign !== "General" ? t("horoscope.subtitle.moonIn", { sign }) : t("pages:ui.dailyHoroscopePage.general", "General")}\n${validDate}\n\n`;
     if (horoscope.greeting) text += `${horoscope.greeting}\n\n`;
     // Day readings carry their narrative in three_acts rather than a single
     // guidance blob, so fall back to the acts instead of copying "undefined".
@@ -466,9 +468,9 @@ export default function DailyHoroscopePage() {
       const { morning, afternoon, evening } = horoscope.three_acts;
       text += [morning, afternoon, evening].filter(Boolean).join("\n\n") + "\n\n";
     }
-    if (horoscope.watch_for) text += `Watch for: ${horoscope.watch_for}\n`;
-    if (horoscope.mantra_of_the_day) text += `Mantra: ${horoscope.mantra_of_the_day}\n`;
-    if (horoscope.cosmic_advice) text += `\nCosmic Advice: ${horoscope.cosmic_advice}`;
+    if (horoscope.watch_for) text += `${t("pages:ui.dailyHoroscopePage.watchForPrefix", "Watch for:")} ${horoscope.watch_for}\n`;
+    if (horoscope.mantra_of_the_day) text += `${t("pages:ui.dailyHoroscopePage.mantraPrefix", "Mantra:")} ${horoscope.mantra_of_the_day}\n`;
+    if (horoscope.cosmic_advice) text += `\n${t("pages:ui.dailyHoroscopePage.cosmicAdvicePrefix", "Cosmic Advice:")} ${horoscope.cosmic_advice}`;
     await navigator.clipboard.writeText(text);
     toast({ title: t("horoscope.toast.copied") });
   };
@@ -518,7 +520,7 @@ export default function DailyHoroscopePage() {
                   key={p.name}
                   className="flex flex-col items-center py-3 px-1 transition-all duration-300 hover:bg-[hsl(var(--gold)/0.06)] cursor-default"
                   style={{ borderRight: i < arr.length - 1 ? "0.5px solid hsl(var(--gold) / 0.1)" : "none" }}
-                  title={`${p.name} in ${p.sign}${p.is_retrograde ? " (retrograde)" : ""}`}
+                  title={`${t("pages:ui.dailyHoroscopePage.planetInSign", "{{planet}} in {{sign}}", { planet: p.name, sign: p.sign })}${p.is_retrograde ? t("pages:ui.dailyHoroscopePage.retrogradeSuffix", " (retrograde)") : ""}`}
                 >
                   <span className="text-lg leading-none" style={{ color: "hsl(var(--gold))" }}>
                     {PLANET_SYMBOLS[p.name] || "✦"}
@@ -587,11 +589,11 @@ export default function DailyHoroscopePage() {
                 { label: t("horoscope.dasha.mahadasha"),    value: dashaInfo.maha_dasha || "—" },
                 { label: t("horoscope.dasha.antardasha"),   value: dashaInfo.antar_dasha || "—" },
                 { label: t("horoscope.dasha.pratyantar"),   value: dashaInfo.pratyantar_dasha || "—" },
-                { label: t("horoscope.dasha.daysRemaining"), value: dashaDays != null ? String(dashaDays) : "—" },
+                { label: t("horoscope.dasha.daysRemaining"), big: true, value: dashaDays != null ? String(dashaDays) : "—" },
               ].map((item, i) => (
                 <div key={item.label} className="text-center py-2" style={{ borderRight: i < 3 ? "0.5px solid hsl(var(--gold) / 0.1)" : "none" }}>
                   <p className="text-[11px] tracking-[0.14em] uppercase" style={{ color: "hsl(var(--text-muted))" }}>{item.label}</p>
-                  <p className={`mt-1 ${item.label === "Days Remaining" ? "text-2xl font-light" : "text-sm font-medium"}`} style={{ fontFamily: "'Cormorant Garamond', serif", color: "hsl(var(--gold))" }}>{item.value}</p>
+                  <p className={`mt-1 ${(item as { big?: boolean }).big ? "text-2xl font-light" : "text-sm font-medium"}`} style={{ fontFamily: "'Cormorant Garamond', serif", color: "hsl(var(--gold))" }}>{item.value}</p>
                 </div>
               ))}
             </div>
@@ -664,7 +666,7 @@ export default function DailyHoroscopePage() {
                     </p>
                     <div className="mt-3 flex items-center gap-2 pl-4">
                       <span className="w-8 h-px" style={{ background: "hsl(var(--gold) / 0.4)" }} />
-                      <span className="text-[11px] tracking-[0.14em] uppercase" style={{ color: "hsl(var(--gold))" }}>Your Astrologer</span>
+                      <span className="text-[11px] tracking-[0.14em] uppercase" style={{ color: "hsl(var(--gold))" }}>{t("pages:ui.dailyHoroscopePage.yourAstrologer", "Your Astrologer")}</span>
                     </div>
                   </div>
                 </GlassCard>
@@ -672,7 +674,7 @@ export default function DailyHoroscopePage() {
 
               {/* c) Full Reading */}
               <GlassCard delay={0.26}>
-                <SectionLabel icon={BookOpen}>Full Reading</SectionLabel>
+                <SectionLabel icon={BookOpen}>{t("pages:ui.dailyHoroscopePage.fullReading", "Full Reading")}</SectionLabel>
 
                 {/* Guru-only: personal callback banner above the narrative */}
                 {horoscope.mode === "guru" && horoscope.personal_callback && (
@@ -706,7 +708,7 @@ export default function DailyHoroscopePage() {
                       style={{ color: "hsl(var(--gold) / 0.75)", letterSpacing: "0.18em", fontFamily: "'Jost', sans-serif" }}
                     >
                       <Compass className="h-3.5 w-3.5" />
-                      Built from {horoscope.technical_basis.length} computed {horoscope.technical_basis.length === 1 ? "factor" : "factors"}
+                      {horoscope.technical_basis.length === 1 ? t("pages:ui.dailyHoroscopePage.builtFromOne", "Built from {{count}} computed factor", { count: 1 }) : t("pages:ui.dailyHoroscopePage.builtFromMany", "Built from {{count}} computed factors", { count: horoscope.technical_basis.length })}
                       <ChevronDown className="h-3.5 w-3.5 transition-transform group-open:rotate-180" />
                     </summary>
                     <ul className="mt-3 flex flex-col gap-1.5">
@@ -764,7 +766,7 @@ export default function DailyHoroscopePage() {
               {/* e) Cosmic Weather — blue-tinted */}
               {horoscope.planetary_story && (
                 <GlassCard delay={0.34} style={{ background: "rgba(74,144,217,0.03)", borderColor: "rgba(74,144,217,0.15)" }}>
-                  <SectionLabel icon={CloudRain} color="hsl(210 60% 60%)">Cosmic Weather</SectionLabel>
+                  <SectionLabel icon={CloudRain} color="hsl(210 60% 60%)">{t("pages:ui.dailyHoroscopePage.cosmicWeather", "Cosmic Weather")}</SectionLabel>
                   <p className="leading-[1.8]" style={{ fontFamily: "'Jost', sans-serif", fontWeight: 300, color: "hsl(var(--text-secondary))" }}><AstroText text={horoscope.planetary_story} /></p>
                 </GlassCard>
               )}
@@ -773,12 +775,12 @@ export default function DailyHoroscopePage() {
               {horoscope.emotional_forecast && (
                 <GlassCard delay={0.38} style={{ background: "rgba(156,39,176,0.03)", borderColor: "rgba(156,39,176,0.15)" }}>
                   <SectionLabel icon={Zap} color="hsl(280 50% 60%)">
-                    How You'll Feel
+                    {t("pages:ui.dailyHoroscopePage.howYoullFeel", "How You'll Feel")}
                   </SectionLabel>
                   <div className="space-y-2">
                     {horoscope.energy_level && (
                       <span className="inline-block px-2.5 py-1 rounded-full text-[11px] font-medium tracking-wider uppercase" style={{ background: `${energyColor}15`, color: energyColor, border: `0.5px solid ${energyColor}30` }}>
-                        {horoscope.energy_level} energy
+                        {horoscope.energy_level === "high" ? t("pages:ui.dailyHoroscopePage.energyHigh", "high energy") : horoscope.energy_level === "low" ? t("pages:ui.dailyHoroscopePage.energyLow", "low energy") : horoscope.energy_level === "moderate" ? t("pages:ui.dailyHoroscopePage.energyModerate", "moderate energy") : `${horoscope.energy_level} energy`}
                       </span>
                     )}
                     <p className="leading-[1.8]" style={{ fontFamily: "'Jost', sans-serif", fontWeight: 300, color: "hsl(var(--text-secondary))" }}><AstroText text={horoscope.emotional_forecast} /></p>
@@ -821,7 +823,7 @@ export default function DailyHoroscopePage() {
               {/* Quarterly Overview (yearly) */}
               {horoscope.quarterly_overview && horoscope.quarterly_overview.length > 0 && (
                 <div className="space-y-3 sacred-reveal" style={{ animationDelay: "0.48s" }}>
-                  <SectionLabel icon={Compass}>Quarterly Breakdown</SectionLabel>
+                  <SectionLabel icon={Compass}>{t("pages:ui.dailyHoroscopePage.quarterlyBreakdown", "Quarterly Breakdown")}</SectionLabel>
                   {horoscope.quarterly_overview.map((q, i) => (
                     <Collapsible key={i}>
                       <GlassCard className="!py-3 !px-4" style={{ borderLeft: "3px solid hsl(var(--gold) / 0.5)" }}>
@@ -886,7 +888,7 @@ export default function DailyHoroscopePage() {
               {/* c) Astrologer's Advice */}
               {horoscope.action_items && horoscope.action_items.length > 0 && (
                 <GlassCard delay={0.28}>
-                  <SectionLabel icon={CheckCircle2}>Astrologer's Advice</SectionLabel>
+                  <SectionLabel icon={CheckCircle2}>{t("pages:ui.dailyHoroscopePage.astrologersAdvice", "Astrologer's Advice")}</SectionLabel>
                   <ul className="space-y-2.5">
                     {horoscope.action_items.map((item, i) => (
                       <li key={i} className="flex items-start gap-2.5 text-sm leading-relaxed" style={{ fontFamily: "'Jost', sans-serif", fontWeight: 300, color: "hsl(var(--text-secondary))" }}>
@@ -901,20 +903,20 @@ export default function DailyHoroscopePage() {
               {/* d) Today's Numerology — 3-column */}
               {(horoscope.lucky_color || horoscope.lucky_number || horoscope.direction) && (
                 <GlassCard delay={0.32}>
-                  <SectionLabel icon={Sparkles}>Today's Numerology</SectionLabel>
+                  <SectionLabel icon={Sparkles}>{t("pages:ui.dailyHoroscopePage.todaysNumerology", "Today's Numerology")}</SectionLabel>
                   <div className="grid grid-cols-3 gap-3">
                     {/* Lucky Color with swatch */}
                     <div className="text-center">
-                      <p className="text-[11px] tracking-widest uppercase mb-2" style={{ color: "hsl(var(--text-muted))" }}>Lucky Color</p>
+                      <p className="text-[11px] tracking-widest uppercase mb-2" style={{ color: "hsl(var(--text-muted))" }}>{t("pages:ui.dailyHoroscopePage.luckyColor", "Lucky Color")}</p>
                       <div className="w-6 h-6 rounded-full mx-auto mb-1.5 border" style={{ background: getColorHex(horoscope.lucky_color), borderColor: "hsl(var(--gold) / 0.3)", boxShadow: `0 0 10px ${getColorHex(horoscope.lucky_color)}40` }} />
                       <p className="text-xs font-medium" style={{ fontFamily: "'Cormorant Garamond', serif", color: "hsl(var(--text-primary))" }}>{horoscope.lucky_color}</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-[11px] tracking-widest uppercase mb-2" style={{ color: "hsl(var(--text-muted))" }}>Lucky Number</p>
+                      <p className="text-[11px] tracking-widest uppercase mb-2" style={{ color: "hsl(var(--text-muted))" }}>{t("pages:ui.dailyHoroscopePage.luckyNumber", "Lucky Number")}</p>
                       <p className="text-2xl font-light" style={{ fontFamily: "'Cormorant Garamond', serif", color: "hsl(var(--gold))" }}>{horoscope.lucky_number}</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-[11px] tracking-widest uppercase mb-2" style={{ color: "hsl(var(--text-muted))" }}>Direction</p>
+                      <p className="text-[11px] tracking-widest uppercase mb-2" style={{ color: "hsl(var(--text-muted))" }}>{t("pages:ui.dailyHoroscopePage.direction", "Direction")}</p>
                       <Compass className="h-5 w-5 mx-auto mb-1" style={{ color: "hsl(var(--gold) / 0.6)" }} />
                       <p className="text-xs font-medium" style={{ fontFamily: "'Cormorant Garamond', serif", color: "hsl(var(--text-primary))" }}>{horoscope.direction}</p>
                     </div>
@@ -925,7 +927,7 @@ export default function DailyHoroscopePage() {
               {/* e) Opportunity — green-tinted */}
               {horoscope.opportunity_flags && horoscope.opportunity_flags.length > 0 && (
                 <GlassCard delay={0.36} style={{ background: "rgba(76,175,80,0.03)", borderColor: "rgba(76,175,80,0.18)" }}>
-                  <SectionLabel icon={TrendingUp} color="#4CAF50">Opportunities</SectionLabel>
+                  <SectionLabel icon={TrendingUp} color="#4CAF50">{t("pages:ui.dailyHoroscopePage.opportunities", "Opportunities")}</SectionLabel>
                   <div className="space-y-2">
                     {horoscope.opportunity_flags.map((f, i) => (
                       <p key={i} className="text-sm leading-relaxed" style={{ fontFamily: "'Jost', sans-serif", fontWeight: 300, color: "hsl(var(--text-secondary))" }}>✨ {f}</p>
@@ -937,7 +939,7 @@ export default function DailyHoroscopePage() {
               {/* f) Caution — red-tinted */}
               {horoscope.risk_alerts && horoscope.risk_alerts.length > 0 && (
                 <GlassCard delay={0.4} style={{ background: "rgba(224,92,58,0.03)", borderColor: "rgba(224,92,58,0.18)" }}>
-                  <SectionLabel icon={AlertTriangle} color="#E05C3A">Cautions</SectionLabel>
+                  <SectionLabel icon={AlertTriangle} color="#E05C3A">{t("pages:ui.dailyHoroscopePage.cautions", "Cautions")}</SectionLabel>
                   <div className="space-y-2">
                     {horoscope.risk_alerts.map((r, i) => (
                       <p key={i} className="text-sm leading-relaxed" style={{ fontFamily: "'Jost', sans-serif", fontWeight: 300, color: "hsl(var(--text-secondary))" }}>⚠️ {r}</p>
@@ -959,7 +961,7 @@ export default function DailyHoroscopePage() {
               {/* Key Dates */}
               {horoscope.key_dates && horoscope.key_dates.length > 0 && (
                 <GlassCard delay={0.48}>
-                  <SectionLabel icon={Calendar}>Key Dates</SectionLabel>
+                  <SectionLabel icon={Calendar}>{t("pages:ui.dailyHoroscopePage.keyDates", "Key Dates")}</SectionLabel>
                   <div className="sacred-timeline space-y-4">
                     {horoscope.key_dates.map((kd, i) => (
                       <div key={i} className="relative pl-2">

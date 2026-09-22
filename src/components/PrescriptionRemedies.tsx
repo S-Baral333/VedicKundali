@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { withLanguage } from "@/lib/i18nClient";
 import MantraInfo from "@/components/MantraInfo";
 import { toast } from "@/hooks/use-toast";
+import { useTranslation } from "react-i18next";
 
 interface GemstoneSpec {
   primary: string; sanskrit: string; substitute: string;
@@ -43,15 +44,25 @@ interface PrescriptionResult {
   from_cache?: boolean;
 }
 
-const PRIORITY_LABEL: Record<string, { label: string; color: string }> = {
-  primary:    { label: "Primary Remedy",    color: "bg-primary/15 text-primary border-primary/40" },
-  secondary:  { label: "Secondary Remedy",  color: "bg-secondary/30 text-foreground border-border" },
-  supportive: { label: "Supportive Remedy", color: "bg-muted/50 text-muted-foreground border-border/50" },
+const PRIORITY_LABEL: Record<string, { labelKey: string; label: string; color: string }> = {
+  primary:    { labelKey: "ui.prescriptionRemedies.priorityPrimary", label: "Primary Remedy",    color: "bg-primary/15 text-primary border-primary/40" },
+  secondary:  { labelKey: "ui.prescriptionRemedies.prioritySecondary", label: "Secondary Remedy",  color: "bg-secondary/30 text-foreground border-border" },
+  supportive: { labelKey: "ui.prescriptionRemedies.prioritySupportive", label: "Supportive Remedy", color: "bg-muted/50 text-muted-foreground border-border/50" },
 };
 
 const PLANET_EMOJI: Record<string, string> = {
   Sun: "☀️", Moon: "🌙", Mars: "🔴", Mercury: "🟢", Jupiter: "🟡",
   Venus: "💎", Saturn: "🪐", Rahu: "🐍", Ketu: "🔥",
+};
+
+/** Row label (used as identifier) → translation key. */
+const ROW_KEYS: Record<string, string> = {
+  Stone: "rowStone", Substitute: "rowSubstitute", Weight: "rowWeight", Metal: "rowMetal",
+  Finger: "rowFinger", "First wear": "rowFirstWear", "Energizing japa": "rowEnergizingJapa",
+  Beej: "rowBeej", Vedic: "rowVedic", "Daily count": "rowDailyCount", "Total anushthana": "rowTotalAnushthana",
+  "Best time": "rowBestTime", Mala: "rowMala", Day: "rowDay", Tithi: "rowTithi",
+  "Permitted food": "rowPermittedFood", Avoid: "rowAvoid", Duration: "rowDuration",
+  Items: "rowItems", Quantity: "rowQuantity", Recipient: "rowRecipient", Time: "rowTime",
 };
 
 interface Props {
@@ -64,6 +75,7 @@ export default function PrescriptionRemedies({ chartId, tier }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+  const { t } = useTranslation();
 
   async function generate(force = false) {
     setLoading(true);
@@ -75,11 +87,11 @@ export default function PrescriptionRemedies({ chartId, tier }: Props) {
       if (invokeErr) throw invokeErr;
       if ((res as any)?.error) throw new Error((res as any).message || (res as any).error);
       setData(res as PrescriptionResult);
-      if (force) toast({ title: "Prescription refreshed", description: "Fresh classical analysis generated." });
+      if (force) toast({ title: t("pages:ui.prescriptionRemedies.refreshed", "Prescription refreshed"), description: t("pages:ui.prescriptionRemedies.refreshedDesc", "Fresh classical analysis generated.") });
     } catch (e: any) {
-      const msg = e?.message || "Could not generate prescription.";
+      const msg = e?.message || t("pages:ui.prescriptionRemedies.genericError", "Could not generate prescription.");
       setError(msg);
-      toast({ title: "Prescription unavailable", description: msg, variant: "destructive" });
+      toast({ title: t("pages:ui.prescriptionRemedies.unavailable", "Prescription unavailable"), description: msg, variant: "destructive" });
     } finally {
       setLoading(false);
     }
@@ -98,15 +110,15 @@ export default function PrescriptionRemedies({ chartId, tier }: Props) {
           </div>
           <div>
             <h3 className="text-xl font-serif font-bold text-foreground mb-2">
-              Prescription-Grade Remedies
+              {t("pages:ui.prescriptionRemedies.heading", "Prescription-Grade Remedies")}
             </h3>
             <p className="text-sm text-muted-foreground max-w-md mx-auto">
-              Your personalized classical prescription synthesizing dasha lord, afflictions, and shadbala — with exact gemstone carats, mantra japa counts, fasting tithis, and daan recipients.
+              {t("pages:ui.prescriptionRemedies.intro", "Your personalized classical prescription synthesizing dasha lord, afflictions, and shadbala — with exact gemstone carats, mantra japa counts, fasting tithis, and daan recipients.")}
             </p>
           </div>
           <Button size="lg" onClick={() => generate(false)} className="gap-2">
             <Sparkles className="h-4 w-4" />
-            Generate My Prescription
+            {t("pages:ui.prescriptionRemedies.generate", "Generate My Prescription")}
           </Button>
           {error && <p className="text-xs text-destructive">{error}</p>}
         </CardContent>
@@ -120,10 +132,10 @@ export default function PrescriptionRemedies({ chartId, tier }: Props) {
         <CardContent className="p-12 text-center space-y-3">
           <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto" />
           <p className="text-sm text-muted-foreground">
-            Synthesizing classical prescription from your natal chart…
+            {t("pages:ui.prescriptionRemedies.loading", "Synthesizing classical prescription from your natal chart…")}
           </p>
           <p className="text-xs text-muted-foreground/70">
-            Analyzing dignities, dasha lord, shadbala, and dusthana placements
+            {t("pages:ui.prescriptionRemedies.loadingSub", "Analyzing dignities, dasha lord, shadbala, and dusthana placements")}
           </p>
         </CardContent>
       </Card>
@@ -138,7 +150,7 @@ export default function PrescriptionRemedies({ chartId, tier }: Props) {
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div className="flex items-center gap-2">
           <Badge className="bg-gradient-to-r from-primary/30 to-primary/10 text-primary border-primary/40 gap-1">
-            <Crown className="h-3 w-3" /> {tier === "elite" ? "Elite" : "Premium"} Prescription
+            <Crown className="h-3 w-3" /> {tier === "elite" ? t("pages:ui.prescriptionRemedies.elitePrescription", "Elite Prescription") : t("pages:ui.prescriptionRemedies.premiumPrescription", "Premium Prescription")}
           </Badge>
           {data.dasha_lord && (
             <Badge variant="outline" className="text-xs">
@@ -148,7 +160,7 @@ export default function PrescriptionRemedies({ chartId, tier }: Props) {
         </div>
         <Button size="sm" variant="outline" onClick={() => generate(true)} disabled={loading} className="gap-2">
           <RefreshCw className={`h-3.5 w-3.5 ${loading ? "animate-spin" : ""}`} />
-          Re-synthesize
+          {t("pages:ui.prescriptionRemedies.resynthesize", "Re-synthesize")}
         </Button>
       </div>
 
@@ -162,7 +174,7 @@ export default function PrescriptionRemedies({ chartId, tier }: Props) {
           </CardContent>
         </Card>
       ) : data.ai_skipped ? (
-        <p className="text-xs text-muted-foreground/60 italic">AI synthesis unavailable — configure AI_GATEWAY_API_KEY to enable.</p>
+        <p className="text-xs text-muted-foreground/60 italic">{t("pages:ui.prescriptionRemedies.aiSkipped", "AI synthesis unavailable — configure AI_GATEWAY_API_KEY to enable.")}</p>
       ) : null}
 
       {/* Prescriptions */}
@@ -175,13 +187,13 @@ export default function PrescriptionRemedies({ chartId, tier }: Props) {
               <div className="flex items-start justify-between gap-3">
                 <div className="space-y-1.5 flex-1 min-w-0">
                   <Badge variant="outline" className={`text-[10px] ${meta.color}`}>
-                    {meta.label}
+                    {t("pages:" + meta.labelKey, meta.label)}
                   </Badge>
                   <CardTitle className="text-lg font-serif flex items-center gap-2">
                     <span className="text-2xl">{PLANET_EMOJI[p.planet] || "🪐"}</span>
                     {p.planet}
                     {p.affliction.is_dasha_lord && (
-                      <Badge variant="secondary" className="text-[10px]">Active Dasha</Badge>
+                      <Badge variant="secondary" className="text-[10px]">{t("pages:ui.prescriptionRemedies.activeDasha", "Active Dasha")}</Badge>
                     )}
                   </CardTitle>
                   <p className="text-xs text-muted-foreground leading-relaxed">{p.rationale}</p>
@@ -191,7 +203,7 @@ export default function PrescriptionRemedies({ chartId, tier }: Props) {
                   size="icon"
                   onClick={() => setExpanded(s => ({ ...s, [p.planet]: !isOpen }))}
                   className="shrink-0"
-                  aria-label={isOpen ? "Collapse" : "Expand"}
+                  aria-label={isOpen ? t("pages:ui.prescriptionRemedies.collapse", "Collapse") : t("pages:ui.prescriptionRemedies.expand", "Expand")}
                 >
                   {isOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                 </Button>
@@ -203,15 +215,15 @@ export default function PrescriptionRemedies({ chartId, tier }: Props) {
                 {/* Gemstone */}
                 <PrescriptionBlock
                   icon={<Gem className="h-4 w-4 text-primary" />}
-                  title="Gemstone"
+                  title={t("pages:ui.prescriptionRemedies.gemstone", "Gemstone")}
                   rows={[
                     ["Stone", `${p.gemstone.primary} (${p.gemstone.sanskrit})`],
                     ["Substitute", p.gemstone.substitute],
-                    ["Weight", `${p.gemstone.carat_min}–${p.gemstone.carat_max} carats`],
+                    ["Weight", t("pages:ui.prescriptionRemedies.carats", "{{min}}–{{max}} carats", { min: p.gemstone.carat_min, max: p.gemstone.carat_max })],
                     ["Metal", p.gemstone.metal],
-                    ["Finger", `${p.gemstone.finger} finger, right hand`],
-                    ["First wear", `${p.gemstone.day} during ${p.gemstone.hora}`],
-                    ["Energizing japa", `${p.gemstone.japa_count.toLocaleString()} repetitions of: ${p.gemstone.mantra_for_energizing}`],
+                    ["Finger", t("pages:ui.prescriptionRemedies.fingerHand", "{{finger}} finger, right hand", { finger: p.gemstone.finger })],
+                    ["First wear", t("pages:ui.prescriptionRemedies.dayDuringHora", "{{day}} during {{hora}}", { day: p.gemstone.day, hora: p.gemstone.hora })],
+                    ["Energizing japa", t("pages:ui.prescriptionRemedies.repetitionsOf", "{{n}} repetitions of: {{mantra}}", { n: p.gemstone.japa_count.toLocaleString(), mantra: p.gemstone.mantra_for_energizing })],
                   ]}
                 />
                 {p.gemstone.caution && (
@@ -226,12 +238,12 @@ export default function PrescriptionRemedies({ chartId, tier }: Props) {
                 {/* Mantra */}
                 <PrescriptionBlock
                   icon={<BookOpen className="h-4 w-4 text-primary" />}
-                  title={`Mantra — ${p.mantra.name}`}
+                  title={t("pages:ui.prescriptionRemedies.mantraTitle", "Mantra — {{name}}", { name: p.mantra.name })}
                   rows={[
                     ["Beej", p.mantra.beej],
                     ["Vedic", p.mantra.long],
-                    ["Daily count", `${p.mantra.japa_daily} (1 mala)`],
-                    ["Total anushthana", `${p.mantra.japa_total.toLocaleString()} repetitions`],
+                    ["Daily count", t("pages:ui.prescriptionRemedies.dailyMala", "{{count}} (1 mala)", { count: p.mantra.japa_daily })],
+                    ["Total anushthana", t("pages:ui.prescriptionRemedies.repetitions", "{{n}} repetitions", { n: p.mantra.japa_total.toLocaleString() })],
                     ["Best time", p.mantra.best_time],
                     ["Mala", p.mantra.mala],
                   ]}
@@ -248,7 +260,7 @@ export default function PrescriptionRemedies({ chartId, tier }: Props) {
                 {/* Fasting */}
                 <PrescriptionBlock
                   icon={<Flame className="h-4 w-4 text-primary" />}
-                  title="Fasting (Vrata)"
+                  title={t("pages:ui.prescriptionRemedies.fasting", "Fasting (Vrata)")}
                   rows={[
                     ["Day", p.fasting.vara],
                     ["Tithi", p.fasting.tithi],
@@ -263,7 +275,7 @@ export default function PrescriptionRemedies({ chartId, tier }: Props) {
                 {/* Daan */}
                 <PrescriptionBlock
                   icon={<HandCoins className="h-4 w-4 text-primary" />}
-                  title="Daan (Charity)"
+                  title={t("pages:ui.prescriptionRemedies.daan", "Daan (Charity)")}
                   rows={[
                     ["Items", p.daan.items.join(", ")],
                     ["Quantity", p.daan.quantity_guidance],
@@ -296,6 +308,7 @@ function PrescriptionBlock({
   /** Map of row label → mantra metadata. If provided, the row's value renders with a MantraInfo ⓘ icon. */
   mantraRows?: Record<string, { meaningKey?: string }>;
 }) {
+  const { t } = useTranslation();
   return (
     <div>
       <div className="flex items-center gap-2 mb-2">
@@ -307,7 +320,7 @@ function PrescriptionBlock({
           const mantraMeta = mantraRows?.[k];
           return (
             <div key={k} className="grid grid-cols-[110px_1fr] gap-2 text-xs">
-              <span className="text-muted-foreground">{k}</span>
+              <span className="text-muted-foreground">{ROW_KEYS[k] ? t(`pages:ui.prescriptionRemedies.${ROW_KEYS[k]}`, k) : k}</span>
               {mantraMeta ? (
                 <MantraInfo mantra={v} meaningKey={mantraMeta.meaningKey} />
               ) : (

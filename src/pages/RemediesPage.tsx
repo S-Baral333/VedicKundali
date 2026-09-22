@@ -231,7 +231,7 @@ export default function RemediesPage() {
                 className="cursor-pointer capitalize"
                 onClick={() => setFilter(cat)}
               >
-                {cat}
+                {t("pages:ui.remediesPage.cat_" + cat, cat)}
               </Badge>
             ))}
             {relevantPlanets.map(p => (
@@ -288,7 +288,7 @@ export default function RemediesPage() {
                             {PLANET_EMOJI[remedy.planet] || "🪐"} {remedy.planet}
                           </Badge>
                         )}
-                        <Badge variant="outline" className="text-xs capitalize">{remedy.category}</Badge>
+                        <Badge variant="outline" className="text-xs capitalize">{t("pages:ui.remediesPage.cat_" + remedy.category, remedy.category)}</Badge>
                       </div>
 
                       {remedy.mantra && (

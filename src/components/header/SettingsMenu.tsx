@@ -2,12 +2,14 @@ import { Link } from "react-router-dom";
 import { Settings, Download, Star, Plus, Keyboard, Check } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useActiveChart } from "@/hooks/useActiveChart";
+import { useTranslation } from "react-i18next";
 
 interface SettingsMenuProps {
   isStandalone: boolean;
 }
 
 export default function SettingsMenu({ isStandalone }: SettingsMenuProps) {
+  const { t } = useTranslation();
   const { charts, activeChart, setActiveChart } = useActiveChart();
 
   return (
@@ -19,7 +21,7 @@ export default function SettingsMenu({ isStandalone }: SettingsMenuProps) {
             borderColor: "hsl(var(--glass-border-soft))",
             color: "hsl(var(--text-secondary))",
           }}
-          aria-label="Settings"
+          aria-label={t("pages:ui.settingsMenu.settings", "Settings")}
         >
           <Settings className="h-[15px] w-[15px]" />
         </button>
@@ -33,7 +35,7 @@ export default function SettingsMenu({ isStandalone }: SettingsMenuProps) {
         {charts.length > 0 && (
           <>
             <DropdownMenuLabel className="text-[10px] uppercase tracking-widest px-2" style={{ color: "hsl(var(--text-muted))" }}>
-              Reading As
+              {t("pages:ui.settingsMenu.readingAs", "Reading As")}
             </DropdownMenuLabel>
             {charts.slice(0, 4).map((c) => {
               const active = c.id === activeChart?.id;
@@ -62,7 +64,7 @@ export default function SettingsMenu({ isStandalone }: SettingsMenuProps) {
                 <div className="w-4 flex items-center justify-center shrink-0">
                   <Plus className="h-3.5 w-3.5" style={{ color: "hsl(var(--text-muted))" }} />
                 </div>
-                <span className="text-sm" style={{ color: "hsl(var(--text-secondary))" }}>Add or manage charts</span>
+                <span className="text-sm" style={{ color: "hsl(var(--text-secondary))" }}>{t("pages:ui.settingsMenu.addManage", "Add or manage charts")}</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator style={{ background: "hsl(var(--gold) / 0.10)" }} />
@@ -70,14 +72,14 @@ export default function SettingsMenu({ isStandalone }: SettingsMenuProps) {
         )}
 
         <DropdownMenuLabel className="text-[10px] uppercase tracking-widest px-2" style={{ color: "hsl(var(--text-muted))" }}>
-          App
+          {t("pages:ui.settingsMenu.app", "App")}
         </DropdownMenuLabel>
 
         {!isStandalone && (
           <DropdownMenuItem asChild className="cursor-pointer focus:bg-[hsl(var(--gold)/0.10)] rounded-lg">
             <Link to="/install" className="flex items-center gap-2 py-2">
               <Download className="h-3.5 w-3.5" style={{ color: "hsl(var(--gold-light))" }} />
-              <span className="text-sm" style={{ color: "hsl(var(--text-primary))" }}>Install app</span>
+              <span className="text-sm" style={{ color: "hsl(var(--text-primary))" }}>{t("pages:ui.settingsMenu.installApp", "Install app")}</span>
             </Link>
           </DropdownMenuItem>
         )}
@@ -85,10 +87,10 @@ export default function SettingsMenu({ isStandalone }: SettingsMenuProps) {
         <DropdownMenuItem className="cursor-default focus:bg-transparent rounded-lg flex flex-col items-start gap-1 py-2">
           <div className="flex items-center gap-2">
             <Keyboard className="h-3.5 w-3.5" style={{ color: "hsl(var(--gold-light))" }} />
-            <span className="text-sm" style={{ color: "hsl(var(--text-primary))" }}>Keyboard shortcuts</span>
+            <span className="text-sm" style={{ color: "hsl(var(--text-primary))" }}>{t("pages:ui.settingsMenu.shortcuts", "Keyboard shortcuts")}</span>
           </div>
           <p className="text-[10px] pl-5.5" style={{ color: "hsl(var(--text-muted))", paddingLeft: "22px" }}>
-            Alt + 1–9 to jump between sections
+            {t("pages:ui.settingsMenu.shortcutsHint", "Alt + 1–9 to jump between sections")}
           </p>
         </DropdownMenuItem>
       </DropdownMenuContent>

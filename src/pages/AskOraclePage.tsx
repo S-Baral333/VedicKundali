@@ -473,7 +473,7 @@ function OracleHistorySheet({ history, onSelect, onDelete, open, onOpenChange }:
                                 </p>
                               </div>
                               <Badge variant="outline" className={`shrink-0 ${hvc.color} border-current`}>
-                                {hvc.label}
+                                {t(`askOracle.verdict.${safeVerdict(entry.decision.verdict)}`)}
                               </Badge>
                             </CardContent>
                           </Card>
@@ -777,7 +777,7 @@ export default function AskOraclePage() {
     const priorVc = verdictConfig[safeVerdict(activeReading.decision.verdict)];
     setThread((prev) => [
       ...prev,
-      { question: activeReading.question, verdict: priorVc.label, verdictColor: priorVc.color },
+      { question: activeReading.question, verdict: t(`askOracle.verdict.${safeVerdict(activeReading.decision.verdict)}`), verdictColor: priorVc.color },
     ]);
     setQuestion(followUpQuestion);
     await askOracle({ question: activeReading.question, answer: activeReading.decision }, followUpQuestion, activeReading.category);

@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import guruAsset from "@/assets/guru-lotus-mudra.png.asset.json";
 import KundaliMark from "@/components/KundaliMark";
 
@@ -15,6 +16,7 @@ interface Props {
  * Pure CSS — no canvas, no three.js, cheap on low-tier devices.
  */
 export default function GuruPortrait({ intensity = "idle", size = 220 }: Props) {
+  const { t } = useTranslation();
   const auraOpacity = intensity === "consulting" ? 0.95 : intensity === "focused" ? 0.75 : 0.5;
   const haloScale   = intensity === "consulting" ? 1.18 : intensity === "focused" ? 1.10 : 1.0;
   const showParticles = intensity !== "idle";
@@ -107,7 +109,7 @@ export default function GuruPortrait({ intensity = "idle", size = 220 }: Props) 
         {imgFailed ? (
           <div
             role="img"
-            aria-label="Rishi Guru in deep meditation"
+            aria-label={t("pages:ui.guruPortrait.alt", "Rishi Guru in deep meditation")}
             className="w-full h-full flex items-center justify-center"
             style={{
               background:
@@ -119,7 +121,7 @@ export default function GuruPortrait({ intensity = "idle", size = 220 }: Props) 
         ) : (
           <img
             src={guruAsset.url}
-            alt="Rishi Guru in deep meditation"
+            alt={t("pages:ui.guruPortrait.alt", "Rishi Guru in deep meditation")}
             loading="eager"
             decoding="async"
             onError={() => setImgFailed(true)}

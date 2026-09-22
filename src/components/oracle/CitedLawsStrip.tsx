@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ScrollText } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -13,6 +14,7 @@ interface Rule {
 
 export default function CitedLawsStrip() {
   const [rules, setRules] = useState<Rule[]>([]);
+  const { t } = useTranslation();
 
   useEffect(() => {
     supabase
@@ -34,7 +36,7 @@ export default function CitedLawsStrip() {
     >
       <div className="flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-[0.18em] text-primary/80">
         <ScrollText className="h-3 w-3" />
-        <span>Cited Laws · Rishi Guru Protocol</span>
+        <span>{t("pages:ui.citedLawsStrip.title", "Cited Laws · Rishi Guru Protocol")}</span>
       </div>
       <TooltipProvider delayDuration={150}>
         <div className="flex flex-wrap gap-1.5">

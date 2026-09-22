@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useEffect, useRef, useState, useMemo } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Star, Moon, Sparkles, Zap } from "lucide-react";
@@ -37,6 +38,7 @@ function useCountUp(target: number, duration = 2000) {
 
 export default function StatsBar() {
   const sectionRef = useScrollReveal();
+  const { t } = useTranslation();
 
   const todayCount = useMemo(() => {
     const d = new Date();
@@ -45,10 +47,10 @@ export default function StatsBar() {
   }, []);
 
   const stats = [
-    { value: 12500, suffix: "+", label: "Charts Generated", icon: Star },
-    { value: 8200, suffix: "+", label: "Dreams Interpreted", icon: Moon },
-    { value: 27, suffix: "", label: "Nakshatras Covered", icon: Sparkles },
-    { value: todayCount, suffix: "", label: "Readings Today", icon: Zap },
+    { value: 12500, suffix: "+", label: t("pages:ui.statsBar.charts", "Charts Generated"), icon: Star },
+    { value: 8200, suffix: "+", label: t("pages:ui.statsBar.dreams", "Dreams Interpreted"), icon: Moon },
+    { value: 27, suffix: "", label: t("pages:ui.statsBar.nakshatras", "Nakshatras Covered"), icon: Sparkles },
+    { value: todayCount, suffix: "", label: t("pages:ui.statsBar.readingsToday", "Readings Today"), icon: Zap },
   ];
 
   return (

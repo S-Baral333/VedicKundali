@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Star, Moon, Sun } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import TwinkleText from "@/components/TwinkleText";
@@ -5,16 +6,19 @@ import TwinkleText from "@/components/TwinkleText";
 const features = [
   {
     icon: Star,
+    key: "birthChart",
     title: "Vedic Birth Chart",
     desc: "Get a complete Kundali with planetary positions, Nakshatras, Yogas, and AI-interpreted readings personalized to your life.",
   },
   {
     icon: Moon,
+    key: "dreamOracle",
     title: "Dream Oracle",
     desc: "Describe your dream and receive ancient Swapna Shastra interpretations combined with modern AI insight.",
   },
   {
     icon: Sun,
+    key: "dailyHoroscope",
     title: "Daily Horoscope",
     desc: "Personalized daily and weekly predictions based on your moon sign and current planetary transits.",
   },
@@ -22,14 +26,15 @@ const features = [
 
 export default function FeatureShowcase() {
   const ref = useScrollReveal();
+  const { t } = useTranslation();
 
   return (
     <section className="py-24 px-6">
       <div ref={ref} className="scroll-reveal max-w-5xl mx-auto text-center">
-        <TwinkleText as="h2" intensity="aura" className="text-3xl font-bold mb-4 block" style={{ fontFamily: 'Cinzel, serif', color: 'hsl(35 25% 88%)' }}>Divine Features</TwinkleText>
+        <TwinkleText as="h2" intensity="aura" className="text-3xl font-bold mb-4 block" style={{ fontFamily: 'Cinzel, serif', color: 'hsl(35 25% 88%)' }}>{t("pages:ui.featureShowcase.title", "Divine Features")}</TwinkleText>
         <div className="sacred-divider max-w-xs mx-auto" />
         <p className="mb-12 max-w-xl mx-auto" style={{ color: 'hsl(35 12% 55%)' }}>
-          Harness the power of Vedic astrology enhanced with modern AI for deeper, more personal insights.
+          {t("pages:ui.featureShowcase.subtitle", "Harness the power of Vedic astrology enhanced with modern AI for deeper, more personal insights.")}
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -39,8 +44,8 @@ export default function FeatureShowcase() {
                 <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: 'hsl(38 78% 55% / 0.1)' }}>
                   <f.icon className="h-8 w-8" style={{ color: 'hsl(38 78% 55%)', animationDelay: `${i * 0.5}s` }} />
                 </div>
-                <TwinkleText as="h3" intensity="aura" className="font-semibold text-lg mb-2 block" style={{ fontFamily: 'Cinzel, serif', color: 'hsl(35 25% 88%)' }}>{f.title}</TwinkleText>
-                <p className="text-sm leading-relaxed" style={{ color: 'hsl(35 12% 55%)' }}>{f.desc}</p>
+                <TwinkleText as="h3" intensity="aura" className="font-semibold text-lg mb-2 block" style={{ fontFamily: 'Cinzel, serif', color: 'hsl(35 25% 88%)' }}>{t(`pages:ui.featureShowcase.${f.key}Title`, f.title)}</TwinkleText>
+                <p className="text-sm leading-relaxed" style={{ color: 'hsl(35 12% 55%)' }}>{t(`pages:ui.featureShowcase.${f.key}Desc`, f.desc)}</p>
               </div>
             </div>
           ))}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Eye, Flame } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -18,6 +19,7 @@ interface Counts { layers: number; laws: number }
 
 export default function GuruWatchingPanel() {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const [chart, setChart] = useState<ChartHighlights | null>(null);
   const [counts, setCounts] = useState<Counts>({ layers: 0, laws: 0 });
 
@@ -61,30 +63,30 @@ export default function GuruWatchingPanel() {
         <div className="flex items-center gap-2">
           <Flame className="h-4 w-4 text-primary" />
           <span className="text-[11px] font-mono uppercase tracking-[0.18em] text-primary/90">
-            Guru is Watching
+            {t("pages:ui.guruWatchingPanel.title", "Guru is Watching")}
           </span>
         </div>
         <Eye className="h-3.5 w-3.5 text-primary/60" />
       </div>
 
       <div className="px-4 py-3 grid grid-cols-3 gap-2 border-b border-primary/10">
-        <Stat label="Layers" value={`${counts.layers}/8`} />
-        <Stat label="Laws" value={`${counts.laws}/12`} />
-        <Stat label="Mode" value="Live" />
+        <Stat label={t("pages:ui.guruWatchingPanel.layers", "Layers")} value={`${counts.layers}/8`} />
+        <Stat label={t("pages:ui.guruWatchingPanel.laws", "Laws")} value={`${counts.laws}/12`} />
+        <Stat label={t("pages:ui.guruWatchingPanel.mode", "Mode")} value={t("pages:ui.guruWatchingPanel.live", "Live")} />
       </div>
 
       <div className="px-4 py-3 space-y-2 font-mono text-[12px] text-foreground/85">
         <Row label="Lagna" value={chart?.lagna ? `${chart.lagna}${chart.lagnaDeg ? ` ${chart.lagnaDeg}` : ""}` : "—"} />
-        <Row label="Moon" value={chart?.moon ? `${chart.moon}${chart.moonNak ? ` · ${chart.moonNak}` : ""}` : "—"} />
+        <Row label={t("pages:ui.guruWatchingPanel.moon", "Moon")} value={chart?.moon ? `${chart.moon}${chart.moonNak ? ` · ${chart.moonNak}` : ""}` : "—"} />
         <Row
           label="Dasha"
           value={chart?.mahaDasha ? `${chart.mahaDasha}${chart.mahaDashaEnd ? ` → ${chart.mahaDashaEnd.slice(0, 4)}` : ""}` : "—"}
         />
-        <Row label="Yogas" value={chart?.yogas?.length ? chart.yogas.join(", ") : "—"} />
+        <Row label={t("pages:ui.guruWatchingPanel.yogas", "Yogas")} value={chart?.yogas?.length ? chart.yogas.join(", ") : "—"} />
       </div>
 
       <p className="px-4 pb-3 text-[10px] text-muted-foreground italic">
-        Citations on. Reading from your chart, not generic horoscope.
+        {t("pages:ui.guruWatchingPanel.footer", "Citations on. Reading from your chart, not generic horoscope.")}
       </p>
     </motion.div>
   );

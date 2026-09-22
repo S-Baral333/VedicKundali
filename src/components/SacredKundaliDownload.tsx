@@ -6,6 +6,7 @@ import { useSubscription } from "@/hooks/useSubscription";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import PaywallModal from "@/components/PaywallModal";
+import { useTranslation } from "react-i18next";
 
 interface SacredKundaliDownloadProps {
   chartId: string;
@@ -21,6 +22,7 @@ interface SacredKundaliDownloadProps {
 export default function SacredKundaliDownload({ chartId, chartName }: SacredKundaliDownloadProps) {
   const { isElite, isLoading: subLoading } = useSubscription();
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [busy, setBusy] = useState(false);
   const [paywallOpen, setPaywallOpen] = useState(false);
 
@@ -33,7 +35,7 @@ export default function SacredKundaliDownload({ chartId, chartName }: SacredKund
     try {
       const { data: sessionRes } = await supabase.auth.getSession();
       const accessToken = sessionRes.session?.access_token;
-      if (!accessToken) throw new Error("Please sign in again to download.");
+      if (!accessToken) throw new Error(t("pages:ui.sacredKundaliDownload.signInAgain", "Please sign in again to download."));
 
       const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID as string;
       const url = `https://${projectId}.supabase.co/functions/v1/generate-kundali-pdf`;
@@ -62,11 +64,11 @@ export default function SacredKundaliDownload({ chartId, chartName }: SacredKund
       a.click();
       a.remove();
       URL.revokeObjectURL(blobUrl);
-      toast({ title: "Sacred Kundali ready", description: "Your scripture has been downloaded." });
+      toast({ title: t("pages:ui.sacredKundaliDownload.readyTitle", "Sacred Kundali ready"), description: t("pages:ui.sacredKundaliDownload.readyDesc", "Your scripture has been downloaded.") });
     } catch (err: any) {
       toast({
-        title: "Could not generate PDF",
-        description: err?.message || "Please try again in a moment.",
+        title: t("pages:ui.sacredKundaliDownload.errorTitle", "Could not generate PDF"),
+        description: err?.message || t("pages:ui.sacredKundaliDownload.tryAgain", "Please try again in a moment."),
         variant: "destructive",
       });
     } finally {
@@ -85,11 +87,11 @@ export default function SacredKundaliDownload({ chartId, chartName }: SacredKund
         >
           {busy ? (
             <>
-              <Loader2 className="h-4 w-4 animate-spin" /> Inscribing scripture…
+              <Loader2 className="h-4 w-4 animate-spin" /> {t("pages:ui.sacredKundaliDownload.inscribing", "Inscribing scripture…")}
             </>
           ) : (
             <>
-              <Download className="h-4 w-4 text-primary" /> Download Sacred Kundali (PDF)
+              <Download className="h-4 w-4 text-primary" /> {t("pages:ui.sacredKundaliDownload.download", "Download Sacred Kundali (PDF)")}
             </>
           )}
         </Button>
@@ -109,14 +111,14 @@ export default function SacredKundaliDownload({ chartId, chartName }: SacredKund
               className="gap-2 border-primary/30 text-muted-foreground hover:text-foreground"
             >
               <Lock className="h-3.5 w-3.5" />
-              Sacred Kundali (PDF)
+              {t("pages:ui.sacredKundaliDownload.locked", "Sacred Kundali (PDF)")}
               <span className="ml-1 inline-flex items-center gap-1 rounded-full border border-primary/30 px-2 py-0.5 text-[10px] uppercase tracking-wider text-primary">
-                <Sparkles className="h-3 w-3" /> Elite
+                <Sparkles className="h-3 w-3" /> {t("pages:ui.sacredKundaliDownload.elite", "Elite")}
               </span>
             </Button>
           </TooltipTrigger>
           <TooltipContent side="top">
-            A 10-page parchment scripture — mantras, dasha, yogas & remedies. Elite ritual.
+            {t("pages:ui.sacredKundaliDownload.tooltip", "A 10-page parchment scripture — mantras, dasha, yogas & remedies. Elite ritual.")}
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>

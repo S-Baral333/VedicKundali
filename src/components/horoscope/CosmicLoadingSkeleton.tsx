@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 
 type Period = "daily" | "tomorrow" | "weekly" | "monthly" | "yearly";
@@ -11,36 +12,36 @@ const PERIOD_WAIT_SECONDS: Record<Period, number> = {
   yearly: 55,
 };
 
-const MESSAGES: Record<Period, string[]> = {
+const MESSAGES: Record<Period, [string, string][]> = {
   daily: [
-    "Consulting today's stars…",
-    "Reading the cosmic alignment…",
-    "Weaving your guidance…",
-    "Almost ready…",
+    ["ui.cosmicLoadingSkeleton.dailyMsg1", "Consulting today's stars…"],
+    ["ui.cosmicLoadingSkeleton.dailyMsg2", "Reading the cosmic alignment…"],
+    ["ui.cosmicLoadingSkeleton.dailyMsg3", "Weaving your guidance…"],
+    ["ui.cosmicLoadingSkeleton.dailyMsg4", "Almost ready…"],
   ],
   tomorrow: [
-    "Gazing into tomorrow's sky…",
-    "Mapping tomorrow's planetary paths…",
-    "Composing what awaits…",
-    "Finalising your tomorrow…",
+    ["ui.cosmicLoadingSkeleton.tomorrowMsg1", "Gazing into tomorrow's sky…"],
+    ["ui.cosmicLoadingSkeleton.tomorrowMsg2", "Mapping tomorrow's planetary paths…"],
+    ["ui.cosmicLoadingSkeleton.tomorrowMsg3", "Composing what awaits…"],
+    ["ui.cosmicLoadingSkeleton.tomorrowMsg4", "Finalising your tomorrow…"],
   ],
   weekly: [
-    "Charting the week ahead…",
-    "Tracing seven days of planetary motion…",
-    "Weighing each day's energy…",
-    "Nearly there — weekly arcs take a moment…",
+    ["ui.cosmicLoadingSkeleton.weeklyMsg1", "Charting the week ahead…"],
+    ["ui.cosmicLoadingSkeleton.weeklyMsg2", "Tracing seven days of planetary motion…"],
+    ["ui.cosmicLoadingSkeleton.weeklyMsg3", "Weighing each day's energy…"],
+    ["ui.cosmicLoadingSkeleton.weeklyMsg4", "Nearly there — weekly arcs take a moment…"],
   ],
   monthly: [
-    "Mapping the month's celestial movements…",
-    "Reading major ingresses and dasha shifts…",
-    "Thirty days of karma, unfolding…",
-    "The cosmos does not rush — almost there…",
+    ["ui.cosmicLoadingSkeleton.monthlyMsg1", "Mapping the month's celestial movements…"],
+    ["ui.cosmicLoadingSkeleton.monthlyMsg2", "Reading major ingresses and dasha shifts…"],
+    ["ui.cosmicLoadingSkeleton.monthlyMsg3", "Thirty days of karma, unfolding…"],
+    ["ui.cosmicLoadingSkeleton.monthlyMsg4", "The cosmos does not rush — almost there…"],
   ],
   yearly: [
-    "Entering deep meditation for your year ahead…",
-    "Three hundred and sixty-five days of dharma, mapped…",
-    "This is a long reading — the stars require time…",
-    "Almost there — your year unfolds across the heavens…",
+    ["ui.cosmicLoadingSkeleton.yearlyMsg1", "Entering deep meditation for your year ahead…"],
+    ["ui.cosmicLoadingSkeleton.yearlyMsg2", "Three hundred and sixty-five days of dharma, mapped…"],
+    ["ui.cosmicLoadingSkeleton.yearlyMsg3", "This is a long reading — the stars require time…"],
+    ["ui.cosmicLoadingSkeleton.yearlyMsg4", "Almost there — your year unfolds across the heavens…"],
   ],
 };
 
@@ -67,6 +68,7 @@ export default function CosmicLoadingSkeleton({
   dasha,
   dateLabel,
 }: Props) {
+  const { t } = useTranslation();
   const [elapsed, setElapsed] = useState(0);
 
   const expectedWait = PERIOD_WAIT_SECONDS[period];
@@ -93,10 +95,10 @@ export default function CosmicLoadingSkeleton({
   // rather than waiting until the user is already wondering if it broke.
   const isLongPeriod = period === "weekly" || period === "monthly" || period === "yearly";
   const helperText = overrunning
-    ? "Still composing — this one is taking a little longer than usual."
+    ? t("pages:ui.cosmicLoadingSkeleton.stillComposing", "Still composing — this one is taking a little longer than usual.")
     : isLongPeriod
-      ? `${period === "yearly" ? "Yearly" : period === "monthly" ? "Monthly" : "Weekly"} readings are generated fresh and take around ${expectedWait} seconds.`
-      : "Composing your personalised reading…";
+      ? (period === "yearly" ? t("pages:ui.cosmicLoadingSkeleton.yearlyWait", "Yearly readings are generated fresh and take around {{seconds}} seconds.", { seconds: expectedWait }) : period === "monthly" ? t("pages:ui.cosmicLoadingSkeleton.monthlyWait", "Monthly readings are generated fresh and take around {{seconds}} seconds.", { seconds: expectedWait }) : t("pages:ui.cosmicLoadingSkeleton.weeklyWait", "Weekly readings are generated fresh and take around {{seconds}} seconds.", { seconds: expectedWait }))
+      : t("pages:ui.cosmicLoadingSkeleton.composingPersonalised", "Composing your personalised reading…");
 
   // The steps below mirror what generate-horoscope actually does, in order, and
   // name the reader's real placements where we already have them client-side.
@@ -107,11 +109,11 @@ export default function CosmicLoadingSkeleton({
     .join(" · ");
 
   const steps: string[] = [
-    chartName ? `Locating ${chartName}'s chart` : "Locating your birth chart",
-    dateLabel ? `Computing planetary transits for ${dateLabel}` : "Computing planetary transits",
-    dashaLine ? `Tracing ${dashaLine}` : "Tracing your dasha periods",
-    moonSign ? `Weighing Moon in ${moonSign} against the natal chart` : "Weighing transits against the natal chart",
-    "Composing your reading",
+    chartName ? t("pages:ui.cosmicLoadingSkeleton.locatingNamed", "Locating {{name}}'s chart", { name: chartName }) : t("pages:ui.cosmicLoadingSkeleton.locatingYours", "Locating your birth chart"),
+    dateLabel ? t("pages:ui.cosmicLoadingSkeleton.computingTransitsFor", "Computing planetary transits for {{date}}", { date: dateLabel }) : t("pages:ui.cosmicLoadingSkeleton.computingTransits", "Computing planetary transits"),
+    dashaLine ? t("pages:ui.cosmicLoadingSkeleton.tracingDasha", "Tracing {{dasha}}", { dasha: dashaLine }) : t("pages:ui.cosmicLoadingSkeleton.tracingYourDasha", "Tracing your dasha periods"),
+    moonSign ? t("pages:ui.cosmicLoadingSkeleton.weighingMoon", "Weighing Moon in {{sign}} against the natal chart", { sign: moonSign }) : t("pages:ui.cosmicLoadingSkeleton.weighingTransits", "Weighing transits against the natal chart"),
+    t("pages:ui.cosmicLoadingSkeleton.composingReading", "Composing your reading"),
   ];
 
   // Walk the weighted timeline to find which step the elapsed time lands in.
@@ -170,14 +172,14 @@ export default function CosmicLoadingSkeleton({
             minHeight: "1.4rem",
           }}
         >
-          {messages[messageIndex]}
+          {t("pages:" + messages[messageIndex][0], messages[messageIndex][1])}
         </div>
 
         <div className="w-full" style={{ maxWidth: 320 }}>
           <div
             role="progressbar"
-            aria-label="Generating your reading"
-            aria-valuetext={overrunning ? "Still generating" : `About ${Math.round(progressPct)}% complete`}
+            aria-label={t("pages:ui.cosmicLoadingSkeleton.generatingAria", "Generating your reading")}
+            aria-valuetext={overrunning ? t("pages:ui.cosmicLoadingSkeleton.stillGenerating", "Still generating") : t("pages:ui.cosmicLoadingSkeleton.percentComplete", "About {{pct}}% complete", { pct: Math.round(progressPct) })}
             style={{
               height: 4,
               background: "hsl(var(--gold) / 0.16)",
@@ -263,7 +265,7 @@ export default function CosmicLoadingSkeleton({
             fontFamily: "'Jost', sans-serif",
           }}
         >
-          Casting your chart
+          {t("pages:ui.cosmicLoadingSkeleton.castingChart", "Casting your chart")}
         </p>
 
         <ol className="flex flex-col gap-3" aria-live="polite">

@@ -113,7 +113,7 @@ export default function OnboardingPage() {
     setStep(2);
     const summary = skip
       ? t("onboarding:skipBirthLabel")
-      : `Born ${data.dateOfBirth}${data.birthTime && !data.skipBirthTime ? ` at ${data.birthTime}` : ""}${data.birthplace ? `, ${data.birthplace}` : ""}`;
+      : `${t("pages:ui.onboardingPage.born", "Born {{date}}", { date: data.dateOfBirth })}${data.birthTime && !data.skipBirthTime ? ` ${t("pages:ui.onboardingPage.bornAt", "at {{time}}", { time: data.birthTime })}` : ""}${data.birthplace ? `, ${data.birthplace}` : ""}`;
     setMessages((prev) => [
       ...prev,
       { id: "user-birth", role: "user", content: summary },
@@ -130,7 +130,7 @@ export default function OnboardingPage() {
     const labels = data.lifePriorities
       .map((id) => LIFE_PRIORITIES.find((p) => p.id === id))
       .filter(Boolean)
-      .map((p) => `${p!.emoji} ${p!.label}`)
+      .map((p) => `${p!.emoji} ${t("pages:ui.onboardingPage.priority_" + p!.id, p!.label)}`)
       .join(", ");
     setMessages((prev) => [
       ...prev,
@@ -147,7 +147,7 @@ export default function OnboardingPage() {
     const style = GUIDANCE_STYLES.find((g) => g.id === data.guidanceStyle);
     setMessages((prev) => [
       ...prev,
-      { id: "user-style", role: "user", content: style?.label || data.guidanceStyle },
+      { id: "user-style", role: "user", content: style ? t("pages:ui.onboardingPage.style_" + style.id, style.label) : data.guidanceStyle },
     ]);
     addMessages(
       { id: "style-ack", role: "app", content: t("onboarding:styleAck") }
@@ -260,7 +260,7 @@ export default function OnboardingPage() {
       <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-8 p-6">
         <AuraAnimation />
         <div className="text-center space-y-3">
-          <p className="text-lg font-serif text-foreground">Setting up your cosmic engine…</p>
+          <p className="text-lg font-serif text-foreground">{t("pages:ui.onboardingPage.settingUp", "Setting up your cosmic engine…")}</p>
           <div className="flex justify-center gap-2">
             {[0, 1, 2].map((i) => (
               <div
@@ -351,14 +351,14 @@ export default function OnboardingPage() {
               <Input
                 ref={nameInputRef}
                 autoFocus
-                placeholder="Your name"
+                placeholder={t("pages:ui.onboardingPage.yourName", "Your name")}
                 value={data.name}
                 onChange={(e) => setData({ ...data, name: e.target.value })}
                 onKeyDown={(e) => e.key === "Enter" && handleNameSubmit()}
                 className="bg-background/50 border-border/30 text-sm"
               />
               <Button size="sm" className="w-full gap-2" disabled={!data.name.trim()} onClick={handleNameSubmit}>
-                <Send className="h-3.5 w-3.5" /> Continue
+                <Send className="h-3.5 w-3.5" /> {t("pages:ui.onboardingPage.continue", "Continue")}
               </Button>
             </div>
           </div>
@@ -368,7 +368,7 @@ export default function OnboardingPage() {
           <div className="flex justify-end" style={{ animation: "fade-in-up 0.4s ease-out forwards" }}>
             <div className="bg-primary/5 border border-primary/15 rounded-2xl rounded-tr-sm p-4 w-full max-w-[85%] space-y-3">
               <div className="space-y-2">
-                <Label className="text-xs text-muted-foreground">Date of Birth</Label>
+                <Label className="text-xs text-muted-foreground">{t("pages:ui.onboardingPage.dateOfBirth", "Date of Birth")}</Label>
                 <Input
                   type="date"
                   value={data.dateOfBirth}
@@ -378,9 +378,9 @@ export default function OnboardingPage() {
               </div>
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label className="text-xs text-muted-foreground">Time of Birth</Label>
+                  <Label className="text-xs text-muted-foreground">{t("pages:ui.onboardingPage.timeOfBirth", "Time of Birth")}</Label>
                   <label className="flex items-center gap-1.5 cursor-pointer">
-                    <span className="text-[11px] text-muted-foreground">Don't know</span>
+                    <span className="text-[11px] text-muted-foreground">{t("pages:ui.onboardingPage.dontKnow", "Don't know")}</span>
                     <Switch
                       checked={data.skipBirthTime}
                       onCheckedChange={(checked) => setData({ ...data, skipBirthTime: checked, birthTime: checked ? "" : data.birthTime })}
@@ -434,7 +434,7 @@ export default function OnboardingPage() {
                     }`}
                     disabled={!data.lifePriorities.includes(p.id) && data.lifePriorities.length >= 3}
                   >
-                    {p.emoji} {p.label}
+                    {p.emoji} {t("pages:ui.onboardingPage.priority_" + p.id, p.label)}
                   </button>
                 ))}
               </div>
@@ -462,9 +462,9 @@ export default function OnboardingPage() {
                   }`}
                 >
                   <p className={`font-medium text-xs ${data.guidanceStyle === g.id ? "text-foreground" : "text-muted-foreground"}`}>
-                    {g.label}
+                    {t("pages:ui.onboardingPage.style_" + g.id, g.label)}
                   </p>
-                  <p className="text-[11px] text-muted-foreground/70 mt-0.5">{g.desc}</p>
+                  <p className="text-[11px] text-muted-foreground/70 mt-0.5">{t("pages:ui.onboardingPage.styleDesc_" + g.id, g.desc)}</p>
                 </button>
               ))}
               <Button size="sm" className="w-full gap-2" onClick={handleStyleSubmit}>

@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState, useCallback, ReactNode 
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "@/hooks/use-toast";
+import i18n from "@/i18n/config";
 
 export interface ActiveChartSummary {
   id: string;
@@ -114,7 +115,7 @@ export function ActiveChartProvider({ children }: { children: ReactNode }) {
 
     if (error) {
       setSwitching({ phase: "idle", targetName: null });
-      toast({ title: "Could not switch chart", description: error.message, variant: "destructive" });
+      toast({ title: i18n.t("pages:ui.useActiveChart.switchError", "Could not switch chart"), description: error.message, variant: "destructive" });
       load();
       return;
     }

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useEffect, useRef, useState } from "react";
 import { BookmarkPlus, Check } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export default function JournalPin({ userId, validDate, period }: Props) {
+  const { t } = useTranslation();
   const [text, setText] = useState("");
   const [saved, setSaved] = useState(false);
   const [open, setOpen] = useState(false);
@@ -53,7 +55,7 @@ export default function JournalPin({ userId, validDate, period }: Props) {
       );
     if (!mounted.current) return;
     if (error) {
-      toast({ title: "Couldn't save your note", variant: "destructive" });
+      toast({ title: t("pages:ui.journalPin.saveFailed", "Couldn't save your note"), variant: "destructive" });
       return;
     }
     setSaved(true);
@@ -77,7 +79,7 @@ export default function JournalPin({ userId, validDate, period }: Props) {
         style={{ color: "hsl(var(--mood-accent, 42 65% 55%))" }}
       >
         <BookmarkPlus className="h-3.5 w-3.5" />
-        This happened today…
+        {t("pages:ui.journalPin.thisHappened", "This happened today…")}
       </button>
     );
   }
@@ -89,18 +91,18 @@ export default function JournalPin({ userId, validDate, period }: Props) {
     >
       <div className="flex items-center justify-between mb-1.5">
         <p className="text-[11px] tracking-[0.16em] uppercase" style={{ color: "hsl(var(--mood-accent))" }}>
-          Today's note
+          {t("pages:ui.journalPin.todaysNote", "Today's note")}
         </p>
         {saved && (
           <span className="flex items-center gap-1 text-[10px]" style={{ color: "hsl(var(--mood-accent))" }}>
-            <Check className="h-3 w-3" /> saved
+            <Check className="h-3 w-3" /> {t("pages:ui.journalPin.saved", "saved")}
           </span>
         )}
       </div>
       <textarea
         value={text}
         onChange={(e) => handleChange(e.target.value)}
-        placeholder="One line about what actually happened today…"
+        placeholder={t("pages:ui.journalPin.placeholder", "One line about what actually happened today…")}
         className="w-full bg-transparent text-sm resize-none outline-none placeholder:opacity-60 leading-snug"
         style={{ color: "hsl(var(--text-primary))", fontFamily: "'Jost', sans-serif", fontWeight: 300, minHeight: "44px" }}
         maxLength={280}

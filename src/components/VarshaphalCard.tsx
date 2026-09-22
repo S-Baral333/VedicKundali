@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar, Crown, Lock, Zap, Loader2, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "react-i18next";
 
 interface VarshaphalEntry {
   year: number;
@@ -36,6 +37,7 @@ interface VarshaphalCardProps {
 export default function VarshaphalCard({ chartId, birthYear, cache, onCacheUpdate }: VarshaphalCardProps) {
   const { isElite } = useSubscription();
   const { toast } = useToast();
+  const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
   const [year, setYear] = useState<number>(currentYear);
   const [loading, setLoading] = useState(false);
@@ -63,9 +65,9 @@ export default function VarshaphalCard({ chartId, birthYear, cache, onCacheUpdat
       if (error) throw error;
       setData(result as VarshaphalEntry);
       onCacheUpdate?.(year, result as VarshaphalEntry);
-      toast({ title: "Varshaphal ready", description: `Annual chart for ${year} computed.` });
+      toast({ title: t("pages:ui.varshaphalCard.ready", "Varshaphal ready"), description: t("pages:ui.varshaphalCard.computedDesc", "Annual chart for {{year}} computed.", { year }) });
     } catch (e: any) {
-      toast({ title: "Couldn't compute Varshaphal", description: e?.message ?? "Try again.", variant: "destructive" });
+      toast({ title: t("pages:ui.varshaphalCard.computeFailed", "Couldn't compute Varshaphal"), description: e?.message ?? t("pages:ui.varshaphalCard.tryAgain", "Try again."), variant: "destructive" });
     } finally {
       setLoading(false);
     }
@@ -76,12 +78,12 @@ export default function VarshaphalCard({ chartId, birthYear, cache, onCacheUpdat
       <Card className="border-primary/15 bg-card/50 overflow-hidden">
         <CardHeader className="bg-gradient-to-r from-amber-500/10 via-transparent to-amber-500/10">
           <CardTitle className="font-serif text-lg flex items-center gap-2">
-            <Crown className="h-4 w-4 text-amber-400" /> Varshaphal — Annual Forecast
+            <Crown className="h-4 w-4 text-amber-400" /> {t("pages:ui.varshaphalCard.title", "Varshaphal — Annual Forecast")}
             <Badge variant="outline" className="text-[10px] px-1.5 py-0 gap-1 border-amber-400/40 text-amber-300">
-              <Zap className="h-3 w-3" /> Elite
+              <Zap className="h-3 w-3" /> {t("pages:ui.varshaphalCard.elite", "Elite")}
             </Badge>
           </CardTitle>
-          <CardDescription>Tajik solar-return chart with Varsha Lagna, Muntha, Year Lord & 12-month Munda dasha.</CardDescription>
+          <CardDescription>{t("pages:ui.varshaphalCard.lockedDesc", "Tajik solar-return chart with Varsha Lagna, Muntha, Year Lord & 12-month Munda dasha.")}</CardDescription>
         </CardHeader>
         <CardContent className="py-6 text-center space-y-3">
           <div className="relative inline-flex">
@@ -91,10 +93,10 @@ export default function VarshaphalCard({ chartId, birthYear, cache, onCacheUpdat
             </div>
           </div>
           <p className="text-sm text-muted-foreground max-w-sm mx-auto">
-            See exactly when each year's energy peaks — month by month — based on the precise moment Sun returns to its natal degree.
+            {t("pages:ui.varshaphalCard.lockedPitch", "See exactly when each year's energy peaks — month by month — based on the precise moment Sun returns to its natal degree.")}
           </p>
           <Button variant="outline" size="sm" className="gap-1.5 border-amber-400/40 text-amber-300 hover:bg-amber-400/10" onClick={() => window.location.href = "/pricing"}>
-            <Zap className="h-3.5 w-3.5" /> Upgrade to Elite
+            <Zap className="h-3.5 w-3.5" /> {t("pages:ui.varshaphalCard.upgradeToElite", "Upgrade to Elite")}
           </Button>
         </CardContent>
       </Card>
@@ -105,22 +107,22 @@ export default function VarshaphalCard({ chartId, birthYear, cache, onCacheUpdat
     <Card className="border-primary/15 overflow-hidden">
       <CardHeader className="bg-gradient-to-r from-amber-500/5 via-transparent to-amber-500/5">
         <CardTitle className="font-serif text-lg flex items-center gap-2">
-          <Crown className="h-4 w-4 text-amber-400" /> Varshaphal — Annual Forecast
+          <Crown className="h-4 w-4 text-amber-400" /> {t("pages:ui.varshaphalCard.title", "Varshaphal — Annual Forecast")}
           <Badge variant="outline" className="text-[10px] px-1.5 py-0 gap-1 border-amber-400/40 text-amber-300">
-            <Zap className="h-3 w-3" /> Elite
+            <Zap className="h-3 w-3" /> {t("pages:ui.varshaphalCard.elite", "Elite")}
           </Badge>
         </CardTitle>
-        <CardDescription>Tajik solar-return frame for the chosen year.</CardDescription>
+        <CardDescription>{t("pages:ui.varshaphalCard.desc", "Tajik solar-return frame for the chosen year.")}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4 pt-5">
         <div className="flex flex-col sm:flex-row sm:items-center gap-3">
           <div className="flex items-center gap-2 min-w-0">
             <Calendar className="h-4 w-4 text-muted-foreground shrink-0" />
             <Select value={String(year)} onValueChange={onYearChange}>
-              <SelectTrigger className="w-[140px]"><SelectValue placeholder="Year" /></SelectTrigger>
+              <SelectTrigger className="w-[140px]"><SelectValue placeholder={t("pages:ui.varshaphalCard.year", "Year")} /></SelectTrigger>
               <SelectContent>
                 {yearOptions.map(y => (
-                  <SelectItem key={y} value={String(y)}>{y}{y === currentYear ? " (current)" : ""}</SelectItem>
+                  <SelectItem key={y} value={String(y)}>{y}{y === currentYear ? ` ${t("pages:ui.varshaphalCard.current", "(current)")}` : ""}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -131,7 +133,7 @@ export default function VarshaphalCard({ chartId, birthYear, cache, onCacheUpdat
             disabled={loading}
             className="bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-black hover:from-amber-400 hover:to-amber-400 shadow-[0_0_20px_rgba(251,191,36,0.25)]"
           >
-            {loading ? <><Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" /> Computing…</> : <><Sparkles className="h-3.5 w-3.5 mr-1.5" /> {data ? "Recompute" : "Compute Varshaphal"}</>}
+            {loading ? <><Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" /> {t("pages:ui.varshaphalCard.computing", "Computing…")}</> : <><Sparkles className="h-3.5 w-3.5 mr-1.5" /> {data ? t("pages:ui.varshaphalCard.recompute", "Recompute") : t("pages:ui.varshaphalCard.compute", "Compute Varshaphal")}</>}
           </Button>
         </div>
 
@@ -142,17 +144,17 @@ export default function VarshaphalCard({ chartId, birthYear, cache, onCacheUpdat
                 {data.summary}
               </p>
             ) : data.ai_skipped ? (
-              <p className="text-xs text-muted-foreground/60 italic">AI narrative unavailable — configure AI_GATEWAY_API_KEY to enable.</p>
+              <p className="text-xs text-muted-foreground/60 italic">{t("pages:ui.varshaphalCard.aiUnavailable", "AI narrative unavailable — configure AI_GATEWAY_API_KEY to enable.")}</p>
             ) : null}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               <Stat label="Varsha Lagna" value={data.varsha_lagna.sign} />
-              <Stat label="Muntha" value={data.muntha.sign} subtitle={`age ${data.muntha.age_years}`} />
-              <Stat label="Year Lord" value={data.year_lord.planet} subtitle={data.year_lord.reason} />
-              <Stat label="Sun Returns" value={data.sun_sign_at_return} subtitle={new Date(data.solar_return_moment_utc).toLocaleDateString()} />
+              <Stat label="Muntha" value={data.muntha.sign} subtitle={t("pages:ui.varshaphalCard.age", "age {{age}}", { age: data.muntha.age_years })} />
+              <Stat label={t("pages:ui.varshaphalCard.yearLord", "Year Lord")} value={data.year_lord.planet} subtitle={data.year_lord.reason} />
+              <Stat label={t("pages:ui.varshaphalCard.sunReturns", "Sun Returns")} value={data.sun_sign_at_return} subtitle={new Date(data.solar_return_moment_utc).toLocaleDateString()} />
             </div>
 
             <div>
-              <p className="text-xs uppercase tracking-wider text-muted-foreground mb-2">Munda Dasha — 12-month roadmap</p>
+              <p className="text-xs uppercase tracking-wider text-muted-foreground mb-2">{t("pages:ui.varshaphalCard.mundaRoadmap", "Munda Dasha — 12-month roadmap")}</p>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1.5">
                 {data.munda_dasha.map(m => (
                   <div key={m.month} className="rounded-lg border border-primary/10 bg-card/60 px-2.5 py-1.5">
@@ -170,7 +172,7 @@ export default function VarshaphalCard({ chartId, birthYear, cache, onCacheUpdat
 
         {!data && !loading && (
           <p className="text-[11px] text-muted-foreground/70 text-center pt-2">
-            Pick a year and tap "Compute Varshaphal" to generate the annual chart.
+            {t("pages:ui.varshaphalCard.emptyHint", "Pick a year and tap \"Compute Varshaphal\" to generate the annual chart.")}
           </p>
         )}
       </CardContent>

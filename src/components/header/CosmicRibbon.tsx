@@ -1,18 +1,19 @@
 import { useEffect, useMemo, useState } from "react";
 import { Crown, MapPin, Moon, Sun } from "lucide-react";
 import { useSubscription } from "@/hooks/useSubscription";
+import { useTranslation } from "react-i18next";
 import { sunTimes, moonTimes, formatHM } from "@/lib/sun-moon";
 
 const MOON_PHASES = [
-  { name: "New Moon", glyph: "🌑", min: 0, max: 0.0625 },
-  { name: "Waxing Crescent", glyph: "🌒", min: 0.0625, max: 0.1875 },
-  { name: "First Quarter", glyph: "🌓", min: 0.1875, max: 0.3125 },
-  { name: "Waxing Gibbous", glyph: "🌔", min: 0.3125, max: 0.4375 },
-  { name: "Full Moon", glyph: "🌕", min: 0.4375, max: 0.5625 },
-  { name: "Waning Gibbous", glyph: "🌖", min: 0.5625, max: 0.6875 },
-  { name: "Last Quarter", glyph: "🌗", min: 0.6875, max: 0.8125 },
-  { name: "Waning Crescent", glyph: "🌘", min: 0.8125, max: 0.9375 },
-  { name: "New Moon", glyph: "🌑", min: 0.9375, max: 1 },
+  { name: "New Moon", nameKey: "ui.cosmicRibbon.newMoon", glyph: "🌑", min: 0, max: 0.0625 },
+  { name: "Waxing Crescent", nameKey: "ui.cosmicRibbon.waxingCrescent", glyph: "🌒", min: 0.0625, max: 0.1875 },
+  { name: "First Quarter", nameKey: "ui.cosmicRibbon.firstQuarter", glyph: "🌓", min: 0.1875, max: 0.3125 },
+  { name: "Waxing Gibbous", nameKey: "ui.cosmicRibbon.waxingGibbous", glyph: "🌔", min: 0.3125, max: 0.4375 },
+  { name: "Full Moon", nameKey: "ui.cosmicRibbon.fullMoon", glyph: "🌕", min: 0.4375, max: 0.5625 },
+  { name: "Waning Gibbous", nameKey: "ui.cosmicRibbon.waningGibbous", glyph: "🌖", min: 0.5625, max: 0.6875 },
+  { name: "Last Quarter", nameKey: "ui.cosmicRibbon.lastQuarter", glyph: "🌗", min: 0.6875, max: 0.8125 },
+  { name: "Waning Crescent", nameKey: "ui.cosmicRibbon.waningCrescent", glyph: "🌘", min: 0.8125, max: 0.9375 },
+  { name: "New Moon", nameKey: "ui.cosmicRibbon.newMoon", glyph: "🌑", min: 0.9375, max: 1 },
 ];
 
 const SIDEREAL_SIGNS = [
@@ -95,6 +96,7 @@ async function fetchCoarsePlace(lat: number, lng: number): Promise<string | null
 }
 
 export default function CosmicRibbon() {
+  const { t } = useTranslation();
   const { tier } = useSubscription();
   const [now, setNow] = useState<Date>(() => new Date());
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(() => {
@@ -228,9 +230,9 @@ export default function CosmicRibbon() {
 
         <span aria-hidden style={dotStyle} className="hidden xl:inline">·</span>
         <span className="hidden xl:inline">
-          <span style={{ color: "hsl(var(--gold-light) / 0.7)" }}>{moon.name}</span>
-          <span className="mx-1.5" style={{ opacity: 0.4 }}>in</span>
-          <span style={{ color: "hsl(var(--gold-light) / 0.7)" }}>{moon.sign}</span>
+          <span style={{ color: "hsl(var(--gold-light) / 0.7)" }}>{t("pages:" + moon.nameKey, moon.name)}</span>
+          <span className="mx-1.5" style={{ opacity: 0.4 }}>{t("pages:ui.cosmicRibbon.in", "in")}</span>
+          <span style={{ color: "hsl(var(--gold-light) / 0.7)" }}>{t("pages:ui.cosmicRibbon.sign" + moon.sign, moon.sign)}</span>
         </span>
 
         {moonRS && (moonRS.moonrise || moonRS.moonset) && (
@@ -239,7 +241,7 @@ export default function CosmicRibbon() {
             <span
               className="hidden xl:inline-flex items-center gap-1 tabular-nums"
               style={{ color: "hsl(var(--gold-light) / 0.75)" }}
-              title="Moonrise → Moonset (your location)"
+              title={t("pages:ui.cosmicRibbon.moonriseTitle", "Moonrise → Moonset (your location)")}
             >
               <Moon className="h-2.5 w-2.5" style={{ color: "hsl(var(--gold) / 0.6)" }} aria-hidden />
               {formatHM(moonRS.moonrise, timeZone)}
@@ -255,7 +257,7 @@ export default function CosmicRibbon() {
             <span
               className="hidden xl:inline-flex items-center gap-1 tabular-nums"
               style={{ color: "hsl(var(--gold-light) / 0.75)" }}
-              title="Sunrise → Sunset (your location)"
+              title={t("pages:ui.cosmicRibbon.sunriseTitle", "Sunrise → Sunset (your location)")}
             >
               <Sun className="h-2.5 w-2.5" style={{ color: "hsl(var(--gold) / 0.6)" }} aria-hidden />
               {formatHM(sun.sunrise, timeZone)}
@@ -271,7 +273,7 @@ export default function CosmicRibbon() {
             <span
               className="hidden xl:inline-flex items-center gap-1"
               style={{ color: "hsl(var(--gold-light) / 0.8)" }}
-              title="Approximate location (≥ 1 km radius)"
+              title={t("pages:ui.cosmicRibbon.approxLocation", "Approximate location (≥ 1 km radius)")}
             >
               <MapPin className="h-2.5 w-2.5" style={{ color: "hsl(var(--gold) / 0.6)" }} aria-hidden />
               <span className="italic">{place}</span>
@@ -280,7 +282,7 @@ export default function CosmicRibbon() {
         )}
 
         <span aria-hidden style={dotStyle} className="hidden 2xl:inline">·</span>
-        <span className="italic hidden 2xl:inline" style={{ opacity: 0.7 }}>All planets in motion</span>
+        <span className="italic hidden 2xl:inline" style={{ opacity: 0.7 }}>{t("pages:ui.cosmicRibbon.allPlanets", "All planets in motion")}</span>
       </div>
 
       <div

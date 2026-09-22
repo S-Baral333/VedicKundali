@@ -1,6 +1,7 @@
 import { LANGUAGES } from "@/i18n/languages";
 import { useLanguage } from "@/hooks/useLanguage";
 import { Check } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface LanguageSelectorProps {
   variant?: "grid" | "list";
@@ -12,6 +13,7 @@ interface LanguageSelectorProps {
  * can recognize their native tongue without reading English first.
  */
 export default function LanguageSelector({ variant = "grid", onChange }: LanguageSelectorProps) {
+  const { t } = useTranslation();
   const { language, setLanguage } = useLanguage();
 
   const handle = async (code: string) => {
@@ -27,7 +29,7 @@ export default function LanguageSelector({ variant = "grid", onChange }: Languag
           : "flex flex-col gap-2"
       }
       role="radiogroup"
-      aria-label="Language"
+      aria-label={t("pages:ui.languageSelector.language", "Language")}
     >
       {LANGUAGES.map((lang) => {
         const active = language === lang.code;

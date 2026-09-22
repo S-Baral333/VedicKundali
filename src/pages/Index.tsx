@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
 import { Navigate, Link } from "react-router-dom";
 import { Loader2 } from "lucide-react";
@@ -18,6 +19,7 @@ import Footer from "@/components/landing/Footer";
 
 export default function Index() {
   const { user, isLoading } = useAuth();
+  const { t } = useTranslation();
 
   if (isLoading) return (
     <div className="min-h-screen flex items-center justify-center" style={{ background: "hsl(var(--ink))" }}>
@@ -35,7 +37,7 @@ export default function Index() {
           <span className="brand-wordmark text-base">KUNDALI</span>
         </Link>
         <Link to="/login" className="text-sm transition-colors px-4 py-1.5 rounded-full border" style={{ color: 'hsl(var(--gold) / 0.85)', borderColor: 'hsl(var(--gold) / 0.30)', fontFamily: 'var(--font-sans)', letterSpacing: '0.08em', textTransform: 'uppercase', fontSize: '11px' }}>
-          Sign In
+          {t("pages:ui.index.signIn", "Sign In")}
         </Link>
       </nav>
 

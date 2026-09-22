@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { AlertTriangle, RotateCcw, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 // Detected JSON key → human-readable phase label
 const SECTION_COPY: Record<string, string> = {
@@ -108,11 +109,14 @@ export default function LiveOracleStream({
   onCancel,
   onRetry,
 }: Props) {
+  const { t } = useTranslation();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [autoScroll, setAutoScroll] = useState(true);
 
   const text = extractReadable(liveBuffer);
-  const phaseLabel = SECTION_COPY[section] || (text ? "The Guru is writing" : "Opening the Guru channel");
+  const phaseLabel = SECTION_COPY[section]
+    ? t("pages:ui.liveOracleStream." + section, SECTION_COPY[section])
+    : (text ? t("pages:ui.liveOracleStream.guruWriting", "The Guru is writing") : t("pages:ui.liveOracleStream.opening", "Opening the Guru channel"));
   const isFailed = status === "error";
   const seconds = Math.floor(elapsedMs / 1000);
 
@@ -159,11 +163,11 @@ export default function LiveOracleStream({
                 transition={{ duration: 0.25 }}
                 className="text-sm font-medium text-foreground/90 truncate"
               >
-                {isFailed ? "Guru channel interrupted" : `${phaseLabel}…`}
+                {isFailed ? t("pages:ui.liveOracleStream.interrupted", "Guru channel interrupted") : `${phaseLabel}…`}
               </motion.p>
             </AnimatePresence>
             <p className="text-[10px] uppercase tracking-widest text-muted-foreground mt-0.5">
-              Live · {seconds}s elapsed
+              {t("pages:ui.liveOracleStream.elapsed", "Live · {{seconds}}s elapsed", { seconds })}
             </p>
           </div>
           {onCancel && !isFailed && (
@@ -172,7 +176,7 @@ export default function LiveOracleStream({
               size="sm"
               onClick={onCancel}
               className="text-muted-foreground hover:text-destructive shrink-0"
-              title="Cancel"
+              title={t("pages:ui.liveOracleStream.cancel", "Cancel")}
             >
               <X className="h-3.5 w-3.5" />
             </Button>
@@ -183,7 +187,7 @@ export default function LiveOracleStream({
         {isFailed ? (
           <div className="flex items-start gap-2 text-sm text-destructive/90 border border-destructive/30 rounded-md p-3 bg-destructive/5">
             <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0" />
-            <span>{error || "The Guru reading could not complete. Try again in a moment."}</span>
+            <span>{error || t("pages:ui.liveOracleStream.failed", "The Guru reading could not complete. Try again in a moment.")}</span>
           </div>
         ) : (
           <div
@@ -204,7 +208,7 @@ export default function LiveOracleStream({
               </>
             ) : (
               <span className="text-muted-foreground italic">
-                Consulting your chart{".".repeat(((seconds % 3) + 1))}
+                {t("pages:ui.liveOracleStream.consulting", "Consulting your chart")}{".".repeat(((seconds % 3) + 1))}
               </span>
             )}
           </div>
@@ -215,7 +219,7 @@ export default function LiveOracleStream({
           <div className="flex justify-center">
             <Button variant="outline" size="sm" onClick={onRetry}>
               <RotateCcw className="h-3.5 w-3.5 mr-1.5" />
-              Retry reading
+              {t("pages:ui.liveOracleStream.retry", "Retry reading")}
             </Button>
           </div>
         )}

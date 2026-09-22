@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Download, X, Share } from "lucide-react";
 import KundaliMark from "@/components/KundaliMark";
+import { Trans, useTranslation } from "react-i18next";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -34,6 +35,7 @@ export default function InstallPromptBanner() {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isIOS, setIsIOS] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const isStandalone =
@@ -104,7 +106,7 @@ export default function InstallPromptBanner() {
       variant="ghost"
       size="icon"
       onClick={dismiss}
-      aria-label="Dismiss install prompt"
+      aria-label={t("pages:ui.installPromptBanner.dismiss", "Dismiss install prompt")}
       className="h-10 w-10 flex-shrink-0 text-muted-foreground hover:text-foreground"
     >
       <X className="h-4 w-4" />
@@ -118,9 +120,14 @@ export default function InstallPromptBanner() {
         <Card className={cardClass}>
           <KundaliMark size={24} />
           <p className="text-[13px] text-foreground flex-1 leading-snug min-w-0">
-            Install <strong>Kundali</strong>: tap{" "}
-            <Share className="inline h-3.5 w-3.5 align-text-bottom mx-0.5" aria-label="Share" /> then{" "}
-            <strong>Add to Home Screen</strong>
+            <Trans
+              i18nKey="pages:ui.installPromptBanner.iosHint"
+              defaults="Install <b>Kundali</b>: tap <share/> then <b>Add to Home Screen</b>"
+              components={{
+                b: <strong />,
+                share: <Share className="inline h-3.5 w-3.5 align-text-bottom mx-0.5" aria-label={t("pages:ui.installPromptBanner.share", "Share")} />,
+              }}
+            />
           </p>
           {closeButton}
         </Card>
@@ -133,10 +140,10 @@ export default function InstallPromptBanner() {
       <Card className={cardClass}>
         <KundaliMark size={24} />
         <p className="text-[13px] text-foreground flex-1 leading-snug min-w-0">
-          Install <strong>Kundali</strong> for the best experience
+          <Trans i18nKey="pages:ui.installPromptBanner.bestExperience" defaults="Install <b>Kundali</b> for the best experience" components={{ b: <strong /> }} />
         </p>
         <Button size="sm" onClick={handleInstall} className="gap-1.5 flex-shrink-0 h-9">
-          <Download className="h-3.5 w-3.5" /> Install
+          <Download className="h-3.5 w-3.5" /> {t("pages:ui.installPromptBanner.install", "Install")}
         </Button>
         {closeButton}
       </Card>

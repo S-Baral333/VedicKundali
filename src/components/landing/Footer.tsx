@@ -1,28 +1,30 @@
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Sparkles, CalendarDays, MessageCircleQuestion, Heart, BookOpen, Mail, Github, Twitter, Instagram } from "lucide-react";
 import KundaliMark from "@/components/KundaliMark";
 
 const PRODUCT_LINKS = [
-  { label: "Birth Chart", to: "/chart", icon: Sparkles },
-  { label: "Today's Horoscope", to: "/horoscope", icon: CalendarDays },
-  { label: "Ask the Guru", to: "/ask", icon: MessageCircleQuestion },
-  { label: "Compatibility", to: "/compatibility", icon: Heart },
-  { label: "Dream Interpretation", to: "/dreams", icon: BookOpen },
+  { key: "birthChart", label: "Birth Chart", to: "/chart", icon: Sparkles },
+  { key: "todaysHoroscope", label: "Today's Horoscope", to: "/horoscope", icon: CalendarDays },
+  { key: "askGuru", label: "Ask the Guru", to: "/ask", icon: MessageCircleQuestion },
+  { key: "compatibility", label: "Compatibility", to: "/compatibility", icon: Heart },
+  { key: "dreamInterpretation", label: "Dream Interpretation", to: "/dreams", icon: BookOpen },
 ];
 
 const COMPANY_LINKS = [
-  { label: "Pricing", to: "/pricing" },
-  { label: "Install App", to: "/install" },
-  { label: "Sign In", to: "/login" },
+  { key: "pricing", label: "Pricing", to: "/pricing" },
+  { key: "installApp", label: "Install App", to: "/install" },
+  { key: "signIn", label: "Sign In", to: "/login" },
 ];
 
 const LEGAL_LINKS = [
-  { label: "Privacy Policy", to: "#" },
-  { label: "Terms of Service", to: "#" },
-  { label: "Contact", to: "mailto:hello@kundali.app" },
+  { key: "privacy", label: "Privacy Policy", to: "#" },
+  { key: "terms", label: "Terms of Service", to: "#" },
+  { key: "contact", label: "Contact", to: "mailto:hello@kundali.app" },
 ];
 
 export default function Footer() {
+  const { t } = useTranslation();
   return (
     <footer className="app-footer mt-24 safe-bottom">
       <div className="max-w-[1160px] mx-auto px-6 lg:px-8 py-14">
@@ -42,9 +44,7 @@ export default function Footer() {
                 fontSize: "15px",
               }}
             >
-              Your stars. Your story. Your dharma. Precise Vedic astrology rooted in
-              Sanskrit wisdom — guided by ancient rishi traditions and modern
-              precision.
+              {t("pages:ui.footer.tagline", "Your stars. Your story. Your dharma. Precise Vedic astrology rooted in Sanskrit wisdom — guided by ancient rishi traditions and modern precision.")}
             </p>
 
             {/* Socials */}
@@ -58,7 +58,7 @@ export default function Footer() {
               <a href="#" aria-label="GitHub" className="footer-social">
                 <Github className="h-3.5 w-3.5" />
               </a>
-              <a href="mailto:hello@kundali.app" aria-label="Email" className="footer-social">
+              <a href="mailto:hello@kundali.app" aria-label={t("pages:ui.footer.email", "Email")} className="footer-social">
                 <Mail className="h-3.5 w-3.5" />
               </a>
             </div>
@@ -66,7 +66,7 @@ export default function Footer() {
 
           {/* ── Product column ── */}
           <div className="md:col-span-3">
-            <h4 className="footer-heading">Explore</h4>
+            <h4 className="footer-heading">{t("pages:ui.footer.explore", "Explore")}</h4>
             <ul className="space-y-2.5">
               {PRODUCT_LINKS.map((l) => {
                 const Icon = l.icon;
@@ -74,7 +74,7 @@ export default function Footer() {
                   <li key={l.to}>
                     <Link to={l.to} className="footer-link">
                       <Icon className="h-3 w-3 opacity-60" />
-                      {l.label}
+                      {t("pages:ui.footer." + l.key, l.label)}
                     </Link>
                   </li>
                 );
@@ -84,12 +84,12 @@ export default function Footer() {
 
           {/* ── Company column ── */}
           <div className="md:col-span-2">
-            <h4 className="footer-heading">Company</h4>
+            <h4 className="footer-heading">{t("pages:ui.footer.company", "Company")}</h4>
             <ul className="space-y-2.5">
               {COMPANY_LINKS.map((l) => (
                 <li key={l.to}>
                   <Link to={l.to} className="footer-link">
-                    {l.label}
+                    {t("pages:ui.footer." + l.key, l.label)}
                   </Link>
                 </li>
               ))}
@@ -98,17 +98,17 @@ export default function Footer() {
 
           {/* ── Legal column ── */}
           <div className="md:col-span-2">
-            <h4 className="footer-heading">Legal</h4>
+            <h4 className="footer-heading">{t("pages:ui.footer.legal", "Legal")}</h4>
             <ul className="space-y-2.5">
               {LEGAL_LINKS.map((l) => (
-                <li key={l.label}>
+                <li key={t("pages:ui.footer." + l.key, l.label)}>
                   {l.to.startsWith("mailto:") || l.to === "#" ? (
                     <a href={l.to} className="footer-link">
-                      {l.label}
+                      {t("pages:ui.footer." + l.key, l.label)}
                     </a>
                   ) : (
                     <Link to={l.to} className="footer-link">
-                      {l.label}
+                      {t("pages:ui.footer." + l.key, l.label)}
                     </Link>
                   )}
                 </li>
@@ -130,7 +130,7 @@ export default function Footer() {
               letterSpacing: "0.04em",
             }}
           >
-            © {new Date().getFullYear()} Kundali. All rights reserved.
+            {t("pages:ui.footer.copyright", "© {{year}} Kundali. All rights reserved.", { year: new Date().getFullYear() })}
           </p>
           <p
             className="text-[11px] italic"
@@ -140,7 +140,7 @@ export default function Footer() {
               letterSpacing: "0.06em",
             }}
           >
-            Crafted with reverence · Made under starlight
+            {t("pages:ui.footer.crafted", "Crafted with reverence · Made under starlight")}
           </p>
         </div>
       </div>

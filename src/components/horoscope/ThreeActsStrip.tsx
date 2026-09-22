@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Sun, Cloud, Moon } from "lucide-react";
 import AstroText from "@/components/AstroText";
 
@@ -14,6 +15,7 @@ const ACTS: { key: keyof Acts; label: string; Icon: typeof Sun; tint: string }[]
 ];
 
 export default function ThreeActsStrip({ acts }: { acts?: Acts }) {
+  const { t } = useTranslation();
   if (!acts) return null;
   const filled = ACTS.filter(({ key }) => !!acts[key]);
   if (filled.length === 0) return null;
@@ -32,7 +34,7 @@ export default function ThreeActsStrip({ acts }: { acts?: Acts }) {
           >
             <div className="flex items-center gap-2 mb-2">
               <Icon className="h-3.5 w-3.5" style={{ color: "hsl(var(--gold))" }} />
-              <span className="text-[11px] tracking-[0.18em] uppercase" style={{ color: "hsl(var(--text-muted))" }}>{label}</span>
+              <span className="text-[11px] tracking-[0.18em] uppercase" style={{ color: "hsl(var(--text-muted))" }}>{t("pages:ui.threeActsStrip." + key, label)}</span>
             </div>
             <p className="text-[14px] leading-[1.65]" style={{ fontFamily: "'Jost', sans-serif", fontWeight: 300, color: "hsl(var(--text-secondary))" }}>
               <AstroText text={txt} />

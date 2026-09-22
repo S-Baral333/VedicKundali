@@ -1,3 +1,5 @@
+import i18n from "@/i18n/config";
+import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { Clock } from "lucide-react";
 
@@ -25,14 +27,14 @@ function nextRefreshAt(period: Period): Date {
 
 function formatCountdown(target: Date): string {
   const ms = target.getTime() - Date.now();
-  if (ms <= 0) return "any moment";
+  if (ms <= 0) return i18n.t("pages:ui.nextRefreshBadge.anyMoment", "any moment");
   const totalMin = Math.floor(ms / 60000);
   const days = Math.floor(totalMin / (60 * 24));
   const hours = Math.floor((totalMin % (60 * 24)) / 60);
   const mins = totalMin % 60;
-  if (days >= 1) return `${days}d ${hours}h`;
-  if (hours >= 1) return `${hours}h ${mins}m`;
-  return `${mins}m`;
+  if (days >= 1) return i18n.t("pages:ui.nextRefreshBadge.daysHours", "{{days}}d {{hours}}h", { days, hours });
+  if (hours >= 1) return i18n.t("pages:ui.nextRefreshBadge.hoursMins", "{{hours}}h {{mins}}m", { hours, mins });
+  return i18n.t("pages:ui.nextRefreshBadge.mins", "{{mins}}m", { mins });
 }
 
 function formatTargetLabel(period: Period, target: Date): string {
@@ -49,6 +51,7 @@ function formatTargetLabel(period: Period, target: Date): string {
 }
 
 export default function NextRefreshBadge({ period }: { period: Period }) {
+  const { t } = useTranslation();
   const [, tick] = useState(0);
   useEffect(() => {
     const id = setInterval(() => tick((n) => n + 1), 60_000);
@@ -70,10 +73,10 @@ export default function NextRefreshBadge({ period }: { period: Period }) {
         textTransform: "uppercase",
         color: "hsl(var(--gold-pale))",
       }}
-      title={`Next reading at ${target.toLocaleString()}`}
+      title={t("pages:ui.nextRefreshBadge.nextReadingAt", "Next reading at {{time}}", { time: target.toLocaleString() })}
     >
       <Clock className="h-3 w-3" />
-      <span>Refreshes in {countdown} · {targetLabel}</span>
+      <span>{t("pages:ui.nextRefreshBadge.refreshesIn", "Refreshes in {{countdown}}", { countdown })} · {targetLabel}</span>
     </span>
   );
 }

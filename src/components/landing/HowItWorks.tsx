@@ -1,20 +1,22 @@
+import { useTranslation } from "react-i18next";
 import { Calendar, BarChart3, BookOpen } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import TwinkleText from "@/components/TwinkleText";
 
 const steps = [
-  { icon: Calendar, title: "Enter Your Birth Details", desc: "Date, time, and place of birth." },
-  { icon: BarChart3, title: "AI Generates Your Kundali", desc: "Planets, houses, nakshatras, and dashas calculated." },
-  { icon: BookOpen, title: "Receive Personalized Guidance", desc: "Ancient Jyotish wisdom interpreted by AI." },
+  { icon: Calendar, key: "step1", title: "Enter Your Birth Details", desc: "Date, time, and place of birth." },
+  { icon: BarChart3, key: "step2", title: "AI Generates Your Kundali", desc: "Planets, houses, nakshatras, and dashas calculated." },
+  { icon: BookOpen, key: "step3", title: "Receive Personalized Guidance", desc: "Ancient Jyotish wisdom interpreted by AI." },
 ];
 
 export default function HowItWorks() {
   const ref = useScrollReveal();
+  const { t } = useTranslation();
 
   return (
     <section className="py-24 px-6">
       <div ref={ref} className="scroll-reveal max-w-4xl mx-auto text-center">
-        <TwinkleText as="h2" intensity="aura" className="text-3xl font-bold mb-3 block" style={{ fontFamily: 'Cinzel, serif', color: 'hsl(35 25% 88%)' }}>How It Works</TwinkleText>
+        <TwinkleText as="h2" intensity="aura" className="text-3xl font-bold mb-3 block" style={{ fontFamily: 'Cinzel, serif', color: 'hsl(35 25% 88%)' }}>{t("pages:ui.howItWorks.title", "How It Works")}</TwinkleText>
         <div className="sacred-divider max-w-xs mx-auto mb-16" />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
@@ -28,8 +30,8 @@ export default function HowItWorks() {
                 </TwinkleText>
                 <step.icon className="h-7 w-7" style={{ color: 'hsl(38 78% 55%)' }} />
               </div>
-              <h3 className="font-semibold mb-1" style={{ fontFamily: 'Cinzel, serif', color: 'hsl(35 25% 88%)' }}>{step.title}</h3>
-              <p className="text-sm" style={{ color: 'hsl(35 12% 55%)' }}>{step.desc}</p>
+              <h3 className="font-semibold mb-1" style={{ fontFamily: 'Cinzel, serif', color: 'hsl(35 25% 88%)' }}>{t(`pages:ui.howItWorks.${step.key}Title`, step.title)}</h3>
+              <p className="text-sm" style={{ color: 'hsl(35 12% 55%)' }}>{t(`pages:ui.howItWorks.${step.key}Desc`, step.desc)}</p>
             </div>
           ))}
         </div>

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useEffect, useRef, useState } from "react";
 import { Flame, Check } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export default function MicroRitualCard({ text, userId, validDate, period }: Props) {
+  const { t } = useTranslation();
   const [done, setDone] = useState(false);
   const [busy, setBusy] = useState(false);
   const mounted = useRef(true);
@@ -50,7 +52,7 @@ export default function MicroRitualCard({ text, userId, validDate, period }: Pro
     if (!mounted.current) return;
     setBusy(false);
     if (error) {
-      toast({ title: "Couldn't save ritual status", variant: "destructive" });
+      toast({ title: t("pages:ui.microRitualCard.saveFailed", "Couldn't save ritual status"), variant: "destructive" });
       setDone(!next);
     }
   };
@@ -71,7 +73,7 @@ export default function MicroRitualCard({ text, userId, validDate, period }: Pro
         <Flame className="h-4 w-4 mt-0.5 shrink-0" style={{ color: "hsl(var(--gold))" }} />
         <div className="min-w-0 flex-1">
         <p className="text-[11px] tracking-[0.18em] uppercase mb-1.5" style={{ color: "hsl(var(--gold))" }}>
-          60-Second Ritual
+          {t("pages:ui.microRitualCard.title", "60-Second Ritual")}
         </p>
         <p
           className="text-[15px] leading-[1.6]"
@@ -95,10 +97,10 @@ export default function MicroRitualCard({ text, userId, validDate, period }: Pro
           background: done ? "hsl(var(--gold))" : "transparent",
           borderColor: "hsl(var(--gold) / 0.4)",
         }}
-        aria-label={done ? "Mark not done" : "Mark done"}
+        aria-label={done ? t("pages:ui.microRitualCard.markNotDone", "Mark not done") : t("pages:ui.microRitualCard.markDone", "Mark done")}
       >
         <Check className="h-3 w-3" />
-        {done ? "Done" : "Mark done"}
+        {done ? t("pages:ui.microRitualCard.done", "Done") : t("pages:ui.microRitualCard.markDone", "Mark done")}
       </button>
     </div>
   );

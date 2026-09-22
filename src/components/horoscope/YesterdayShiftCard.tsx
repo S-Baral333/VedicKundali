@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+import i18n from "@/i18n/config";
 import { useEffect, useState } from "react";
 import { ArrowRight, GitBranch } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -30,6 +32,7 @@ const SHIFT_MEANING: Record<string, string> = {
 };
 
 export default function YesterdayShiftCard({ signName, todayTransits, validDate }: Props) {
+  const { t } = useTranslation();
   const [shifts, setShifts] = useState<string[] | null>(null);
 
   useEffect(() => {
@@ -74,9 +77,9 @@ export default function YesterdayShiftCard({ signName, todayTransits, validDate 
           const y = yestTransits.find((p) => p.name === planet);
           if (!t || !y) continue;
           if (t.sign !== y.sign) {
-            found.push(`${planet}: ${y.sign} → ${t.sign} — ${SHIFT_MEANING[planet] || "energy shifts"}`);
+            found.push(`${planet}: ${y.sign} → ${t.sign} — ${SHIFT_MEANING[planet] ? i18n.t("pages:ui.yesterdayShiftCard.shift_" + planet, SHIFT_MEANING[planet]) : i18n.t("pages:ui.yesterdayShiftCard.energyShifts", "energy shifts")}`);
           } else if (!!t.is_retrograde !== !!y.is_retrograde) {
-            const phrase = t.is_retrograde ? "turned retrograde — slow down" : "turned direct — forward motion returns";
+            const phrase = t.is_retrograde ? i18n.t("pages:ui.yesterdayShiftCard.turnedRetro", "turned retrograde — slow down") : i18n.t("pages:ui.yesterdayShiftCard.turnedDirect", "turned direct — forward motion returns");
             found.push(`${planet} ${phrase}`);
           }
         }
@@ -96,7 +99,7 @@ export default function YesterdayShiftCard({ signName, todayTransits, validDate 
     <div className="horo-glass-card sacred-reveal" style={{ animationDelay: "0.22s", background: "var(--mood-tint)", borderColor: "hsl(var(--mood-accent) / 0.22)" }}>
       <div className="flex items-center gap-2 mb-3" style={{ fontSize: "0.6875rem", fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase", color: "hsl(var(--mood-accent))" }}>
         <GitBranch className="h-3.5 w-3.5" />
-        <span>Since yesterday</span>
+        <span>{t("pages:ui.yesterdayShiftCard.sinceYesterday", "Since yesterday")}</span>
         <span className="flex-1 h-px" style={{ background: "linear-gradient(90deg, hsl(var(--mood-accent) / 0.4) 30%, transparent)" }} />
       </div>
       <ul className="space-y-2">

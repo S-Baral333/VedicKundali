@@ -1,6 +1,8 @@
+import { useTranslation } from "react-i18next";
 import { Flame } from "lucide-react";
 
 export default function PersonalCallbackBanner({ text }: { text?: string }) {
+  const { t } = useTranslation();
   if (!text) return null;
   return (
     <div
@@ -13,7 +15,7 @@ export default function PersonalCallbackBanner({ text }: { text?: string }) {
       <Flame className="h-4 w-4 mt-1 shrink-0" style={{ color: "hsl(var(--gold))" }} />
       <div>
         <p className="text-[11px] tracking-[0.2em] uppercase mb-1.5" style={{ color: "hsl(var(--gold))" }}>
-          Rishi Guru · Reading From Your Chart
+          Rishi Guru · {t("pages:ui.personalCallbackBanner.readingFromChart", "Reading From Your Chart")}
         </p>
         <p
           className="text-[1.1rem] leading-[1.55] italic"

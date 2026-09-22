@@ -23,6 +23,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useSubscription } from "@/hooks/useSubscription";
 import ChartSwitcher from "@/components/ChartSwitcher";
 import KundaliMark from "@/components/KundaliMark";
+import { useTranslation } from "react-i18next";
 
 interface MobileHeaderDrawerProps {
   isStandalone: boolean;
@@ -35,6 +36,7 @@ type TierStyle = {
   badgeBorder: string;
   badgeText: string;
   label: string;
+  labelKey: string;
   Icon: typeof Sparkles;
 };
 
@@ -45,6 +47,7 @@ function getTierStyle(tier: "free" | "premium" | "elite"): TierStyle {
       badgeBorder: "hsl(var(--gold) / 0.45)",
       badgeText: "hsl(var(--gold))",
       label: "Elite",
+      labelKey: "ui.mobileHeaderDrawer.tierElite",
       Icon: Crown,
     };
   }
@@ -54,6 +57,7 @@ function getTierStyle(tier: "free" | "premium" | "elite"): TierStyle {
       badgeBorder: "hsl(var(--gold) / 0.32)",
       badgeText: "hsl(var(--gold-light))",
       label: "Premium",
+      labelKey: "ui.mobileHeaderDrawer.tierPremium",
       Icon: Sparkles,
     };
   }
@@ -62,6 +66,7 @@ function getTierStyle(tier: "free" | "premium" | "elite"): TierStyle {
     badgeBorder: "hsl(var(--gold) / 0.18)",
     badgeText: "hsl(var(--text-secondary))",
     label: "Free",
+      labelKey: "ui.mobileHeaderDrawer.tierFree",
     Icon: Sparkles,
   };
 }
@@ -71,6 +76,7 @@ export default function MobileHeaderDrawer({
   unreadCount,
   onOpenNotifications,
 }: MobileHeaderDrawerProps) {
+  const { t } = useTranslation();
   const { user, signOut } = useAuth();
   const { tier } = useSubscription();
 
@@ -78,12 +84,12 @@ export default function MobileHeaderDrawer({
   const firstName =
     (user?.user_metadata as any)?.full_name?.split(" ")[0] ||
     email.split("@")[0] ||
-    "Seeker";
+    t("pages:ui.mobileHeaderDrawer.seeker", "Seeker");
   const displayName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
   const initial = (displayName.charAt(0) || "✦").toUpperCase();
 
-  const t = getTierStyle((tier as "free" | "premium" | "elite") || "free");
-  const TierIcon = t.Icon;
+  const ts = getTierStyle((tier as "free" | "premium" | "elite") || "free");
+  const TierIcon = ts.Icon;
 
   /** Reusable polished menu row with icon tile + chevron */
   const Row = ({
@@ -217,7 +223,7 @@ export default function MobileHeaderDrawer({
             borderColor: "hsl(var(--glass-border-soft))",
             color: "hsl(var(--gold-light))",
           }}
-          aria-label="Open menu"
+          aria-label={t("pages:ui.mobileHeaderDrawer.openMenu", "Open menu")}
         >
           <Menu className="h-4 w-4" />
         </button>
@@ -254,7 +260,7 @@ export default function MobileHeaderDrawer({
         />
 
         <SheetHeader className="relative p-5 pb-4">
-          <SheetTitle className="sr-only">Menu</SheetTitle>
+          <SheetTitle className="sr-only">{t("pages:ui.mobileHeaderDrawer.menu", "Menu")}</SheetTitle>
 
           {/* Brand wordmark */}
           <div className="flex items-center gap-2.5 mb-5">
@@ -331,25 +337,25 @@ export default function MobileHeaderDrawer({
             <div
               className="inline-flex items-center gap-1.5 pl-2 pr-2.5 py-1 rounded-full"
               style={{
-                background: t.badgeBg,
-                border: `0.5px solid ${t.badgeBorder}`,
+                background: ts.badgeBg,
+                border: `0.5px solid ${ts.badgeBorder}`,
               }}
             >
               <TierIcon
                 className="h-3 w-3"
-                style={{ color: t.badgeText }}
+                style={{ color: ts.badgeText }}
                 strokeWidth={2.25}
               />
               <span
                 className="text-[10px] uppercase"
                 style={{
-                  color: t.badgeText,
+                  color: ts.badgeText,
                   fontFamily: "'Jost', sans-serif",
                   letterSpacing: "0.22em",
                   fontWeight: 500,
                 }}
               >
-                {t.label} Tier
+                {t("pages:ui.mobileHeaderDrawer.tierLabel", "{{tier}} Tier", { tier: t("pages:" + ts.labelKey, ts.label) })}
               </span>
             </div>
           </div>
@@ -369,7 +375,7 @@ export default function MobileHeaderDrawer({
           <div className="space-y-5 pb-8">
             {/* Reading As */}
             <section>
-              <SectionLabel>Reading As</SectionLabel>
+              <SectionLabel>{t("pages:ui.mobileHeaderDrawer.readingAs", "Reading As")}</SectionLabel>
               <div className="px-1">
                 <ChartSwitcher expanded />
               </div>
@@ -377,18 +383,18 @@ export default function MobileHeaderDrawer({
 
             {/* Quick actions */}
             <section>
-              <SectionLabel>Quick Actions</SectionLabel>
+              <SectionLabel>{t("pages:ui.mobileHeaderDrawer.quickActions", "Quick Actions")}</SectionLabel>
               <div className="space-y-0.5">
                 <Row
                   icon={Bell}
-                  label="Notifications"
+                  label={t("pages:ui.mobileHeaderDrawer.notifications", "Notifications")}
                   badge={unreadCount}
                   onClick={onOpenNotifications}
                 />
-                <Row icon={UserIcon} label="Profile & settings" to="/profile" />
-                <Row icon={CreditCard} label="Subscription" to="/pricing" />
+                <Row icon={UserIcon} label={t("pages:ui.mobileHeaderDrawer.profileSettings", "Profile & settings")} to="/profile" />
+                <Row icon={CreditCard} label={t("pages:ui.mobileHeaderDrawer.subscription", "Subscription")} to="/pricing" />
                 {!isStandalone && (
-                  <Row icon={Download} label="Install app" to="/install" />
+                  <Row icon={Download} label={t("pages:ui.mobileHeaderDrawer.installApp", "Install app")} to="/install" />
                 )}
               </div>
             </section>
@@ -400,7 +406,7 @@ export default function MobileHeaderDrawer({
                 borderTop: "0.5px solid hsl(var(--gold) / 0.10)",
               }}
             >
-              <Row icon={LogOut} label="Sign out" danger onClick={signOut} />
+              <Row icon={LogOut} label={t("pages:ui.mobileHeaderDrawer.signOut", "Sign out")} danger onClick={signOut} />
             </section>
           </div>
         </ScrollArea>

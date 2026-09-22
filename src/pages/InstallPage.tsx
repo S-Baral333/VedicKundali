@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Download, Smartphone, Monitor, ArrowLeft, Check, Share, MoreVertical, Plus } from "lucide-react";
 import KundaliMark from "@/components/KundaliMark";
+import { useTranslation } from "react-i18next";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -11,6 +12,7 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 export default function InstallPage() {
+  const { t } = useTranslation();
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstalled, setIsInstalled] = useState(false);
   const [platform, setPlatform] = useState<"ios" | "android" | "desktop">("desktop");
@@ -58,10 +60,10 @@ export default function InstallPage() {
             <div className="mx-auto w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
               <Check className="h-8 w-8 text-primary" />
             </div>
-            <h1 className="text-2xl font-serif font-bold text-foreground">Already Installed!</h1>
-            <p className="text-muted-foreground">Kundali is installed on your device. Open it from your home screen for the best experience.</p>
+            <h1 className="text-2xl font-serif font-bold text-foreground">{t("pages:ui.installPage.alreadyInstalled", "Already Installed!")}</h1>
+            <p className="text-muted-foreground">{t("pages:ui.installPage.installedDesc", "Kundali is installed on your device. Open it from your home screen for the best experience.")}</p>
             <Button asChild variant="outline">
-              <Link to="/"><ArrowLeft className="h-4 w-4 mr-2" />Back to App</Link>
+              <Link to="/"><ArrowLeft className="h-4 w-4 mr-2" />{t("pages:ui.installPage.backToApp", "Back to App")}</Link>
             </Button>
           </CardContent>
         </Card>
@@ -73,15 +75,15 @@ export default function InstallPage() {
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 max-w-2xl">
         <Link to="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-8">
-          <ArrowLeft className="h-4 w-4" /> Back
+          <ArrowLeft className="h-4 w-4" /> {t("pages:ui.installPage.back", "Back")}
         </Link>
 
         <div className="text-center mb-10">
           <div className="mb-4 flex justify-center">
             <KundaliMark size={64} glow />
           </div>
-          <h1 className="text-3xl font-serif font-bold text-foreground mb-2">Install Kundali</h1>
-          <p className="text-muted-foreground">Add Kundali to your home screen for instant access — no app store needed.</p>
+          <h1 className="text-3xl font-serif font-bold text-foreground mb-2">{t("pages:ui.installPage.title", "Install Kundali")}</h1>
+          <p className="text-muted-foreground">{t("pages:ui.installPage.subtitle", "Add Kundali to your home screen for instant access — no app store needed.")}</p>
         </div>
 
         {/* Native install prompt (Chrome/Edge) */}
@@ -89,9 +91,9 @@ export default function InstallPage() {
           <Card className="mb-6 border-primary/30 bg-primary/5">
             <CardContent className="pt-6 text-center space-y-4">
               <Download className="h-10 w-10 text-primary mx-auto" />
-              <p className="text-foreground font-medium">Your browser supports direct installation!</p>
+              <p className="text-foreground font-medium">{t("pages:ui.installPage.directSupport", "Your browser supports direct installation!")}</p>
               <Button onClick={handleInstall} size="lg" className="gap-2">
-                <Download className="h-4 w-4" /> Install Kundali
+                <Download className="h-4 w-4" /> {t("pages:ui.installPage.title", "Install Kundali")}
               </Button>
             </CardContent>
           </Card>
@@ -103,13 +105,13 @@ export default function InstallPage() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  <Smartphone className="h-5 w-5 text-primary" /> iPhone & iPad
+                  <Smartphone className="h-5 w-5 text-primary" /> {t("pages:ui.installPage.iphoneIpad", "iPhone & iPad")}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <Step num={1} icon={<Share className="h-4 w-4" />} text='Tap the Share button in Safari' />
-                <Step num={2} icon={<Plus className="h-4 w-4" />} text='Scroll down and tap "Add to Home Screen"' />
-                <Step num={3} icon={<Check className="h-4 w-4" />} text='Tap "Add" to confirm' />
+                <Step num={1} icon={<Share className="h-4 w-4" />} text={t("pages:ui.installPage.iosStep1", "Tap the Share button in Safari")} />
+                <Step num={2} icon={<Plus className="h-4 w-4" />} text={t("pages:ui.installPage.iosStep2", "Scroll down and tap \"Add to Home Screen\"")} />
+                <Step num={3} icon={<Check className="h-4 w-4" />} text={t("pages:ui.installPage.iosStep3", "Tap \"Add\" to confirm")} />
               </CardContent>
             </Card>
           )}
@@ -122,9 +124,9 @@ export default function InstallPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <Step num={1} icon={<MoreVertical className="h-4 w-4" />} text='Tap the menu (⋮) in Chrome' />
-                <Step num={2} icon={<Download className="h-4 w-4" />} text='Tap "Install app" or "Add to Home Screen"' />
-                <Step num={3} icon={<Check className="h-4 w-4" />} text='Tap "Install" to confirm' />
+                <Step num={1} icon={<MoreVertical className="h-4 w-4" />} text={t("pages:ui.installPage.androidStep1", "Tap the menu (⋮) in Chrome")} />
+                <Step num={2} icon={<Download className="h-4 w-4" />} text={t("pages:ui.installPage.androidStep2", "Tap \"Install app\" or \"Add to Home Screen\"")} />
+                <Step num={3} icon={<Check className="h-4 w-4" />} text={t("pages:ui.installPage.androidStep3", "Tap \"Install\" to confirm")} />
               </CardContent>
             </Card>
           )}
@@ -133,12 +135,12 @@ export default function InstallPage() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  <Monitor className="h-5 w-5 text-primary" /> Desktop
+                  <Monitor className="h-5 w-5 text-primary" /> {t("pages:ui.installPage.desktop", "Desktop")}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <Step num={1} icon={<Download className="h-4 w-4" />} text='Click the install icon in the address bar (Chrome/Edge)' />
-                <Step num={2} icon={<Check className="h-4 w-4" />} text='Click "Install" in the dialog' />
+                <Step num={1} icon={<Download className="h-4 w-4" />} text={t("pages:ui.installPage.desktopStep1", "Click the install icon in the address bar (Chrome/Edge)")} />
+                <Step num={2} icon={<Check className="h-4 w-4" />} text={t("pages:ui.installPage.desktopStep2", "Click \"Install\" in the dialog")} />
               </CardContent>
             </Card>
           )}

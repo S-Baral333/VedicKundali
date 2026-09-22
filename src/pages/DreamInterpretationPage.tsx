@@ -252,7 +252,7 @@ export default function DreamInterpretationPage() {
       console.error(e);
       toast({
         title: t("dream.toast.failed"),
-        description: e instanceof Error ? e.message : "Unknown error",
+        description: e instanceof Error ? e.message : t("pages:ui.dreamInterpretationPage.unknownError", "Unknown error"),
         variant: "destructive",
       });
     } finally {
@@ -466,9 +466,9 @@ export default function DreamInterpretationPage() {
                     className="h-8 w-8"
                     onClick={async () => {
                       let text = "";
-                      if (dreamCategory) text += `Category: ${dreamCategory}\n`;
+                      if (dreamCategory) text += t("pages:ui.dreamInterpretationPage.copyCategory", "Category: {{category}}", { category: dreamCategory }) + "\n";
                       if (extractedSymbols.length > 0) {
-                        text += `\nKey Symbols:\n`;
+                        text += "\n" + t("pages:ui.dreamInterpretationPage.copyKeySymbols", "Key Symbols:") + "\n";
                         extractedSymbols.forEach((s) => { text += `- ${s.name}: ${s.context}\n`; });
                       }
                       text += `\n${streamedText}`;

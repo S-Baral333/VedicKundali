@@ -116,6 +116,7 @@ const formatOffsetLabel = (m: number) => TIMEZONE_OFFSETS.find(t => t.minutes ==
  * North Indian Chart (interactive SVG-style grid)
  * ═══════════════════════════════════════════════════════ */
 function NorthIndianChart({ chartData, hoveredHouse, onHoverHouse }: { chartData: ChartData; hoveredHouse: number | null; onHoverHouse: (h: number | null) => void }) {
+  const { t } = useTranslation();
   const ascSign = chartData.ascendant.sign;
   const ascIndex = SIGNS_ORDER.indexOf(ascSign);
   const houseToSign = Array.from({ length: 12 }, (_, i) => SIGNS_ORDER[(ascIndex + i) % 12]);
@@ -165,7 +166,7 @@ function NorthIndianChart({ chartData, hoveredHouse, onHoverHouse }: { chartData
             className={`rounded-lg p-1.5 min-h-[78px] md:min-h-[88px] flex flex-col transition-all duration-200 border cursor-default ${isHovered ? "bg-primary/15 border-primary/60 shadow-[0_0_18px_-6px_hsl(var(--primary)/0.6)]" : "bg-card/65 border-primary/10 hover:border-primary/30"}`}
             onMouseEnter={() => onHoverHouse(houseNum)}
             onMouseLeave={() => onHoverHouse(null)}
-            aria-label={`House ${houseNum} — ${sign} — ${planets.map(p => p.name).join(", ") || "empty"}`}
+            aria-label={t("pages:ui.birthChartPage.houseAria", "House {{n}} — {{sign}} — {{planets}}", { n: houseNum, sign, planets: planets.map(p => p.name).join(", ") || t("pages:ui.birthChartPage.houseEmpty", "empty") })}
           >
             <div className="flex justify-between items-start">
               <span className="text-[9px] font-mono text-muted-foreground/70">{houseNum}</span>
@@ -191,6 +192,7 @@ function NorthIndianChart({ chartData, hoveredHouse, onHoverHouse }: { chartData
  * Planet Card (responsive grid item)
  * ═══════════════════════════════════════════════════════ */
 function PlanetCard({ planet, grahaYuddha }: { planet: ChartData["planets"][0]; grahaYuddha?: ChartData["graha_yuddha"] }) {
+  const { t } = useTranslation();
   const dignityClass: Record<string, string> = {
     exalted: "border-primary/45 bg-primary/10",
     own_sign: "border-primary/30 bg-primary/5",
@@ -209,29 +211,29 @@ function PlanetCard({ planet, grahaYuddha }: { planet: ChartData["planets"][0]; 
           <span className={`text-2xl ${PLANET_COLORS[planet.name] || "text-foreground"}`}>{PLANET_GLYPHS[planet.name] || "★"}</span>
           <div>
             <p className={`font-serif font-semibold text-sm ${PLANET_COLORS[planet.name] || "text-foreground"}`}>{planet.name}{planet.is_retrograde && <sup className="text-[9px] text-destructive ml-0.5">R</sup>}</p>
-            <p className="text-[10px] text-muted-foreground capitalize">{planet.dignity?.replace("_", " ") || "Neutral"}</p>
+            <p className="text-[10px] text-muted-foreground capitalize">{planet.dignity ? t("pages:ui.birthChartPage.dignity." + planet.dignity, planet.dignity.replace("_", " ")) : t("pages:ui.birthChartPage.dignity.neutral", "Neutral")}</p>
           </div>
         </div>
-        {planet.dignity === "exalted" && <Badge className="text-[9px] bg-primary/20 text-primary border border-primary/40">Exalted</Badge>}
-        {planet.dignity === "own_sign" && <Badge className="text-[9px] bg-cyan-400/15 text-cyan-300 border border-cyan-400/40">Own Sign</Badge>}
-        {planet.dignity === "debilitated" && <Badge className="text-[9px] bg-destructive/15 text-destructive border border-destructive/40">Debilitated</Badge>}
+        {planet.dignity === "exalted" && <Badge className="text-[9px] bg-primary/20 text-primary border border-primary/40">{t("pages:ui.birthChartPage.dignity.exalted", "Exalted")}</Badge>}
+        {planet.dignity === "own_sign" && <Badge className="text-[9px] bg-cyan-400/15 text-cyan-300 border border-cyan-400/40">{t("pages:ui.birthChartPage.dignity.own_sign", "Own Sign")}</Badge>}
+        {planet.dignity === "debilitated" && <Badge className="text-[9px] bg-destructive/15 text-destructive border border-destructive/40">{t("pages:ui.birthChartPage.dignity.debilitated", "Debilitated")}</Badge>}
       </div>
       <div className="space-y-1.5 text-[12px]">
-        <div className="flex justify-between"><span className="text-muted-foreground">Sign</span><span className="text-foreground">{planet.sign}</span></div>
-        <div className="flex justify-between"><span className="text-muted-foreground">House</span><span className="text-foreground">{planet.house}</span></div>
-        <div className="flex justify-between"><span className="text-muted-foreground">Degree</span><span className="text-foreground tabular-nums">{planet.degree.toFixed(2)}°</span></div>
+        <div className="flex justify-between"><span className="text-muted-foreground">{t("pages:ui.birthChartPage.sign", "Sign")}</span><span className="text-foreground">{planet.sign}</span></div>
+        <div className="flex justify-between"><span className="text-muted-foreground">{t("pages:ui.birthChartPage.house", "House")}</span><span className="text-foreground">{planet.house}</span></div>
+        <div className="flex justify-between"><span className="text-muted-foreground">{t("pages:ui.birthChartPage.degree", "Degree")}</span><span className="text-foreground tabular-nums">{planet.degree.toFixed(2)}°</span></div>
         <div className="flex justify-between"><span className="text-muted-foreground">Nakshatra</span><span className="text-foreground">{planet.nakshatra}{planet.nakshatra_pada ? ` ${planet.nakshatra_pada}` : ""}</span></div>
         {typeof planet.strength === "number" && (
           <div>
-            <div className="flex justify-between mb-1"><span className="text-muted-foreground">Dignity</span><span className="text-foreground">{planet.strength}%</span></div>
+            <div className="flex justify-between mb-1"><span className="text-muted-foreground">{t("pages:ui.birthChartPage.dignityLabel", "Dignity")}</span><span className="text-foreground">{planet.strength}%</span></div>
             <Progress value={planet.strength} className="h-1.5" />
           </div>
         )}
       </div>
       <div className="flex flex-wrap gap-1 mt-2">
-        {planet.is_combust && <Badge variant="outline" className="text-[9px] px-1.5 border-amber-500/50 text-amber-400 gap-0.5"><Flame className="h-2.5 w-2.5" /> Combust</Badge>}
+        {planet.is_combust && <Badge variant="outline" className="text-[9px] px-1.5 border-amber-500/50 text-amber-400 gap-0.5"><Flame className="h-2.5 w-2.5" /> {t("pages:ui.birthChartPage.combust", "Combust")}</Badge>}
         {planet.is_vargottama && <Badge variant="outline" className="text-[9px] px-1.5 border-primary/50 text-primary gap-0.5"><Star className="h-2.5 w-2.5" /> Vargottama</Badge>}
-        {warResult && <Badge variant="outline" className={`text-[9px] px-1.5 ${warResult === "Won" ? "border-primary/50 text-primary" : "border-destructive/50 text-destructive"}`}>⚔ {warResult}</Badge>}
+        {warResult && <Badge variant="outline" className={`text-[9px] px-1.5 ${warResult === "Won" ? "border-primary/50 text-primary" : "border-destructive/50 text-destructive"}`}>⚔ {warResult === "Won" ? t("pages:ui.birthChartPage.won", "Won") : t("pages:ui.birthChartPage.lost", "Lost")}</Badge>}
       </div>
     </div>
   );
@@ -241,13 +243,14 @@ function PlanetCard({ planet, grahaYuddha }: { planet: ChartData["planets"][0]; 
  * Planet Pills Row (status chips)
  * ═══════════════════════════════════════════════════════ */
 function PlanetPillsRow({ chartData }: { chartData: ChartData }) {
+  const { t } = useTranslation();
   return (
     <div className="flex gap-2 overflow-x-auto pb-2 snap-x">
       {chartData.planets.map((p) => {
-        const status = p.dignity === "exalted" ? { label: "Exalted", color: "text-primary border-primary/40 bg-primary/10" }
-          : p.dignity === "debilitated" ? { label: "Debilitated", color: "text-destructive border-destructive/40 bg-destructive/10" }
-          : p.dignity === "own_sign" ? { label: "Own Sign", color: "text-cyan-300 border-cyan-400/40 bg-cyan-400/10" }
-          : { label: "Neutral", color: "text-muted-foreground border-border bg-card/40" };
+        const status = p.dignity === "exalted" ? { label: t("pages:ui.birthChartPage.dignity.exalted", "Exalted"), color: "text-primary border-primary/40 bg-primary/10" }
+          : p.dignity === "debilitated" ? { label: t("pages:ui.birthChartPage.dignity.debilitated", "Debilitated"), color: "text-destructive border-destructive/40 bg-destructive/10" }
+          : p.dignity === "own_sign" ? { label: t("pages:ui.birthChartPage.dignity.own_sign", "Own Sign"), color: "text-cyan-300 border-cyan-400/40 bg-cyan-400/10" }
+          : { label: t("pages:ui.birthChartPage.dignity.neutral", "Neutral"), color: "text-muted-foreground border-border bg-card/40" };
         return (
           <div key={p.name} className={`shrink-0 snap-start inline-flex items-center gap-2 rounded-full border px-3 py-1.5 backdrop-blur-md ${status.color}`}>
             <span className={`text-base ${PLANET_COLORS[p.name] || ""}`}>{PLANET_GLYPHS[p.name]}</span>
@@ -265,6 +268,7 @@ function PlanetPillsRow({ chartData }: { chartData: ChartData }) {
  * Life Area Scores — animated bars
  * ═══════════════════════════════════════════════════════ */
 function LifeAreaScores({ scores }: { scores: NonNullable<ChartData["life_scores"]> }) {
+  const { t } = useTranslation();
   const areas = [
     { key: "career" as const, label: "Career (Dharma)", icon: Briefcase },
     { key: "wealth" as const, label: "Wealth (Artha)", icon: Coins },
@@ -272,20 +276,20 @@ function LifeAreaScores({ scores }: { scores: NonNullable<ChartData["life_scores
     { key: "spiritual" as const, label: "Spiritual (Moksha)", icon: Compass },
     { key: "health" as const, label: "Health & Vitality", icon: Activity },
   ];
-  const qualitative = (s: number) => s >= 85 ? "★ Excellent" : s >= 70 ? "▲ Strong" : s >= 50 ? "→ Moderate" : s >= 35 ? "↓ Tested" : "⚠ Difficult";
+  const qualitative = (s: number) => s >= 85 ? `★ ${t("pages:ui.birthChartPage.q.excellent", "Excellent")}` : s >= 70 ? `▲ ${t("pages:ui.birthChartPage.q.strong", "Strong")}` : s >= 50 ? `→ ${t("pages:ui.birthChartPage.q.moderate", "Moderate")}` : s >= 35 ? `↓ ${t("pages:ui.birthChartPage.q.tested", "Tested")}` : `⚠ ${t("pages:ui.birthChartPage.q.difficult", "Difficult")}`;
   const colorAt = (s: number) => s >= 70 ? "from-primary via-amber-400 to-primary" : s >= 50 ? "from-cyan-400 via-cyan-300 to-cyan-400" : "from-muted-foreground to-muted-foreground/60";
   return (
     <div className="rounded-2xl border border-primary/15 bg-card/55 backdrop-blur-md p-5 space-y-3">
       <div className="flex items-center justify-between mb-1">
-        <h3 className="font-serif text-base text-foreground flex items-center gap-2"><Zap className="h-4 w-4 text-primary" /> Life Area Scores</h3>
-        <span className="text-[10px] text-muted-foreground">Last updated ↻</span>
+        <h3 className="font-serif text-base text-foreground flex items-center gap-2"><Zap className="h-4 w-4 text-primary" /> {t("pages:ui.birthChartPage.lifeAreaScores", "Life Area Scores")}</h3>
+        <span className="text-[10px] text-muted-foreground">{t("pages:ui.birthChartPage.lastUpdated", "Last updated")} ↻</span>
       </div>
       {areas.map(({ key, label, icon: Icon }) => {
         const score = scores[key];
         return (
           <div key={key} className="flex items-center gap-3">
             <Icon className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-            <span className="text-xs text-foreground/85 w-32 shrink-0 truncate">{label}</span>
+            <span className="text-xs text-foreground/85 w-32 shrink-0 truncate">{t("pages:ui.birthChartPage.area." + key, label)}</span>
             <div className="flex-1 h-2.5 rounded-full bg-card overflow-hidden border border-border/40">
               <div className={`h-full rounded-full bg-gradient-to-r ${colorAt(score)} transition-all duration-1000`} style={{ width: `${score}%` }} />
             </div>
@@ -302,6 +306,7 @@ function LifeAreaScores({ scores }: { scores: NonNullable<ChartData["life_scores
  * Generation Stepper
  * ═══════════════════════════════════════════════════════ */
 function GenerationStepper({ step }: { step: string }) {
+  const { t } = useTranslation();
   const steps = [
     { label: "Locating", icon: MapPin, key: "Locating birthplace..." },
     { label: "Calculating", icon: Calculator, key: "Calculating planetary positions..." },
@@ -318,7 +323,7 @@ function GenerationStepper({ step }: { step: string }) {
           <div key={i} className="flex items-center gap-2">
             <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${isActive ? "bg-primary text-primary-foreground" : isDone ? "bg-primary/20 text-primary" : "bg-muted/30 text-muted-foreground"}`}>
               {isActive ? <Loader2 className="h-3 w-3 animate-spin" /> : <Icon className="h-3 w-3" />}
-              {s.label}
+              {t("pages:ui.birthChartPage.step." + s.label.toLowerCase(), s.label)}
             </div>
             {i < steps.length - 1 && <div className={`w-6 h-px ${isDone ? "bg-primary" : "bg-border"}`} />}
           </div>
@@ -351,6 +356,9 @@ function AddPersonSheet({
   const [searchTimeout, setSearchTimeout] = useState<ReturnType<typeof setTimeout> | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationStep, setGenerationStep] = useState("");
+
+  const tzLabel = (m: number, fallback: string) =>
+    TIMEZONE_OFFSETS.some(o => o.minutes === m) ? t("pages:ui.birthChartPage.tzOffset." + (m < 0 ? "m" : "p") + Math.abs(m), fallback) : fallback;
 
   const reset = () => {
     setFullName(""); setDateOfBirth(""); setBirthTime(""); setBirthplace("");
@@ -427,7 +435,7 @@ function AddPersonSheet({
       onOpenChange(false);
       toast({ title: t("birthChart.addPerson.toast.generatedTitle"), description: t("birthChart.addPerson.toast.generatedDesc") });
     } catch (e: any) {
-      toast({ title: "Error", description: e.message, variant: "destructive" });
+      toast({ title: t("pages:ui.birthChartPage.error", "Error"), description: e.message, variant: "destructive" });
     } finally {
       setIsGenerating(false); setGenerationStep("");
     }
@@ -470,7 +478,7 @@ function AddPersonSheet({
                 </p>
               ) : <span className="text-[10px] text-muted-foreground/70">{t("birthChart.addPerson.pickLocationHint")}</span>}
               <button type="button" onClick={() => setTzOpen(o => !o)} className="flex items-center gap-1.5 text-[10px] text-muted-foreground hover:text-foreground">
-                <Clock className="h-3 w-3" /> TZ: {timezoneOverride !== null ? formatOffsetLabel(timezoneOverride) : t("birthChart.addPerson.tzAuto")}
+                <Clock className="h-3 w-3" /> {t("pages:ui.birthChartPage.tz", "TZ")}: {timezoneOverride !== null ? tzLabel(timezoneOverride, formatOffsetLabel(timezoneOverride)) : t("birthChart.addPerson.tzAuto")}
                 <ChevronDown className={`h-3 w-3 transition-transform ${tzOpen ? "rotate-180" : ""}`} />
               </button>
             </div>
@@ -480,7 +488,7 @@ function AddPersonSheet({
                   <SelectTrigger className="bg-card"><SelectValue /></SelectTrigger>
                   <SelectContent className="max-h-60">
                     <SelectItem value="auto">{t("birthChart.addPerson.tzAutoDetect")}</SelectItem>
-                    {TIMEZONE_OFFSETS.map(tz => <SelectItem key={tz.minutes} value={String(tz.minutes)}>{tz.label}</SelectItem>)}
+                    {TIMEZONE_OFFSETS.map(tz => <SelectItem key={tz.minutes} value={String(tz.minutes)}>{tzLabel(tz.minutes, tz.label)}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </CollapsibleContent>
@@ -789,13 +797,13 @@ export default function BirthChartPage() {
             <span className="h-px w-16 bg-gradient-to-l from-transparent to-primary/40" />
             <span className="text-primary">✦</span>
           </div>
-          <h1 className="font-serif text-4xl md:text-5xl text-foreground tracking-tight mb-2">Vedic Birth Chart</h1>
+          <h1 className="font-serif text-4xl md:text-5xl text-foreground tracking-tight mb-2">{t("pages:ui.birthChartPage.title", "Vedic Birth Chart")}</h1>
           <p className="text-[11px] uppercase tracking-[0.4em] text-cyan-300/85">
-            Akashic Record of {selectedChart?.full_name || "your soul"}
+            {t("pages:ui.birthChartPage.akashicRecord", "Akashic Record of {{name}}", { name: selectedChart?.full_name || t("pages:ui.birthChartPage.yourSoul", "your soul") })}
           </p>
           {selectedChart && (
             <p className="text-xs text-muted-foreground mt-3">
-              Born {selectedChart.date_of_birth} · {selectedChart.birth_time} · {selectedChart.birthplace}
+              {t("pages:ui.birthChartPage.born", "Born {{date}} · {{time}} · {{place}}", { date: selectedChart.date_of_birth, time: selectedChart.birth_time, place: selectedChart.birthplace })}
             </p>
           )}
         </header>
@@ -867,7 +875,7 @@ export default function BirthChartPage() {
                   ascendantSign={cd.ascendant.sign}
                   ascendantDegree={cd.ascendant.degree}
                   ayanamsha="Lahiri"
-                  system="North Indian"
+                  system={t("pages:ui.birthChartPage.northIndian", "North Indian")}
                   timezoneLabel={cd.timezone_used?.label}
                 />
 
@@ -894,7 +902,7 @@ export default function BirthChartPage() {
                 {/* Kundali panel: chart + legend two-column */}
                 <section className="rounded-2xl border border-primary/15 bg-card/55 backdrop-blur-md p-5">
                   <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-                    <h2 className="font-serif text-lg flex items-center gap-2"><Sun className="h-4 w-4 text-primary" /> {selectedChart.full_name}'s Kundali</h2>
+                    <h2 className="font-serif text-lg flex items-center gap-2"><Sun className="h-4 w-4 text-primary" /> {t("pages:ui.birthChartPage.nameKundali", "{{name}}'s Kundali", { name: selectedChart.full_name })}</h2>
                     <div className="flex items-center gap-2">
                       {cd.engine === "swiss_ephemeris" && <Badge variant="secondary" className="text-[9px]"><Calculator className="h-2.5 w-2.5 mr-1" /> Swiss Ephemeris</Badge>}
                       <div className="hidden" data-sacred-pdf-trigger>
@@ -906,7 +914,7 @@ export default function BirthChartPage() {
                     <NorthIndianChart chartData={cd} hoveredHouse={hoveredHouse} onHoverHouse={setHoveredHouse} />
                     {/* Legend */}
                     <div className="rounded-xl border border-primary/15 bg-background/30 p-3 space-y-1">
-                      <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground mb-2">Planets</p>
+                      <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground mb-2">{t("pages:ui.birthChartPage.planets", "Planets")}</p>
                       {cd.planets.map(p => (
                         <div
                           key={p.name}
@@ -932,7 +940,7 @@ export default function BirthChartPage() {
                 <PlanetPillsRow chartData={cd} />
 
                 {/* Tab bar */}
-                <ChartTabsBar tabs={TABS.map(tb => ({ ...tb, label: t(`birthChart.tab.${tb.key}`) }))} value={tab} onChange={setTab} />
+                <ChartTabsBar tabs={TABS.map(tb => ({ ...tb, label: t(`birthChart.tab.${tb.key}`), short: t("pages:ui.birthChartPage.tabShort." + tb.key, tb.short) }))} value={tab} onChange={setTab} />
 
                 {/* Tab content */}
                 <Tabs value={tab} onValueChange={setTab} className="w-full">
@@ -1035,7 +1043,7 @@ export default function BirthChartPage() {
                       <div className="flex items-center justify-between flex-wrap gap-3">
                         <div>
                           <h3 className="font-serif text-lg text-foreground">{t("birthChart.reading.title")}</h3>
-                          <p className="text-[11px] text-muted-foreground">Personalised for {selectedChart.full_name} · {selectedChart.reading ? t("birthChart.reading.aiGenerated") : t("birthChart.reading.notGeneratedYet")}</p>
+                          <p className="text-[11px] text-muted-foreground">{t("pages:ui.birthChartPage.personalisedFor", "Personalised for {{name}}", { name: selectedChart.full_name })} · {selectedChart.reading ? t("birthChart.reading.aiGenerated") : t("birthChart.reading.notGeneratedYet")}</p>
                         </div>
                         <div className="flex items-center gap-2">
                           {reading && (
@@ -1162,7 +1170,7 @@ function VargaTable({ chartData, isElite }: { chartData: ChartData; isElite: boo
   return (
     <div className="space-y-3">
       <PillTabs items={items} value={vargaTab} onValueChange={setVargaTab} />
-      {currentDef && <p className="text-[11px] text-muted-foreground/80 italic">{currentDef.meaning}</p>}
+      {currentDef && <p className="text-[11px] text-muted-foreground/80 italic">{t("pages:ui.birthChartPage.varga." + currentDef.key, currentDef.meaning)}</p>}
       <div className="rounded-xl border border-primary/15 bg-card/50 overflow-x-auto">
         <Table>
           <TableHeader>

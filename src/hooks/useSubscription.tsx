@@ -2,6 +2,7 @@ import { useState, useEffect, createContext, useContext, ReactNode, useCallback,
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "@/hooks/use-toast";
+import i18n from "@/i18n/config";
 import {
   TIERS,
   TIER_ORDER,
@@ -167,8 +168,8 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
     } catch (e) {
       console.error("[subscription] fetch error", e);
       toast({
-        title: "Could not load your account",
-        description: "Check your connection and refresh. Your features may show as limited until resolved.",
+        title: i18n.t("pages:ui.useSubscription.loadErrorTitle", "Could not load your account"),
+        description: i18n.t("pages:ui.useSubscription.loadErrorDesc", "Check your connection and refresh. Your features may show as limited until resolved."),
         variant: "destructive",
       });
     } finally {

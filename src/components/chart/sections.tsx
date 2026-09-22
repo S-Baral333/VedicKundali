@@ -6,6 +6,7 @@ import { useMemo, useState, type ReactNode } from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 import { Plus, Star, CheckCircle2, Clock, Compass, Sparkles, Briefcase, Heart, Coins, Activity, Flame, Filter, Trash2, ChevronDown } from "lucide-react";
 
 /* ═══════════════════════════════════════════════════════
@@ -37,20 +38,21 @@ interface VerificationStripProps {
   timezoneLabel?: string;
 }
 export function VerificationStrip({ ascendantSign, ascendantDegree, ayanamsha = "Lahiri", system = "North Indian", timezoneLabel }: VerificationStripProps) {
+  const { t } = useTranslation();
   const deg = Math.floor(ascendantDegree);
   const min = Math.floor((ascendantDegree - deg) * 60);
   const segments = [
-    { label: "Ascendant", value: ascendantSign },
-    { label: "Lagna", value: `${deg}°${String(min).padStart(2, "0")}'` },
-    { label: "Ayanamsha", value: ayanamsha },
-    { label: "System", value: system },
-    ...(timezoneLabel ? [{ label: "TZ", value: timezoneLabel }] : []),
+    { id: "asc", label: t("pages:ui.sections.ascendant", "Ascendant"), value: ascendantSign },
+    { id: "lagna", label: "Lagna", value: `${deg}°${String(min).padStart(2, "0")}'` },
+    { id: "ayan", label: "Ayanamsha", value: ayanamsha },
+    { id: "sys", label: t("pages:ui.sections.system", "System"), value: system },
+    ...(timezoneLabel ? [{ id: "tz", label: t("pages:ui.sections.tz", "TZ"), value: timezoneLabel }] : []),
   ];
   return (
     <div className="rounded-2xl border border-primary/20 bg-card/60 backdrop-blur-md p-3 overflow-x-auto">
       <div className="flex items-center gap-3 min-w-max">
         {segments.map((s, i) => (
-          <div key={s.label} className="flex items-center gap-3">
+          <div key={s.id} className="flex items-center gap-3">
             {i > 0 && <span className="text-primary/50">·</span>}
             <span className="text-[11px] uppercase tracking-wider text-muted-foreground">{s.label}</span>
             <span className="text-sm text-foreground font-medium">{s.value}</span>
@@ -61,7 +63,7 @@ export function VerificationStrip({ ascendantSign, ascendantDegree, ayanamsha = 
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
           </span>
-          Verified
+          {t("pages:ui.sections.verified", "Verified")}
         </span>
       </div>
     </div>
@@ -83,14 +85,15 @@ const PANCHANGA_GLYPHS: Record<string, string> = {
   Tithi: "☾", Vara: "☼", Nakshatra: "✧", Yoga: "✦", Karana: "◉", Masa: "🜄",
 };
 export function PanchangaGrid({ panchanga, moonSign }: { panchanga?: PanchangaInput; moonSign?: string }) {
+  const { t } = useTranslation();
   if (!panchanga) return null;
   const cells = [
-    { label: "Tithi", value: panchanga.tithi?.name || "—", sub: panchanga.tithi ? `${panchanga.tithi.paksha} Paksha` : "" },
-    { label: "Vara", value: panchanga.vara?.name || "—", sub: "Weekday" },
-    { label: "Nakshatra", value: panchanga.nakshatra?.name || "—", sub: panchanga.nakshatra ? `Pada ${panchanga.nakshatra.pada}` : "" },
-    { label: "Yoga", value: panchanga.yoga?.name || "—", sub: panchanga.yoga ? `#${panchanga.yoga.number} of 27` : "" },
-    { label: "Karana", value: panchanga.karana?.name || "—", sub: panchanga.karana ? `Half-tithi #${panchanga.karana.number}` : "" },
-    { label: "Rashi", value: moonSign || panchanga.masa?.name || "—", sub: moonSign ? "Moon Sign" : "Lunar Month" },
+    { label: "Tithi", value: panchanga.tithi?.name || "—", sub: panchanga.tithi ? t("pages:ui.sections.paksha", "{{paksha}} Paksha", { paksha: panchanga.tithi.paksha }) : "" },
+    { label: "Vara", value: panchanga.vara?.name || "—", sub: t("pages:ui.sections.weekday", "Weekday") },
+    { label: "Nakshatra", value: panchanga.nakshatra?.name || "—", sub: panchanga.nakshatra ? t("pages:ui.sections.pada", "Pada {{pada}}", { pada: panchanga.nakshatra.pada }) : "" },
+    { label: "Yoga", value: panchanga.yoga?.name || "—", sub: panchanga.yoga ? t("pages:ui.sections.yogaOf27", "#{{n}} of 27", { n: panchanga.yoga.number }) : "" },
+    { label: "Karana", value: panchanga.karana?.name || "—", sub: panchanga.karana ? t("pages:ui.sections.halfTithi", "Half-tithi #{{n}}", { n: panchanga.karana.number }) : "" },
+    { label: "Rashi", value: moonSign || panchanga.masa?.name || "—", sub: moonSign ? t("pages:ui.sections.moonSign", "Moon Sign") : t("pages:ui.sections.lunarMonth", "Lunar Month") },
   ];
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -121,10 +124,11 @@ export interface DashaPeriod {
   isCurrent?: boolean;
 }
 export function DashaTimeline({ periods, current }: { periods: DashaPeriod[]; current?: string }) {
+  const { t } = useTranslation();
   if (!periods.length) return null;
   return (
     <div className="space-y-3">
-      <p className="text-[11px] text-muted-foreground uppercase tracking-wider text-center">▼ Current life position</p>
+      <p className="text-[11px] text-muted-foreground uppercase tracking-wider text-center">▼ {t("pages:ui.sections.currentLifePosition", "Current life position")}</p>
       <div className="relative">
         <div className="flex gap-2 overflow-x-auto pb-3 snap-x scroll-smooth -mx-1 px-1">
           {periods.map((p) => {
@@ -144,7 +148,7 @@ export function DashaTimeline({ periods, current }: { periods: DashaPeriod[]; cu
               >
                 <p className="font-serif font-semibold text-sm">{p.planet}</p>
                 <p className="text-[10px] mt-0.5 tabular-nums">{p.startYear}–{p.endYear}</p>
-                {isNow && <p className="text-[11px] text-primary mt-1 uppercase tracking-wider">You are here</p>}
+                {isNow && <p className="text-[11px] text-primary mt-1 uppercase tracking-wider">{t("pages:ui.sections.youAreHere", "You are here")}</p>}
               </div>
             );
           })}
@@ -158,12 +162,13 @@ export function DashaTimeline({ periods, current }: { periods: DashaPeriod[]; cu
  * Mangal Dasha feature card (Mars Major Period)
  * ═══════════════════════════════════════════════════════ */
 export function MangalFeatureCard({ active, startYear, endYear }: { active?: boolean; startYear?: number; endYear?: number }) {
+  const { t } = useTranslation();
   if (!startYear || !endYear) return null;
   const now = new Date().getFullYear();
   const total = endYear - startYear;
   const elapsed = Math.max(0, Math.min(total, now - startYear));
   const pct = total > 0 ? Math.round((elapsed / total) * 100) : 0;
-  const status = active ? "Active Now" : now < startYear ? "Yet to begin" : "Completed";
+  const status = active ? t("pages:ui.sections.activeNow", "Active Now") : now < startYear ? t("pages:ui.sections.yetToBegin", "Yet to begin") : t("pages:ui.sections.completed", "Completed");
 
   return (
     <div className="rounded-2xl border-2 border-red-500/30 bg-gradient-to-br from-red-500/10 via-card to-card p-5 backdrop-blur-md">
@@ -174,20 +179,20 @@ export function MangalFeatureCard({ active, startYear, endYear }: { active?: boo
           </div>
           <div>
             <h3 className="font-serif text-lg text-foreground">Mangal Mahadasha</h3>
-            <p className="text-[11px] text-muted-foreground">Mars Major Period · {status}</p>
+            <p className="text-[11px] text-muted-foreground">{t("pages:ui.sections.marsMajorPeriod", "Mars Major Period")} · {status}</p>
           </div>
         </div>
         <Badge className="text-[11px] uppercase tracking-wider bg-red-500/20 text-red-300 border border-red-500/40">
-          {active ? "Active" : "Enrolled"}
+          {active ? t("pages:ui.sections.active", "Active") : t("pages:ui.sections.enrolled", "Enrolled")}
         </Badge>
       </div>
       <div className="grid grid-cols-2 gap-3 text-sm mb-3">
         <div>
-          <p className="text-[11px] uppercase tracking-wider text-muted-foreground">Duration</p>
-          <p className="font-medium text-foreground">{total} years · {startYear}–{endYear}</p>
+          <p className="text-[11px] uppercase tracking-wider text-muted-foreground">{t("pages:ui.sections.duration", "Duration")}</p>
+          <p className="font-medium text-foreground">{t("pages:ui.sections.years", "{{count}} years", { count: total })} · {startYear}–{endYear}</p>
         </div>
         <div>
-          <p className="text-[11px] uppercase tracking-wider text-muted-foreground">Progress</p>
+          <p className="text-[11px] uppercase tracking-wider text-muted-foreground">{t("pages:ui.sections.progress", "Progress")}</p>
           <div className="h-2 rounded-full bg-card/80 mt-1.5 overflow-hidden">
             <div className="h-full bg-gradient-to-r from-red-500 to-orange-400 transition-all" style={{ width: `${pct}%` }} />
           </div>
@@ -195,8 +200,13 @@ export function MangalFeatureCard({ active, startYear, endYear }: { active?: boo
         </div>
       </div>
       <div className="flex flex-wrap gap-1.5">
-        {["Courage", "Drive", "Property", "Siblings"].map((t) => (
-          <span key={t} className="text-[10px] px-2 py-0.5 rounded-full border border-red-500/30 bg-red-500/10 text-red-300">{t}</span>
+        {[
+          { k: "courage", l: "Courage" },
+          { k: "drive", l: "Drive" },
+          { k: "property", l: "Property" },
+          { k: "siblings", l: "Siblings" },
+        ].map((tag) => (
+          <span key={tag.k} className="text-[10px] px-2 py-0.5 rounded-full border border-red-500/30 bg-red-500/10 text-red-300">{t("pages:ui.sections.mangalTag." + tag.k, tag.l)}</span>
         ))}
       </div>
     </div>
@@ -226,16 +236,17 @@ const QUALITY_STYLE: Record<string, string> = {
   mixed: "border-purple-400/40 bg-purple-400/10 text-purple-300",
 };
 export function YogasAccordionV2({ yogas }: { yogas?: YogaItem[] }) {
+  const { t } = useTranslation();
   const [filter, setFilter] = useState<"all" | "benefic" | "malefic" | "mixed">("all");
   const enriched = useMemo(() => (yogas || []).map((y) => ({ ...y, quality: classifyYoga(y), strength: y.strength || 3 })), [yogas]);
   const filtered = filter === "all" ? enriched : enriched.filter((y) => y.quality === filter);
-  if (!enriched.length) return <p className="text-sm text-muted-foreground italic text-center py-6">No active yogas detected.</p>;
+  if (!enriched.length) return <p className="text-sm text-muted-foreground italic text-center py-6">{t("pages:ui.sections.noYogas", "No active yogas detected.")}</p>;
 
   const filters: { key: typeof filter; label: string }[] = [
-    { key: "all", label: "All" },
-    { key: "benefic", label: "Benefic" },
-    { key: "malefic", label: "Malefic" },
-    { key: "mixed", label: "Mixed" },
+    { key: "all", label: t("pages:ui.sections.filterAll", "All") },
+    { key: "benefic", label: t("pages:ui.sections.benefic", "Benefic") },
+    { key: "malefic", label: t("pages:ui.sections.malefic", "Malefic") },
+    { key: "mixed", label: t("pages:ui.sections.mixed", "Mixed") },
   ];
 
   return (
@@ -253,7 +264,7 @@ export function YogasAccordionV2({ yogas }: { yogas?: YogaItem[] }) {
             {f.label}
           </button>
         ))}
-        <span className="text-[10px] text-muted-foreground/70 ml-auto">{filtered.length} of {enriched.length}</span>
+        <span className="text-[10px] text-muted-foreground/70 ml-auto">{t("pages:ui.sections.countOf", "{{shown}} of {{total}}", { shown: filtered.length, total: enriched.length })}</span>
       </div>
 
       <Accordion type="multiple" className="space-y-2">
@@ -262,7 +273,7 @@ export function YogasAccordionV2({ yogas }: { yogas?: YogaItem[] }) {
             <AccordionTrigger className="hover:no-underline py-3">
               <div className="flex items-center gap-3 flex-1 text-left">
                 <span className="font-serif text-sm text-foreground">{y.name}</span>
-                <span className={`text-[11px] uppercase tracking-wider px-1.5 py-0.5 rounded border ${QUALITY_STYLE[y.quality!]}`}>{y.quality}</span>
+                <span className={`text-[11px] uppercase tracking-wider px-1.5 py-0.5 rounded border ${QUALITY_STYLE[y.quality!]}`}>{t("pages:ui.sections." + y.quality, y.quality!)}</span>
                 <span className="ml-auto flex items-center gap-0.5">
                   {Array.from({ length: 5 }).map((_, idx) => (
                     <Star key={idx} className={`h-2.5 w-2.5 ${idx < (y.strength || 0) ? "text-primary fill-primary" : "text-muted-foreground/30"}`} />
@@ -273,7 +284,7 @@ export function YogasAccordionV2({ yogas }: { yogas?: YogaItem[] }) {
             <AccordionContent className="text-sm text-muted-foreground leading-relaxed pb-3">
               {y.description}
               {!!y.involved_planets?.length && (
-                <p className="text-[11px] text-muted-foreground/80 mt-2">Planets: {y.involved_planets.join(", ")}</p>
+                <p className="text-[11px] text-muted-foreground/80 mt-2">{t("pages:ui.sections.planets", "Planets: {{list}}", { list: y.involved_planets.join(", ") })}</p>
               )}
             </AccordionContent>
           </AccordionItem>
@@ -324,6 +335,7 @@ function splitReadingIntoChapters(reading: string): { key: string; title: string
 }
 
 export function ReadingChapters({ reading, isStreaming }: { reading: string; isStreaming?: boolean }) {
+  const { t } = useTranslation();
   const chapters = useMemo(() => splitReadingIntoChapters(reading), [reading]);
   if (!chapters.length) return null;
   return (
@@ -333,7 +345,7 @@ export function ReadingChapters({ reading, isStreaming }: { reading: string; isS
           <AccordionTrigger className="hover:no-underline py-3.5">
             <div className="flex items-center gap-3 text-left">
               <span className="text-primary">{ch.icon}</span>
-              <span className="font-serif text-sm text-foreground">{ch.title}</span>
+              <span className="font-serif text-sm text-foreground">{t("pages:ui.sections.chapter." + ch.key, ch.title)}</span>
             </div>
           </AccordionTrigger>
           <AccordionContent>
@@ -371,9 +383,10 @@ export function PersonSidebarList({
   onMakePrimary?: (id: string) => void;
   onDelete?: (id: string) => void;
 }) {
+  const { t } = useTranslation();
   return (
     <div className="space-y-3">
-      <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground font-medium px-1">Chart for</p>
+      <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground font-medium px-1">{t("pages:ui.sections.chartFor", "Chart for")}</p>
       <div className="space-y-2">
         {people.map((p) => {
           const active = p.id === activeId;
@@ -400,7 +413,7 @@ export function PersonSidebarList({
                       onClick={(e) => { e.stopPropagation(); onMakePrimary(p.id); }}
                       className="text-[10px] text-primary/80 hover:text-primary inline-flex items-center gap-0.5"
                     >
-                      <Star className="h-2.5 w-2.5" /> Make primary
+                      <Star className="h-2.5 w-2.5" /> {t("pages:ui.sections.makePrimary", "Make primary")}
                     </button>
                   )}
                   {onDelete && (
@@ -408,7 +421,7 @@ export function PersonSidebarList({
                       onClick={(e) => { e.stopPropagation(); onDelete(p.id); }}
                       className="text-[10px] text-destructive/80 hover:text-destructive inline-flex items-center gap-0.5 ml-auto"
                     >
-                      <Trash2 className="h-2.5 w-2.5" /> Remove
+                      <Trash2 className="h-2.5 w-2.5" /> {t("pages:ui.sections.remove", "Remove")}
                     </button>
                   )}
                 </div>
@@ -418,7 +431,7 @@ export function PersonSidebarList({
         })}
       </div>
       <Button variant="outline" size="sm" onClick={onAdd} className="w-full gap-2 border-primary/30 text-primary hover:bg-primary/5">
-        <Plus className="h-3.5 w-3.5" /> Add Person
+        <Plus className="h-3.5 w-3.5" /> {t("pages:ui.sections.addPerson", "Add Person")}
       </Button>
     </div>
   );
@@ -427,6 +440,7 @@ export function PersonSidebarList({
 export function PersonChipsRow({
   people, activeId, onSelect, onAdd,
 }: { people: PersonItem[]; activeId?: string | null; onSelect: (id: string) => void; onAdd: () => void }) {
+  const { t } = useTranslation();
   return (
     <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 snap-x">
       {people.map((p) => {
@@ -454,7 +468,7 @@ export function PersonChipsRow({
         onClick={onAdd}
         className="shrink-0 inline-flex items-center gap-1 rounded-full px-3 py-1.5 border border-dashed border-primary/40 text-primary text-xs"
       >
-        <Plus className="h-3 w-3" /> Add
+        <Plus className="h-3 w-3" /> {t("pages:ui.sections.add", "Add")}
       </button>
     </div>
   );

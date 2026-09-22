@@ -96,8 +96,8 @@ export default function CompatibilityPage() {
       const chartMap = new Map(chartsData.map(c => [c.id, c.full_name]));
       const enriched = reportsData.map(r => ({
         ...r,
-        chart_a_name: chartMap.get(r.chart_a_id) || "Unknown",
-        chart_b_name: chartMap.get(r.chart_b_id) || "Unknown",
+        chart_a_name: chartMap.get(r.chart_a_id) || t("pages:ui.compatibilityPage.unknown", "Unknown"),
+        chart_b_name: chartMap.get(r.chart_b_id) || t("pages:ui.compatibilityPage.unknown", "Unknown"),
       }));
       setReports(enriched);
       setIsLoadingData(false);
@@ -147,7 +147,7 @@ export default function CompatibilityPage() {
 
       if (!res.ok) {
         const err = await res.json();
-        throw new Error(err.error || "Failed to generate compatibility report");
+        throw new Error(err.error || t("pages:ui.compatibilityPage.generateFailed", "Failed to generate compatibility report"));
       }
 
       setGenerationStep(t("compatibility.step.preparing"));
@@ -155,8 +155,8 @@ export default function CompatibilityPage() {
       const chartMap = new Map(charts.map(c => [c.id, c.full_name]));
       const enriched: CompatibilityReport = {
         ...report,
-        chart_a_name: chartMap.get(report.chart_a_id) || "Unknown",
-        chart_b_name: chartMap.get(report.chart_b_id) || "Unknown",
+        chart_a_name: chartMap.get(report.chart_a_id) || t("pages:ui.compatibilityPage.unknown", "Unknown"),
+        chart_b_name: chartMap.get(report.chart_b_id) || t("pages:ui.compatibilityPage.unknown", "Unknown"),
       };
       setReports(prev => [enriched, ...prev]);
       setSelectedReport(enriched);
@@ -310,12 +310,12 @@ export default function CompatibilityPage() {
                   variant="ghost"
                   size="icon"
                   className="absolute top-2 right-2 h-8 w-8"
-                  title="Copy report"
+                  title={t("pages:ui.compatibilityPage.copyReport", "Copy report")}
                   onClick={async () => {
                     if (!selectedReport) return;
                     const { label } = getScoreLabel(selectedReport.score!, t);
-                    let text = `Kundali Milan: ${selectedReport.chart_a_name} & ${selectedReport.chart_b_name}\n`;
-                    text += `Score: ${selectedReport.score}/36 (${label})\n\n`;
+                    let text = `${t("pages:ui.compatibilityPage.copyHeading", "Kundali Milan: {{a}} & {{b}}", { a: selectedReport.chart_a_name, b: selectedReport.chart_b_name })}\n`;
+                    text += `${t("pages:ui.compatibilityPage.copyScore", "Score: {{score}}/36 ({{label}})", { score: selectedReport.score, label })}\n\n`;
                     if (selectedReport.report) text += selectedReport.report;
                     await navigator.clipboard.writeText(text);
                     toast({ title: t("compatibility.report.copiedToast") });
@@ -346,7 +346,7 @@ export default function CompatibilityPage() {
                         <div key={c.id} className="text-center p-3 rounded-lg bg-secondary/50 border border-border/50">
                           <p className="font-medium text-foreground text-sm">{c.full_name}</p>
                           <p className="text-xs text-muted-foreground mt-1">
-                            {cd?.ascendant?.sign} Asc · {cd?.moon_sign} Moon
+                            {t("pages:ui.compatibilityPage.ascMoon", "{{asc}} Asc · {{moon}} Moon", { asc: cd?.ascendant?.sign, moon: cd?.moon_sign })}
                           </p>
                         </div>
                       );

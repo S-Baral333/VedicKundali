@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { useTranslation } from "react-i18next";
 
 interface Layer {
   id: string;
@@ -32,14 +33,14 @@ interface ChartHighlights {
 }
 
 const CONSUMERS = [
-  "Oracle",
-  "Daily Horoscope",
-  "Reading",
-  "Predictions",
-  "Timeline",
-  "Remedies",
-  "Compatibility",
-  "Dreams",
+  { key: "oracle", label: "Oracle" },
+  { key: "dailyHoroscope", label: "Daily Horoscope" },
+  { key: "reading", label: "Reading" },
+  { key: "predictions", label: "Predictions" },
+  { key: "timeline", label: "Timeline" },
+  { key: "remedies", label: "Remedies" },
+  { key: "compatibility", label: "Compatibility" },
+  { key: "dreams", label: "Dreams" },
 ];
 
 interface Props {
@@ -49,6 +50,7 @@ interface Props {
 
 const RishiGuruEngagedPanel = ({ onDisengage, saving }: Props) => {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const [layers, setLayers] = useState<Layer[]>([]);
   const [rules, setRules] = useState<Rule[]>([]);
   const [chart, setChart] = useState<ChartHighlights | null>(null);
@@ -119,14 +121,14 @@ const RishiGuruEngagedPanel = ({ onDisengage, saving }: Props) => {
               className="font-serif text-lg sm:text-xl text-foreground"
               style={{ fontFamily: "'Cormorant Garamond', serif" }}
             >
-              God-Mode Engaged
+              {t("pages:ui.rishiGuruEngagedPanel.godMode", "God-Mode Engaged")}
             </h3>
             <span className="text-[10px] uppercase tracking-[0.18em] text-primary/80 border border-primary/40 rounded-full px-2 py-0.5">
               Rishi Guru Protocol
             </span>
           </div>
           <p className="text-sm text-muted-foreground mt-1.5">
-            The Rishi Guru is reading your chart directly. Manual preferences are paused.
+            {t("pages:ui.rishiGuruEngagedPanel.subtitle", "The Rishi Guru is reading your chart directly. Manual preferences are paused.")}
           </p>
         </div>
         <Button
@@ -136,7 +138,7 @@ const RishiGuruEngagedPanel = ({ onDisengage, saving }: Props) => {
           disabled={saving}
           className="text-xs text-muted-foreground hover:text-foreground shrink-0"
         >
-          Disengage
+          {t("pages:ui.rishiGuruEngagedPanel.disengage", "Disengage")}
         </Button>
       </div>
 
@@ -144,11 +146,11 @@ const RishiGuruEngagedPanel = ({ onDisengage, saving }: Props) => {
         {/* Active Layers */}
         <Section
           icon={<ScrollText className="h-3.5 w-3.5" />}
-          title="Active Layers"
-          meta={`${layers.length}/8 published`}
+          title={t("pages:ui.rishiGuruEngagedPanel.activeLayers", "Active Layers")}
+          meta={t("pages:ui.rishiGuruEngagedPanel.layersMeta", "{{count}}/8 published", { count: layers.length })}
         >
           {layers.length === 0 ? (
-            <EmptyHint text="No published layers yet — publish them in AI Engine → Prompt Layers." />
+            <EmptyHint text={t("pages:ui.rishiGuruEngagedPanel.noLayers", "No published layers yet — publish them in AI Engine → Prompt Layers.")} />
           ) : (
             <ul className="space-y-1.5">
               {layers.map((l) => (
@@ -172,11 +174,11 @@ const RishiGuruEngagedPanel = ({ onDisengage, saving }: Props) => {
         {/* Active Laws */}
         <Section
           icon={<Shield className="h-3.5 w-3.5" />}
-          title="Active Laws"
-          meta={`${rules.length}/12 active`}
+          title={t("pages:ui.rishiGuruEngagedPanel.activeLaws", "Active Laws")}
+          meta={t("pages:ui.rishiGuruEngagedPanel.lawsMeta", "{{count}}/12 active", { count: rules.length })}
         >
           {rules.length === 0 ? (
-            <EmptyHint text="No laws active — define them in AI Engine → 12 Laws." />
+            <EmptyHint text={t("pages:ui.rishiGuruEngagedPanel.noLaws", "No laws active — define them in AI Engine → 12 Laws.")} />
           ) : (
             <TooltipProvider delayDuration={150}>
               <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
@@ -208,15 +210,15 @@ const RishiGuruEngagedPanel = ({ onDisengage, saving }: Props) => {
         {/* Chart highlights */}
         <Section
           icon={<Sparkles className="h-3.5 w-3.5" />}
-          title="Your Chart, As The Guru Sees It"
+          title={t("pages:ui.rishiGuruEngagedPanel.chartTitle", "Your Chart, As The Guru Sees It")}
         >
           {!chart ? (
-            <EmptyHint text="Add your birth details above to let the Guru cite your chart." />
+            <EmptyHint text={t("pages:ui.rishiGuruEngagedPanel.noChart", "Add your birth details above to let the Guru cite your chart.")} />
           ) : (
             <div className="rounded-lg border border-primary/15 bg-background/40 px-4 py-3 font-mono text-[12px] sm:text-[13px] leading-relaxed text-foreground/85">
               <Row label="Lagna" value={chart.lagna ? `${chart.lagna}${chart.lagnaDeg ? ` ${chart.lagnaDeg}` : ""}` : "—"} />
               <Row
-                label="Moon"
+                label={t("pages:ui.rishiGuruEngagedPanel.moon", "Moon")}
                 value={
                   chart.moon
                     ? `${chart.moon}${chart.moonNak ? ` · ${chart.moonNak}${chart.moonPada ? ` pada ${chart.moonPada}` : ""}` : ""}`
@@ -227,7 +229,7 @@ const RishiGuruEngagedPanel = ({ onDisengage, saving }: Props) => {
                 label="Mahadasha"
                 value={
                   chart.mahaDasha
-                    ? `${chart.mahaDasha}${chart.mahaDashaEnd ? ` (until ${chart.mahaDashaEnd.slice(0, 4)})` : ""}`
+                    ? `${chart.mahaDasha}${chart.mahaDashaEnd ? ` (${t("pages:ui.rishiGuruEngagedPanel.until", "until {{year}}", { year: chart.mahaDashaEnd.slice(0, 4) })})` : ""}`
                     : "—"
                 }
               />
@@ -242,15 +244,15 @@ const RishiGuruEngagedPanel = ({ onDisengage, saving }: Props) => {
         {/* Where it speaks */}
         <Section
           icon={<BookOpen className="h-3.5 w-3.5" />}
-          title="Where It Speaks"
+          title={t("pages:ui.rishiGuruEngagedPanel.whereItSpeaks", "Where It Speaks")}
         >
           <div className="flex flex-wrap gap-1.5">
             {CONSUMERS.map((c) => (
               <span
-                key={c}
+                key={c.key}
                 className="text-[11px] rounded-full border border-primary/20 bg-primary/5 text-foreground/80 px-2.5 py-1"
               >
-                {c}
+                {t(`pages:ui.rishiGuruEngagedPanel.consumer_${c.key}`, c.label)}
               </span>
             ))}
           </div>

@@ -4,6 +4,7 @@ import { ChevronDown, Star, Plus, Settings, Check, Sparkles } from "lucide-react
 import { useActiveChart } from "@/hooks/useActiveChart";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { useTranslation } from "react-i18next";
 
 interface ChartSwitcherProps {
   /** Always show the text label, even on mobile (e.g. inside the drawer where there is room). */
@@ -11,6 +12,7 @@ interface ChartSwitcherProps {
 }
 
 export default function ChartSwitcher({ expanded = false }: ChartSwitcherProps) {
+  const { t } = useTranslation();
   const { charts, activeChart, isLoading, setActiveChart } = useActiveChart();
   const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);
@@ -34,16 +36,16 @@ export default function ChartSwitcher({ expanded = false }: ChartSwitcherProps) 
           paddingLeft: compact ? "10px" : "12px",
           paddingRight: compact ? "10px" : "14px",
         }}
-        aria-label="Create your birth chart"
-        title="Create your birth chart"
+        aria-label={t("pages:ui.chartSwitcher.createBirthChart", "Create your birth chart")}
+        title={t("pages:ui.chartSwitcher.createBirthChart", "Create your birth chart")}
       >
         <Sparkles className="h-3.5 w-3.5 shrink-0" />
-        {!compact && <span>Create chart</span>}
+        {!compact && <span>{t("pages:ui.chartSwitcher.createChart", "Create chart")}</span>}
       </Link>
     );
   }
 
-  const labelName = activeChart?.full_name || "Select chart";
+  const labelName = activeChart?.full_name || t("pages:ui.chartSwitcher.selectChart", "Select chart");
 
   // Show the active person's first name on the trigger pill (no star).
   const firstName = labelName.trim().split(/\s+/)[0] || labelName;
@@ -62,8 +64,8 @@ export default function ChartSwitcher({ expanded = false }: ChartSwitcherProps) 
             paddingRight: "10px",
             background: "hsl(var(--gold) / 0.04)",
           }}
-          aria-label={`Active chart: ${labelName}. Tap to switch.`}
-          title={`Reading as ${labelName}`}
+          aria-label={t("pages:ui.chartSwitcher.activeChartAria", "Active chart: {{name}}. Tap to switch.", { name: labelName })}
+          title={t("pages:ui.chartSwitcher.readingAsName", "Reading as {{name}}", { name: labelName })}
         >
           <span
             className="truncate"
@@ -91,7 +93,7 @@ export default function ChartSwitcher({ expanded = false }: ChartSwitcherProps) 
         }}
       >
         <div className="px-2 py-1.5 text-[10px] uppercase tracking-widest" style={{ color: "hsl(var(--text-muted))" }}>
-          Reading as
+          {t("pages:ui.chartSwitcher.readingAs", "Reading as")}
         </div>
         {charts.map((c) => {
           const isActive = c.id === activeChart?.id;
@@ -125,13 +127,13 @@ export default function ChartSwitcher({ expanded = false }: ChartSwitcherProps) 
         <DropdownMenuItem asChild className="cursor-pointer focus:bg-[hsl(var(--gold)/0.1)]">
           <Link to="/chart" className="flex items-center gap-2">
             <Plus className="h-3.5 w-3.5" />
-            <span className="text-sm">Add new chart</span>
+            <span className="text-sm">{t("pages:ui.chartSwitcher.addNew", "Add new chart")}</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild className="cursor-pointer focus:bg-[hsl(var(--gold)/0.1)]">
           <Link to="/chart" className="flex items-center gap-2">
             <Settings className="h-3.5 w-3.5" />
-            <span className="text-sm">Manage charts</span>
+            <span className="text-sm">{t("pages:ui.chartSwitcher.manage", "Manage charts")}</span>
           </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>

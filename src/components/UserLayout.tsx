@@ -152,7 +152,7 @@ export default function UserLayout() {
             borderColor: "hsl(var(--glass-border-soft))",
             color: "hsl(var(--text-secondary))",
           }}
-          aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount} unread)` : ""}`}
+          aria-label={unreadCount > 0 ? t("pages:ui.userLayout.notificationsUnread", "Notifications ({{count}} unread)", { count: unreadCount }) : t("pages:ui.userLayout.notifications", "Notifications")}
         >
           <Bell className="h-[15px] w-[15px]" />
           {unreadCount > 0 && <span className="notif-dot" />}
@@ -166,18 +166,18 @@ export default function UserLayout() {
         <SheetHeader>
           <div className="flex items-center justify-between">
             <SheetTitle className="text-base" style={{ fontFamily: "'Cormorant Garamond', serif", color: "hsl(var(--gold))" }}>
-              Cosmic Alerts
+              {t("pages:ui.userLayout.cosmicAlerts", "Cosmic Alerts")}
             </SheetTitle>
             {unreadCount > 0 && (
               <Button variant="ghost" size="sm" onClick={markAllRead} className="text-xs text-primary">
-                Mark all read
+                {t("pages:ui.userLayout.markAllRead", "Mark all read")}
               </Button>
             )}
           </div>
         </SheetHeader>
         <ScrollArea className="h-[calc(100dvh-100px)] mt-4">
           {notifications.length === 0 ? (
-            <p className="text-sm text-center py-8 text-muted-foreground">No notifications yet.</p>
+            <p className="text-sm text-center py-8 text-muted-foreground">{t("pages:ui.userLayout.noNotifications", "No notifications yet.")}</p>
           ) : (
             <div className="space-y-2">
               {notifications.map(n => (
@@ -210,7 +210,7 @@ export default function UserLayout() {
       <Link
         to="/dashboard"
         className="wordmark-flourish shrink-0 group flex items-center min-h-[44px]"
-        aria-label="Kundali home"
+        aria-label={t("pages:ui.userLayout.home", "Kundali home")}
       >
         <KundaliMark size={dims.mark} glow={false} className="transition-transform duration-500 group-hover:rotate-[8deg]" />
         <span className={`brand-wordmark ${dims.font}`} aria-label="KUNDALI">
@@ -309,7 +309,7 @@ export default function UserLayout() {
       {isMobile && (
         <nav
           className="mobile-dock fixed bottom-0 left-0 right-0 z-50"
-          aria-label="Primary navigation"
+          aria-label={t("pages:ui.userLayout.primaryNav", "Primary navigation")}
         >
           {/* Hairline gold flourish (mirrors footer top accent) */}
           <span aria-hidden className="mobile-dock-flourish" />
@@ -403,7 +403,7 @@ export default function UserLayout() {
                           </span>
                           {item.desc && (
                             <span className="block text-[11px] mt-0.5 truncate" style={{ color: "hsl(var(--text-muted))" }}>
-                              {item.desc}
+                              {item.descKey ? t("pages:" + item.descKey, item.desc) : item.desc}
                             </span>
                           )}
                         </span>

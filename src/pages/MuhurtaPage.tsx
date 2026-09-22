@@ -229,12 +229,12 @@ export default function MuhurtaPage() {
                           {format(new Date(m.date + "T12:00:00"), "EEE, MMM d")}
                         </span>
                         <Badge className={`text-[10px] ${QUALITY_COLORS[m.quality]}`}>
-                          {m.quality.charAt(0).toUpperCase() + m.quality.slice(1)}
+                          {t("pages:ui.muhurtaPage.quality_" + m.quality, m.quality.charAt(0).toUpperCase() + m.quality.slice(1))}
                         </Badge>
                         {i === 0 && <Badge variant="default" className="text-[10px]">{t("muhurtaPage.results.bestPick")}</Badge>}
                       </div>
                       <p className="text-xs text-muted-foreground mb-1.5">
-                        {m.nakshatra} • {m.tithi} • Moon in {m.moonSign}
+                        {m.nakshatra} • {m.tithi} • {t("pages:ui.muhurtaPage.moonIn", "Moon in {{sign}}", { sign: m.moonSign })}
                       </p>
                       <p className="text-sm text-foreground/80 leading-relaxed">{m.summary}</p>
 
@@ -242,7 +242,7 @@ export default function MuhurtaPage() {
                       <div className="grid grid-cols-4 gap-2 mt-3">
                         {(["vara", "nakshatra", "tithi", "transit"] as const).map((f) => (
                           <div key={f} className="space-y-0.5">
-                            <span className="text-[10px] text-muted-foreground capitalize">{f}</span>
+                            <span className="text-[10px] text-muted-foreground capitalize">{t("pages:ui.muhurtaPage.factor_" + f, f)}</span>
                             <Progress value={m.factors[f] * 10} className="h-1.5" />
                           </div>
                         ))}
