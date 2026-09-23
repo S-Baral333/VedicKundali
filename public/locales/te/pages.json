@@ -106,7 +106,7 @@
     }
   },
   "oracle": {
-    "title": "ఒరాకిల్‌ను అడగండి",
+    "title": "ఋషి గురువును అడగండి",
     "subtitle": "ఒక స్పష్టమైన ప్రశ్న, ఒక నిబద్ధమైన సమాధానం.",
     "placeholder": "ప్రస్తుతం మీ మనస్సులో ఏముంది?",
     "ask": "అడగండి",
@@ -537,7 +537,7 @@
       "moon": "చంద్రుడు",
       "until": "{{year}} వరకు",
       "whereItSpeaks": "ఇది ఎక్కడ మాట్లాడుతుంది",
-      "consumer_oracle": "ఒరాకిల్",
+      "consumer_oracle": "ఋషి గురు",
       "consumer_dailyHoroscope": "దిన ఫలాలు",
       "consumer_reading": "ఫలితం",
       "consumer_predictions": "అంచనాలు",
@@ -944,7 +944,7 @@
       "quickActions": "త్వరిత చర్యలు",
       "cosmicField": "విశ్వ క్షేత్రం",
       "skyMoves": "ఆకాశం మీ పైన నిశ్శబ్దంగా కదులుతోంది.",
-      "askOracle": "ఒరాకిల్‌ను అడగండి",
+      "askOracle": "ఋషి గురువును అడగండి",
       "interpretDream": "కల అర్థం తెలుసుకోండి",
       "findAuspiciousTime": "శుభ ముహూర్తం కనుగొనండి",
       "checkCompatibility": "పొంతన చూడండి",
@@ -1207,7 +1207,7 @@
       "feat_ephemeris_name": "ఎఫెమెరిస్ శోధన",
       "feat_ephemeris_desc": "ఏ క్షణానికైనా పూర్తి పంచాంగం మరియు గ్రహ స్థానాలు.",
       "feat_ai_chat_name": "గురు ప్రశ్నలు",
-      "feat_ai_chat_desc": "ఒరాకిల్‌ను ఏదైనా అడగండి.",
+      "feat_ai_chat_desc": "ఋషి గురువును ఏదైనా అడగండి.",
       "feat_ai_reading_name": "పూర్తి వైదిక పఠనం",
       "feat_ai_reading_desc": "మీ జాతకం పూర్తి వివరణాత్మక పఠనం.",
       "feat_dream_name": "కల వివరణలు",
@@ -1392,7 +1392,8 @@
       "evidence_factors": "ఆధారాలను నమోదు చేస్తోంది",
       "suggested_action": "మార్గదర్శనం సిద్ధం చేస్తోంది",
       "remedial_suggestion": "వైదిక పరిహారాన్ని ఎంచుకుంటోంది",
-      "caution": "జాగ్రత్తలను పరిశీలిస్తోంది"
+      "caution": "జాగ్రత్తలను పరిశీలిస్తోంది",
+      "closing_line": "పఠనాన్ని ముగిస్తున్నారు"
     },
     "citedLawsStrip": {
       "title": "ఉదహరించిన నియమాలు · ఋషి గురు విధానం"
@@ -1564,7 +1565,7 @@
     }
   },
   "askOracle": {
-    "navTitle": "ఒరాకిల్‌ను అడగండి",
+    "navTitle": "గురువును అడగండి",
     "navHint": "వైదిక గురు — జన్మ జాతకం ఆధారంగా, సమయంతో కూడిన సమాధానాలు.",
     "heading": "మీ విధిని అడగండి",
     "subheading": "ఋషి వింటున్నారు…",

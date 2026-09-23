@@ -106,7 +106,7 @@
     }
   },
   "oracle": {
-    "title": "ओरेकल से पूछें",
+    "title": "ऋषि गुरु से पूछें",
     "subtitle": "एक स्पष्ट प्रश्न, एक संतुलित उत्तर।",
     "placeholder": "इस समय आपके मन पर क्या है?",
     "ask": "पूछें",
@@ -537,7 +537,7 @@
       "moon": "चंद्र",
       "until": "{{year}} तक",
       "whereItSpeaks": "यह कहाँ बोलता है",
-      "consumer_oracle": "ओरेकल",
+      "consumer_oracle": "ऋषि गुरु",
       "consumer_dailyHoroscope": "दैनिक राशिफल",
       "consumer_reading": "फलादेश",
       "consumer_predictions": "भविष्यवाणियाँ",
@@ -944,7 +944,7 @@
       "quickActions": "त्वरित कार्य",
       "cosmicField": "ब्रह्मांडीय क्षेत्र",
       "skyMoves": "आकाश आपके ऊपर चुपचाप घूम रहा है।",
-      "askOracle": "ओरेकल से पूछें",
+      "askOracle": "ऋषि गुरु से पूछें",
       "interpretDream": "सपने का अर्थ जानें",
       "findAuspiciousTime": "शुभ मुहूर्त खोजें",
       "checkCompatibility": "अनुकूलता जाँचें",
@@ -1207,7 +1207,7 @@
       "feat_ephemeris_name": "एफेमेरिस खोज",
       "feat_ephemeris_desc": "किसी भी क्षण का पूर्ण पंचांग और ग्रह स्थिति।",
       "feat_ai_chat_name": "गुरु प्रश्न",
-      "feat_ai_chat_desc": "ओरेकल से कुछ भी पूछें।",
+      "feat_ai_chat_desc": "ऋषि गुरु से कुछ भी पूछें।",
       "feat_ai_reading_name": "पूर्ण वैदिक रीडिंग",
       "feat_ai_reading_desc": "आपकी कुंडली की पूर्ण वर्णनात्मक रीडिंग।",
       "feat_dream_name": "स्वप्न व्याख्याएँ",
@@ -1392,7 +1392,8 @@
       "evidence_factors": "प्रमाण दर्ज किए जा रहे हैं",
       "suggested_action": "मार्गदर्शन तैयार किया जा रहा है",
       "remedial_suggestion": "वैदिक उपाय चुना जा रहा है",
-      "caution": "सावधानियाँ जाँची जा रही हैं"
+      "caution": "सावधानियाँ जाँची जा रही हैं",
+      "closing_line": "पठन पूरा करते हुए"
     },
     "citedLawsStrip": {
       "title": "उद्धृत नियम · ऋषि गुरु विधान"
@@ -1564,7 +1565,7 @@
     }
   },
   "askOracle": {
-    "navTitle": "ओरेकल से पूछें",
+    "navTitle": "गुरु से पूछें",
     "navHint": "वैदिक गुरु — जन्म कुण्डली पर आधारित, समय सहित उत्तर।",
     "heading": "अपने भाग्य से पूछें",
     "subheading": "ऋषि सुन रहे हैं…",

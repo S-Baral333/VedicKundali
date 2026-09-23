@@ -106,7 +106,7 @@
     }
   },
   "oracle": {
-    "title": "ওরাকলকে জিজ্ঞাসা করুন",
+    "title": "ঋষি গুরুকে জিজ্ঞাসা করুন",
     "subtitle": "একটি স্পষ্ট প্রশ্ন, একটি সংযত উত্তর।",
     "placeholder": "এই মুহূর্তে আপনার মনে কী আছে?",
     "ask": "জিজ্ঞাসা করুন",
@@ -537,7 +537,7 @@
       "moon": "চন্দ্র",
       "until": "{{year}} পর্যন্ত",
       "whereItSpeaks": "এটি কোথায় বলে",
-      "consumer_oracle": "ওরাকল",
+      "consumer_oracle": "ঋষি গুরু",
       "consumer_dailyHoroscope": "দৈনিক রাশিফল",
       "consumer_reading": "পাঠ",
       "consumer_predictions": "ভবিষ্যদ্বাণী",
@@ -944,7 +944,7 @@
       "quickActions": "দ্রুত কাজ",
       "cosmicField": "মহাজাগতিক ক্ষেত্র",
       "skyMoves": "আকাশ আপনার মাথার ওপরে নিঃশব্দে ঘুরছে।",
-      "askOracle": "ওরাকলকে জিজ্ঞাসা করুন",
+      "askOracle": "ঋষি গুরুকে জিজ্ঞাসা করুন",
       "interpretDream": "স্বপ্নের অর্থ জানুন",
       "findAuspiciousTime": "শুভ মুহূর্ত খুঁজুন",
       "checkCompatibility": "মিল যাচাই করুন",
@@ -1207,7 +1207,7 @@
       "feat_ephemeris_name": "এফেমেরিস অনুসন্ধান",
       "feat_ephemeris_desc": "যেকোনো মুহূর্তের সম্পূর্ণ পঞ্চাঙ্গ ও গ্রহের অবস্থান।",
       "feat_ai_chat_name": "গুরু প্রশ্ন",
-      "feat_ai_chat_desc": "ওরাকলকে যা খুশি জিজ্ঞেস করুন।",
+      "feat_ai_chat_desc": "ঋষি গুরুকে যা খুশি জিজ্ঞেস করুন।",
       "feat_ai_reading_name": "সম্পূর্ণ বৈদিক পাঠ",
       "feat_ai_reading_desc": "আপনার চার্টের সম্পূর্ণ বর্ণনামূলক পাঠ।",
       "feat_dream_name": "স্বপ্ন ব্যাখ্যা",
@@ -1392,7 +1392,8 @@
       "evidence_factors": "প্রমাণ নথিভুক্ত হচ্ছে",
       "suggested_action": "নির্দেশনা তৈরি হচ্ছে",
       "remedial_suggestion": "বৈদিক প্রতিকার বাছা হচ্ছে",
-      "caution": "সতর্কতা যাচাই হচ্ছে"
+      "caution": "সতর্কতা যাচাই হচ্ছে",
+      "closing_line": "পাঠ শেষ করছেন"
     },
     "citedLawsStrip": {
       "title": "উদ্ধৃত নিয়ম · ঋষি গুরু বিধান"
@@ -1564,7 +1565,7 @@
     }
   },
   "askOracle": {
-    "navTitle": "ওরাকলকে জিজ্ঞাসা করুন",
+    "navTitle": "গুরুকে জিজ্ঞাসা করুন",
     "navHint": "বৈদিক গুরু — জন্ম কুণ্ডলী-ভিত্তিক উত্তর, সময়সহ।",
     "heading": "আপনার ভাগ্যকে জিজ্ঞাসা করুন",
     "subheading": "ঋষি শুনছেন…",

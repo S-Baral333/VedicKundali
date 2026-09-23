@@ -16,7 +16,7 @@
     }
   },
   "oracle": {
-    "title": "Ask the Oracle",
+    "title": "Ask the Rishi Guru",
     "subtitle": "One clear question, one grounded answer.",
     "placeholder": "What weighs on you right now?",
     "ask": "Ask",
@@ -367,7 +367,7 @@
       "moon": "Moon",
       "until": "until {{year}}",
       "whereItSpeaks": "Where It Speaks",
-      "consumer_oracle": "Oracle",
+      "consumer_oracle": "Rishi Guru",
       "consumer_dailyHoroscope": "Daily Horoscope",
       "consumer_reading": "Reading",
       "consumer_predictions": "Predictions",
@@ -774,7 +774,7 @@
       "quickActions": "Quick Actions",
       "cosmicField": "Cosmic Field",
       "skyMoves": "The sky moves quietly above you.",
-      "askOracle": "Ask the Oracle",
+      "askOracle": "Ask the Rishi Guru",
       "interpretDream": "Interpret a Dream",
       "findAuspiciousTime": "Find Auspicious Time",
       "checkCompatibility": "Check Compatibility",
@@ -1037,7 +1037,7 @@
       "feat_ephemeris_name": "Ephemeris Lookup",
       "feat_ephemeris_desc": "Full Panchangam and planetary positions for any moment.",
       "feat_ai_chat_name": "Guru Questions",
-      "feat_ai_chat_desc": "Ask the Oracle anything.",
+      "feat_ai_chat_desc": "Ask the Rishi Guru anything.",
       "feat_ai_reading_name": "Full Vedic Reading",
       "feat_ai_reading_desc": "Complete narrative reading of your chart.",
       "feat_dream_name": "Dream Interpretations",
@@ -1222,7 +1222,8 @@
       "evidence_factors": "Stamping the evidence",
       "suggested_action": "Forming the guidance",
       "remedial_suggestion": "Selecting a Vedic remedy",
-      "caution": "Checking for cautions"
+      "caution": "Checking for cautions",
+      "closing_line": "Closing the reading"
     },
     "citedLawsStrip": {
       "title": "Cited Laws · Rishi Guru Protocol"

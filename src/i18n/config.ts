@@ -25,7 +25,7 @@ const enCommon = {
 const enNav = {
   dashboard: "Dashboard",
   horoscope: "Horoscope",
-  oracle: "Oracle",
+  oracle: "Rishi Guru",
   chart: "Chart",
   dreams: "Dreams",
   remedies: "Remedies",
@@ -83,7 +83,7 @@ const enPages = {
   // object. Duplicate keys here would be silently overwritten, so they live in
   // exactly one place.
   oracle: {
-    title: "Ask the Oracle",
+    title: "Ask the Rishi Guru",
     subtitle: "One clear question, one grounded answer.",
     placeholder: "What weighs on you right now?",
     ask: "Ask",
@@ -242,8 +242,8 @@ const enPages = {
   },
 
   askOracle: {
-    navTitle: "Ask Oracle",
-    navHint: "Vedic Guru — birth-chart-based answers with timing.",
+    navTitle: "Ask the Guru",
+    navHint: "Rishi Guru — birth-chart-based answers with timing.",
     heading: "Ask Your Destiny",
     subheading: "The Rishi is listening…",
     godModeLabel: "God-Mode",

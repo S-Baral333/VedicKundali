@@ -19,6 +19,7 @@ const SECTION_COPY: Record<string, string> = {
   suggested_action:      "Forming the guidance",
   remedial_suggestion:   "Selecting a Vedic remedy",
   caution:               "Checking for cautions",
+  closing_line:          "Closing the reading",
 };
 
 // Try to pull a human-readable string from in-flight JSON. We ignore field

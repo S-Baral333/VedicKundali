@@ -106,7 +106,7 @@
     }
   },
   "oracle": {
-    "title": "ओरेकललाई सोध्नुहोस्",
+    "title": "ऋषि गुरुसँग सोध्नुहोस्",
     "subtitle": "एउटै स्पष्ट प्रश्न, एउटै सन्तुलित उत्तर।",
     "placeholder": "अहिले तपाईंलाई के कुराले सताइरहेको छ?",
     "ask": "सोध्नुहोस्",
@@ -537,7 +537,7 @@
       "moon": "चन्द्र",
       "until": "{{year}} सम्म",
       "whereItSpeaks": "यो कहाँ बोल्छ",
-      "consumer_oracle": "ओरेकल",
+      "consumer_oracle": "ऋषि गुरु",
       "consumer_dailyHoroscope": "दैनिक राशिफल",
       "consumer_reading": "फलादेश",
       "consumer_predictions": "भविष्यवाणी",
@@ -944,7 +944,7 @@
       "quickActions": "छिटो कार्यहरू",
       "cosmicField": "ब्रह्माण्डीय क्षेत्र",
       "skyMoves": "आकाश तपाईंमाथि चुपचाप घुमिरहेको छ।",
-      "askOracle": "ओरेकललाई सोध्नुहोस्",
+      "askOracle": "ऋषि गुरुसँग सोध्नुहोस्",
       "interpretDream": "सपनाको अर्थ जान्नुहोस्",
       "findAuspiciousTime": "शुभ साइत खोज्नुहोस्",
       "checkCompatibility": "गुण मिलान हेर्नुहोस्",
@@ -1207,7 +1207,7 @@
       "feat_ephemeris_name": "एफेमेरिस खोज",
       "feat_ephemeris_desc": "जुनसुकै क्षणको पूर्ण पञ्चाङ्ग र ग्रह स्थिति।",
       "feat_ai_chat_name": "गुरु प्रश्न",
-      "feat_ai_chat_desc": "ओराकललाई जे पनि सोध्नुहोस्।",
+      "feat_ai_chat_desc": "ऋषि गुरुसँग जे पनि सोध्नुहोस्।",
       "feat_ai_reading_name": "पूर्ण वैदिक पठन",
       "feat_ai_reading_desc": "तपाईंको कुण्डलीको पूर्ण वर्णनात्मक पठन।",
       "feat_dream_name": "सपना व्याख्या",
@@ -1392,7 +1392,8 @@
       "evidence_factors": "प्रमाणहरू अंकित गर्दै",
       "suggested_action": "मार्गदर्शन तयार गर्दै",
       "remedial_suggestion": "वैदिक उपाय छान्दै",
-      "caution": "सावधानीहरू जाँच्दै"
+      "caution": "सावधानीहरू जाँच्दै",
+      "closing_line": "पठन टुङ्ग्याउँदै"
     },
     "citedLawsStrip": {
       "title": "उद्धृत नियमहरू · ऋषि गुरु विधान"
@@ -1564,7 +1565,7 @@
     }
   },
   "askOracle": {
-    "navTitle": "ओरेकललाई सोध्नुहोस्",
+    "navTitle": "गुरुसँग सोध्नुहोस्",
     "navHint": "वैदिक गुरु — जन्म कुण्डलीमा आधारित, समयसहितका उत्तर।",
     "heading": "आफ्नो भाग्यलाई सोध्नुहोस्",
     "subheading": "ऋषि सुन्दै हुनुहुन्छ…",

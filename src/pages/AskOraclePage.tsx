@@ -70,6 +70,7 @@ interface Decision {
   suggested_action: string;
   remedial_suggestion: string;
   caution: string | null;
+  closing_line?: string;
 }
 
 interface HistoryEntry {
@@ -366,6 +367,18 @@ function OracleResult({ decision, readingId, godMode }: { decision: Decision; re
             <p className="text-muted-foreground">{decision.caution}</p>
           </CardContent>
         </Card>
+      )}
+
+      {/* Closing line — the guru hands the choice back */}
+      {decision.closing_line && (
+        <div className="px-2 animate-in fade-in slide-in-from-bottom-2 duration-600" style={stagger(10)}>
+          <p
+            className="text-lg md:text-xl font-serif italic text-foreground/85 leading-relaxed border-l-2 border-primary/40 pl-4"
+            style={{ fontFamily: "'Cormorant Garamond', serif" }}
+          >
+            {decision.closing_line}
+          </p>
+        </div>
       )}
 
       {/* What Was Used In This Reading */}

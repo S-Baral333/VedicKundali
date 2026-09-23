@@ -106,7 +106,7 @@
     }
   },
   "oracle": {
-    "title": "ओरॅकलला विचारा",
+    "title": "ऋषी गुरूंना विचारा",
     "subtitle": "एक स्पष्ट प्रश्न, एक संतुलित उत्तर.",
     "placeholder": "तुमच्या मनावर सध्या काय आहे?",
     "ask": "विचारा",
@@ -537,7 +537,7 @@
       "moon": "चंद्र",
       "until": "{{year}} पर्यंत",
       "whereItSpeaks": "हे कुठे बोलते",
-      "consumer_oracle": "ओरेकल",
+      "consumer_oracle": "ऋषी गुरू",
       "consumer_dailyHoroscope": "दैनिक राशीभविष्य",
       "consumer_reading": "वाचन",
       "consumer_predictions": "भविष्यवाणी",
@@ -944,7 +944,7 @@
       "quickActions": "जलद कृती",
       "cosmicField": "वैश्विक क्षेत्र",
       "skyMoves": "आकाश तुमच्या वर शांतपणे फिरत आहे.",
-      "askOracle": "ओरॅकलला विचारा",
+      "askOracle": "ऋषी गुरूंना विचारा",
       "interpretDream": "स्वप्नाचा अर्थ जाणा",
       "findAuspiciousTime": "शुभ मुहूर्त शोधा",
       "checkCompatibility": "सुसंगतता तपासा",
@@ -1207,7 +1207,7 @@
       "feat_ephemeris_name": "एफेमेरिस शोध",
       "feat_ephemeris_desc": "कोणत्याही क्षणाचे संपूर्ण पंचांग आणि ग्रहस्थिती.",
       "feat_ai_chat_name": "गुरु प्रश्न",
-      "feat_ai_chat_desc": "ओरॅकलला काहीही विचारा.",
+      "feat_ai_chat_desc": "ऋषी गुरूंना काहीही विचारा.",
       "feat_ai_reading_name": "संपूर्ण वैदिक वाचन",
       "feat_ai_reading_desc": "तुमच्या कुंडलीचे संपूर्ण वर्णनात्मक वाचन.",
       "feat_dream_name": "स्वप्न अर्थ",
@@ -1392,7 +1392,8 @@
       "evidence_factors": "पुरावे नोंदवत आहे",
       "suggested_action": "मार्गदर्शन तयार करत आहे",
       "remedial_suggestion": "वैदिक उपाय निवडत आहे",
-      "caution": "सावधानता तपासत आहे"
+      "caution": "सावधानता तपासत आहे",
+      "closing_line": "वाचन पूर्ण करत आहे"
     },
     "citedLawsStrip": {
       "title": "उद्धृत नियम · ऋषी गुरु विधान"
@@ -1564,7 +1565,7 @@
     }
   },
   "askOracle": {
-    "navTitle": "ओरॅकलला विचारा",
+    "navTitle": "गुरूंना विचारा",
     "navHint": "वैदिक गुरू — जन्मकुंडलीवर आधारित, वेळेसह उत्तरे.",
     "heading": "तुमच्या भाग्याला विचारा",
     "subheading": "ऋषी ऐकत आहेत…",
