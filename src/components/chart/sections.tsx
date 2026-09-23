@@ -7,6 +7,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
+import { localNum, signLabel } from "@/lib/panchanga-i18n";
 import { Plus, Star, CheckCircle2, Clock, Compass, Sparkles, Briefcase, Heart, Coins, Activity, Flame, Filter, Trash2, ChevronDown } from "lucide-react";
 
 /* ═══════════════════════════════════════════════════════
@@ -49,8 +50,8 @@ export function VerificationStrip({ ascendantSign, ascendantDegree, ayanamsha = 
     ...(timezoneLabel ? [{ id: "tz", label: t("pages:ui.sections.tz", "TZ"), value: timezoneLabel }] : []),
   ];
   return (
-    <div className="rounded-2xl border border-primary/20 bg-card/60 backdrop-blur-md p-3 overflow-x-auto">
-      <div className="flex items-center gap-3 min-w-max">
+    <div className="rounded-2xl border border-primary/20 bg-card/60 backdrop-blur-md p-3 overflow-x-visible sm:overflow-x-auto m-sheet">
+      <div className="flex items-center flex-wrap gap-x-3 gap-y-1 sm:flex-nowrap sm:min-w-max">
         {segments.map((s, i) => (
           <div key={s.id} className="flex items-center gap-3">
             {i > 0 && <span className="text-primary/50">·</span>}
@@ -85,26 +86,30 @@ const PANCHANGA_GLYPHS: Record<string, string> = {
   Tithi: "☾", Vara: "☼", Nakshatra: "✧", Yoga: "✦", Karana: "◉", Masa: "🜄",
 };
 export function PanchangaGrid({ panchanga, moonSign }: { panchanga?: PanchangaInput; moonSign?: string }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   if (!panchanga) return null;
+  // Names come from the engine in English; `pages:panchanga.*` holds the
+  // script-correct spelling for each language (English falls back to these).
+  const num = (v: number | string) => localNum(i18n.language, v);
+  const term = (group: string, name?: string) => (name ? t(`pages:panchanga.${group}.${name.replace(/\s+/g, "_")}`, name) : "—");
   const cells = [
-    { label: "Tithi", value: panchanga.tithi?.name || "—", sub: panchanga.tithi ? t("pages:ui.sections.paksha", "{{paksha}} Paksha", { paksha: panchanga.tithi.paksha }) : "" },
-    { label: "Vara", value: panchanga.vara?.name || "—", sub: t("pages:ui.sections.weekday", "Weekday") },
-    { label: "Nakshatra", value: panchanga.nakshatra?.name || "—", sub: panchanga.nakshatra ? t("pages:ui.sections.pada", "Pada {{pada}}", { pada: panchanga.nakshatra.pada }) : "" },
-    { label: "Yoga", value: panchanga.yoga?.name || "—", sub: panchanga.yoga ? t("pages:ui.sections.yogaOf27", "#{{n}} of 27", { n: panchanga.yoga.number }) : "" },
-    { label: "Karana", value: panchanga.karana?.name || "—", sub: panchanga.karana ? t("pages:ui.sections.halfTithi", "Half-tithi #{{n}}", { n: panchanga.karana.number }) : "" },
-    { label: "Rashi", value: moonSign || panchanga.masa?.name || "—", sub: moonSign ? t("pages:ui.sections.moonSign", "Moon Sign") : t("pages:ui.sections.lunarMonth", "Lunar Month") },
+    { key: "Tithi", label: t("pages:panchanga.limb.Tithi", "Tithi"), value: term("tithi", panchanga.tithi?.name), sub: panchanga.tithi ? t("pages:ui.sections.paksha", "{{paksha}} Paksha", { paksha: term("paksha", panchanga.tithi.paksha) }) : "" },
+    { key: "Vara", label: t("pages:panchanga.limb.Vara", "Vara"), value: term("vara", panchanga.vara?.name), sub: t("pages:ui.sections.weekday", "Weekday") },
+    { key: "Nakshatra", label: t("pages:panchanga.limb.Nakshatra", "Nakshatra"), value: term("nak", panchanga.nakshatra?.name), sub: panchanga.nakshatra ? t("pages:ui.sections.pada", "Pada {{pada}}", { pada: num(panchanga.nakshatra.pada) }) : "" },
+    { key: "Yoga", label: t("pages:panchanga.limb.Yoga", "Yoga"), value: term("yoga", panchanga.yoga?.name), sub: panchanga.yoga ? t("pages:ui.sections.yogaOf27", "#{{n}} of 27", { n: num(panchanga.yoga.number) }) : "" },
+    { key: "Karana", label: t("pages:panchanga.limb.Karana", "Karana"), value: term("karana", panchanga.karana?.name), sub: panchanga.karana ? t("pages:ui.sections.halfTithi", "Half-tithi #{{n}}", { n: num(panchanga.karana.number) }) : "" },
+    { key: "Rashi", label: t("pages:panchanga.limb.Rashi", "Rashi"), value: moonSign ? signLabel(t, moonSign) : term("masa", panchanga.masa?.name), sub: moonSign ? t("pages:ui.sections.moonSign", "Moon Sign") : t("pages:ui.sections.lunarMonth", "Lunar Month") },
   ];
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 m-flat-grid2">
       {cells.map((c) => (
         <div
-          key={c.label}
-          className="group relative rounded-2xl border border-primary/15 bg-card/60 backdrop-blur-md p-4 transition-all hover:-translate-y-0.5 hover:border-primary/35 hover:shadow-[0_8px_24px_-12px_hsl(var(--primary)/0.4)]"
+          key={c.key}
+          className="group relative rounded-2xl border border-primary/15 bg-card/60 backdrop-blur-md p-4 transition-all hover:-translate-y-0.5 hover:border-primary/35 hover:shadow-[0_8px_24px_-12px_hsl(var(--primary)/0.4)] m-flat"
         >
           <div className="flex items-start justify-between mb-1">
             <span className="text-[11px] uppercase tracking-[0.18em] text-primary/80">{c.label}</span>
-            <span className="text-base text-primary/60">{PANCHANGA_GLYPHS[c.label]}</span>
+            <span className="text-base text-primary/60">{PANCHANGA_GLYPHS[c.key]}</span>
           </div>
           <p className="font-serif text-base text-foreground leading-tight">{c.value}</p>
           {c.sub && <p className="text-[10.5px] text-muted-foreground/80 mt-0.5">{c.sub}</p>}
@@ -130,7 +135,7 @@ export function DashaTimeline({ periods, current }: { periods: DashaPeriod[]; cu
     <div className="space-y-3">
       <p className="text-[11px] text-muted-foreground uppercase tracking-wider text-center">▼ {t("pages:ui.sections.currentLifePosition", "Current life position")}</p>
       <div className="relative">
-        <div className="flex gap-2 overflow-x-auto pb-3 snap-x scroll-smooth -mx-1 px-1">
+        <div className="flex gap-2 overflow-x-auto pb-3 snap-x scroll-smooth -mx-1 px-1 m-edge-scroll">
           {periods.map((p) => {
             const isNow = p.isCurrent || p.planet === current;
             const isPast = p.endYear < new Date().getFullYear();
@@ -171,7 +176,7 @@ export function MangalFeatureCard({ active, startYear, endYear }: { active?: boo
   const status = active ? t("pages:ui.sections.activeNow", "Active Now") : now < startYear ? t("pages:ui.sections.yetToBegin", "Yet to begin") : t("pages:ui.sections.completed", "Completed");
 
   return (
-    <div className="rounded-2xl border-2 border-red-500/30 bg-gradient-to-br from-red-500/10 via-card to-card p-5 backdrop-blur-md">
+    <div className="m-sheet rounded-2xl border-2 border-red-500/30 bg-gradient-to-br from-red-500/10 via-card to-card p-5 backdrop-blur-md">
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="flex items-center gap-3">
           <div className="h-10 w-10 rounded-full bg-red-500/15 border border-red-500/40 flex items-center justify-center text-red-400">
@@ -442,7 +447,7 @@ export function PersonChipsRow({
 }: { people: PersonItem[]; activeId?: string | null; onSelect: (id: string) => void; onAdd: () => void }) {
   const { t } = useTranslation();
   return (
-    <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 snap-x">
+    <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 snap-x m-edge-scroll">
       {people.map((p) => {
         const active = p.id === activeId;
         const initial = (p.full_name || "?").trim().charAt(0).toUpperCase();
@@ -481,7 +486,7 @@ export interface ChartTabDef { key: string; label: string; short?: string }
 export function ChartTabsBar({ tabs, value, onChange }: { tabs: ChartTabDef[]; value: string; onChange: (v: string) => void }) {
   return (
     <div className="sticky top-14 z-20 bg-background/85 backdrop-blur-md border-b border-primary/10">
-      <div className="flex gap-1 overflow-x-auto px-1 -mx-1">
+      <div className="flex gap-1 overflow-x-auto px-1 -mx-1 m-edge-scroll">
         {tabs.map((t) => {
           const active = t.key === value;
           return (

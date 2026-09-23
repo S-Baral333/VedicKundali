@@ -28,6 +28,8 @@ import ConversationThread from "@/components/oracle/ConversationThread";
 import CitedLawsStrip from "@/components/oracle/CitedLawsStrip";
 import HistoryToolbar, { type HistoryFilter } from "@/components/oracle/HistoryToolbar";
 import GuruPortrait from "@/components/oracle/GuruPortrait";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { localNum } from "@/lib/panchanga-i18n";
 import OracleInput from "@/components/oracle/OracleInput";
 import { detectIntent } from "@/lib/oracle-intent";
 
@@ -182,7 +184,7 @@ function ResonanceFeedback({ readingId }: { readingId: string | null }) {
 
 /* ─── Oracle Result with staggered animations ─── */
 function OracleResult({ decision, readingId, godMode }: { decision: Decision; readingId: string | null; godMode: boolean }) {
-  const { t } = useTranslation("pages");
+  const { t, i18n } = useTranslation("pages");
   const vc = verdictConfig[safeVerdict(decision.verdict)];
   const stagger = (i: number) => ({ animationDelay: `${i * 120}ms` });
 
@@ -224,7 +226,7 @@ function OracleResult({ decision, readingId, godMode }: { decision: Decision; re
                 <CardTitle className="text-sm flex items-center justify-between">
                   <span className="flex items-center gap-2">
                     <ShieldCheck className="h-4 w-4 text-primary" />
-                    {t("askOracle.result.evidenceUsed", { n: decision.evidence_factors.length })}
+                    {t("askOracle.result.evidenceUsed", { n: localNum(i18n.language, decision.evidence_factors.length) })}
                   </span>
                   <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform [[data-state=open]>&]:rotate-180" />
                 </CardTitle>
@@ -528,6 +530,7 @@ function FollowUpInput({ onSubmit, loading }: { onSubmit: (q: string) => void; l
 /* ─── Main Page ─── */
 export default function AskOraclePage() {
   const { t } = useTranslation("pages");
+  const isMobile = useIsMobile();
   const [question, setQuestion] = useState("");
   const [category, setCategory] = useState("general");
   const [mode, setMode] = useState<Mode>("insight");
@@ -855,15 +858,15 @@ export default function AskOraclePage() {
             </div>
 
             {/* The Chamber */}
-            <div className="flex flex-col items-center gap-6 py-4 md:py-8">
+            <div className="flex flex-col items-center gap-4 sm:gap-6 py-2 sm:py-4 md:py-8">
               <GuruPortrait
                 intensity={engineLoading ? "consulting" : chamberFocused ? "focused" : "idle"}
-                size={220}
+                size={isMobile ? 132 : 220}
               />
 
               <div className="text-center space-y-2 max-w-xl">
                 <h1
-                  className="text-4xl md:text-5xl font-serif font-bold text-foreground twinkle-aura"
+                  className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-foreground twinkle-aura"
                   style={{ fontFamily: "'Cormorant Garamond', serif" }}
                 >
                   {t("askOracle.heading")}

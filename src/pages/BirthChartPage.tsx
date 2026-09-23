@@ -245,7 +245,7 @@ function PlanetCard({ planet, grahaYuddha }: { planet: ChartData["planets"][0]; 
 function PlanetPillsRow({ chartData }: { chartData: ChartData }) {
   const { t } = useTranslation();
   return (
-    <div className="flex gap-2 overflow-x-auto pb-2 snap-x">
+    <div className="flex gap-2 overflow-x-auto pb-2 snap-x m-edge-scroll">
       {chartData.planets.map((p) => {
         const status = p.dignity === "exalted" ? { label: t("pages:ui.birthChartPage.dignity.exalted", "Exalted"), color: "text-primary border-primary/40 bg-primary/10" }
           : p.dignity === "debilitated" ? { label: t("pages:ui.birthChartPage.dignity.debilitated", "Debilitated"), color: "text-destructive border-destructive/40 bg-destructive/10" }
@@ -279,7 +279,7 @@ function LifeAreaScores({ scores }: { scores: NonNullable<ChartData["life_scores
   const qualitative = (s: number) => s >= 85 ? `★ ${t("pages:ui.birthChartPage.q.excellent", "Excellent")}` : s >= 70 ? `▲ ${t("pages:ui.birthChartPage.q.strong", "Strong")}` : s >= 50 ? `→ ${t("pages:ui.birthChartPage.q.moderate", "Moderate")}` : s >= 35 ? `↓ ${t("pages:ui.birthChartPage.q.tested", "Tested")}` : `⚠ ${t("pages:ui.birthChartPage.q.difficult", "Difficult")}`;
   const colorAt = (s: number) => s >= 70 ? "from-primary via-amber-400 to-primary" : s >= 50 ? "from-cyan-400 via-cyan-300 to-cyan-400" : "from-muted-foreground to-muted-foreground/60";
   return (
-    <div className="rounded-2xl border border-primary/15 bg-card/55 backdrop-blur-md p-5 space-y-3">
+    <div className="rounded-2xl border border-primary/15 bg-card/55 backdrop-blur-md p-5 m-sheet space-y-3">
       <div className="flex items-center justify-between mb-1">
         <h3 className="font-serif text-base text-foreground flex items-center gap-2"><Zap className="h-4 w-4 text-primary" /> {t("pages:ui.birthChartPage.lifeAreaScores", "Life Area Scores")}</h3>
         <span className="text-[10px] text-muted-foreground">{t("pages:ui.birthChartPage.lastUpdated", "Last updated")} ↻</span>
@@ -547,10 +547,10 @@ function TopNav({ personName, onShare, onDownload }: { personName?: string; onSh
   }, []);
   return (
     <div className={`sticky top-0 z-30 transition-all duration-300 ${scrolled ? "h-14 bg-background/85 backdrop-blur-xl border-b border-primary/10" : "h-16 bg-transparent"}`}>
-      <div className="h-full flex items-center justify-between px-4 max-w-[1400px] mx-auto">
+      <div className="h-full flex items-center justify-between px-5 md:px-4 max-w-[1400px] mx-auto">
         <div className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground font-serif truncate">
-          <span className="text-foreground/60">{t("birthChart.nav.dashboard")}</span>
-          <span className="text-primary mx-1.5">›</span>
+          <span className="hidden sm:inline text-foreground/60">{t("birthChart.nav.dashboard")}</span>
+          <span className="hidden sm:inline text-primary mx-1.5">›</span>
           <span className="text-foreground/80">{t("birthChart.nav.birthChart")}</span>
           {personName && <><span className="text-primary mx-1.5">›</span><span className="text-primary">{personName}</span></>}
         </div>
@@ -570,6 +570,13 @@ function TopNav({ personName, onShare, onDownload }: { personName?: string; onSh
 /* ═══════════════════════════════════════════════════════
  * Main Page
  * ═══════════════════════════════════════════════════════ */
+
+/** Fixed cancellation reasons emitted by generate-chart, mapped to i18n keys. */
+const MANGAL_REASON_KEYS: Record<string, string> = {
+  "Mars in own/exalted sign": "ownExalted",
+  "Jupiter aspects Mars": "jupiterAspects",
+  "Mars in Leo/Aquarius": "leoAquarius",
+};
 
 const TABS: { key: string; label: string; short: string }[] = [
   { key: "overview", label: "Overview", short: "OV" },
@@ -788,7 +795,7 @@ export default function BirthChartPage() {
       <CosmicBackground />
       <TopNav personName={selectedChart?.full_name} onShare={handleShare} onDownload={handleDownload} />
 
-      <div className="max-w-[1400px] mx-auto px-4 md:px-6 pb-12">
+      <div className="max-w-[1400px] mx-auto px-5 md:px-6 pb-12">
         {/* Page Header */}
         <header className="text-center pt-6 pb-8 relative">
           <div className="flex items-center justify-center gap-3 mb-3">
@@ -802,7 +809,10 @@ export default function BirthChartPage() {
             {t("pages:ui.birthChartPage.akashicRecord", "Akashic Record of {{name}}", { name: selectedChart?.full_name || t("pages:ui.birthChartPage.yourSoul", "your soul") })}
           </p>
           {selectedChart && (
-            <p className="text-xs text-muted-foreground mt-3">
+            <p
+              className="text-xs text-muted-foreground mt-3 line-clamp-2 sm:line-clamp-none"
+              title={t("pages:ui.birthChartPage.born", "Born {{date}} · {{time}} · {{place}}", { date: selectedChart.date_of_birth, time: selectedChart.birth_time, place: selectedChart.birthplace })}
+            >
               {t("pages:ui.birthChartPage.born", "Born {{date}} · {{time}} · {{place}}", { date: selectedChart.date_of_birth, time: selectedChart.birth_time, place: selectedChart.birthplace })}
             </p>
           )}
@@ -884,7 +894,7 @@ export default function BirthChartPage() {
                   const hasNewEngine = !!(cd as any)?.ashtakavarga && !!(cd as any)?.vargas_full?.d60 && !!(cd as any)?.vimshopaka;
                   if (hasNewEngine) return null;
                   return (
-                    <div className="rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-500/10 via-card to-card p-4 flex items-center justify-between gap-3 backdrop-blur-md">
+                    <div className="rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-500/10 via-card to-card p-4 flex items-center justify-between gap-3 backdrop-blur-md m-sheet">
                       <div className="flex items-center gap-3 min-w-0">
                         <Sparkles className={`h-5 w-5 text-amber-400 shrink-0 ${recomputePulse ? "animate-spin" : ""}`} />
                         <div className="min-w-0">
@@ -900,7 +910,7 @@ export default function BirthChartPage() {
                 })()}
 
                 {/* Kundali panel: chart + legend two-column */}
-                <section className="rounded-2xl border border-primary/15 bg-card/55 backdrop-blur-md p-5">
+                <section className="rounded-2xl border border-primary/15 bg-card/55 backdrop-blur-md p-5 m-sheet">
                   <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
                     <h2 className="font-serif text-lg flex items-center gap-2"><Sun className="h-4 w-4 text-primary" /> {t("pages:ui.birthChartPage.nameKundali", "{{name}}'s Kundali", { name: selectedChart.full_name })}</h2>
                     <div className="flex items-center gap-2">
@@ -913,18 +923,20 @@ export default function BirthChartPage() {
                   <div className="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_220px] gap-5 items-start">
                     <NorthIndianChart chartData={cd} hoveredHouse={hoveredHouse} onHoverHouse={setHoveredHouse} />
                     {/* Legend */}
-                    <div className="rounded-xl border border-primary/15 bg-background/30 p-3 space-y-1">
+                    <div className="rounded-xl border border-primary/15 bg-background/30 p-3 space-y-1 m-flat">
                       <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground mb-2">{t("pages:ui.birthChartPage.planets", "Planets")}</p>
                       {cd.planets.map(p => (
                         <div
                           key={p.name}
-                          className={`flex items-center justify-between text-[11px] py-1 px-2 rounded transition-colors ${hoveredHouse === p.house ? "bg-primary/10 text-foreground" : "text-foreground/85"}`}
+                          className={`flex items-center justify-between text-[12.5px] sm:text-[11px] py-1.5 sm:py-1 px-2 rounded transition-colors ${hoveredHouse === p.house ? "bg-primary/10 text-foreground" : "text-foreground/85"}`}
                         >
                           <span className="flex items-center gap-1.5">
                             <span className={PLANET_COLORS[p.name]}>{PLANET_GLYPHS[p.name]}</span>
-                            <span>{p.name.slice(0, 2)}</span>
+                            {/* Phones have the width for full names; the desktop rail does not */}
+                            <span className="sm:hidden">{p.name}</span>
+                            <span className="hidden sm:inline">{p.name.slice(0, 2)}</span>
                           </span>
-                          <span className="text-muted-foreground">{p.sign.slice(0, 3)}</span>
+                          <span className="text-muted-foreground"><span className="sm:hidden">{p.sign}</span><span className="hidden sm:inline">{p.sign.slice(0, 3)}</span></span>
                           <span className="text-muted-foreground">H{p.house}</span>
                           <span className="tabular-nums text-muted-foreground">{p.degree.toFixed(0)}°</span>
                         </div>
@@ -947,24 +959,27 @@ export default function BirthChartPage() {
                   <TabsContent value="overview" className="mt-2 space-y-5">
                     {cd.life_scores && <LifeAreaScores scores={cd.life_scores} />}
                     {cd.panchanga && (
-                      <div className="rounded-2xl border border-primary/15 bg-card/55 backdrop-blur-md p-5">
+                      <div className="rounded-2xl border border-primary/15 bg-card/55 backdrop-blur-md p-5 m-sheet">
                         <SectionTitle icon={<Sparkles className="h-3 w-3" />}>{t("birthChart.section.birthPanchanga")}</SectionTitle>
                         <PanchangaGrid panchanga={cd.panchanga} moonSign={cd.moon_sign} />
                       </div>
                     )}
                     {cd.mangal_dosha?.present && (
-                      <div className={`rounded-2xl border-2 p-4 backdrop-blur-md ${cd.mangal_dosha.cancelled ? "border-amber-500/30 bg-amber-500/5" : "border-destructive/30 bg-destructive/5"}`}>
+                      <div className={`rounded-2xl border-2 p-4 backdrop-blur-md m-sheet ${cd.mangal_dosha.cancelled ? "border-amber-500/30 bg-amber-500/5" : "border-destructive/30 bg-destructive/5"}`}>
                         <div className="flex items-start gap-3">
                           <Shield className={`h-5 w-5 mt-0.5 ${cd.mangal_dosha.cancelled ? "text-amber-500" : "text-destructive"}`} />
                           <div>
                             <p className={`font-serif text-sm ${cd.mangal_dosha.cancelled ? "text-amber-500" : "text-destructive"}`}>
-                              Mangal Dosha {cd.mangal_dosha.cancelled ? `(${t("birthChart.mangal.cancelled")})` : t("birthChart.mangal.detected")}
+                              {t("pages:ui.birthChartPage.mangalDosha", "Mangal Dosha")} {cd.mangal_dosha.cancelled ? `(${t("birthChart.mangal.cancelled")})` : t("birthChart.mangal.detected")}
                             </p>
                             <p className="text-xs text-muted-foreground mt-1">
                               {t("birthChart.mangal.fromPrefix")}{[cd.mangal_dosha.from_lagna && t("birthChart.mangal.fromLagna"), cd.mangal_dosha.from_moon && t("birthChart.mangal.fromMoon"), cd.mangal_dosha.from_venus && t("birthChart.mangal.fromVenus")].filter(Boolean).join(", ") || "—"}
                             </p>
                             {cd.mangal_dosha.cancelled && cd.mangal_dosha.cancellation_reason && (
-                              <p className="text-xs text-muted-foreground mt-1">{cd.mangal_dosha.cancellation_reason}</p>
+                              <p className="text-xs text-muted-foreground mt-1">
+                                {/* The engine joins a fixed set of reasons with "; " */}
+                                {cd.mangal_dosha.cancellation_reason.split("; ").map(r => t("pages:ui.birthChartPage.mangalReason." + MANGAL_REASON_KEYS[r], r)).join(" · ")}
+                              </p>
                             )}
                           </div>
                         </div>
@@ -986,12 +1001,12 @@ export default function BirthChartPage() {
                   </TabsContent>
 
                   <TabsContent value="dashas" className="mt-2 space-y-5">
-                    <div className="rounded-2xl border border-primary/15 bg-card/55 backdrop-blur-md p-5">
+                    <div className="rounded-2xl border border-primary/15 bg-card/55 backdrop-blur-md p-5 m-sheet">
                       <SectionTitle icon={<Clock className="h-3 w-3" />}>{t("birthChart.dasha.vimshottariTitle")}</SectionTitle>
                       <DashaTimeline periods={dashaPeriods} current={cd.dasha?.maha_dasha} />
                     </div>
                     {cd.dasha && (
-                      <div className="rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/8 via-card to-card p-5 backdrop-blur-md">
+                      <div className="rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/8 via-card to-card p-5 backdrop-blur-md m-sheet">
                         <div className="flex items-center justify-between mb-3">
                           <h3 className="font-serif text-base text-foreground">{cd.dasha.maha_dasha} {t("birthChart.dasha.mahadashaActive")}</h3>
                           <Badge className="text-[10px] bg-primary/20 text-primary border border-primary/40">{t("birthChart.dasha.inProgress")}</Badge>
@@ -1032,14 +1047,14 @@ export default function BirthChartPage() {
                       cache={cd.varshaphal_cache as any}
                     />
                     <SadeSatiTracker moonSign={cd.moon_sign} isElite={isElite} />
-                    <div className="rounded-2xl border border-primary/15 bg-card/55 backdrop-blur-md p-5">
+                    <div className="rounded-2xl border border-primary/15 bg-card/55 backdrop-blur-md p-5 m-sheet">
                       <SectionTitle icon={<Sparkles className="h-3 w-3" />}>{t("birthChart.section.adityaYogas")}</SectionTitle>
                       <YogasAccordionV2 yogas={cd.active_yogas} />
                     </div>
                   </TabsContent>
 
                   <TabsContent value="reading" className="mt-2 space-y-5">
-                    <div className="rounded-2xl border border-primary/20 bg-card/60 backdrop-blur-md p-5 space-y-4">
+                    <div className="rounded-2xl border border-primary/20 bg-card/60 backdrop-blur-md p-5 space-y-4 m-sheet">
                       <div className="flex items-center justify-between flex-wrap gap-3">
                         <div>
                           <h3 className="font-serif text-lg text-foreground">{t("birthChart.reading.title")}</h3>
@@ -1149,7 +1164,7 @@ function VargaTable({ chartData, isElite }: { chartData: ChartData; isElite: boo
 
   if (!isElite) {
     return (
-      <div className="rounded-2xl border border-primary/15 bg-card/50 backdrop-blur-md p-6 text-center space-y-3">
+      <div className="rounded-2xl border border-primary/15 bg-card/50 backdrop-blur-md p-6 text-center space-y-3 m-sheet">
         <div className="relative inline-flex">
           <div className="absolute inset-0 bg-primary/20 rounded-full blur-xl animate-pulse" />
           <div className="relative bg-gradient-to-br from-primary/20 to-primary/10 p-3 rounded-full border border-primary/30">

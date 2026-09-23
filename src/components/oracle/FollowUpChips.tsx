@@ -18,16 +18,19 @@ export default function FollowUpChips({ mode, onPick, disabled }: Props) {
         {t("pages:ui.followUpChips.goDeeper", "Go deeper:")}
       </p>
       <div className="flex flex-wrap gap-2">
-        {chips.map((c) => (
+        {chips.map((c, i) => {
+          const label = t(`pages:ui.followUpChips.${mode}.${i}`, c);
+          return (
           <button
             key={c}
-            onClick={() => onPick(c)}
+            onClick={() => onPick(label)}
             disabled={disabled}
             className="text-xs px-3 py-1.5 rounded-full border border-primary/30 bg-primary/5 text-foreground/85 hover:border-primary/60 hover:bg-primary/10 transition-colors disabled:opacity-50"
           >
-            {c}
+            {label}
           </button>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

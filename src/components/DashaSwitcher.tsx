@@ -44,7 +44,7 @@ export default function DashaSwitcher({ vimshottari, yogini, ashtottari, chara }
       <PillTabs items={items} value={tab} onValueChange={setTab} />
       <Tabs value={tab} onValueChange={setTab} className="w-full mt-3">
         <TabsContent value="vimshottari">
-          <Card className="border-primary/15">
+          <Card className="border-primary/15 m-flat">
             <CardContent className="py-4 space-y-1.5 text-sm">
               <div className="flex justify-between"><span className="text-muted-foreground">{t("pages:ui.dashaSwitcher.maha", "Maha")}</span><span className="font-medium text-foreground">{vimshottari.maha_dasha}</span></div>
               {vimshottari.antar_dasha && <div className="flex justify-between"><span className="text-muted-foreground">{t("pages:ui.dashaSwitcher.antar", "Antar")}</span><span className="font-medium text-foreground">{vimshottari.antar_dasha}</span></div>}
@@ -56,7 +56,7 @@ export default function DashaSwitcher({ vimshottari, yogini, ashtottari, chara }
 
         <TabsContent value="yogini">
           {yogini && (
-            <Card className="border-primary/15">
+            <Card className="border-primary/15 m-flat">
               <CardContent className="py-4 space-y-1.5 text-sm">
                 <div className="flex justify-between"><span className="text-muted-foreground">{t("pages:ui.dashaSwitcher.activeYogini", "Active Yogini")}</span><span className="font-medium text-foreground">{yogini.yogini}</span></div>
                 <div className="flex justify-between"><span className="text-muted-foreground">{t("pages:ui.dashaSwitcher.ruledBy", "Ruled by")}</span><span className="font-medium text-foreground">{yogini.planet}</span></div>
@@ -71,7 +71,7 @@ export default function DashaSwitcher({ vimshottari, yogini, ashtottari, chara }
           {!isElite ? (
             <EliteLock label={t("pages:ui.dashaSwitcher.ashtottariLock", "Ashtottari Dasha (108-year cycle)")} />
           ) : ashtottari ? (
-            <Card className="border-primary/15">
+            <Card className="border-primary/15 m-flat">
               <CardContent className="py-4 space-y-1.5 text-sm">
                 <div className="flex justify-between"><span className="text-muted-foreground">{t("pages:ui.dashaSwitcher.currentLord", "Current Lord")}</span><span className="font-medium text-foreground">{ashtottari.current}</span></div>
                 <div className="flex justify-between"><span className="text-muted-foreground">{t("pages:ui.dashaSwitcher.periodLength", "Period length")}</span><span className="font-medium text-foreground">{t("pages:ui.dashaSwitcher.years", "{{count}} years", { count: ashtottari.years })}</span></div>
@@ -86,7 +86,7 @@ export default function DashaSwitcher({ vimshottari, yogini, ashtottari, chara }
           {!isElite ? (
             <EliteLock label={t("pages:ui.dashaSwitcher.charaLock", "Chara Dasha (Jaimini sign-based)")} />
           ) : chara ? (
-            <Card className="border-primary/15">
+            <Card className="border-primary/15 m-flat">
               <CardContent className="py-4 space-y-1.5 text-sm">
                 <div className="flex justify-between"><span className="text-muted-foreground">{t("pages:ui.dashaSwitcher.currentSign", "Current Sign")}</span><span className="font-medium text-foreground">{chara.current_sign}</span></div>
                 <div className="flex justify-between"><span className="text-muted-foreground">{t("pages:ui.dashaSwitcher.periodLength", "Period length")}</span><span className="font-medium text-foreground">{t("pages:ui.dashaSwitcher.years", "{{count}} years", { count: chara.years })}</span></div>

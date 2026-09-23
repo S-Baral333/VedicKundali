@@ -37,6 +37,10 @@ export const toDevanagariDigits = (v: number | string) =>
 // would print the English weekday.
 const NE_WEEKDAYS = ["आइतबार", "सोमबार", "मंगलबार", "बुधबार", "बिहीबार", "शुक्रबार", "शनिबार"];
 
+/** Numbers inside localized strings: Nepali reads Devanagari digits. */
+export const localNum = (lang: string, v: number | string) =>
+  lang === "ne" ? toDevanagariDigits(v) : String(v);
+
 const INTL_LOCALE: Record<string, string> = { ne: "ne-NP", hi: "hi-IN", mr: "mr-IN", bn: "bn-IN", ta: "ta-IN", te: "te-IN" };
 
 type Period = "daily" | "tomorrow" | "weekly" | "monthly" | "yearly";

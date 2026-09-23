@@ -332,6 +332,12 @@
         "d40": "খবেদাংশ — মাতৃকুল",
         "d45": "অক্ষবেদাংশ — পিতৃকুল",
         "d60": "ষষ্ট্যংশ — পূর্বকর্ম"
+      },
+      "mangalDosha": "মঙ্গল দোষ",
+      "mangalReason": {
+        "ownExalted": "মঙ্গল স্বরাশি বা উচ্চ রাশিতে",
+        "jupiterAspects": "বৃহস্পতির দৃষ্টি মঙ্গলে",
+        "leoAquarius": "মঙ্গল সিংহ বা কুম্ভ রাশিতে"
       }
     },
     "sections": {
@@ -617,17 +623,6 @@
       "rowQuantity": "পরিমাণ",
       "rowRecipient": "প্রাপক",
       "rowTime": "সময়"
-    },
-    "birthPanchangaCard": {
-      "title": "জন্ম পঞ্জিকা",
-      "desc": "আপনার জন্মমুহূর্তে বৈদিক সময়ের পাঁচটি অঙ্গ।",
-      "waxing": "শুক্লপক্ষের চাঁদ",
-      "waning": "কৃষ্ণপক্ষের চাঁদ",
-      "vedicMasa": "বৈদিক মাস",
-      "lunarMonth": "চান্দ্র মাস",
-      "weekday": "বার",
-      "yogaOf": "২৭-এর মধ্যে #{{n}}",
-      "halfTithi": "অর্ধ-তিথি #{{n}}"
     },
     "bsDatePicker": {
       "year": "বছর",
@@ -1403,7 +1398,22 @@
       "title": "উদ্ধৃত নিয়ম · ঋষি গুরু বিধান"
     },
     "followUpChips": {
-      "goDeeper": "আরও গভীরে যান:"
+      "goDeeper": "আরও গভীরে যান:",
+      "insight": {
+        "0": "এমন কেন?",
+        "1": "গভীর কর্ম কী?",
+        "2": "এর অধিপতি গ্রহ কোনটি?"
+      },
+      "prediction": {
+        "0": "সঠিক সময় কখন?",
+        "1": "কোন লক্ষণ দেখব?",
+        "2": "কোন সময় এড়াব?"
+      },
+      "guidance": {
+        "0": "কোন অভ্যাস সাহায্য করবে?",
+        "1": "কোনো বৈদিক প্রতিকার?",
+        "2": "কীভাবে মানিয়ে নেব?"
+      }
     },
     "guruWatchingPanel": {
       "title": "গুরু দেখছেন",
@@ -2092,6 +2102,81 @@
       "Purva_Bhadrapada": "শবখাটের সামনের অংশ",
       "Uttara_Bhadrapada": "শবখাটের পেছনের অংশ",
       "Revati": "ঘরের পথে সাঁতরে চলা মাছ"
+    },
+    "limb": {
+      "Tithi": "তিথি",
+      "Vara": "বার",
+      "Nakshatra": "নক্ষত্র",
+      "Yoga": "যোগ",
+      "Karana": "করণ",
+      "Rashi": "রাশি",
+      "Masa": "মাস",
+      "Paksha": "পক্ষ"
+    },
+    "yoga": {
+      "Vishkambha": "বিষ্কম্ভ",
+      "Priti": "প্রীতি",
+      "Ayushman": "আয়ুষ্মান",
+      "Saubhagya": "সৌভাগ্য",
+      "Shobhana": "শোভন",
+      "Atiganda": "অতিগণ্ড",
+      "Sukarma": "সুকর্মা",
+      "Dhriti": "ধৃতি",
+      "Shula": "শূল",
+      "Ganda": "গণ্ড",
+      "Vriddhi": "বৃদ্ধি",
+      "Dhruva": "ধ্রুব",
+      "Vyaghata": "ব্যাঘাত",
+      "Harshana": "হর্ষণ",
+      "Vajra": "বজ্র",
+      "Siddhi": "সিদ্ধি",
+      "Vyatipata": "ব্যতীপাত",
+      "Variyan": "বরীয়ান",
+      "Parigha": "পরিঘ",
+      "Shiva": "শিব",
+      "Siddha": "সিদ্ধ",
+      "Sadhya": "সাধ্য",
+      "Shubha": "শুভ",
+      "Shukla": "শুক্ল",
+      "Brahma": "ব্রহ্ম",
+      "Indra": "ঐন্দ্র",
+      "Vaidhriti": "বৈধৃতি"
+    },
+    "karana": {
+      "Bava": "বব",
+      "Balava": "বালব",
+      "Kaulava": "কৌলব",
+      "Taitila": "তৈতিল",
+      "Garaja": "গর",
+      "Vanija": "বণিজ",
+      "Vishti": "বিষ্টি",
+      "Kimstughna": "কিংস্তুঘ্ন",
+      "Shakuni": "শকুনি",
+      "Chatushpada": "চতুষ্পদ",
+      "Naga": "নাগ"
+    },
+    "masa": {
+      "Vaishakha": "বৈশাখ",
+      "Jyaishtha": "জ্যৈষ্ঠ",
+      "Ashadha": "আষাঢ়",
+      "Shravana": "শ্রাবণ",
+      "Bhadrapada": "ভাদ্র",
+      "Ashwina": "আশ্বিন",
+      "Kartika": "কার্তিক",
+      "Margashirsha": "অগ্রহায়ণ",
+      "Pausha": "পৌষ",
+      "Magha": "মাঘ",
+      "Phalguna": "ফাল্গুন",
+      "Chaitra": "চৈত্র"
+    },
+    "vara": {
+      "Sunday": "রবিবার",
+      "Monday": "সোমবার",
+      "Tuesday": "মঙ্গলবার",
+      "Wednesday": "বুধবার",
+      "Thursday": "বৃহস্পতিবার",
+      "Friday": "শুক্রবার",
+      "Saturday": "শনিবার"
     }
   }
 }

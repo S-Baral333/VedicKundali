@@ -332,6 +332,12 @@
         "d40": "खवेदांश — मातृवंश",
         "d45": "अक्षवेदांश — पितृवंश",
         "d60": "षष्ट्यंश — पूर्व कर्म"
+      },
+      "mangalDosha": "मङ्गल दोष",
+      "mangalReason": {
+        "ownExalted": "मङ्गल आफ्नै वा उच्च राशिमा",
+        "jupiterAspects": "बृहस्पतिको दृष्टि मङ्गलमा",
+        "leoAquarius": "मङ्गल सिंह वा कुम्भ राशिमा"
       }
     },
     "sections": {
@@ -617,17 +623,6 @@
       "rowQuantity": "मात्रा",
       "rowRecipient": "पाउने व्यक्ति",
       "rowTime": "समय"
-    },
-    "birthPanchangaCard": {
-      "title": "जन्म पञ्चाङ्ग",
-      "desc": "तपाईंको जन्म क्षणमा वैदिक समयका पाँच अङ्ग।",
-      "waxing": "बढ्दो चन्द्र",
-      "waning": "घट्दो चन्द्र",
-      "vedicMasa": "वैदिक मास",
-      "lunarMonth": "चान्द्र महिना",
-      "weekday": "बार",
-      "yogaOf": "२७ मध्ये #{{n}}",
-      "halfTithi": "अर्ध-तिथि #{{n}}"
     },
     "bsDatePicker": {
       "year": "वर्ष",
@@ -1403,7 +1398,22 @@
       "title": "उद्धृत नियमहरू · ऋषि गुरु विधान"
     },
     "followUpChips": {
-      "goDeeper": "अझ गहिरो जानुहोस्:"
+      "goDeeper": "अझ गहिरो जानुहोस्:",
+      "insight": {
+        "0": "किन यस्तो हो?",
+        "1": "गहिरो कर्म के हो?",
+        "2": "यसको स्वामी ग्रह कुन हो?"
+      },
+      "prediction": {
+        "0": "ठ्याक्कै समय कहिले?",
+        "1": "कुन संकेतहरू हेर्ने?",
+        "2": "कुन समय जोगिने?"
+      },
+      "guidance": {
+        "0": "कुन अभ्यासले मद्दत गर्छ?",
+        "1": "कुनै वैदिक उपाय?",
+        "2": "यससँग कसरी मिल्ने?"
+      }
     },
     "guruWatchingPanel": {
       "title": "गुरु हेर्दै हुनुहुन्छ",
@@ -2092,6 +2102,81 @@
       "Purva_Bhadrapada": "अर्थीको अगाडिको भाग",
       "Uttara_Bhadrapada": "अर्थीको पछाडिको भाग",
       "Revati": "घरतिर पौडिरहेको माछा"
+    },
+    "limb": {
+      "Tithi": "तिथि",
+      "Vara": "वार",
+      "Nakshatra": "नक्षत्र",
+      "Yoga": "योग",
+      "Karana": "करण",
+      "Rashi": "राशि",
+      "Masa": "मास",
+      "Paksha": "पक्ष"
+    },
+    "yoga": {
+      "Vishkambha": "विष्कम्भ",
+      "Priti": "प्रीति",
+      "Ayushman": "आयुष्मान",
+      "Saubhagya": "सौभाग्य",
+      "Shobhana": "शोभन",
+      "Atiganda": "अतिगण्ड",
+      "Sukarma": "सुकर्मा",
+      "Dhriti": "धृति",
+      "Shula": "शूल",
+      "Ganda": "गण्ड",
+      "Vriddhi": "वृद्धि",
+      "Dhruva": "ध्रुव",
+      "Vyaghata": "व्याघात",
+      "Harshana": "हर्षण",
+      "Vajra": "वज्र",
+      "Siddhi": "सिद्धि",
+      "Vyatipata": "व्यतिपात",
+      "Variyan": "वरीयान",
+      "Parigha": "परिघ",
+      "Shiva": "शिव",
+      "Siddha": "सिद्ध",
+      "Sadhya": "साध्य",
+      "Shubha": "शुभ",
+      "Shukla": "शुक्ल",
+      "Brahma": "ब्रह्म",
+      "Indra": "ऐन्द्र",
+      "Vaidhriti": "वैधृति"
+    },
+    "karana": {
+      "Bava": "बव",
+      "Balava": "बालव",
+      "Kaulava": "कौलव",
+      "Taitila": "तैतिल",
+      "Garaja": "गरज",
+      "Vanija": "वणिज",
+      "Vishti": "विष्टि",
+      "Kimstughna": "किंस्तुघ्न",
+      "Shakuni": "शकुनि",
+      "Chatushpada": "चतुष्पाद",
+      "Naga": "नाग"
+    },
+    "masa": {
+      "Vaishakha": "बैशाख",
+      "Jyaishtha": "जेठ",
+      "Ashadha": "असार",
+      "Shravana": "साउन",
+      "Bhadrapada": "भदौ",
+      "Ashwina": "असोज",
+      "Kartika": "कात्तिक",
+      "Margashirsha": "मंसिर",
+      "Pausha": "पुस",
+      "Magha": "माघ",
+      "Phalguna": "फागुन",
+      "Chaitra": "चैत"
+    },
+    "vara": {
+      "Sunday": "आइतबार",
+      "Monday": "सोमबार",
+      "Tuesday": "मंगलबार",
+      "Wednesday": "बुधबार",
+      "Thursday": "बिहीबार",
+      "Friday": "शुक्रबार",
+      "Saturday": "शनिबार"
     }
   }
 }
