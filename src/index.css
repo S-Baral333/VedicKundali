@@ -1945,6 +1945,22 @@ html[style*="--text-scrim"] .lumen-block:not(.glass-card)::before {
     border-bottom: 0.5px solid hsl(var(--gold) / 0.12) !important;
     padding-inline: 1.25rem !important;
   }
+  /* Sheet variant for shadcn <Card>: its header/content bring their own p-6,
+     so the gutter lives on the card and the children are flush. */
+  .m-sheet-card {
+    margin-inline: -1.25rem !important;
+    border-radius: 0 !important;
+    border-left: 0 !important;
+    border-right: 0 !important;
+    border-top: 0.5px solid hsl(var(--gold) / 0.12) !important;
+    border-bottom: 0.5px solid hsl(var(--gold) / 0.12) !important;
+    padding-inline: 1.25rem !important;
+  }
+  .m-sheet-card > * {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
   /* Horizontal scroll rows: scroll edge to edge, no visible scrollbar */
   .m-edge-scroll {
     margin-inline: -1.25rem;

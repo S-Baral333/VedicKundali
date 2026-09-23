@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useActiveChart } from "@/hooks/useActiveChart";
 import ReadingAsChip from "@/components/ReadingAsChip";
+import { signLabel } from "@/lib/panchanga-i18n";
 import CosmicBackground from "@/components/CosmicBackground";
 import TwinkleText from "@/components/TwinkleText";
 import SacredPageShell from "@/components/layout/SacredPageShell";
@@ -51,6 +52,13 @@ function getScoreLabel(score: number, t: (k: string) => string): { label: string
   if (score >= 18) return { label: t("compatibility.score.good"), color: "text-primary" };
   if (score >= 12) return { label: t("compatibility.score.average"), color: "text-yellow-500" };
   return { label: t("compatibility.score.challenging"), color: "text-destructive" };
+}
+
+/** Minimal inline markdown: **bold** segments, which the report uses heavily. */
+function inlineMd(text: string): React.ReactNode[] {
+  return text.split(/\*\*(.+?)\*\*/g).map((part, i) =>
+    i % 2 === 1 ? <strong key={i} className="font-semibold text-foreground">{part}</strong> : <span key={i}>{part}</span>,
+  );
 }
 
 export default function CompatibilityPage() {
@@ -208,7 +216,7 @@ export default function CompatibilityPage() {
         </div>
 
         {/* Chart Selection */}
-        <Card className="animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
+        <Card className="animate-fade-in-up m-sheet-card" style={{ animationDelay: "0.1s" }}>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Heart className="h-5 w-5 text-primary" /> {t("compatibility.selectCharts.title")}
@@ -244,7 +252,7 @@ export default function CompatibilityPage() {
                       <SelectContent>
                         {charts.filter(c => c.id !== chartBId).map(c => (
                           <SelectItem key={c.id} value={c.id}>
-                            {c.full_name} — {c.birthplace}
+                            {c.full_name} <span className="text-muted-foreground">· {c.date_of_birth}</span>
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -259,7 +267,7 @@ export default function CompatibilityPage() {
                       <SelectContent>
                         {charts.filter(c => c.id !== chartAId).map(c => (
                           <SelectItem key={c.id} value={c.id}>
-                            {c.full_name} — {c.birthplace}
+                            {c.full_name} <span className="text-muted-foreground">· {c.date_of_birth}</span>
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -304,7 +312,7 @@ export default function CompatibilityPage() {
         {selectedReport && selectedReport.score != null && (
           <div className="space-y-4 animate-fade-in-up">
             {/* Score Card */}
-            <Card className="border-primary/20">
+            <Card className="border-primary/20 m-sheet-card">
               <CardContent className="p-6 relative">
                 <Button
                   variant="ghost"
@@ -339,14 +347,14 @@ export default function CompatibilityPage() {
 
                 {/* Mini chart summaries */}
                 {chartA && chartB && (
-                  <div className="grid grid-cols-2 gap-4 mt-6">
+                  <div className="grid grid-cols-2 gap-4 mt-6 m-flat-cols">
                     {[chartA, chartB].map((c) => {
                       const cd = c.chart_data;
                       return (
-                        <div key={c.id} className="text-center p-3 rounded-lg bg-secondary/50 border border-border/50">
+                        <div key={c.id} className="text-center p-3 rounded-lg bg-secondary/50 border border-border/50 m-flat">
                           <p className="font-medium text-foreground text-sm">{c.full_name}</p>
                           <p className="text-xs text-muted-foreground mt-1">
-                            {t("pages:ui.compatibilityPage.ascMoon", "{{asc}} Asc · {{moon}} Moon", { asc: cd?.ascendant?.sign, moon: cd?.moon_sign })}
+                            {t("pages:ui.compatibilityPage.ascMoon", "{{asc}} Asc · {{moon}} Moon", { asc: cd?.ascendant?.sign ? signLabel(t, cd.ascendant.sign) : "—", moon: cd?.moon_sign ? signLabel(t, cd.moon_sign) : "—" })}
                           </p>
                         </div>
                       );
@@ -358,19 +366,22 @@ export default function CompatibilityPage() {
 
             {/* Report Text */}
             {selectedReport.report && (
-              <Card>
+              <Card className="m-sheet-card">
                 <CardHeader>
                   <CardTitle className="font-serif">{t("compatibility.report.detailedAnalysisTitle")}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="prose prose-invert max-w-none text-foreground">
                     {selectedReport.report.split("\n").map((line, i) => {
-                      if (!line.trim()) return <br key={i} />;
-                      if (line.startsWith("## ")) return <h2 key={i} className="text-lg font-serif font-semibold text-foreground mt-4 mb-2">{line.replace("## ", "")}</h2>;
-                      if (line.startsWith("### ")) return <h3 key={i} className="text-base font-semibold text-foreground mt-3 mb-1">{line.replace("### ", "")}</h3>;
-                      if (line.startsWith("**") && line.endsWith("**")) return <p key={i} className="font-semibold text-foreground">{line.replace(/\*\*/g, "")}</p>;
-                      if (line.startsWith("- ")) return <li key={i} className="text-sm text-muted-foreground ml-4">{line.replace("- ", "")}</li>;
-                      return <p key={i} className="text-sm text-muted-foreground leading-relaxed">{line}</p>;
+                      const trimmed = line.trim();
+                      if (!trimmed) return <br key={i} />;
+                      // Horizontal rules: the model writes --- between sections
+                      if (/^-{3,}$/.test(trimmed)) return <hr key={i} className="my-4 border-border/40" />;
+                      if (trimmed.startsWith("### ")) return <h3 key={i} className="text-base font-semibold text-foreground mt-3 mb-1">{inlineMd(trimmed.slice(4))}</h3>;
+                      if (trimmed.startsWith("## ")) return <h2 key={i} className="text-lg font-serif font-semibold text-foreground mt-4 mb-2">{inlineMd(trimmed.slice(3))}</h2>;
+                      if (trimmed.startsWith("# ")) return <h2 key={i} className="text-xl font-serif font-semibold text-foreground mt-4 mb-2">{inlineMd(trimmed.slice(2))}</h2>;
+                      if (trimmed.startsWith("- ")) return <li key={i} className="text-[14.5px] sm:text-sm text-muted-foreground ml-4">{inlineMd(trimmed.slice(2))}</li>;
+                      return <p key={i} className="text-[14.5px] sm:text-sm text-muted-foreground leading-relaxed">{inlineMd(trimmed)}</p>;
                     })}
                   </div>
                 </CardContent>
@@ -381,20 +392,20 @@ export default function CompatibilityPage() {
 
         {/* Saved Reports */}
         {reports.length > 0 && (
-          <Card className="animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
+          <Card className="animate-fade-in-up m-sheet-card" style={{ animationDelay: "0.2s" }}>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 {t("compatibility.savedReports.title")} <Badge variant="secondary">{reports.length}</Badge>
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2">
+            <CardContent className="space-y-2 sm:space-y-2 m-divide">
               {reports.map(r => {
                 const isSelected = selectedReport?.id === r.id;
                 const scoreInfo = r.score != null ? getScoreLabel(r.score, t) : null;
                 return (
                   <div
                     key={r.id}
-                    className={`p-3 rounded-lg border transition-colors cursor-pointer flex items-center justify-between gap-2 ${
+                    className={`p-3 rounded-lg border transition-colors cursor-pointer flex items-center justify-between gap-2 m-flat ${
                       isSelected ? "border-primary bg-accent" : "border-border hover:border-primary/40"
                     }`}
                     onClick={() => setSelectedReport(r)}
