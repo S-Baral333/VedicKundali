@@ -1328,7 +1328,18 @@
     "dreamInterpretationPage": {
       "unknownError": "অজানা ত্রুটি",
       "copyCategory": "বিভাগ: {{category}}",
-      "copyKeySymbols": "মূল প্রতীক:"
+      "copyKeySymbols": "মূল প্রতীক:",
+      "category": {
+        "Daivika_Divine": "দৈবিক (ঐশ্বরিক)",
+        "Karmic": "কার্মিক",
+        "Shakuna_Omen": "শকুন (লক্ষণ)",
+        "Psychological": "মানসিক",
+        "Prophetic": "ভবিষ্যৎসূচক",
+        "Mixed_Karmic_Prophetic": "মিশ্র কার্মিক-ভবিষ্যৎসূচক",
+        "Mixed_Divine_Karmic": "মিশ্র দৈবিক-কার্মিক",
+        "Symbolic_Warning": "প্রতীকী সতর্কতা",
+        "Spiritual_Initiation": "আধ্যাত্মিক দীক্ষা"
+      }
     },
     "onboardingPage": {
       "born": "জন্ম {{date}}",

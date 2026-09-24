@@ -1328,7 +1328,18 @@
     "dreamInterpretationPage": {
       "unknownError": "తెలియని లోపం",
       "copyCategory": "వర్గం: {{category}}",
-      "copyKeySymbols": "ముఖ్య చిహ్నాలు:"
+      "copyKeySymbols": "ముఖ్య చిహ్నాలు:",
+      "category": {
+        "Daivika_Divine": "దైవికం",
+        "Karmic": "కర్మ సంబంధిత",
+        "Shakuna_Omen": "శకునం",
+        "Psychological": "మానసికం",
+        "Prophetic": "భవిష్యసూచకం",
+        "Mixed_Karmic_Prophetic": "మిశ్రమ కర్మ-భవిష్యసూచక",
+        "Mixed_Divine_Karmic": "మిశ్రమ దైవిక-కర్మ",
+        "Symbolic_Warning": "సంకేత హెచ్చరిక",
+        "Spiritual_Initiation": "ఆధ్యాత్మిక దీక్ష"
+      }
     },
     "onboardingPage": {
       "born": "జననం {{date}}",

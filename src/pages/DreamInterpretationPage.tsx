@@ -29,6 +29,8 @@ import TwinkleText from "@/components/TwinkleText";
 import SacredPageShell from "@/components/layout/SacredPageShell";
 import PageNavRail from "@/components/layout/PageNavRail";
 import CosmicFieldCard from "@/components/layout/CosmicFieldCard";
+import { formatPickerDate, localNum } from "@/lib/panchanga-i18n";
+import type { TFunction } from "i18next";
 
 interface DreamSymbol {
   name: string;
@@ -85,8 +87,14 @@ function getCategoryBorderClass(category: string | null) {
   return "border-l-primary/40";
 }
 
+/** Swapna Shastra categories come back from the engine in English (fixed set). */
+function categoryLabel(t: TFunction, category: string): string {
+  const key = category.replace(/\s+/g, "_").replace(/[()]/g, "").replace(/-/g, "_");
+  return t(`pages:ui.dreamInterpretationPage.category.${key}`, category);
+}
+
 export default function DreamInterpretationPage() {
-  const { t } = useTranslation("pages");
+  const { t, i18n } = useTranslation("pages");
   const { user, isLoading: authLoading } = useAuth();
   const { activeChart } = useActiveChart();
   const navigate = useNavigate();
@@ -286,7 +294,7 @@ export default function DreamInterpretationPage() {
         </div>
 
         {/* Dream Input Form */}
-        <Card>
+        <Card className="m-sheet-card">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Eye className="h-5 w-5" />
@@ -452,7 +460,7 @@ export default function DreamInterpretationPage() {
 
         {/* Results */}
         {(dreamCategory || streamedText) && (
-          <Card>
+          <Card className="m-sheet-card">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="flex items-center gap-2 font-serif">
@@ -481,7 +489,7 @@ export default function DreamInterpretationPage() {
                 )}
               </div>
               {dreamCategory && (
-                <Badge className="w-fit bg-primary/10 text-primary border border-primary/30">{dreamCategory}</Badge>
+                <Badge className="w-fit bg-primary/10 text-primary border border-primary/30">{categoryLabel(t, dreamCategory)}</Badge>
               )}
             </CardHeader>
             <CardContent className="space-y-4">
@@ -505,7 +513,7 @@ export default function DreamInterpretationPage() {
         )}
 
         {/* Dream History */}
-        <Card>
+        <Card className="m-sheet-card">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Moon className="h-5 w-5" />
@@ -541,18 +549,18 @@ export default function DreamInterpretationPage() {
               <div className="space-y-3">
                 {history.map((dream) => (
                   <Collapsible key={dream.id}>
-                    <CollapsibleTrigger className={`flex w-full items-center justify-between rounded-md border border-border/30 border-l-4 ${getCategoryBorderClass(dream.dream_category)} p-3 hover:border-primary/40 hover:bg-accent/30 transition-all text-left`}>
+                    <CollapsibleTrigger className={`m-flat flex w-full items-center justify-between rounded-md border border-border/30 border-l-4 ${getCategoryBorderClass(dream.dream_category)} p-3 hover:border-primary/40 hover:bg-accent/30 transition-all text-left`}>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
                           <span className="text-sm font-medium">
-                            {new Date(dream.created_at).toLocaleDateString()}
+                            {formatPickerDate(new Date(dream.created_at), i18n.language)}
                           </span>
                           {dream.dream_category && (
-                            <Badge className="text-xs bg-primary/10 text-primary border border-primary/30">{dream.dream_category}</Badge>
+                            <Badge className="text-xs bg-primary/10 text-primary border border-primary/30">{categoryLabel(t, dream.dream_category)}</Badge>
                           )}
                           {dream.extracted_symbols && Array.isArray(dream.extracted_symbols) && (dream.extracted_symbols as DreamSymbol[]).length > 0 && (
                             <span className="text-xs text-muted-foreground">
-                              {t("dream.history.symbolCount", { n: (dream.extracted_symbols as DreamSymbol[]).length })}
+                              {t("dream.history.symbolCount", { n: localNum(i18n.language, (dream.extracted_symbols as DreamSymbol[]).length) })}
                             </span>
                           )}
                         </div>

@@ -1328,7 +1328,18 @@
     "dreamInterpretationPage": {
       "unknownError": "தெரியாத பிழை",
       "copyCategory": "வகை: {{category}}",
-      "copyKeySymbols": "முக்கிய குறியீடுகள்:"
+      "copyKeySymbols": "முக்கிய குறியீடுகள்:",
+      "category": {
+        "Daivika_Divine": "தெய்வீகம்",
+        "Karmic": "கர்ம சார்ந்தது",
+        "Shakuna_Omen": "சகுனம்",
+        "Psychological": "மனநிலை சார்ந்தது",
+        "Prophetic": "முன்னறிவிப்பு",
+        "Mixed_Karmic_Prophetic": "கலப்பு கர்ம-முன்னறிவிப்பு",
+        "Mixed_Divine_Karmic": "கலப்பு தெய்வீக-கர்ம",
+        "Symbolic_Warning": "குறியீட்டு எச்சரிக்கை",
+        "Spiritual_Initiation": "ஆன்மீக தீட்சை"
+      }
     },
     "onboardingPage": {
       "born": "பிறப்பு {{date}}",

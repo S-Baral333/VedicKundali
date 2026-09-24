@@ -1158,7 +1158,18 @@
     "dreamInterpretationPage": {
       "unknownError": "Unknown error",
       "copyCategory": "Category: {{category}}",
-      "copyKeySymbols": "Key Symbols:"
+      "copyKeySymbols": "Key Symbols:",
+      "category": {
+        "Daivika_Divine": "Daivika (Divine)",
+        "Karmic": "Karmic",
+        "Shakuna_Omen": "Shakuna (Omen)",
+        "Psychological": "Psychological",
+        "Prophetic": "Prophetic",
+        "Mixed_Karmic_Prophetic": "Mixed Karmic-Prophetic",
+        "Mixed_Divine_Karmic": "Mixed Divine-Karmic",
+        "Symbolic_Warning": "Symbolic Warning",
+        "Spiritual_Initiation": "Spiritual Initiation"
+      }
     },
     "onboardingPage": {
       "born": "Born {{date}}",
