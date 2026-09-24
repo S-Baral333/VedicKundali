@@ -17,12 +17,15 @@ import SacredPageShell from "@/components/layout/SacredPageShell";
 import PageNavRail from "@/components/layout/PageNavRail";
 import CosmicFieldCard from "@/components/layout/CosmicFieldCard";
 import UpcomingEventsPanel from "@/components/predictions/UpcomingEventsPanel";
+import { formatPickerDate, signLabel } from "@/lib/panchanga-i18n";
 
 interface TimelineEvent {
   date: string;
   type: "dasha_change" | "transit" | "turning_point";
   category: "opportunity" | "caution" | "challenge" | "spiritual";
   title: string;
+  title_key?: string;
+  title_params?: Record<string, string>;
   description: string;
   planet: string;
   duration_days?: number;
@@ -41,7 +44,17 @@ const CATEGORY_CONFIG: Record<string, { color: string; borderColor: string; icon
 };
 
 export default function TimelinePage() {
-  const { t } = useTranslation("pages");
+  const { t, i18n } = useTranslation("pages");
+
+  /** Titles arrive as an English sentence plus the template that built it. */
+  const eventTitle = (ev: TimelineEvent) => {
+    if (!ev.title_key || !ev.title_params) return ev.title;
+    const params: Record<string, string> = {};
+    for (const [k, v] of Object.entries(ev.title_params)) {
+      params[k] = /sign/i.test(k) ? signLabel(t, v) : v; // planet and dasha lord names stay as the engine writes them
+    }
+    return t(`pages:timelineEvent.${ev.title_key}`, { ...params, defaultValue: ev.title });
+  };
   const [events, setEvents] = useState<TimelineEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -195,7 +208,7 @@ export default function TimelinePage() {
                       <div className="relative flex items-center gap-3 mb-6 -ml-8 pl-8">
                         <div className="absolute left-1.5 w-3 h-3 rounded-full bg-primary ring-4 ring-primary/20 z-10" />
                         <Badge variant="default" className="text-xs font-semibold">
-                          {t("timelinePage.nowBadge")}{new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                          {t("timelinePage.nowBadge")}{formatPickerDate(new Date(), i18n.language)}
                         </Badge>
                       </div>
                     )}
@@ -215,9 +228,9 @@ export default function TimelinePage() {
                             <div className="flex items-center gap-2 flex-1">
                               <span className="text-xl">{emoji}</span>
                               <div>
-                                <CardTitle className="text-sm font-semibold leading-tight">{event.title}</CardTitle>
+                                <CardTitle className="text-sm font-semibold leading-tight">{eventTitle(event)}</CardTitle>
                                 <p className="text-xs text-muted-foreground mt-0.5">
-                                  {new Date(event.date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
+                                  {formatPickerDate(new Date(event.date), i18n.language)}
                                   {event.duration_days ? t("timelinePage.monthsSuffix", { n: Math.round(event.duration_days / 30) }) : ""}
                                 </p>
                               </div>

@@ -36,7 +36,11 @@ export interface TriggerSignal {
 export interface PredictedEvent {
   event_type: EventType;
   life_area: LifeArea;
-  headline: string;        // short, factual: "Career visibility window"
+  headline: string;        // English fallback, e.g. "Career visibility window"
+  /** Template key + values so the client can render this sentence in any
+   *  language (`pages:timelineEvent.<key>`); headline stays the fallback. */
+  headline_key?: string;
+  headline_params?: Record<string, string | number>;
   window_start: string;    // ISO date YYYY-MM-DD
   window_end: string;
   confidence: number;      // 0..100

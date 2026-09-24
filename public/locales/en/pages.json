@@ -1511,5 +1511,41 @@
       "Friday": "Friday",
       "Saturday": "Saturday"
     }
+  },
+  "timelineEvent": {
+    "dashaWindow": "{{lord}} {{level}} — {{area}} window",
+    "dashaRecalibration": "{{lord}} {{level}} — recalibration in {{area}}",
+    "ingressExpansion": "{{planet}} enters {{sign}} — expansion in {{area}}",
+    "ingressRestructuring": "{{planet}} enters {{sign}} — restructuring in {{area}}",
+    "sadeSati": "Sade Sati — {{phase}}",
+    "aspectSupport": "{{planet}} aspects natal {{target}} (H{{house}}) — support on {{area}}",
+    "aspectPressure": "{{planet}} aspects natal {{target}} (H{{house}}) — pressure on {{area}}",
+    "yogaActive": "{{yoga}} active in {{lord}} mahadasha",
+    "level": {
+      "antardasha": "antardasha",
+      "pratyantar": "pratyantar"
+    },
+    "phase": {
+      "rising": "Phase 1, rising",
+      "peak": "Phase 2, peak",
+      "setting": "Phase 3, setting"
+    },
+    "area": {
+      "Career": "Career",
+      "Relationships": "Relationships",
+      "Marriage": "Marriage",
+      "Wealth": "Wealth",
+      "Health": "Health",
+      "Spiritual": "Spiritual",
+      "Family": "Family",
+      "Travel": "Travel",
+      "Education": "Education",
+      "General": "General"
+    },
+    "signal": "{{n}}% signal",
+    "antarShift": "Antar Dasha shifts to {{lord}}",
+    "mahaChange": "Maha Dasha changes: {{from}} → {{to}}",
+    "ingress": "{{planet}} enters {{sign}}",
+    "nodesIngress": "Rahu enters {{rahuSign}}, Ketu enters {{ketuSign}}"
   }
 }

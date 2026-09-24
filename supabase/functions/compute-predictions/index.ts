@@ -75,10 +75,13 @@ serve(async (req) => {
         event_type: e.event_type,
         life_area: e.life_area,
         headline: e.headline,
+        headline_key: e.headline_key ?? null,
+        headline_params: e.headline_params ?? null,
         window_start: e.window_start,
         window_end: e.window_end,
         confidence: e.confidence,
         triggers: e.triggers,
+        language: body?.language ?? "en",
       }));
       const { error: ierr } = await admin.from("predicted_events").insert(rows);
       if (ierr) {

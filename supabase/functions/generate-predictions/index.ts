@@ -81,11 +81,18 @@ serve(async (req) => {
         const rows = fresh.map(e => ({
           user_id: user.id, chart_id: chartId,
           event_type: e.event_type, life_area: e.life_area, headline: e.headline,
+          headline_key: e.headline_key ?? null, headline_params: e.headline_params ?? null,
           window_start: e.window_start, window_end: e.window_end,
           confidence: e.confidence, triggers: e.triggers,
           language,
         }));
-        await admin.from("predicted_events").insert(rows);
+        // Surfacing this matters: a silently dropped insert left the timeline
+        // showing English fallbacks with no clue why.
+        const { error: insErr } = await admin.from("predicted_events").insert(rows);
+        if (insErr) {
+          console.error("generate-predictions insert error", insErr);
+          throw insErr;
+        }
       }
       const refetch = await admin
         .from("predicted_events")
@@ -176,9 +183,19 @@ Format your response as JSON:
       throw new Error(`AI gateway error: ${aiResp.status}`);
     }
     const aiJson = await aiResp.json();
-    const content = aiJson.content?.[0]?.text ?? "{}";
-    let parsed: any = {};
-    try { parsed = JSON.parse(content); } catch { parsed = { narrations: [], overview: content }; }
+    // Read the text block (a thinking block can come first) and strip ```json
+    // fences before parsing. The old fallback stored the raw fenced payload as
+    // the overview, so the timeline printed a JSON blob at the top of the page.
+    const content = (aiJson.content ?? []).find((b: { type: string }) => b.type === "text")?.text ?? "";
+    let parsed: any = { narrations: [], overview: "" };
+    try {
+      const unfenced = content.replace(/^\s*```(?:json)?\s*/i, "").replace(/\s*```\s*$/, "");
+      const match = unfenced.match(/\{[\s\S]*\}/);
+      parsed = JSON.parse(match ? match[0] : unfenced);
+    } catch {
+      console.error(`[predictions] unparseable narration payload (${content.length} chars)`);
+      parsed = { narrations: [], overview: "" };
+    }
 
     // Write narrations back to events
     if (Array.isArray(parsed.narrations)) {

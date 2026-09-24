@@ -57,6 +57,17 @@ export function formatShortDate(iso: string, lang: string): string {
   return d.toLocaleDateString(INTL_LOCALE[lang] ?? "en-US", { weekday: "short", month: "short", day: "numeric" });
 }
 
+/** "Falgun 2083" — a month-and-year label (prediction windows). */
+export function formatMonthYear(iso: string, lang: string): string {
+  const d = new Date(iso.length > 10 ? iso : iso + "T12:00:00");
+  if (lang === "ne") {
+    const bs = adStringToBs(iso.slice(0, 10));
+    const month = bs && BS_MONTHS.find((m) => m.value === bs.month)?.np;
+    if (bs && month) return `${month} ${toDevanagariDigits(bs.year)}`;
+  }
+  return d.toLocaleDateString(INTL_LOCALE[lang] ?? "en-US", { month: "short", year: "numeric" });
+}
+
 /** "6 Asoj 2083" — a chosen date in a picker. */
 export function formatPickerDate(date: Date, lang: string): string {
   if (lang === "ne") {

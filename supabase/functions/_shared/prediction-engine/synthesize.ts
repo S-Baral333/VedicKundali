@@ -99,10 +99,13 @@ function dashaEvents(chartData: any, natalById: Map<string, NatalPlanet>): Predi
       ? `${lord} ${w.level === "pratyantardasha" ? "pratyantar" : "antardasha"} — ${area.toLowerCase()} window`
       : `${lord} ${w.level === "pratyantardasha" ? "pratyantar" : "antardasha"} — recalibration in ${area.toLowerCase()}`;
 
+    const dashaLevel = w.level === "pratyantardasha" ? "pratyantar" : "antardasha";
     out.push({
       event_type: "dasha_shift",
       life_area: area,
       headline,
+      headline_key: benefic ? "dashaWindow" : "dashaRecalibration",
+      headline_params: { lord, level: dashaLevel, area },
       window_start: w.start.toISOString().slice(0,10),
       window_end: w.end.toISOString().slice(0,10),
       confidence: Math.min(95, confidence),
@@ -171,6 +174,8 @@ function ingressEvents(chartData: any): PredictedEvent[] {
           event_type: "transit_ingress",
           life_area: area,
           headline: `${planet} enters ${sign} — ${benefic ? "expansion" : "restructuring"} in ${area.toLowerCase()}`,
+          headline_key: benefic ? "ingressExpansion" : "ingressRestructuring",
+          headline_params: { planet, sign, area },
           window_start: exact,
           window_end: windowEnd.toISOString().slice(0,10),
           confidence: Math.max(20, Math.min(95, confidence)),
@@ -204,6 +209,8 @@ function sadeSatiEvent(chartData: any): PredictedEvent | null {
     event_type: "sade_sati_phase",
     life_area: "General",
     headline: `Sade Sati ${phase}`,
+    headline_key: "sadeSati",
+    headline_params: { phase: dist === 11 ? "rising" : dist === 0 ? "peak" : "setting" },
     window_start: today.toISOString().slice(0,10),
     window_end: new Date(today.getTime() + 900 * 86400000).toISOString().slice(0,10),
     confidence: 75,
@@ -263,6 +270,8 @@ function transitToNatalAspects(chartData: any, natal: NatalPlanet[]): PredictedE
         event_type: "transit_to_natal",
         life_area: area,
         headline: `${tp} aspects natal ${targetName} (H${targetNatal.house}) — ${benefic ? "support" : "pressure"} on ${area.toLowerCase()}`,
+        headline_key: benefic ? "aspectSupport" : "aspectPressure",
+        headline_params: { planet: tp, target: targetName, house: targetNatal.house, area },
         window_start: start.toISOString().slice(0,10),
         window_end: end.toISOString().slice(0,10),
         confidence: Math.min(90, confidence),
@@ -294,6 +303,8 @@ function yogaActivationEvents(chartData: any): PredictedEvent[] {
       event_type: "yoga_activation",
       life_area: isWealth ? "Wealth" : "Career",
       headline: `${name} active in ${d.maha_dasha} mahadasha`,
+      headline_key: "yogaActive",
+      headline_params: { yoga: name, lord: d.maha_dasha },
       window_start: today.toISOString().slice(0,10),
       window_end: end.toISOString().slice(0,10),
       confidence: 70,

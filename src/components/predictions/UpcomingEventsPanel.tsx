@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
+import { formatMonthYear, localNum, signLabel } from "@/lib/panchanga-i18n";
 import { supabase } from "@/integrations/supabase/client";
 import { withLanguage, getCurrentLanguage } from "@/lib/i18nClient";
 import { Card, CardContent } from "@/components/ui/card";
@@ -17,6 +19,8 @@ interface PredictedEventRow {
   event_type: string;
   life_area: string;
   headline: string;
+  headline_key: string | null;
+  headline_params: Record<string, string | number> | null;
   window_start: string;
   window_end: string;
   confidence: number;
@@ -35,14 +39,30 @@ const AREA_ICON: Record<string, any> = {
   Travel: Plane, General: Compass,
 };
 
-function formatWindow(start: string, end: string) {
-  const s = new Date(start), e = new Date(end);
-  const fmt = (d: Date) => d.toLocaleDateString("en-US", { month: "short", year: "numeric" });
-  return s.getTime() === e.getTime() ? fmt(s) : `${fmt(s)} → ${fmt(e)}`;
+function formatWindow(start: string, end: string, lang: string) {
+  const a = formatMonthYear(start, lang), b = formatMonthYear(end, lang);
+  return a === b ? a : `${a} → ${b}`;
+}
+
+/** The engine stores an English sentence plus the template that built it; render
+ *  the template when we have it so the prediction reads in the user's language. */
+function eventHeadline(t: TFunction, lang: string, ev: PredictedEventRow): string {
+  if (!ev.headline_key || !ev.headline_params) return ev.headline;
+  const p = ev.headline_params;
+  const params: Record<string, string> = {};
+  for (const [k, v] of Object.entries(p)) {
+    if (k === "area") params[k] = t(`pages:timelineEvent.area.${v}`, String(v));
+    else if (k === "level") params[k] = t(`pages:timelineEvent.level.${v}`, String(v));
+    else if (k === "phase") params[k] = t(`pages:timelineEvent.phase.${v}`, String(v));
+    else if (k === "sign") params[k] = signLabel(t, String(v));
+    else if (k === "house") params[k] = localNum(lang, v as number);
+    else params[k] = String(v); // planet, target, yoga and lord names stay as the engine writes them
+  }
+  return t(`pages:timelineEvent.${ev.headline_key}`, { ...params, defaultValue: ev.headline });
 }
 
 export default function UpcomingEventsPanel({ chartId, className = "" }: Props) {
-  const { t } = useTranslation("pages");
+  const { t, i18n } = useTranslation("pages");
   const [events, setEvents] = useState<PredictedEventRow[]>([]);
   const [overview, setOverview] = useState<string>("");
   const [loading, setLoading] = useState(true);
@@ -155,11 +175,11 @@ export default function UpcomingEventsPanel({ chartId, className = "" }: Props) 
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <Badge variant="secondary" className="text-[10px]">{ev.life_area}</Badge>
-                        <span className="text-xs text-muted-foreground">{formatWindow(ev.window_start, ev.window_end)}</span>
-                        <span className="text-[10px] text-muted-foreground ml-auto">{ev.confidence}% signal</span>
+                        <Badge variant="secondary" className="text-[10px]">{t(`pages:timelineEvent.area.${ev.life_area}`, ev.life_area)}</Badge>
+                        <span className="text-xs text-muted-foreground">{formatWindow(ev.window_start, ev.window_end, i18n.language)}</span>
+                        <span className="text-[10px] text-muted-foreground ml-auto">{t("pages:timelineEvent.signal", "{{n}}% signal", { n: localNum(i18n.language, ev.confidence) })}</span>
                       </div>
-                      <p className="text-sm font-medium text-foreground mt-1">{ev.headline}</p>
+                      <p className="text-sm font-medium text-foreground mt-1">{eventHeadline(t, i18n.language, ev)}</p>
                       {ev.narration && (
                         <p className="text-sm text-foreground/80 mt-2 leading-relaxed">{ev.narration}</p>
                       )}

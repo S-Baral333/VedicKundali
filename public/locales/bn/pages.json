@@ -2190,5 +2190,41 @@
       "Friday": "শুক্রবার",
       "Saturday": "শনিবার"
     }
+  },
+  "timelineEvent": {
+    "dashaWindow": "{{lord}} {{level}} — {{area}} ক্ষেত্রে অনুকূল সময়",
+    "dashaRecalibration": "{{lord}} {{level}} — {{area}} ক্ষেত্রে পুনর্বিন্যাস",
+    "ingressExpansion": "{{planet}}-এর {{sign}} রাশিতে প্রবেশ — {{area}} ক্ষেত্রে সম্প্রসারণ",
+    "ingressRestructuring": "{{planet}}-এর {{sign}} রাশিতে প্রবেশ — {{area}} ক্ষেত্রে পুনর্গঠন",
+    "sadeSati": "সাড়েসাতি — {{phase}}",
+    "aspectSupport": "{{planet}}-এর দৃষ্টি জন্ম {{target}} (ভাব {{house}})-এর উপর — {{area}} ক্ষেত্রে সহায়তা",
+    "aspectPressure": "{{planet}}-এর দৃষ্টি জন্ম {{target}} (ভাব {{house}})-এর উপর — {{area}} ক্ষেত্রে চাপ",
+    "yogaActive": "{{lord}} মহাদশায় {{yoga}} যোগ সক্রিয়",
+    "level": {
+      "antardasha": "অন্তর্দশা",
+      "pratyantar": "প্রত্যন্তর"
+    },
+    "phase": {
+      "rising": "প্রথম পর্যায়, উদয়",
+      "peak": "দ্বিতীয় পর্যায়, শীর্ষ",
+      "setting": "তৃতীয় পর্যায়, অস্ত"
+    },
+    "area": {
+      "Career": "কর্মজীবন",
+      "Relationships": "সম্পর্ক",
+      "Marriage": "বিবাহ",
+      "Wealth": "সম্পদ",
+      "Health": "স্বাস্থ্য",
+      "Spiritual": "আধ্যাত্মিক",
+      "Family": "পরিবার",
+      "Travel": "ভ্রমণ",
+      "Education": "শিক্ষা",
+      "General": "সাধারণ"
+    },
+    "signal": "{{n}}% সংকেত",
+    "antarShift": "অন্তর্দশা {{lord}}-এ পরিবর্তন",
+    "mahaChange": "মহাদশা পরিবর্তন: {{from}} → {{to}}",
+    "ingress": "{{planet}}-এর {{sign}} রাশিতে প্রবেশ",
+    "nodesIngress": "রাহু {{rahuSign}} রাশিতে, কেতু {{ketuSign}} রাশিতে প্রবেশ"
   }
 }

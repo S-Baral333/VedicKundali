@@ -2190,5 +2190,41 @@
       "Friday": "வெள்ளி",
       "Saturday": "சனி"
     }
+  },
+  "timelineEvent": {
+    "dashaWindow": "{{lord}} {{level}} — {{area}} சார்ந்த சாதகமான காலம்",
+    "dashaRecalibration": "{{lord}} {{level}} — {{area}} சார்ந்த மறுசீரமைப்பு",
+    "ingressExpansion": "{{planet}} {{sign}} ராசியில் பிரவேசம் — {{area}} சார்ந்த விரிவாக்கம்",
+    "ingressRestructuring": "{{planet}} {{sign}} ராசியில் பிரவேசம் — {{area}} சார்ந்த மறுகட்டமைப்பு",
+    "sadeSati": "ஏழரைச் சனி — {{phase}}",
+    "aspectSupport": "{{planet}} கிரகத்தின் பார்வை ஜாதக {{target}} (பாவம் {{house}}) மீது — {{area}} சார்ந்த ஆதரவு",
+    "aspectPressure": "{{planet}} கிரகத்தின் பார்வை ஜாதக {{target}} (பாவம் {{house}}) மீது — {{area}} சார்ந்த அழுத்தம்",
+    "yogaActive": "{{lord}} மகாதசையில் {{yoga}} யோகம் செயல்பாட்டில்",
+    "level": {
+      "antardasha": "அந்தர்தசை",
+      "pratyantar": "பிரத்யந்தர்"
+    },
+    "phase": {
+      "rising": "முதல் கட்டம், உதயம்",
+      "peak": "இரண்டாம் கட்டம், உச்சம்",
+      "setting": "மூன்றாம் கட்டம், அஸ்தமனம்"
+    },
+    "area": {
+      "Career": "தொழில்",
+      "Relationships": "உறவுகள்",
+      "Marriage": "திருமணம்",
+      "Wealth": "செல்வம்",
+      "Health": "உடல்நலம்",
+      "Spiritual": "ஆன்மீகம்",
+      "Family": "குடும்பம்",
+      "Travel": "பயணம்",
+      "Education": "கல்வி",
+      "General": "பொது"
+    },
+    "signal": "{{n}}% சமிக்ஞை",
+    "antarShift": "அந்தர்தசை {{lord}}க்கு மாறுகிறது",
+    "mahaChange": "மகாதசை மாற்றம்: {{from}} → {{to}}",
+    "ingress": "{{planet}} {{sign}} ராசியில் பிரவேசம்",
+    "nodesIngress": "ராகு {{rahuSign}} ராசியில், கேது {{ketuSign}} ராசியில் பிரவேசம்"
   }
 }

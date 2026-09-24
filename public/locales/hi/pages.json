@@ -2190,5 +2190,41 @@
       "Friday": "शुक्रवार",
       "Saturday": "शनिवार"
     }
+  },
+  "timelineEvent": {
+    "dashaWindow": "{{lord}} {{level}} — {{area}} के लिए अनुकूल अवधि",
+    "dashaRecalibration": "{{lord}} {{level}} — {{area}} में पुनःसंतुलन",
+    "ingressExpansion": "{{planet}} का {{sign}} राशि में प्रवेश — {{area}} में विस्तार",
+    "ingressRestructuring": "{{planet}} का {{sign}} राशि में प्रवेश — {{area}} में पुनर्संरचना",
+    "sadeSati": "साढ़ेसाती — {{phase}}",
+    "aspectSupport": "{{planet}} की दृष्टि जन्म {{target}} (भाव {{house}}) पर — {{area}} को सहयोग",
+    "aspectPressure": "{{planet}} की दृष्टि जन्म {{target}} (भाव {{house}}) पर — {{area}} पर दबाव",
+    "yogaActive": "{{lord}} महादशा में {{yoga}} योग सक्रिय",
+    "level": {
+      "antardasha": "अंतर्दशा",
+      "pratyantar": "प्रत्यंतर"
+    },
+    "phase": {
+      "rising": "पहला चरण, उदय",
+      "peak": "दूसरा चरण, शिखर",
+      "setting": "तीसरा चरण, अस्त"
+    },
+    "area": {
+      "Career": "करियर",
+      "Relationships": "संबंध",
+      "Marriage": "विवाह",
+      "Wealth": "धन",
+      "Health": "स्वास्थ्य",
+      "Spiritual": "आध्यात्म",
+      "Family": "परिवार",
+      "Travel": "यात्रा",
+      "Education": "शिक्षा",
+      "General": "सामान्य"
+    },
+    "signal": "{{n}}% संकेत",
+    "antarShift": "अंतर्दशा {{lord}} में बदलती है",
+    "mahaChange": "महादशा परिवर्तन: {{from}} → {{to}}",
+    "ingress": "{{planet}} का {{sign}} राशि में प्रवेश",
+    "nodesIngress": "राहु {{rahuSign}} राशि में, केतु {{ketuSign}} राशि में प्रवेश"
   }
 }

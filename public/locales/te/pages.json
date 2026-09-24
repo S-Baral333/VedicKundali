@@ -2190,5 +2190,41 @@
       "Friday": "శుక్రవారం",
       "Saturday": "శనివారం"
     }
+  },
+  "timelineEvent": {
+    "dashaWindow": "{{lord}} {{level}} — {{area}} విషయంలో అనుకూల సమయం",
+    "dashaRecalibration": "{{lord}} {{level}} — {{area}} విషయంలో పునఃసర్దుబాటు",
+    "ingressExpansion": "{{planet}} {{sign}} రాశిలో ప్రవేశం — {{area}} విషయంలో విస్తరణ",
+    "ingressRestructuring": "{{planet}} {{sign}} రాశిలో ప్రవేశం — {{area}} విషయంలో పునర్నిర్మాణం",
+    "sadeSati": "ఏలినాటి శని — {{phase}}",
+    "aspectSupport": "{{planet}} గ్రహ దృష్టి జన్మ {{target}} (భావం {{house}}) మీద — {{area}} విషయంలో మద్దతు",
+    "aspectPressure": "{{planet}} గ్రహ దృష్టి జన్మ {{target}} (భావం {{house}}) మీద — {{area}} విషయంలో ఒత్తిడి",
+    "yogaActive": "{{lord}} మహాదశలో {{yoga}} యోగం క్రియాశీలం",
+    "level": {
+      "antardasha": "అంతర్దశ",
+      "pratyantar": "ప్రత్యంతర"
+    },
+    "phase": {
+      "rising": "మొదటి ఘట్టం, ఉదయం",
+      "peak": "రెండవ ఘట్టం, శిఖరం",
+      "setting": "మూడవ ఘట్టం, అస్తమయం"
+    },
+    "area": {
+      "Career": "వృత్తి",
+      "Relationships": "సంబంధాలు",
+      "Marriage": "వివాహం",
+      "Wealth": "సంపద",
+      "Health": "ఆరోగ్యం",
+      "Spiritual": "ఆధ్యాత్మికం",
+      "Family": "కుటుంబం",
+      "Travel": "ప్రయాణం",
+      "Education": "విద్య",
+      "General": "సాధారణం"
+    },
+    "signal": "{{n}}% సంకేతం",
+    "antarShift": "అంతర్దశ {{lord}}కు మారుతుంది",
+    "mahaChange": "మహాదశ మార్పు: {{from}} → {{to}}",
+    "ingress": "{{planet}} {{sign}} రాశిలో ప్రవేశం",
+    "nodesIngress": "రాహువు {{rahuSign}} రాశిలో, కేతువు {{ketuSign}} రాశిలో ప్రవేశం"
   }
 }
