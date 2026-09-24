@@ -41,9 +41,32 @@ const NE_WEEKDAYS = ["आइतबार", "सोमबार", "मंगल�
 export const localNum = (lang: string, v: number | string) =>
   lang === "ne" ? toDevanagariDigits(v) : String(v);
 
-const INTL_LOCALE: Record<string, string> = { ne: "ne-NP", hi: "hi-IN", mr: "mr-IN", bn: "bn-IN", ta: "ta-IN", te: "te-IN" };
 
 type Period = "daily" | "tomorrow" | "weekly" | "monthly" | "yearly";
+
+const INTL_LOCALE: Record<string, string> = { ne: "ne-NP", hi: "hi-IN", mr: "mr-IN", bn: "bn-IN", ta: "ta-IN", te: "te-IN" };
+
+/** "Tue, 6 Asoj" — a day in a list. Nepali uses the Bikram Sambat date. */
+export function formatShortDate(iso: string, lang: string): string {
+  const d = new Date(iso.length > 10 ? iso : iso + "T12:00:00");
+  if (lang === "ne") {
+    const bs = adStringToBs(iso.slice(0, 10));
+    const month = bs && BS_MONTHS.find((m) => m.value === bs.month)?.np;
+    if (bs && month) return `${NE_WEEKDAYS[d.getDay()]}, ${toDevanagariDigits(bs.day)} ${month}`;
+  }
+  return d.toLocaleDateString(INTL_LOCALE[lang] ?? "en-US", { weekday: "short", month: "short", day: "numeric" });
+}
+
+/** "6 Asoj 2083" — a chosen date in a picker. */
+export function formatPickerDate(date: Date, lang: string): string {
+  if (lang === "ne") {
+    const iso = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+    const bs = adStringToBs(iso);
+    const month = bs && BS_MONTHS.find((m) => m.value === bs.month)?.np;
+    if (bs && month) return `${toDevanagariDigits(bs.day)} ${month} ${toDevanagariDigits(bs.year)}`;
+  }
+  return date.toLocaleDateString(INTL_LOCALE[lang] ?? "en-US", { month: "short", day: "numeric", year: "numeric" });
+}
 
 /**
  * Date line for a reading. English keeps its original en-US format; Nepali day

@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { formatPickerDate, formatShortDate, nakshatraLabels, pakshaTithiLabel, signLabel } from "@/lib/panchanga-i18n";
 import { format, addDays, differenceInCalendarDays } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
 import { withLanguage } from "@/lib/i18nClient";
@@ -54,7 +55,7 @@ interface MuhurtaResult {
 }
 
 export default function MuhurtaPage() {
-  const { t } = useTranslation("pages");
+  const { t, i18n } = useTranslation("pages");
   const { toast } = useToast();
   const { activeChart } = useActiveChart();
   const [activity, setActivity] = useState<string | null>(null);
@@ -183,7 +184,7 @@ export default function MuhurtaPage() {
         {loading && (
           <div className="space-y-3">
             {[1, 2, 3, 4].map((i) => (
-              <Card key={i} className="border-border/50">
+              <Card key={i} className="border-border/50 m-sheet-card">
                 <CardContent className="p-4">
                   <div className="flex gap-4">
                     <Skeleton className="h-16 w-16 rounded-full" />
@@ -204,7 +205,7 @@ export default function MuhurtaPage() {
           <div className="space-y-3">
             <p className="text-sm text-muted-foreground mb-2">{t("muhurtaPage.results.summary", { n: results.length })}</p>
             {results.map((m, i) => (
-              <Card key={m.date} className="border-border/50 overflow-hidden">
+              <Card key={m.date} className="border-border/50 overflow-hidden m-sheet-card">
                 <CardContent className="p-4">
                   <div className="flex items-start gap-4">
                     {/* Score Circle */}
@@ -226,7 +227,7 @@ export default function MuhurtaPage() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap mb-1">
                         <span className="font-semibold text-foreground">
-                          {format(new Date(m.date + "T12:00:00"), "EEE, MMM d")}
+                          {formatShortDate(m.date, i18n.language)}
                         </span>
                         <Badge className={`text-[10px] ${QUALITY_COLORS[m.quality]}`}>
                           {t("pages:ui.muhurtaPage.quality_" + m.quality, m.quality.charAt(0).toUpperCase() + m.quality.slice(1))}
@@ -234,7 +235,7 @@ export default function MuhurtaPage() {
                         {i === 0 && <Badge variant="default" className="text-[10px]">{t("muhurtaPage.results.bestPick")}</Badge>}
                       </div>
                       <p className="text-xs text-muted-foreground mb-1.5">
-                        {m.nakshatra} • {m.tithi} • {t("pages:ui.muhurtaPage.moonIn", "Moon in {{sign}}", { sign: m.moonSign })}
+                        {nakshatraLabels(t, { name: m.nakshatra, deity: "", symbol: "" }).name} • {pakshaTithiLabel(t, "", m.tithi)} • {t("pages:ui.muhurtaPage.moonIn", "Moon in {{sign}}", { sign: signLabel(t, m.moonSign) })}
                       </p>
                       <p className="text-sm text-foreground/80 leading-relaxed">{m.summary}</p>
 
@@ -260,13 +261,13 @@ export default function MuhurtaPage() {
 }
 
 function DatePicker({ label, date, onSelect, disabled }: { label: string; date?: Date; onSelect: (d: Date | undefined) => void; disabled?: (d: Date) => boolean }) {
-  const { t } = useTranslation("pages");
+  const { t, i18n } = useTranslation("pages");
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="outline" className="flex-1 justify-between">
           <span className="text-muted-foreground text-sm">{label}:</span>
-          <span>{date ? format(date, "MMM d, yyyy") : t("muhurtaPage.datePicker.pickDate")}</span>
+          <span>{date ? formatPickerDate(date, i18n.language) : t("muhurtaPage.datePicker.pickDate")}</span>
           <ChevronDown className="h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>

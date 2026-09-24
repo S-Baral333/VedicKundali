@@ -302,7 +302,7 @@ serve(async (req) => {
       body: JSON.stringify({
         model: "claude-haiku-4-5-20251001",
         max_tokens: 1024,
-        system: applyGuru("You are a Vedic Muhurta expert. Given ranked auspicious days, provide a brief 1-2 sentence summary for each explaining WHY it's suitable for the activity. Return ONLY a JSON array of strings, one summary per day in the same order.", await resolveGuruContext(supabase, userId)) + buildLanguageInstruction(language),
+        system: applyGuru("You are a Vedic Muhurta expert. Given ranked auspicious days, provide a brief 1-2 sentence summary for each explaining WHY it's suitable for the activity. Do NOT restate the date — the app already shows it beside your text, in the reader's own calendar. Start with the reason (the nakshatra, tithi or moon placement that makes the day suitable). Return ONLY a JSON array of strings, one summary per day in the same order.", await resolveGuruContext(supabase, userId)) + buildLanguageInstruction(language),
         messages: [
           {
             role: "user",
