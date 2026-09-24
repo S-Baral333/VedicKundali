@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { planetLabel } from "@/lib/panchanga-i18n";
 import { Navigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -254,7 +255,7 @@ function PlanetPillsRow({ chartData }: { chartData: ChartData }) {
         return (
           <div key={p.name} className={`shrink-0 snap-start inline-flex items-center gap-2 rounded-full border px-3 py-1.5 backdrop-blur-md ${status.color}`}>
             <span className={`text-base ${PLANET_COLORS[p.name] || ""}`}>{PLANET_GLYPHS[p.name]}</span>
-            <span className="text-xs font-medium">{p.name}</span>
+            <span className="text-xs font-medium">{planetLabel(t, p.name)}</span>
             <span className="text-[10px] opacity-80">· {p.sign} · H{p.house}</span>
             <span className="text-[11px] uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-background/40">{status.label}</span>
           </div>
@@ -933,7 +934,7 @@ export default function BirthChartPage() {
                           <span className="flex items-center gap-1.5">
                             <span className={PLANET_COLORS[p.name]}>{PLANET_GLYPHS[p.name]}</span>
                             {/* Phones have the width for full names; the desktop rail does not */}
-                            <span className="sm:hidden">{p.name}</span>
+                            <span className="sm:hidden">{planetLabel(t, p.name)}</span>
                             <span className="hidden sm:inline">{p.name.slice(0, 2)}</span>
                           </span>
                           <span className="text-muted-foreground"><span className="sm:hidden">{p.sign}</span><span className="hidden sm:inline">{p.sign.slice(0, 3)}</span></span>

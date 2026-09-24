@@ -17,7 +17,7 @@ import SacredPageShell from "@/components/layout/SacredPageShell";
 import PageNavRail from "@/components/layout/PageNavRail";
 import CosmicFieldCard from "@/components/layout/CosmicFieldCard";
 import UpcomingEventsPanel from "@/components/predictions/UpcomingEventsPanel";
-import { formatPickerDate, signLabel } from "@/lib/panchanga-i18n";
+import { formatPickerDate, planetLabel, signLabel } from "@/lib/panchanga-i18n";
 
 interface TimelineEvent {
   date: string;
@@ -51,7 +51,7 @@ export default function TimelinePage() {
     if (!ev.title_key || !ev.title_params) return ev.title;
     const params: Record<string, string> = {};
     for (const [k, v] of Object.entries(ev.title_params)) {
-      params[k] = /sign/i.test(k) ? signLabel(t, v) : v; // planet and dasha lord names stay as the engine writes them
+      params[k] = /sign/i.test(k) ? signLabel(t, v) : planetLabel(t, v); // planet, lord, from, to are all grahas
     }
     return t(`pages:timelineEvent.${ev.title_key}`, { ...params, defaultValue: ev.title });
   };

@@ -17,7 +17,7 @@ import ContextRail from "@/components/dashboard/ContextRail";
 import { LIFE_PRIORITIES } from "@/lib/onboarding-constants";
 import RishiGuruBadge from "@/components/RishiGuruBadge";
 import AstroText from "@/components/AstroText";
-import { formatReadingDate, nakshatraLabels, signLabel } from "@/lib/panchanga-i18n";
+import { formatReadingDate, nakshatraLabels, planetLabel, signLabel } from "@/lib/panchanga-i18n";
 
 function computeClientValidDate(p: string): string {
   const now = new Date();
@@ -432,7 +432,7 @@ const UserDashboard = React.forwardRef<HTMLDivElement>((_props, ref) => {
                       { label: t("dashboard.moonSign"), value: chartData.moon_sign && signLabel(t, chartData.moon_sign) },
                       { label: t("dashboard.nakshatra"), value: chartData.birth_nakshatra?.name && nakshatraLabels(t, { name: chartData.birth_nakshatra.name, deity: "", symbol: "" }).name },
                       { label: t("dashboard.ascendant"), value: chartData.ascendant?.sign && signLabel(t, chartData.ascendant.sign) },
-                      { label: t("dashboard.mahaDasha"), value: chartData.dasha?.maha_dasha },
+                      { label: t("dashboard.mahaDasha"), value: chartData.dasha?.maha_dasha && planetLabel(t, chartData.dasha.maha_dasha) },
                     ].map((item, i) => (
                       <div key={i} className="text-center p-4 rounded-xl transition-all duration-300 m-flat" style={{
                         background: "hsl(0 0% 100% / 0.025)",

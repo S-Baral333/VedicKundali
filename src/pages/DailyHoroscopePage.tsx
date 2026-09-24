@@ -17,7 +17,7 @@ import {
   Calendar, CalendarDays, Sparkles, ChevronDown, CloudRain, Heart, Flame, Orbit
 } from "lucide-react";
 import { useRishiGuru } from "@/hooks/useRishiGuru";
-import { formatReadingDate, pakshaTithiLabel, signLabel } from "@/lib/panchanga-i18n";
+import { formatReadingDate, localNum, pakshaTithiLabel, planetLabel, signLabel } from "@/lib/panchanga-i18n";
 import { toast } from "@/hooks/use-toast";
 import PillTabs, { type PillTabItem } from "@/components/PillTabs";
 import DailyHeroCard from "@/components/horoscope/DailyHeroCard";
@@ -178,7 +178,7 @@ function SectionLabel({ icon: Icon, children, color }: { icon: typeof Sun; child
 }
 
 export default function DailyHoroscopePage() {
-  const { t } = useTranslation("pages");
+  const { t, i18n } = useTranslation("pages");
   const { user, session, isLoading } = useAuth();
   const { activeChart } = useActiveChart();
   const { enabled: rishiEnabled } = useRishiGuru();
@@ -527,7 +527,7 @@ export default function DailyHoroscopePage() {
                   <span className="text-[11px] font-medium tracking-[0.12em] uppercase mt-1" style={{ color: "hsl(var(--text-muted))" }}>
                     {p.name}{p.is_retrograde ? " (R)" : ""}
                   </span>
-                  <span className="text-[13px] mt-0.5" style={{ fontFamily: "'Cormorant Garamond', serif", color: "hsl(var(--gold))" }}>{p.sign}</span>
+                  <span className="text-[13px] mt-0.5" style={{ fontFamily: "'Cormorant Garamond', serif", color: "hsl(var(--gold))" }}>{signLabel(t, p.sign)}</span>
                   {typeof p.degree === "number" && (
                     <span className="text-[9px]" style={{ color: "hsl(var(--text-muted) / 0.6)" }}>
                       {Math.floor(p.degree)}°{String(Math.round((p.degree % 1) * 60)).padStart(2, "0")}'
@@ -607,10 +607,10 @@ export default function DailyHoroscopePage() {
           <GlassCard delay={0.1} className="!py-3 hidden sm:block">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-0">
               {[
-                { label: t("horoscope.dasha.mahadasha"),    value: dashaInfo.maha_dasha || "—" },
-                { label: t("horoscope.dasha.antardasha"),   value: dashaInfo.antar_dasha || "—" },
-                { label: t("horoscope.dasha.pratyantar"),   value: dashaInfo.pratyantar_dasha || "—" },
-                { label: t("horoscope.dasha.daysRemaining"), big: true, value: dashaDays != null ? String(dashaDays) : "—" },
+                { label: t("horoscope.dasha.mahadasha"),    value: dashaInfo.maha_dasha ? planetLabel(t, dashaInfo.maha_dasha) : "—" },
+                { label: t("horoscope.dasha.antardasha"),   value: dashaInfo.antar_dasha ? planetLabel(t, dashaInfo.antar_dasha) : "—" },
+                { label: t("horoscope.dasha.pratyantar"),   value: dashaInfo.pratyantar_dasha ? planetLabel(t, dashaInfo.pratyantar_dasha) : "—" },
+                { label: t("horoscope.dasha.daysRemaining"), big: true, value: dashaDays != null ? localNum(i18n.language, dashaDays) : "—" },
               ].map((item, i) => (
                 <div key={item.label} className="text-center py-2" style={{ borderRight: i < 3 ? "0.5px solid hsl(var(--gold) / 0.1)" : "none" }}>
                   <p className="text-[11px] tracking-[0.14em] uppercase" style={{ color: "hsl(var(--text-muted))" }}>{item.label}</p>
@@ -1022,10 +1022,10 @@ export default function DailyHoroscopePage() {
             {dashaInfo && (
               <dl className="grid grid-cols-2 gap-x-4 gap-y-3 mb-5">
                 {[
-                  { label: t("horoscope.dasha.mahadasha"), value: dashaInfo.maha_dasha || "—" },
-                  { label: t("horoscope.dasha.antardasha"), value: dashaInfo.antar_dasha || "—" },
-                  { label: t("horoscope.dasha.pratyantar"), value: dashaInfo.pratyantar_dasha || "—" },
-                  { label: t("horoscope.dasha.daysRemaining"), value: dashaDays != null ? String(dashaDays) : "—" },
+                  { label: t("horoscope.dasha.mahadasha"), value: dashaInfo.maha_dasha ? planetLabel(t, dashaInfo.maha_dasha) : "—" },
+                  { label: t("horoscope.dasha.antardasha"), value: dashaInfo.antar_dasha ? planetLabel(t, dashaInfo.antar_dasha) : "—" },
+                  { label: t("horoscope.dasha.pratyantar"), value: dashaInfo.pratyantar_dasha ? planetLabel(t, dashaInfo.pratyantar_dasha) : "—" },
+                  { label: t("horoscope.dasha.daysRemaining"), value: dashaDays != null ? localNum(i18n.language, dashaDays) : "—" },
                 ].map((item) => (
                   <div key={item.label}>
                     <dt className="text-[12px]" style={{ color: "hsl(var(--text-muted))" }}>{item.label}</dt>
@@ -1044,8 +1044,8 @@ export default function DailyHoroscopePage() {
                     title={`${t("pages:ui.dailyHoroscopePage.planetInSign", "{{planet}} in {{sign}}", { planet: p.name, sign: p.sign })}${p.is_retrograde ? t("pages:ui.dailyHoroscopePage.retrogradeSuffix", " (retrograde)") : ""}`}
                   >
                     <span className="text-lg leading-none" style={{ color: "hsl(var(--gold))" }}>{PLANET_SYMBOLS[p.name] || "✦"}</span>
-                    <span className="text-[10.5px] mt-1.5" style={{ color: "hsl(var(--text-muted))" }}>{p.name}{p.is_retrograde ? " ℞" : ""}</span>
-                    <span className="text-[14px]" style={{ fontFamily: "'Cormorant Garamond', serif", color: "hsl(var(--gold-pale))" }}>{p.sign}</span>
+                    <span className="text-[10.5px] mt-1.5" style={{ color: "hsl(var(--text-muted))" }}>{planetLabel(t, p.name)}{p.is_retrograde ? " ℞" : ""}</span>
+                    <span className="text-[14px]" style={{ fontFamily: "'Cormorant Garamond', serif", color: "hsl(var(--gold-pale))" }}>{signLabel(t, p.sign)}</span>
                     {typeof p.degree === "number" && (
                       <span className="text-[10px] tabular-nums" style={{ color: "hsl(var(--text-muted) / 0.7)" }}>
                         {Math.floor(p.degree)}°{String(Math.round((p.degree % 1) * 60)).padStart(2, "0")}'

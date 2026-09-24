@@ -27,6 +27,11 @@ export const nakshatraLabels = (t: TFunction, nak: { name: string; deity: string
   };
 };
 
+/** Graha names: shown wherever a planet is named inside running text. The
+ *  chart square keeps its two-letter abbreviations, which are layout-bound. */
+export const planetLabel = (t: TFunction, planet: string) =>
+  t(`pages:panchanga.planet.${planet}`, planet);
+
 export const signLabel = (t: TFunction, sign: string) => t(`pages:ui.cosmicRibbon.sign${sign}`, sign);
 
 const DEVANAGARI_DIGITS = "०१२३४५६७८९";

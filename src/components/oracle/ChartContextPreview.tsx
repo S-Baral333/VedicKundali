@@ -1,7 +1,7 @@
 import { useActiveChart } from "@/hooks/useActiveChart";
 import { Sparkles } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { signLabel } from "@/lib/panchanga-i18n";
+import { planetLabel, signLabel } from "@/lib/panchanga-i18n";
 
 export default function ChartContextPreview({ godMode = false }: { godMode?: boolean }) {
   const { activeChart } = useActiveChart();
@@ -16,7 +16,7 @@ export default function ChartContextPreview({ godMode = false }: { godMode?: boo
   const parts = [
     lagna && t("pages:ui.chartContextPreview.ascendant", "{{sign}} ascendant", { sign: signLabel(t, lagna) }),
     moon && t("pages:ui.chartContextPreview.moon", "{{sign}} moon", { sign: signLabel(t, moon) }),
-    dasha && t("pages:ui.chartContextPreview.dasha", "{{planet}} dasha", { planet: dasha }),
+    dasha && t("pages:ui.chartContextPreview.dasha", "{{planet}} dasha", { planet: planetLabel(t, dasha) }),
   ].filter(Boolean);
 
   return (

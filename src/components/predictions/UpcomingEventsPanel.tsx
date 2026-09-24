@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { TFunction } from "i18next";
-import { formatMonthYear, localNum, signLabel } from "@/lib/panchanga-i18n";
+import { formatMonthYear, localNum, planetLabel, signLabel } from "@/lib/panchanga-i18n";
 import { supabase } from "@/integrations/supabase/client";
 import { withLanguage, getCurrentLanguage } from "@/lib/i18nClient";
 import { Card, CardContent } from "@/components/ui/card";
@@ -56,7 +56,8 @@ function eventHeadline(t: TFunction, lang: string, ev: PredictedEventRow): strin
     else if (k === "phase") params[k] = t(`pages:timelineEvent.phase.${v}`, String(v));
     else if (k === "sign") params[k] = signLabel(t, String(v));
     else if (k === "house") params[k] = localNum(lang, v as number);
-    else params[k] = String(v); // planet, target, yoga and lord names stay as the engine writes them
+    else if (k === "planet" || k === "target" || k === "lord") params[k] = planetLabel(t, String(v));
+    else params[k] = String(v); // yoga names stay as the engine writes them
   }
   return t(`pages:timelineEvent.${ev.headline_key}`, { ...params, defaultValue: ev.headline });
 }

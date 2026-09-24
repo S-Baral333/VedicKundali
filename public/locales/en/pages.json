@@ -1510,6 +1510,17 @@
       "Thursday": "Thursday",
       "Friday": "Friday",
       "Saturday": "Saturday"
+    },
+    "planet": {
+      "Sun": "Sun",
+      "Moon": "Moon",
+      "Mars": "Mars",
+      "Mercury": "Mercury",
+      "Jupiter": "Jupiter",
+      "Venus": "Venus",
+      "Saturn": "Saturn",
+      "Rahu": "Rahu",
+      "Ketu": "Ketu"
     }
   },
   "timelineEvent": {

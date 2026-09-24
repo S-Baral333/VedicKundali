@@ -2189,6 +2189,17 @@
       "Thursday": "बिहीबार",
       "Friday": "शुक्रबार",
       "Saturday": "शनिबार"
+    },
+    "planet": {
+      "Sun": "सूर्य",
+      "Moon": "चन्द्र",
+      "Mars": "मङ्गल",
+      "Mercury": "बुध",
+      "Jupiter": "बृहस्पति",
+      "Venus": "शुक्र",
+      "Saturn": "शनि",
+      "Rahu": "राहु",
+      "Ketu": "केतु"
     }
   },
   "timelineEvent": {
