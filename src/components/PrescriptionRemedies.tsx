@@ -7,6 +7,7 @@ import { Gem, BookOpen, Flame, HandCoins, Sparkles, Loader2, RefreshCw, AlertTri
 import { supabase } from "@/integrations/supabase/client";
 import { withLanguage } from "@/lib/i18nClient";
 import MantraInfo from "@/components/MantraInfo";
+import { planetLabel } from "@/lib/panchanga-i18n";
 import { toast } from "@/hooks/use-toast";
 import { useTranslation } from "react-i18next";
 
@@ -100,7 +101,7 @@ export default function PrescriptionRemedies({ chartId, tier }: Props) {
   // Initial state — premium user but hasn't generated yet
   if (!data && !loading) {
     return (
-      <Card className="!border-[rgba(201,168,76,0.35)] bg-gradient-to-br from-card via-card to-primary/5">
+      <Card className="!border-[rgba(201,168,76,0.35)] bg-gradient-to-br from-card via-card to-primary/5 m-sheet-card">
         <CardContent className="p-8 text-center space-y-5">
           <div className="inline-flex relative">
             <div className="absolute inset-0 bg-primary/20 rounded-full blur-2xl animate-pulse" />
@@ -128,7 +129,7 @@ export default function PrescriptionRemedies({ chartId, tier }: Props) {
 
   if (loading) {
     return (
-      <Card>
+      <Card className="m-sheet-card">
         <CardContent className="p-12 text-center space-y-3">
           <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto" />
           <p className="text-sm text-muted-foreground">
@@ -154,7 +155,7 @@ export default function PrescriptionRemedies({ chartId, tier }: Props) {
           </Badge>
           {data.dasha_lord && (
             <Badge variant="outline" className="text-xs">
-              {PLANET_EMOJI[data.dasha_lord] || "🪐"} Dasha: {data.dasha_lord}
+              {PLANET_EMOJI[data.dasha_lord] || "🪐"} {t("pages:remediesPage.badge.dashaLord", "Dasha Lord")}: {planetLabel(t, data.dasha_lord)}
             </Badge>
           )}
         </div>
@@ -166,7 +167,7 @@ export default function PrescriptionRemedies({ chartId, tier }: Props) {
 
       {/* AI synthesis */}
       {data.ai_synthesis ? (
-        <Card className="!border-[rgba(201,168,76,0.32)]">
+        <Card className="!border-[rgba(201,168,76,0.32)] m-sheet-card">
           <CardContent className="p-5">
             <p className="text-sm leading-relaxed font-serif text-foreground italic">
               {data.ai_synthesis}
@@ -182,7 +183,7 @@ export default function PrescriptionRemedies({ chartId, tier }: Props) {
         const isOpen = expanded[p.planet] ?? p.priority === "primary";
         const meta = PRIORITY_LABEL[p.priority];
         return (
-          <Card key={p.planet} className={p.priority === "primary" ? "!border-[rgba(201,168,76,0.5)] shadow-lg" : ""}>
+          <Card key={p.planet} className={`m-sheet-card ${p.priority === "primary" ? "!border-[rgba(201,168,76,0.5)] shadow-lg" : ""}`}>
             <CardHeader className="pb-3">
               <div className="flex items-start justify-between gap-3">
                 <div className="space-y-1.5 flex-1 min-w-0">
@@ -191,7 +192,7 @@ export default function PrescriptionRemedies({ chartId, tier }: Props) {
                   </Badge>
                   <CardTitle className="text-lg font-serif flex items-center gap-2">
                     <span className="text-2xl">{PLANET_EMOJI[p.planet] || "🪐"}</span>
-                    {p.planet}
+                    {planetLabel(t, p.planet)}
                     {p.affliction.is_dasha_lord && (
                       <Badge variant="secondary" className="text-[10px]">{t("pages:ui.prescriptionRemedies.activeDasha", "Active Dasha")}</Badge>
                     )}
@@ -315,11 +316,13 @@ function PrescriptionBlock({
         {icon}
         <h4 className="text-sm font-semibold text-foreground">{title}</h4>
       </div>
-      <div className="space-y-1.5 pl-6">
+      {/* Phones drop the indent and narrow the label column: the values are
+          long (carats, japa counts, whole mantras) and 110px + pl-6 crowds them. */}
+      <div className="space-y-1.5 pl-0 sm:pl-6">
         {rows.map(([k, v]) => {
           const mantraMeta = mantraRows?.[k];
           return (
-            <div key={k} className="grid grid-cols-[110px_1fr] gap-2 text-xs">
+            <div key={k} className="grid grid-cols-[88px_1fr] sm:grid-cols-[110px_1fr] gap-2 text-xs">
               <span className="text-muted-foreground">{ROW_KEYS[k] ? t(`pages:ui.prescriptionRemedies.${ROW_KEYS[k]}`, k) : k}</span>
               {mantraMeta ? (
                 <MantraInfo mantra={v} meaningKey={mantraMeta.meaningKey} />

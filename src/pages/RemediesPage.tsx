@@ -15,6 +15,7 @@ import { Sparkles, Gem, BookOpen, Flame, Loader2, Star, Crown, Lock } from "luci
 import CosmicBackground from "@/components/CosmicBackground";
 import TwinkleText from "@/components/TwinkleText";
 import PrescriptionRemedies from "@/components/PrescriptionRemedies";
+import { planetLabel } from "@/lib/panchanga-i18n";
 import SacredPageShell from "@/components/layout/SacredPageShell";
 import PageNavRail from "@/components/layout/PageNavRail";
 import CosmicFieldCard from "@/components/layout/CosmicFieldCard";
@@ -156,7 +157,7 @@ export default function RemediesPage() {
       {view === "prescription" && (
         <div className="relative z-10 animate-fade-in-up" style={{ animationDelay: "0.08s" }}>
           {!isPremium ? (
-            <Card className="!border-[rgba(201,168,76,0.4)] bg-gradient-to-br from-card via-card to-primary/5">
+            <Card className="!border-[rgba(201,168,76,0.4)] bg-gradient-to-br from-card via-card to-primary/5 m-sheet-card">
               <CardContent className="p-8 text-center space-y-5">
                 <div className="inline-flex relative">
                   <div className="absolute inset-0 bg-primary/20 rounded-full blur-2xl animate-pulse" />
@@ -185,7 +186,7 @@ export default function RemediesPage() {
               </CardContent>
             </Card>
           ) : !activeChart?.id ? (
-            <Card>
+            <Card className="m-sheet-card">
               <CardContent className="p-8 text-center text-muted-foreground text-sm">
                 {t("remediesPage.prescription.noChart")}
               </CardContent>
@@ -201,25 +202,25 @@ export default function RemediesPage() {
         <>
           {/* Context badges */}
           {(dashaLord || afflictedPlanets.length > 0) && (
-            <div className="flex flex-wrap gap-2 animate-fade-in-up" style={{ animationDelay: "0.05s" }}>
+            <div className="flex gap-2 overflow-x-auto sm:flex-wrap sm:overflow-x-visible m-edge-scroll animate-fade-in-up" style={{ animationDelay: "0.05s" }}>
               {dashaLord && (
-                <Badge variant="secondary" className="text-xs">
-                  {PLANET_EMOJI[dashaLord] || "🪐"} {t("remediesPage.badge.dashaLord")}: {dashaLord}
+                <Badge variant="secondary" className="text-xs shrink-0 whitespace-nowrap">
+                  {PLANET_EMOJI[dashaLord] || "🪐"} {t("remediesPage.badge.dashaLord")}: {planetLabel(t, dashaLord)}
                 </Badge>
               )}
               {afflictedPlanets.map(p => (
-                <Badge key={p} variant="outline" className="text-xs border-destructive/30 text-destructive">
-                  {PLANET_EMOJI[p] || "⚠️"} {t("remediesPage.badge.afflicted")}: {p}
+                <Badge key={p} variant="outline" className="text-xs shrink-0 whitespace-nowrap border-destructive/30 text-destructive">
+                  {PLANET_EMOJI[p] || "⚠️"} {t("remediesPage.badge.afflicted")}: {planetLabel(t, p)}
                 </Badge>
               ))}
             </div>
           )}
 
           {/* Filter chips */}
-          <div className="flex flex-wrap gap-2 animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
+          <div className="flex gap-2 overflow-x-auto sm:flex-wrap sm:overflow-x-visible m-edge-scroll animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
             <Badge
               variant={filter === "all" ? "default" : "outline"}
-              className="cursor-pointer"
+              className="cursor-pointer shrink-0 whitespace-nowrap"
               onClick={() => setFilter("all")}
             >
               {t("remediesPage.filter.all")}
@@ -228,7 +229,7 @@ export default function RemediesPage() {
               <Badge
                 key={cat}
                 variant={filter === cat ? "default" : "outline"}
-                className="cursor-pointer capitalize"
+                className="cursor-pointer capitalize shrink-0 whitespace-nowrap"
                 onClick={() => setFilter(cat)}
               >
                 {t("pages:ui.remediesPage.cat_" + cat, cat)}
@@ -238,10 +239,10 @@ export default function RemediesPage() {
               <Badge
                 key={p}
                 variant={filter === p ? "default" : "outline"}
-                className="cursor-pointer"
+                className="cursor-pointer shrink-0 whitespace-nowrap"
                 onClick={() => setFilter(p)}
               >
-                {PLANET_EMOJI[p] || ""} {p}
+                {PLANET_EMOJI[p] || ""} {planetLabel(t, p)}
               </Badge>
             ))}
           </div>
@@ -251,7 +252,7 @@ export default function RemediesPage() {
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
           ) : filtered.length === 0 ? (
-            <Card>
+            <Card className="m-sheet-card">
               <CardContent className="p-8 text-center">
                 <p className="text-muted-foreground">{t("remediesPage.noResults")}</p>
               </CardContent>
@@ -265,7 +266,7 @@ export default function RemediesPage() {
                 return (
                   <Card
                     key={remedy.id}
-                    className={`animate-fade-in-up ${isRelevant ? "!border-[rgba(201,168,76,0.32)]" : ""}`}
+                    className={`animate-fade-in-up m-sheet-card ${isRelevant ? "!border-[rgba(201,168,76,0.32)]" : ""}`}
                     style={{ animationDelay: `${0.05 * i}s` }}
                   >
                     <CardHeader className="pb-2">
@@ -285,28 +286,29 @@ export default function RemediesPage() {
                       <div className="flex flex-wrap gap-2">
                         {remedy.planet && (
                           <Badge variant="outline" className="text-xs">
-                            {PLANET_EMOJI[remedy.planet] || "🪐"} {remedy.planet}
+                            {PLANET_EMOJI[remedy.planet] || "🪐"} {planetLabel(t, remedy.planet)}
                           </Badge>
                         )}
                         <Badge variant="outline" className="text-xs capitalize">{t("pages:ui.remediesPage.cat_" + remedy.category, remedy.category)}</Badge>
                       </div>
 
+                      {/* The mantra is the sacred text — a pull-quote on phones. */}
                       {remedy.mantra && (
-                        <div className="p-3 rounded-lg bg-secondary/30 border border-border/30">
+                        <div className="p-3 rounded-lg bg-secondary/30 border border-border/30 m-quote">
                           <p className="text-xs text-muted-foreground mb-1">{t("remediesPage.label.mantra")}</p>
                           <p className="text-sm font-serif text-foreground italic">{remedy.mantra}</p>
                         </div>
                       )}
 
                       {remedy.gemstone && (
-                        <div className="p-3 rounded-lg bg-secondary/30 border border-border/30">
+                        <div className="p-3 rounded-lg bg-secondary/30 border border-border/30 m-flat">
                           <p className="text-xs text-muted-foreground mb-1">{t("remediesPage.label.gemstone")}</p>
                           <p className="text-sm text-foreground">{remedy.gemstone}</p>
                         </div>
                       )}
 
                       {remedy.ritual && (
-                        <div className="p-3 rounded-lg bg-secondary/30 border border-border/30">
+                        <div className="p-3 rounded-lg bg-secondary/30 border border-border/30 m-flat">
                           <p className="text-xs text-muted-foreground mb-1">{t("remediesPage.label.ritual")}</p>
                           <p className="text-sm text-foreground">{remedy.ritual}</p>
                         </div>
