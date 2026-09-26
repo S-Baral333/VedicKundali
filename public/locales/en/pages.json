@@ -843,7 +843,9 @@
       "profileSettings": "Profile & settings",
       "subscription": "Subscription",
       "installApp": "Install app",
-      "signOut": "Sign out"
+      "signOut": "Sign out",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service"
     },
     "primaryNav": {
       "match": "Kundali Milan — match your charts",

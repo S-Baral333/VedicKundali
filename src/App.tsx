@@ -30,6 +30,8 @@ import OnboardingPage from "./pages/OnboardingPage";
 import DailyHoroscopePage from "./pages/DailyHoroscopePage";
 import RemediesPage from "./pages/RemediesPage";
 import AuthCallback from "./pages/AuthCallback";
+import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
+import TermsOfService from "./pages/legal/TermsOfService";
 import TimelinePage from "./pages/TimelinePage";
 import AskOraclePage from "./pages/AskOraclePage";
 import MuhurtaPage from "./pages/MuhurtaPage";
@@ -64,6 +66,10 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/login" element={<Login />} />
               <Route path="/auth/callback" element={<AuthCallback />} />
+              {/* Public on purpose: a legal notice nobody can read is not a notice,
+                  and Google's OAuth consent review must reach them signed-out. */}
+              <Route path="/privacy" element={<PrivacyPolicy />} />
+              <Route path="/terms" element={<TermsOfService />} />
               <Route path="/install" element={<InstallPage />} />
               <Route path="/pricing" element={<PricingPage />} />
               <Route path="/preview/horoscope" element={<HoroscopePreview />} />

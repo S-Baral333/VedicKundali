@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Sparkles, CalendarDays, MessageCircleQuestion, Heart, BookOpen, Mail, Github, Twitter, Instagram } from "lucide-react";
 import KundaliMark from "@/components/KundaliMark";
+import { LEGAL } from "@/lib/legal";
 
 const PRODUCT_LINKS = [
   { key: "birthChart", label: "Birth Chart", to: "/chart", icon: Sparkles },
@@ -18,9 +19,9 @@ const COMPANY_LINKS = [
 ];
 
 const LEGAL_LINKS = [
-  { key: "privacy", label: "Privacy Policy", to: "#" },
-  { key: "terms", label: "Terms of Service", to: "#" },
-  { key: "contact", label: "Contact", to: "mailto:hello@kundali.app" },
+  { key: "privacy", label: "Privacy Policy", to: "/privacy" },
+  { key: "terms", label: "Terms of Service", to: "/terms" },
+  { key: "contact", label: "Contact", to: `mailto:${LEGAL.contactEmail}` },
 ];
 
 export default function Footer() {

@@ -9,6 +9,8 @@ import {
   ChevronRight,
   Crown,
   Sparkles,
+  Shield,
+  FileText,
 } from "lucide-react";
 import {
   Sheet,
@@ -396,6 +398,10 @@ export default function MobileHeaderDrawer({
                 {!isStandalone && (
                   <Row icon={Download} label={t("pages:ui.mobileHeaderDrawer.installApp", "Install app")} to="/install" />
                 )}
+                {/* The footer carrying these only renders on the landing page,
+                    so signed-in users had no route to them at all. */}
+                <Row icon={Shield} label={t("pages:ui.mobileHeaderDrawer.privacy", "Privacy Policy")} to="/privacy" />
+                <Row icon={FileText} label={t("pages:ui.mobileHeaderDrawer.terms", "Terms of Service")} to="/terms" />
               </div>
             </section>
 
