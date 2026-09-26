@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useSubscription } from "@/hooks/useSubscription";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 import CosmicBackground from "@/components/CosmicBackground";
 import SacredPageShell from "@/components/layout/SacredPageShell";
 import PageNavRail from "@/components/layout/PageNavRail";
@@ -52,6 +53,8 @@ function Cell({ v }: { v: string | boolean }) {
 
 export default function PricingPage() {
   const { tier } = useSubscription();
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const { t } = useTranslation("pages");
   const [annual, setAnnual] = useState(false);
 
@@ -121,14 +124,40 @@ export default function PricingPage() {
                       <div className="text-[11px] text-muted-foreground mt-1">{t("pages:ui.pricingPage.perYear", "${{price}}/yr", { price: cfg.priceAnnualAud })}</div>
                     )}
                   </div>
-                  <Button
-                    className="w-full"
-                    variant={isPopular ? "default" : "outline"}
-                    disabled={isCurrent || price > 0}
-                    title={price > 0 ? t("pages:ui.pricingPage.paymentsSoonTitle", "Payments open soon — admin can grant access in the meantime") : undefined}
-                  >
-                    {isCurrent ? t("pricing.currentPlan") : price === 0 ? t("pricing.startFree") : t("pricing.paymentsSoon")}
-                  </Button>
+                  {/* Until a payment provider is wired, a paid tier gets an
+                      honest notice rather than a dead button. The old version
+                      was disabled with its only explanation in a title
+                      attribute — which never appears on touch and can't take
+                      keyboard focus, so on a phone it was a greyed-out button
+                      that did nothing and said nothing. */}
+                  {isCurrent ? (
+                    <Button className="w-full" variant="outline" disabled>
+                      {t("pricing.currentPlan")}
+                    </Button>
+                  ) : price === 0 ? (
+                    <Button
+                      className="w-full"
+                      variant={isPopular ? "default" : "outline"}
+                      onClick={() => navigate(user ? "/dashboard" : "/login")}
+                    >
+                      {t("pricing.startFree")}
+                    </Button>
+                  ) : (
+                    <div
+                      className="w-full rounded-md border px-3 py-2.5 text-center"
+                      style={{
+                        borderColor: "hsl(var(--gold) / 0.25)",
+                        background: "hsl(var(--gold) / 0.06)",
+                      }}
+                    >
+                      <p className="text-[12px] font-medium" style={{ color: "hsl(var(--gold))" }}>
+                        {t("pricing.paymentsSoon")}
+                      </p>
+                      <p className="text-[11px] leading-snug mt-0.5 text-muted-foreground">
+                        {t("pages:ui.pricingPage.paymentsSoonNote", "We can't take payments yet. Get in touch and we'll open this plan for you.")}
+                      </p>
+                    </div>
+                  )}
                   <ul className="text-left text-sm space-y-2 pt-2">
                     {(tierKey === "darshana"
                       ? [["darshana1", "1 birth chart"], ["darshana2", "Daily horoscope"], ["darshana3", "Reading preview"], ["darshana4", "3 Guru questions to try"]]

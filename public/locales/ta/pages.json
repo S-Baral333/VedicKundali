@@ -1291,7 +1291,6 @@
       "cell20Mo": "20 / மாதம்",
       "cell50Mo": "50 / மாதம்",
       "cellWhiteLabel": "வைட்-லேபிள்",
-      "paymentsSoonTitle": "கட்டணம் விரைவில் தொடங்கும் — அதுவரை நிர்வாகி அணுகல் வழங்கலாம்",
       "benefit_darshana1": "1 ஜனன ஜாதகம்",
       "benefit_darshana2": "தினசரி ராசிபலன்",
       "benefit_darshana3": "வாசிப்பு முன்னோட்டம்",
@@ -1307,7 +1306,8 @@
       "benefit_grihastha4": "மாதம் 50 குரு / 50 கனவுகள்",
       "benefit_grihastha5": "இந்தி குரு, கோசார மேலடுக்குகள்",
       "priceAud": "AUD ${{price}}",
-      "perYear": "${{price}}/ஆண்டு"
+      "perYear": "${{price}}/ஆண்டு",
+      "paymentsSoonNote": "எங்களால் இன்னும் கட்டணம் பெற முடியாது. தொடர்பு கொள்ளுங்கள், இந்தத் திட்டத்தை உங்களுக்காகத் திறந்து தருகிறோம்."
     },
     "useActiveChart": {
       "switchError": "ஜாதகத்தை மாற்ற முடியவில்லை"

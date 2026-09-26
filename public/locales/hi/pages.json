@@ -1291,7 +1291,6 @@
       "cell20Mo": "20 / माह",
       "cell50Mo": "50 / माह",
       "cellWhiteLabel": "व्हाइट-लेबल",
-      "paymentsSoonTitle": "भुगतान जल्द शुरू होंगे — तब तक एडमिन पहुँच दे सकते हैं",
       "benefit_darshana1": "1 जन्म कुंडली",
       "benefit_darshana2": "दैनिक राशिफल",
       "benefit_darshana3": "रीडिंग पूर्वावलोकन",
@@ -1307,7 +1306,8 @@
       "benefit_grihastha4": "प्रति माह 50 गुरु / 50 स्वप्न",
       "benefit_grihastha5": "हिंदी गुरु, गोचर ओवरले",
       "priceAud": "AUD ${{price}}",
-      "perYear": "${{price}}/वर्ष"
+      "perYear": "${{price}}/वर्ष",
+      "paymentsSoonNote": "हम अभी भुगतान नहीं ले सकते। संपर्क करें, हम आपके लिए यह प्लान खोल देंगे।"
     },
     "useActiveChart": {
       "switchError": "कुंडली नहीं बदल सके"

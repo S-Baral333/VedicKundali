@@ -1291,7 +1291,6 @@
       "cell20Mo": "২০ / মাস",
       "cell50Mo": "৫০ / মাস",
       "cellWhiteLabel": "হোয়াইট-লেবেল",
-      "paymentsSoonTitle": "পেমেন্ট শীঘ্রই চালু হবে — ততদিন অ্যাডমিন অ্যাক্সেস দিতে পারেন",
       "benefit_darshana1": "১টি জন্মকুণ্ডলী",
       "benefit_darshana2": "দৈনিক রাশিফল",
       "benefit_darshana3": "পাঠের প্রিভিউ",
@@ -1307,7 +1306,8 @@
       "benefit_grihastha4": "মাসে ৫০ গুরু / ৫০ স্বপ্ন",
       "benefit_grihastha5": "হিন্দি গুরু, গোচর ওভারলে",
       "priceAud": "AUD ${{price}}",
-      "perYear": "${{price}}/বছর"
+      "perYear": "${{price}}/বছর",
+      "paymentsSoonNote": "আমরা এখনও পেমেন্ট নিতে পারি না। যোগাযোগ করুন, আমরা আপনার জন্য এই প্ল্যানটি খুলে দেব।"
     },
     "useActiveChart": {
       "switchError": "চার্ট বদলানো যায়নি"

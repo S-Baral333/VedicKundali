@@ -1121,7 +1121,6 @@
       "cell20Mo": "20 / mo",
       "cell50Mo": "50 / mo",
       "cellWhiteLabel": "White-label",
-      "paymentsSoonTitle": "Payments open soon — admin can grant access in the meantime",
       "benefit_darshana1": "1 birth chart",
       "benefit_darshana2": "Daily horoscope",
       "benefit_darshana3": "Reading preview",
@@ -1137,7 +1136,8 @@
       "benefit_grihastha4": "50 Guru / 50 dreams per month",
       "benefit_grihastha5": "Hindi Guru, transit overlays",
       "priceAud": "AUD ${{price}}",
-      "perYear": "${{price}}/yr"
+      "perYear": "${{price}}/yr",
+      "paymentsSoonNote": "We can't take payments yet. Get in touch and we'll open this plan for you."
     },
     "useActiveChart": {
       "switchError": "Could not switch chart"

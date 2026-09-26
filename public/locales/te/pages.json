@@ -1291,7 +1291,6 @@
       "cell20Mo": "20 / నెల",
       "cell50Mo": "50 / నెల",
       "cellWhiteLabel": "వైట్-లేబుల్",
-      "paymentsSoonTitle": "చెల్లింపులు త్వరలో ప్రారంభం — అప్పటివరకు అడ్మిన్ యాక్సెస్ ఇవ్వగలరు",
       "benefit_darshana1": "1 జన్మ జాతకం",
       "benefit_darshana2": "దినఫలం",
       "benefit_darshana3": "పఠన ప్రివ్యూ",
@@ -1307,7 +1306,8 @@
       "benefit_grihastha4": "నెలకు 50 గురు / 50 కలలు",
       "benefit_grihastha5": "హిందీ గురు, గోచార ఓవర్‌లేలు",
       "priceAud": "AUD ${{price}}",
-      "perYear": "${{price}}/సం"
+      "perYear": "${{price}}/సం",
+      "paymentsSoonNote": "మేము ఇంకా చెల్లింపులు స్వీకరించలేము. సంప్రదించండి, ఈ ప్లాన్‌ను మీ కోసం తెరుస్తాము."
     },
     "useActiveChart": {
       "switchError": "జాతకం మార్చలేకపోయాం"
