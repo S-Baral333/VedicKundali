@@ -7,8 +7,8 @@ interface AuthContextType {
   session: Session | null;
   isAdmin: boolean;
   isLoading: boolean;
-  signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
-  signUp: (email: string, password: string) => Promise<{ error: Error | null }>;
+  /** Google is the only way in. There is no password to forget, leak or reset. */
+  signInWithGoogle: () => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
 }
 
@@ -56,16 +56,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    return { error: error as Error | null };
-  };
-
-  const signUp = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { emailRedirectTo: window.location.origin },
+  /**
+   * Sign in and sign up are the same act with Google: a first-time account is
+   * created by the on_auth_user_created trigger, so there is no separate
+   * registration step and nothing for the user to choose between.
+   */
+  const signInWithGoogle = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+        // Always let the user pick which Google account. Without this, anyone
+        // already signed into Google is silently pushed into that account,
+        // which is painful on a shared or family device.
+        queryParams: { prompt: "select_account" },
+      },
     });
     return { error: error as Error | null };
   };
@@ -76,7 +81,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, isAdmin, isLoading, signIn, signUp, signOut }}>
+    <AuthContext.Provider value={{ user, session, isAdmin, isLoading, signInWithGoogle, signOut }}>
       {children}
     </AuthContext.Provider>
   );

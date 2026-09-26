@@ -145,6 +145,16 @@ const enPages = {
   },
   login: {
     tagline: "Your stars. Your story. Your dharma.",
+    // Google is the only door in; there is no separate sign-up copy because
+    // Google settles whether this is a new account or a returning one.
+    subheadGoogle: "Sign in or create your account with Google.",
+    continueWithGoogle: "Continue with Google",
+    googleRedirecting: "Taking you to Google…",
+    googleFailed: "Couldn't reach Google. Check your connection and try again.",
+    noPasswordNote: "No password to remember — Google verifies it's you.",
+    callbackWorking: "Signing you in…",
+    callbackFailed: "We couldn't complete that sign-in.",
+    tryAgain: "Try again",
     subheadForgot: "We'll send a sacred link to restore your access",
     subheadSignUp: "Begin your journey through the stars",
     subheadSignIn: "Enter your sacred space and align with your path",

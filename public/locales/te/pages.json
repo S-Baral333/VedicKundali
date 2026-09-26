@@ -520,7 +520,9 @@
       "reenterPw": "పాస్‌వర్డ్ మళ్లీ నమోదు చేయండి",
       "updatePw": "పాస్‌వర్డ్ నవీకరించండి",
       "accountCreated": "ఖాతా సృష్టించబడింది: {{date}}",
-      "signOut": "సైన్ అవుట్"
+      "signOut": "సైన్ అవుట్",
+      "accountDescGoogle": "మీరు ఎలా సైన్ ఇన్ చేస్తారు, మరియు మీ ఖాతా",
+      "signedInWithGoogle": "Google తో సైన్ ఇన్ చేసారు"
     },
     "rishiGuruEngagedPanel": {
       "godMode": "గాడ్-మోడ్ సక్రియం",
@@ -1499,7 +1501,15 @@
     "trustPrivate": "ప్రైవేట్ & సురక్షితం",
     "toastVerify": "మీ ఖాతాను ధృవీకరించడానికి ఇమెయిల్ చూడండి",
     "toastResetSent": "రీసెట్ లింక్ కోసం మీ ఇమెయిల్ చూడండి",
-    "toastEnterEmail": "దయచేసి మీ ఇమెయిల్ చిరునామాను నమోదు చేయండి"
+    "toastEnterEmail": "దయచేసి మీ ఇమెయిల్ చిరునామాను నమోదు చేయండి",
+    "subheadGoogle": "Google తో సైన్ ఇన్ చేయండి లేదా ఖాతా సృష్టించండి.",
+    "continueWithGoogle": "Google తో కొనసాగండి",
+    "googleRedirecting": "Google కి తీసుకువెళ్తున్నాం…",
+    "googleFailed": "Google ని చేరుకోలేకపోయాం. కనెక్షన్ తనిఖీ చేసి మళ్లీ ప్రయత్నించండి.",
+    "noPasswordNote": "పాస్‌వర్డ్ గుర్తుంచుకోవాల్సిన పని లేదు — Google మిమ్మల్ని ధృవీకరిస్తుంది.",
+    "callbackWorking": "సైన్ ఇన్ చేస్తున్నాం…",
+    "callbackFailed": "ఆ సైన్ ఇన్ పూర్తి చేయలేకపోయాం.",
+    "tryAgain": "మళ్లీ ప్రయత్నించండి"
   },
   "resetPassword": {
     "title": "పాస్‌వర్డ్ రీసెట్",

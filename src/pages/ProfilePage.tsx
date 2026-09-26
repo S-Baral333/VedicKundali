@@ -15,6 +15,7 @@ import { toast } from "@/hooks/use-toast";
 import { Loader2, User, Star, Shield, LogOut, Sparkles, Moon, Flame, Globe, Info } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "@/components/LanguageSelector";
+import GoogleMark from "@/components/GoogleMark";
 import { LANGUAGES } from "@/i18n/languages";
 import { formatPickerDate } from "@/lib/panchanga-i18n";
 import { LIFE_PRIORITIES, EMOTIONAL_STATES, GUIDANCE_STYLES } from "@/lib/onboarding-constants";
@@ -56,11 +57,6 @@ const ProfilePage = () => {
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [savingBirth, setSavingBirth] = useState(false);
-
-  // Password state
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [savingPassword, setSavingPassword] = useState(false);
 
   // Preferences state
   const [lifePriorities, setLifePriorities] = useState<string[]>([]);
@@ -200,27 +196,6 @@ const ProfilePage = () => {
       if (prev.length >= 3) return prev;
       return [...prev, id];
     });
-  };
-
-  const handleChangePassword = async () => {
-    if (newPassword.length < 6) {
-      toast({ title: t("pages:ui.profilePage.pwShort", "Password too short"), description: t("pages:ui.profilePage.pwShortDesc", "Must be at least 6 characters"), variant: "destructive" });
-      return;
-    }
-    if (newPassword !== confirmPassword) {
-      toast({ title: t("pages:ui.profilePage.pwMismatch", "Passwords don't match"), variant: "destructive" });
-      return;
-    }
-    setSavingPassword(true);
-    const { error } = await supabase.auth.updateUser({ password: newPassword });
-    setSavingPassword(false);
-    if (error) {
-      toast({ title: t("pages:ui.profilePage.pwFailed", "Failed to update password"), description: error.message, variant: "destructive" });
-    } else {
-      setNewPassword("");
-      setConfirmPassword("");
-      toast({ title: t("pages:ui.profilePage.pwUpdated", "Password updated successfully") });
-    }
   };
 
   const handleSignOut = async () => {
@@ -545,21 +520,20 @@ const ProfilePage = () => {
           <CardTitle className="font-serif flex items-center gap-2">
             <Shield className="h-5 w-5 text-primary" /> {t("pages:ui.profilePage.accountTitle", "Account Settings")}
           </CardTitle>
-          <CardDescription>{t("pages:ui.profilePage.accountDesc", "Manage your password and account")}</CardDescription>
+          <CardDescription>{t("pages:ui.profilePage.accountDescGoogle", "How you sign in, and your account")}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="newPw">{t("pages:ui.profilePage.newPw", "New Password")}</Label>
-            <Input id="newPw" type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} placeholder={t("pages:ui.profilePage.minChars", "Min 6 characters")} />
+          {/* Sign-in is Google's job now, so there is no password to change
+              here — just a statement of which account this is. */}
+          <div className="flex items-center gap-3 rounded-lg border border-border/30 bg-card/50 p-3">
+            <GoogleMark className="h-5 w-5 shrink-0" />
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-foreground">
+                {t("pages:ui.profilePage.signedInWithGoogle", "Signed in with Google")}
+              </p>
+              <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
+            </div>
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="confirmPw">{t("pages:ui.profilePage.confirmPw", "Confirm Password")}</Label>
-            <Input id="confirmPw" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder={t("pages:ui.profilePage.reenterPw", "Re-enter password")} />
-          </div>
-          <Button onClick={handleChangePassword} disabled={savingPassword} className="w-full sm:w-auto">
-            {savingPassword && <Loader2 className="h-4 w-4 animate-spin" />}
-            {t("pages:ui.profilePage.updatePw", "Update Password")}
-          </Button>
 
           <Separator className="my-4" />
 

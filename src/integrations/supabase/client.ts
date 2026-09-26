@@ -13,5 +13,11 @@ export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABL
     storage: localStorage,
     persistSession: true,
     autoRefreshToken: true,
+    // PKCE is the flow for public clients: the code that comes back in the URL
+    // is worthless without the verifier held in this browser, so an intercepted
+    // redirect cannot be replayed into a session.
+    flowType: "pkce",
+    // Let the client pick the session out of the OAuth redirect automatically.
+    detectSessionInUrl: true,
   }
 });

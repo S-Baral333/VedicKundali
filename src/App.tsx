@@ -29,7 +29,7 @@ import CompatibilityPage from "./pages/CompatibilityPage";
 import OnboardingPage from "./pages/OnboardingPage";
 import DailyHoroscopePage from "./pages/DailyHoroscopePage";
 import RemediesPage from "./pages/RemediesPage";
-import ResetPasswordPage from "./pages/ResetPasswordPage";
+import AuthCallback from "./pages/AuthCallback";
 import TimelinePage from "./pages/TimelinePage";
 import AskOraclePage from "./pages/AskOraclePage";
 import MuhurtaPage from "./pages/MuhurtaPage";
@@ -63,7 +63,7 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/reset-password" element={<ResetPasswordPage />} />
+              <Route path="/auth/callback" element={<AuthCallback />} />
               <Route path="/install" element={<InstallPage />} />
               <Route path="/pricing" element={<PricingPage />} />
               <Route path="/preview/horoscope" element={<HoroscopePreview />} />

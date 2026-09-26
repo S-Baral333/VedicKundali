@@ -520,7 +520,9 @@
       "reenterPw": "পাসওয়ার্ড আবার লিখুন",
       "updatePw": "পাসওয়ার্ড আপডেট করুন",
       "accountCreated": "অ্যাকাউন্ট তৈরি: {{date}}",
-      "signOut": "সাইন আউট"
+      "signOut": "সাইন আউট",
+      "accountDescGoogle": "আপনি কীভাবে সাইন ইন করেন, এবং আপনার অ্যাকাউন্ট",
+      "signedInWithGoogle": "Google দিয়ে সাইন ইন করা হয়েছে"
     },
     "rishiGuruEngagedPanel": {
       "godMode": "গড-মোড সক্রিয়",
@@ -1499,7 +1501,15 @@
     "trustPrivate": "গোপনীয় ও সুরক্ষিত",
     "toastVerify": "অ্যাকাউন্ট যাচাই করতে আপনার ইমেল দেখুন",
     "toastResetSent": "রিসেট লিঙ্কের জন্য আপনার ইমেল দেখুন",
-    "toastEnterEmail": "অনুগ্রহ করে আপনার ইমেল ঠিকানা লিখুন"
+    "toastEnterEmail": "অনুগ্রহ করে আপনার ইমেল ঠিকানা লিখুন",
+    "subheadGoogle": "Google দিয়ে সাইন ইন করুন বা অ্যাকাউন্ট তৈরি করুন।",
+    "continueWithGoogle": "Google দিয়ে চালিয়ে যান",
+    "googleRedirecting": "Google-এ নিয়ে যাওয়া হচ্ছে…",
+    "googleFailed": "Google-এ পৌঁছানো যায়নি। সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।",
+    "noPasswordNote": "পাসওয়ার্ড মনে রাখার দরকার নেই — Google আপনাকে যাচাই করে।",
+    "callbackWorking": "সাইন ইন করা হচ্ছে…",
+    "callbackFailed": "সাইন ইন সম্পূর্ণ করা যায়নি।",
+    "tryAgain": "আবার চেষ্টা করুন"
   },
   "resetPassword": {
     "title": "পাসওয়ার্ড রিসেট",

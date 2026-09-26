@@ -1,83 +1,30 @@
 import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useTranslation } from "react-i18next";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { Mail, Lock } from "lucide-react";
 import KundaliMark from "@/components/KundaliMark";
+import GoogleMark from "@/components/GoogleMark";
 import mandalaUrl from "@/assets/kundali-mark-sacred.svg";
+import { Loader2 } from "lucide-react";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isSignUp, setIsSignUp] = useState(false);
-  const [forgotMode, setForgotMode] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { signIn, signUp } = useAuth();
-  const navigate = useNavigate();
+  const { user, isLoading, signInWithGoogle } = useAuth();
   const { t } = useTranslation("pages");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  // Already signed in — nothing to do here.
+  if (!isLoading && user) return <Navigate to="/dashboard" replace />;
+
+  const handleGoogle = async () => {
     setLoading(true);
-    const { error } = isSignUp
-      ? await signUp(email, password)
-      : await signIn(email, password);
-    setLoading(false);
-
+    const { error } = await signInWithGoogle();
     if (error) {
-      toast.error(error.message);
-    } else if (isSignUp) {
-      toast.success(t("login.toastVerify"));
-    } else {
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("onboarding_completed")
-        .eq("user_id", (await supabase.auth.getUser()).data.user?.id ?? "")
-        .maybeSingle();
-      if (profile && !profile.onboarding_completed) {
-        navigate("/onboarding");
-      } else {
-        navigate("/dashboard");
-      }
+      // This only fires if the redirect itself could not be started; once the
+      // browser leaves for Google, failures come back to /auth/callback.
+      setLoading(false);
+      toast.error(t("login.googleFailed", "Couldn't reach Google. Check your connection and try again."));
     }
-  };
-
-  const handleForgotPassword = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email) {
-      toast.error(t("login.toastEnterEmail"));
-      return;
-    }
-    setLoading(true);
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
-    });
-    setLoading(false);
-    if (error) {
-      toast.error(error.message);
-    } else {
-      toast.success(t("login.toastResetSent"));
-      setForgotMode(false);
-    }
-  };
-
-  const subhead = forgotMode
-    ? t("login.subheadForgot")
-    : isSignUp
-      ? t("login.subheadSignUp")
-      : t("login.subheadSignIn");
-
-  const labelStyle = {
-    color: "hsl(var(--text-secondary))",
-    fontSize: "11px",
-    letterSpacing: "0.14em",
-    textTransform: "uppercase" as const,
-    fontWeight: 500,
   };
 
   return (
@@ -137,101 +84,41 @@ export default function Login() {
               <span className="h-px w-10" style={{ background: "linear-gradient(90deg, hsl(var(--gold) / 0.4), transparent)" }} />
             </div>
 
+            {/* One door in, so the copy never asks the user to choose between
+                signing in and signing up — Google settles which it is. */}
             <p className="text-sm" style={{ color: "hsl(var(--text-secondary))", lineHeight: 1.55 }}>
-              {subhead}
+              {t("login.subheadGoogle", "Sign in or create your account with Google.")}
             </p>
           </div>
 
-          {forgotMode ? (
-            <form onSubmit={handleForgotPassword} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email" style={labelStyle}>{t("login.emailLabel")}</Label>
-                <div className="sacred-input">
-                  <Mail />
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="your@email.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </div>
-              </div>
-              <Button type="submit" className="w-full sacred-cta" disabled={loading}>
-                {loading ? t("login.sendingReset") : t("login.sendResetLink")}
-              </Button>
-              <div className="text-center">
-                <button
-                  type="button"
-                  onClick={() => setForgotMode(false)}
-                  className="text-sm transition-colors hover:text-[hsl(var(--gold))]"
-                  style={{ color: "hsl(var(--text-muted))" }}
-                >
-                  {t("login.backToSignIn")}
-                </button>
-              </div>
-            </form>
-          ) : (
-            <>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="email" style={labelStyle}>{t("login.emailLabel")}</Label>
-                  <div className="sacred-input">
-                    <Mail />
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="your@email.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="password" style={labelStyle}>{t("login.passwordLabel")}</Label>
-                    {!isSignUp && (
-                      <button
-                        type="button"
-                        onClick={() => setForgotMode(true)}
-                        className="text-xs transition-colors hover:text-[hsl(var(--gold))]"
-                        style={{ color: "hsl(var(--text-muted))" }}
-                      >
-                        {t("login.forgotPassword")}
-                      </button>
-                    )}
-                  </div>
-                  <div className="sacred-input">
-                    <Lock />
-                    <Input
-                      id="password"
-                      type="password"
-                      placeholder="••••••••"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                      minLength={6}
-                    />
-                  </div>
-                </div>
-                <Button type="submit" className="w-full sacred-cta" disabled={loading}>
-                  {loading ? t("login.aligningStars") : isSignUp ? t("login.beginJourney") : t("login.signIn")}
-                </Button>
-              </form>
-              <div className="mt-5 text-center">
-                <button
-                  type="button"
-                  onClick={() => setIsSignUp(!isSignUp)}
-                  className="text-sm transition-colors hover:text-[hsl(var(--gold))]"
-                  style={{ color: "hsl(var(--text-muted))" }}
-                >
-                  {isSignUp ? t("login.alreadyHaveAccount") : t("login.needAccount")}
-                </button>
-              </div>
-            </>
-          )}
+          <button
+            type="button"
+            onClick={handleGoogle}
+            disabled={loading}
+            className="w-full inline-flex items-center justify-center gap-3 rounded-full border px-5 py-3 min-h-[48px] text-[15px] font-medium transition-colors disabled:opacity-70"
+            style={{
+              background: "hsl(0 0% 100%)",
+              color: "hsl(220 9% 20%)",
+              borderColor: "hsl(0 0% 100% / 0.85)",
+              fontFamily: "'Jost', sans-serif",
+            }}
+          >
+            {loading ? (
+              <Loader2 className="h-5 w-5 animate-spin" />
+            ) : (
+              <GoogleMark className="h-5 w-5 shrink-0" />
+            )}
+            {loading
+              ? t("login.googleRedirecting", "Taking you to Google…")
+              : t("login.continueWithGoogle", "Continue with Google")}
+          </button>
+
+          <p
+            className="mt-4 text-center text-[11px] leading-relaxed"
+            style={{ color: "hsl(var(--text-muted))" }}
+          >
+            {t("login.noPasswordNote", "No password to remember — Google verifies it's you.")}
+          </p>
         </div>
 
         {/* Trust strip */}
