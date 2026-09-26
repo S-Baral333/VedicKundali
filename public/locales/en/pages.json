@@ -1569,6 +1569,10 @@
     "noPasswordNote": "No password to remember — Google verifies it's you.",
     "callbackWorking": "Signing you in…",
     "callbackFailed": "We couldn't complete that sign-in.",
-    "tryAgain": "Try again"
+    "tryAgain": "Try again",
+    "freeHeading": "Free to begin — no card needed",
+    "perk1": "Your full birth chart and its yogas",
+    "perk2": "A daily reading drawn from your own grahas",
+    "perk3": "Three questions to the Rishi Guru"
   }
 }

@@ -155,6 +155,11 @@ const enPages = {
     callbackWorking: "Signing you in…",
     callbackFailed: "We couldn't complete that sign-in.",
     tryAgain: "Try again",
+    // Deliberately only what the free tier actually includes.
+    freeHeading: "Free to begin — no card needed",
+    perk1: "Your full birth chart and its yogas",
+    perk2: "A daily reading drawn from your own grahas",
+    perk3: "Three questions to the Rishi Guru",
     subheadForgot: "We'll send a sacred link to restore your access",
     subheadSignUp: "Begin your journey through the stars",
     subheadSignIn: "Enter your sacred space and align with your path",

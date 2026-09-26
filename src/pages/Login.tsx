@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import KundaliMark from "@/components/KundaliMark";
 import GoogleMark from "@/components/GoogleMark";
 import mandalaUrl from "@/assets/kundali-mark-sacred.svg";
-import { Loader2 } from "lucide-react";
+import { Loader2, Star, Sun, Flame } from "lucide-react";
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
@@ -119,6 +119,42 @@ export default function Login() {
           >
             {t("login.noPasswordNote", "No password to remember — Google verifies it's you.")}
           </p>
+
+          {/* What signing in actually gets you. Sits below the button so a
+              returning user still taps first, while a new one has a reason to.
+              Named for what the free tier really includes — anything more
+              generous here would be a promise the tier doesn't keep. */}
+          <div
+            className="mt-6 pt-5"
+            style={{ borderTop: "0.5px solid hsl(var(--gold) / 0.16)" }}
+          >
+            <p
+              className="text-center text-[10px] uppercase mb-3"
+              style={{ color: "hsl(var(--gold) / 0.8)", letterSpacing: "0.18em" }}
+            >
+              {t("login.freeHeading", "Free to begin — no card needed")}
+            </p>
+            <ul className="space-y-2.5">
+              {[
+                { Icon: Star, key: "login.perk1", fallback: "Your full birth chart and its yogas" },
+                { Icon: Sun, key: "login.perk2", fallback: "A daily reading drawn from your own grahas" },
+                { Icon: Flame, key: "login.perk3", fallback: "Three questions to the Rishi Guru" },
+              ].map(({ Icon, key, fallback }) => (
+                <li key={key} className="flex items-start gap-2.5">
+                  <Icon
+                    className="h-3.5 w-3.5 shrink-0 mt-[3px]"
+                    style={{ color: "hsl(var(--gold) / 0.75)" }}
+                  />
+                  <span
+                    className="text-[13px] leading-snug"
+                    style={{ color: "hsl(var(--text-secondary))" }}
+                  >
+                    {t(key, fallback)}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
         {/* Trust strip */}
