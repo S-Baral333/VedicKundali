@@ -14,7 +14,12 @@ const ACTS: { key: keyof Acts; label: string; Icon: typeof Sun; tint: string }[]
   { key: "evening",   label: "Evening",   Icon: Moon,  tint: "rgba(120,140,200,0.06)" },
 ];
 
-export default function ThreeActsStrip({ acts }: { acts?: Acts }) {
+/**
+ * @param dropCap Let the first act open the reading with a drop cap. The page
+ *   passes this only when no guidance blob precedes the acts, so a reading
+ *   never carries two.
+ */
+export default function ThreeActsStrip({ acts, dropCap }: { acts?: Acts; dropCap?: boolean }) {
   const { t } = useTranslation();
   if (!acts) return null;
   const filled = ACTS.filter(({ key }) => !!acts[key]);
@@ -24,7 +29,7 @@ export default function ThreeActsStrip({ acts }: { acts?: Acts }) {
       className="grid gap-3 grid-cols-1 sm:[grid-template-columns:var(--cols)] m-flat-list"
       style={{ ["--cols" as any]: `repeat(${filled.length}, minmax(0, 1fr))` }}
     >
-      {filled.map(({ key, label, Icon, tint }) => {
+      {filled.map(({ key, label, Icon, tint }, i) => {
         const txt = acts[key]!;
         return (
           <div
@@ -36,7 +41,7 @@ export default function ThreeActsStrip({ acts }: { acts?: Acts }) {
               <Icon className="h-3.5 w-3.5" style={{ color: "hsl(var(--gold))" }} />
               <span className="text-[11px] tracking-[0.18em] uppercase" style={{ color: "hsl(var(--text-muted))" }}>{t("pages:ui.threeActsStrip." + key, label)}</span>
             </div>
-            <p className="text-[14px] leading-[1.65]" style={{ fontFamily: "'Jost', sans-serif", fontWeight: 300, color: "hsl(var(--text-secondary))" }}>
+            <p className={`text-[14px] leading-[1.65]${dropCap && i === 0 ? " m-dropcap" : ""}`} style={{ fontFamily: "'Jost', sans-serif", fontWeight: 300, color: "hsl(var(--text-secondary))" }}>
               <AstroText text={txt} />
             </p>
           </div>

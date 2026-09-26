@@ -2016,4 +2016,66 @@ html[style*="--text-scrim"] .lumen-block:not(.glass-card)::before {
     padding: 0.25rem 1.25rem 0.75rem;
     scroll-padding-inline: 1.25rem;
   }
+
+  /* ── Drop cap ────────────────────────────────────────────────────────────
+     The opening letter of a reading, set as a magazine would. Applied to the
+     one block that opens each reading — the guidance blob on longer periods,
+     the first act on a day reading — so a reading never carries two.
+
+     Only Latin script: ::first-letter takes the whole grapheme cluster, and in
+     Devanagari that drags a matra (and sometimes half a conjunct) up to 3.1em,
+     which collides with the line above. data-lang is kept in sync by
+     applyHtmlLang in src/i18n/config.ts. */
+  html[data-lang="en"] .m-dropcap::first-letter {
+    float: left;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 3.1em;
+    line-height: 0.82;
+    padding: 0.06em 0.12em 0 0;
+    color: hsl(var(--gold));
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* ── Ritual check: the one moment in a reading the user acts on ─────────────
+   Not phone-scoped — completing a ritual deserves the same acknowledgement on
+   a desktop. The ring is a pseudo-element so it can overflow the pill without
+   affecting layout. Paired with a haptic pulse in src/lib/haptics.ts. */
+.ritual-check {
+  position: relative;
+}
+.ritual-check-icon {
+  transform-origin: center;
+}
+.ritual-check.is-celebrating .ritual-check-icon {
+  animation: ritual-check-pop 480ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.ritual-check.is-celebrating::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 9999px;
+  border: 1px solid hsl(var(--gold));
+  pointer-events: none;
+  animation: ritual-check-ring 620ms ease-out forwards;
+}
+
+@keyframes ritual-check-pop {
+  0%   { transform: scale(0.55) rotate(-12deg); opacity: 0.4; }
+  55%  { transform: scale(1.22) rotate(2deg);   opacity: 1; }
+  100% { transform: scale(1)    rotate(0deg);   opacity: 1; }
+}
+@keyframes ritual-check-ring {
+  0%   { opacity: 0.55; transform: scale(1); }
+  100% { opacity: 0;    transform: scale(1.85); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ritual-check.is-celebrating .ritual-check-icon,
+  .ritual-check.is-celebrating::after {
+    animation: none;
+  }
+  .ritual-check.is-celebrating::after {
+    content: none;
+  }
 }

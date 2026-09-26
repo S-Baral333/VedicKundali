@@ -708,7 +708,7 @@ export default function DailyHoroscopePage() {
                     below; only longer periods return a single guidance blob.
                     Rendering both restated the same day twice. */}
                 {horoscope.guidance && (
-                  <div className="text-[1.02rem] leading-[1.85] whitespace-pre-line" style={{ fontFamily: "'Jost', sans-serif", fontWeight: 300, color: "hsl(var(--text-secondary))" }}>
+                  <div className="m-dropcap text-[1.02rem] leading-[1.85] whitespace-pre-line" style={{ fontFamily: "'Jost', sans-serif", fontWeight: 300, color: "hsl(var(--text-secondary))" }}>
                     <AstroText text={horoscope.guidance} />
                   </div>
                 )}
@@ -716,7 +716,7 @@ export default function DailyHoroscopePage() {
                 {/* Three acts (daily/tomorrow only) */}
                 {(period === "daily" || period === "tomorrow") && horoscope.three_acts && (
                   <div className="mt-5">
-                    <ThreeActsStrip acts={horoscope.three_acts} />
+                    <ThreeActsStrip acts={horoscope.three_acts} dropCap={!horoscope.guidance} />
                   </div>
                 )}
 
