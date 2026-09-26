@@ -16,7 +16,7 @@ import { Loader2, User, Star, Shield, LogOut, Sparkles, Moon, Flame, Globe, Info
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "@/components/LanguageSelector";
 import { LANGUAGES } from "@/i18n/languages";
-import { format } from "date-fns";
+import { formatPickerDate } from "@/lib/panchanga-i18n";
 import { LIFE_PRIORITIES, EMOTIONAL_STATES, GUIDANCE_STYLES } from "@/lib/onboarding-constants";
 import SacredPageShell from "@/components/layout/SacredPageShell";
 import PageNavRail from "@/components/layout/PageNavRail";
@@ -40,7 +40,7 @@ interface ProfileData {
 const ProfilePage = () => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<ProfileData | null>(null);
@@ -264,7 +264,7 @@ const ProfilePage = () => {
       </div>
 
       {/* Personal Information */}
-      <Card className="animate-[fade-in-up_0.6s_ease-out_0.1s_both]">
+      <Card className="animate-[fade-in-up_0.6s_ease-out_0.1s_both] m-sheet-card">
         <CardHeader>
           <CardTitle className="font-serif flex items-center gap-2">
             <User className="h-5 w-5 text-primary" /> {t("pages:ui.profilePage.personalTitle", "Personal Information")}
@@ -288,7 +288,7 @@ const ProfilePage = () => {
           </div>
           {profile?.created_at && (
             <p className="text-xs text-muted-foreground">
-              {t("pages:ui.profilePage.memberSince", "Member since {{date}}", { date: format(new Date(profile.created_at), "MMMM d, yyyy") })}
+              {t("pages:ui.profilePage.memberSince", "Member since {{date}}", { date: formatPickerDate(new Date(profile.created_at), i18n.language) })}
             </p>
           )}
           <Button onClick={handleSavePersonal} disabled={savingPersonal} className="w-full sm:w-auto">
@@ -299,7 +299,7 @@ const ProfilePage = () => {
       </Card>
 
       {/* Birth Details */}
-      <Card className="animate-[fade-in-up_0.6s_ease-out_0.2s_both]">
+      <Card className="animate-[fade-in-up_0.6s_ease-out_0.2s_both] m-sheet-card">
         <CardHeader>
           <CardTitle className="font-serif flex items-center gap-2">
             <Star className="h-5 w-5 text-primary" /> {t("pages:ui.profilePage.birthTitle", "Birth Details")}
@@ -340,7 +340,7 @@ const ProfilePage = () => {
 
       {/* Rishi Guru Protocol */}
       <Card
-        className="animate-[fade-in-up_0.6s_ease-out_0.22s_both] relative overflow-hidden border-primary/30"
+        className="animate-[fade-in-up_0.6s_ease-out_0.22s_both] relative overflow-hidden border-primary/30 m-sheet-card"
         style={{
           background:
             "linear-gradient(135deg, hsl(var(--primary) / 0.08), hsl(var(--background) / 0.6))",
@@ -386,7 +386,7 @@ const ProfilePage = () => {
       </Card>
 
       {/* Language & Region */}
-      <Card className="animate-[fade-in-up_0.6s_ease-out_0.15s_both]">
+      <Card className="animate-[fade-in-up_0.6s_ease-out_0.15s_both] m-sheet-card">
         <CardHeader>
           <CardTitle className="font-serif flex items-center gap-2">
             <Globe className="h-5 w-5 text-primary" /> {t("profile:languageCardTitle", "Language & Region")}
@@ -440,7 +440,7 @@ const ProfilePage = () => {
         ) : (
       <Card
         key="prefs"
-        className="animate-[fade-in-up_0.6s_ease-out_0.25s_both]"
+        className="animate-[fade-in-up_0.6s_ease-out_0.25s_both] m-sheet-card"
       >
         <CardHeader>
           <CardTitle className="font-serif flex items-center gap-2">
@@ -540,7 +540,7 @@ const ProfilePage = () => {
       </AnimatePresence>
 
       {/* Account Settings */}
-      <Card className="animate-[fade-in-up_0.6s_ease-out_0.3s_both]">
+      <Card className="animate-[fade-in-up_0.6s_ease-out_0.3s_both] m-sheet-card">
         <CardHeader>
           <CardTitle className="font-serif flex items-center gap-2">
             <Shield className="h-5 w-5 text-primary" /> {t("pages:ui.profilePage.accountTitle", "Account Settings")}
@@ -563,11 +563,13 @@ const ProfilePage = () => {
 
           <Separator className="my-4" />
 
-          <div className="flex items-center justify-between">
+          {/* Phones stack these — the created date and the button fought for
+              the same row and both ended up truncated. */}
+          <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-2">
             <p className="text-xs text-muted-foreground">
-              {t("pages:ui.profilePage.accountCreated", "Account created {{date}}", { date: user?.created_at ? format(new Date(user.created_at), "MMMM d, yyyy") : "" })}
+              {t("pages:ui.profilePage.accountCreated", "Account created {{date}}", { date: user?.created_at ? formatPickerDate(new Date(user.created_at), i18n.language) : "" })}
             </p>
-            <Button variant="destructive" size="sm" onClick={handleSignOut}>
+            <Button variant="destructive" size="sm" onClick={handleSignOut} className="w-full sm:w-auto">
               <LogOut className="h-4 w-4" /> {t("pages:ui.profilePage.signOut", "Sign Out")}
             </Button>
           </div>

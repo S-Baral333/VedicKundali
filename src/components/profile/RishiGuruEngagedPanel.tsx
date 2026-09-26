@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { nakshatraLabels, planetLabel, signLabel } from "@/lib/panchanga-i18n";
+import type { TFunction } from "i18next";
 import { useTranslation } from "react-i18next";
 
 interface Layer {
@@ -105,7 +107,7 @@ const RishiGuruEngagedPanel = ({ onDisengage, saving }: Props) => {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45, ease: "easeOut" }}
-      className="relative overflow-hidden rounded-[20px] border border-primary/30 backdrop-blur-[14px]"
+      className="relative overflow-hidden rounded-[20px] border border-primary/30 backdrop-blur-[14px] m-sheet-card"
       style={{
         background:
           "linear-gradient(135deg, hsl(var(--primary) / 0.10), hsl(var(--background) / 0.55))",
@@ -181,7 +183,8 @@ const RishiGuruEngagedPanel = ({ onDisengage, saving }: Props) => {
             <EmptyHint text={t("pages:ui.rishiGuruEngagedPanel.noLaws", "No laws active — define them in AI Engine → 12 Laws.")} />
           ) : (
             <TooltipProvider delayDuration={150}>
-              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
+              {/* Two columns on phones: at three, every law title truncated. */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-2">
                 {rules.map((r) => (
                   <Tooltip key={r.id}>
                     <TooltipTrigger asChild>
@@ -216,25 +219,28 @@ const RishiGuruEngagedPanel = ({ onDisengage, saving }: Props) => {
             <EmptyHint text={t("pages:ui.rishiGuruEngagedPanel.noChart", "Add your birth details above to let the Guru cite your chart.")} />
           ) : (
             <div className="rounded-lg border border-primary/15 bg-background/40 px-4 py-3 font-mono text-[12px] sm:text-[13px] leading-relaxed text-foreground/85">
-              <Row label="Lagna" value={chart.lagna ? `${chart.lagna}${chart.lagnaDeg ? ` ${chart.lagnaDeg}` : ""}` : "—"} />
+              <Row
+                label={t("pages:dashboard.ascendant", "Ascendant")}
+                value={chart.lagna ? `${signLabel(t, chart.lagna)}${chart.lagnaDeg ? ` ${chart.lagnaDeg}` : ""}` : "—"}
+              />
               <Row
                 label={t("pages:ui.rishiGuruEngagedPanel.moon", "Moon")}
                 value={
                   chart.moon
-                    ? `${chart.moon}${chart.moonNak ? ` · ${chart.moonNak}${chart.moonPada ? ` pada ${chart.moonPada}` : ""}` : ""}`
+                    ? `${signLabel(t, chart.moon)}${chart.moonNak ? ` · ${nakName(t, chart.moonNak)}${chart.moonPada ? ` ${t("pages:ui.sections.pada", "pada {{pada}}", { pada: chart.moonPada })}` : ""}` : ""}`
                     : "—"
                 }
               />
               <Row
-                label="Mahadasha"
+                label={t("pages:dashboard.mahaDasha", "Maha Dasha")}
                 value={
                   chart.mahaDasha
-                    ? `${chart.mahaDasha}${chart.mahaDashaEnd ? ` (${t("pages:ui.rishiGuruEngagedPanel.until", "until {{year}}", { year: chart.mahaDashaEnd.slice(0, 4) })})` : ""}`
+                    ? `${planetLabel(t, chart.mahaDasha)}${chart.mahaDashaEnd ? ` (${t("pages:ui.rishiGuruEngagedPanel.until", "until {{year}}", { year: chart.mahaDashaEnd.slice(0, 4) })})` : ""}`
                     : "—"
                 }
               />
               <Row
-                label="Yogas"
+                label={t("pages:ui.guruWatchingPanel.yogas", "Yogas")}
                 value={chart.yogas && chart.yogas.length ? chart.yogas.join(", ") : "—"}
               />
             </div>
@@ -288,6 +294,11 @@ const Section = ({
     {children}
   </div>
 );
+
+/** nakshatraLabels wants the whole panchanga object; the panel only carries
+ *  the name, and resolving at render keeps it reactive to a language switch. */
+const nakName = (t: TFunction, name: string) =>
+  nakshatraLabels(t, { name, deity: "", symbol: "" }).name;
 
 const Row = ({ label, value }: { label: string; value: string }) => (
   <div className="flex items-baseline gap-2 py-0.5">
