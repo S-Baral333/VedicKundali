@@ -5,35 +5,29 @@
  * business will want to change, and because they must not drift between the
  * two documents.
  *
- * ⚠ BLOCKED ON ONE FACT — do not publish these pages until it is filled in.
+ * The contracting party is the sole trader, Aayush Timalsina, trading as
+ * Gurukundali. This matches ABN 97 851 594 042 exactly as it is registered on
+ * ABN Lookup — "TIMALSINA, AAYUSH", Individual/Sole Trader, active 31 May 2025,
+ * VIC 3750 — so the name and the number belong to the same legal person, which
+ * is the thing that makes the documents mean what they say.
  *
- * Decided: the contracting party is the company, Wandong Bulls Corp Pty Ltd,
- * so the company carries the liability rather than the individual. What is
- * missing is the company's OWN ABN.
+ * Note for whoever revisits this: a sole trader is not a separate legal person
+ * from the individual, so there is no limited liability behind these terms. If
+ * Wandong Bulls Corp Pty Ltd is later registered and becomes the operator,
+ * `entity` and `abn` must change together to the company's own name and ABN —
+ * never one without the other.
  *
- * ABN 97 851 594 042 must NOT be used here. It is registered to
- * "TIMALSINA, AAYUSH" as an Individual/Sole Trader (active 31 May 2025,
- * VIC 3750) — a different legal person from the Pty Ltd. Naming the company
- * against that number would tell users they are contracting with an entity
- * that does not hold it.
- *
- * To fill in: search the company name on abr.business.gov.au, take the ABN
- * shown against the Pty Ltd, and set both fields below. Nothing else changes.
- *
- * Also outstanding: `contactEmail` must be a mailbox that is actually
+ * ⚠ Still outstanding: `contactEmail` must be a mailbox that is actually
  * monitored. The footer previously pointed at hello@kundali.app, which is not
  * this domain.
  */
 export const LEGAL = {
   /** Product/trading name, as used in running text. */
   brand: "Gurukundali",
-  /**
-   * ⚠ PENDING. Intended value: "Wandong Bulls Corp Pty Ltd" — set it together
-   * with the company's own `abn` below, never on its own.
-   */
-  entity: "[LEGAL ENTITY TO BE CONFIRMED]",
-  /** ⚠ PENDING — the COMPANY's ABN, not 97 851 594 042 (that is the sole trader's). */
-  abn: "[ABN TO BE CONFIRMED]",
+  /** The legal person users contract with. Sole trader, trading as `brand`. */
+  entity: "Aayush Timalsina",
+  /** Belongs to `entity`. Displayed in the conventional spaced grouping. */
+  abn: "97 851 594 042",
   /** Public site the documents refer to. */
   site: "gurukundali.com",
   /** ⚠ Must be a real, monitored mailbox before these pages go live. */
