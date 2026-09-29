@@ -201,15 +201,27 @@ export default function TermsOfService() {
         <p>Breach of this section may result in immediate suspension or closure of your Account.</p>
       </Section>
 
-      <Section id="ai" eyebrow="Section 8" heading="AI-Generated Content">
+      <Section id="ai" eyebrow="Section 8" heading="How Readings Are Composed">
         <p>
-          Readings are produced by an AI model working from the computed chart. They can be wrong,
-          internally inconsistent, or different between two runs of the same question. Treat a
-          Reading as one voice offering a perspective, not as a statement of fact.
+          <strong>Your chart is computed, not generated.</strong> The sidereal positions of the
+          grahas, your lagna, the nakshatras, the dasha sequence, the divisional charts and the
+          yogas are calculated from your birth moment by classical rule, using the Lahiri
+          ayanamsa. That calculation is deterministic: the same birth moment always produces the
+          same chart.
         </p>
         <p>
-          Producing a Reading requires sending the relevant parts of your chart, and anything you
-          typed, to a third-party AI provider outside Australia. This is described in Section 6 of
+          <strong>The words are composed by a language model</strong> working from that
+          computation. So while the placements a Reading cites are exact, the prose around them is
+          written, and can be wrong, internally inconsistent, or different between two runs of the
+          same question.
+        </p>
+        <p>
+          Treat a Reading as one voice reading your chart — the way a jyotishi offers a view
+          rather than a verdict — and not as a statement of fact about what will happen.
+        </p>
+        <p>
+          Composing a Reading requires sending the relevant computed factors, and anything you
+          typed, to a third-party provider outside Australia. This is described in Section 6 of
           our <a href="/privacy">Privacy Policy</a>.
         </p>
         <p>
