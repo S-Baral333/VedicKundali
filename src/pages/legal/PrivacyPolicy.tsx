@@ -5,8 +5,16 @@ export default function PrivacyPolicy() {
   return (
     <LegalLayout
       title="Privacy Policy"
-      intro={`This explains what ${LEGAL.entity} collects, why, and who else sees it. It describes what the app actually does today, not what it might do later.`}
+      intro={`This explains what ${LEGAL.brand} collects, why, and who else sees it. It describes what the app actually does today, not what it might do later.`}
     >
+      <Section heading="Who holds your data">
+        <p>
+          {LEGAL.brand} is operated by {LEGAL.entity} (ABN {LEGAL.abn}), based in{" "}
+          {LEGAL.governingLaw}. That is the party responsible for the information described
+          below, and the party to contact about it.
+        </p>
+      </Section>
+
       <Section heading="What we collect">
         <p>
           <strong>Your account.</strong> When you sign in with Google we receive your email

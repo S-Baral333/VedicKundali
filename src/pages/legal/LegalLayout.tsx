@@ -30,7 +30,7 @@ export default function LegalLayout({
           className="inline-flex items-center gap-2 text-sm mb-8 transition-colors hover:text-[hsl(var(--gold))]"
           style={{ color: "hsl(var(--text-muted))" }}
         >
-          <ArrowLeft className="h-4 w-4" /> {LEGAL.entity}
+          <ArrowLeft className="h-4 w-4" /> {LEGAL.brand}
         </Link>
 
         <header className="mb-10">

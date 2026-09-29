@@ -5,11 +5,19 @@ export default function TermsOfService() {
   return (
     <LegalLayout
       title="Terms of Service"
-      intro={`These are the terms you agree to by using ${LEGAL.entity}. They are written to be read, not to be impenetrable.`}
+      intro={`These are the terms you agree to by using ${LEGAL.brand}. They are written to be read, not to be impenetrable.`}
     >
+      <Section heading="Who you are dealing with">
+        <p>
+          {LEGAL.brand} is operated by {LEGAL.entity} (ABN {LEGAL.abn}), based in{" "}
+          {LEGAL.governingLaw}. That is the party you enter this agreement with, and the party
+          responsible for the service.
+        </p>
+      </Section>
+
       <Section heading="What this service is">
         <p>
-          {LEGAL.entity} computes Vedic astrological charts from the birth details you provide
+          {LEGAL.brand} computes Vedic astrological charts from the birth details you provide
           and generates written readings from them, along with related features: daily
           horoscopes, compatibility analysis, dream interpretation, remedies and muhurta
           timings.
