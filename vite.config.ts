@@ -95,8 +95,8 @@ export default defineConfig(({ mode }) => ({
         ],
       },
       manifest: {
-        name: "Kundali – Vedic Astrology",
-        short_name: "Kundali",
+        name: "Gurukundali – Vedic Astrology",
+        short_name: "Gurukundali",
         description:
           "Your stars. Your story. Your dharma. Precise Vedic astrology rooted in Sanskrit wisdom.",
         theme_color: "#0A0A14",
