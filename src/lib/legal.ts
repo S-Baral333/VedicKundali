@@ -5,23 +5,34 @@
  * business will want to change, and because they must not drift between the
  * two documents.
  *
- * ⚠ CONFIRM BEFORE PUBLISHING:
- *   - `entity` and `abn` must name the same legal person, and it must be the
- *     one users actually contract with. ABN 97 851 594 042 is registered to
- *     "TIMALSINA, AAYUSH" as an Individual/Sole Trader (active 31 May 2025,
- *     VIC 3750), NOT to a Pty Ltd. A Pty Ltd is a separate legal person with
- *     its own ACN and its own ABN. If the company is the contracting party,
- *     its own ABN belongs here; if it is not registered yet, the sole trader
- *     is the contracting party and there is no limited liability.
- *   - `contactEmail` must be a mailbox that is actually monitored. The footer
- *     previously pointed at hello@kundali.app, which is not this domain.
+ * ⚠ BLOCKED ON ONE FACT — do not publish these pages until it is filled in.
+ *
+ * Decided: the contracting party is the company, Wandong Bulls Corp Pty Ltd,
+ * so the company carries the liability rather than the individual. What is
+ * missing is the company's OWN ABN.
+ *
+ * ABN 97 851 594 042 must NOT be used here. It is registered to
+ * "TIMALSINA, AAYUSH" as an Individual/Sole Trader (active 31 May 2025,
+ * VIC 3750) — a different legal person from the Pty Ltd. Naming the company
+ * against that number would tell users they are contracting with an entity
+ * that does not hold it.
+ *
+ * To fill in: search the company name on abr.business.gov.au, take the ABN
+ * shown against the Pty Ltd, and set both fields below. Nothing else changes.
+ *
+ * Also outstanding: `contactEmail` must be a mailbox that is actually
+ * monitored. The footer previously pointed at hello@kundali.app, which is not
+ * this domain.
  */
 export const LEGAL = {
   /** Product/trading name, as used in running text. */
   brand: "Gurukundali",
-  /** ⚠ PENDING — the legal person users contract with. See note above. */
+  /**
+   * ⚠ PENDING. Intended value: "Wandong Bulls Corp Pty Ltd" — set it together
+   * with the company's own `abn` below, never on its own.
+   */
   entity: "[LEGAL ENTITY TO BE CONFIRMED]",
-  /** ⚠ PENDING — must belong to `entity`, not to a different person. */
+  /** ⚠ PENDING — the COMPANY's ABN, not 97 851 594 042 (that is the sole trader's). */
   abn: "[ABN TO BE CONFIRMED]",
   /** Public site the documents refer to. */
   site: "gurukundali.com",
