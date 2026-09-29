@@ -50,11 +50,11 @@ export default function HeroSection() {
           WebkitTextFillColor: 'transparent',
           marginBottom: '1rem',
         }}>
-          {t("pages:ui.heroSection.headline", "Free Kundali — Your Vedic Birth Chart, Decoded by AI")}
+          {t("pages:ui.heroSection.headline", "Free Kundali — Your Birth Chart, Cast by Classical Rule")}
         </h1>
 
         <p className="text-base md:text-lg mb-2 max-w-lg mx-auto" style={{ fontFamily: "'IM Fell English', serif", fontStyle: 'italic', color: 'hsl(var(--text-secondary))' }}>
-          {t("pages:ui.heroSection.subhead", "Generate your Janam Kundali, daily Vedic horoscope, and dasha analysis instantly — rooted in authentic Jyotish.")}
+          {t("pages:ui.heroSection.subhead", "Your Janam Kundali, daily horoscope and dasha analysis — computed on the Lahiri ayanamsa, read in language you can act on.")}
         </p>
 
         {/* Word rotator */}

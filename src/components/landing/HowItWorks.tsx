@@ -5,8 +5,8 @@ import TwinkleText from "@/components/TwinkleText";
 
 const steps = [
   { icon: Calendar, key: "step1", title: "Enter Your Birth Details", desc: "Date, time, and place of birth." },
-  { icon: BarChart3, key: "step2", title: "AI Generates Your Kundali", desc: "Planets, houses, nakshatras, and dashas calculated." },
-  { icon: BookOpen, key: "step3", title: "Receive Personalized Guidance", desc: "Ancient Jyotish wisdom interpreted by AI." },
+  { icon: BarChart3, key: "step2", title: "Your Chart Is Cast", desc: "Sidereal positions, houses, nakshatras and dashas, computed from your birth moment." },
+  { icon: BookOpen, key: "step3", title: "The Chart Is Read to You", desc: "Classical Jyotish rules, put into plain language." },
 ];
 
 export default function HowItWorks() {

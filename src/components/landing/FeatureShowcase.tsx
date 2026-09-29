@@ -8,13 +8,13 @@ const features = [
     icon: Star,
     key: "birthChart",
     title: "Vedic Birth Chart",
-    desc: "Get a complete Kundali with planetary positions, Nakshatras, Yogas, and AI-interpreted readings personalized to your life.",
+    desc: "A complete Kundali — graha positions, nakshatras, yogas and dashas — computed by classical rule and read back to you in plain language.",
   },
   {
     icon: Moon,
     key: "dreamOracle",
     title: "Dream Oracle",
-    desc: "Describe your dream and receive ancient Swapna Shastra interpretations combined with modern AI insight.",
+    desc: "Describe your dream and receive its reading in the Swapna Shastra tradition, weighed against your own chart.",
   },
   {
     icon: Sun,
@@ -34,7 +34,7 @@ export default function FeatureShowcase() {
         <TwinkleText as="h2" intensity="aura" className="text-3xl font-bold mb-4 block" style={{ fontFamily: 'Cinzel, serif', color: 'hsl(35 25% 88%)' }}>{t("pages:ui.featureShowcase.title", "Divine Features")}</TwinkleText>
         <div className="sacred-divider max-w-xs mx-auto" />
         <p className="mb-12 max-w-xl mx-auto" style={{ color: 'hsl(35 12% 55%)' }}>
-          {t("pages:ui.featureShowcase.subtitle", "Harness the power of Vedic astrology enhanced with modern AI for deeper, more personal insights.")}
+          {t("pages:ui.featureShowcase.subtitle", "Authentic Vedic astrology, computed precisely and explained clearly — no vague horoscopes, no guesswork.")}
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

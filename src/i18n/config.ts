@@ -155,6 +155,8 @@ const enPages = {
     callbackWorking: "Signing you in…",
     callbackFailed: "We couldn't complete that sign-in.",
     tryAgain: "Try again",
+    // The claim worth making is the computation, not what it is "powered by".
+    tradition: "Your chart is cast from your birth moment by classical rule, on the Lahiri ayanamsa — the same sidereal reckoning a jyotishi has always used.",
     // Deliberately only what the free tier actually includes.
     freeHeading: "Free to begin — no card needed",
     perk1: "Your full birth chart and its yogas",

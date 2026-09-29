@@ -472,11 +472,11 @@
     },
     "featureShowcase": {
       "title": "Divine Features",
-      "subtitle": "Harness the power of Vedic astrology enhanced with modern AI for deeper, more personal insights.",
+      "subtitle": "Authentic Vedic astrology, computed precisely and explained clearly — no vague horoscopes, no guesswork.",
       "birthChartTitle": "Vedic Birth Chart",
-      "birthChartDesc": "Get a complete Kundali with planetary positions, Nakshatras, Yogas, and AI-interpreted readings personalized to your life.",
+      "birthChartDesc": "A complete Kundali — graha positions, nakshatras, yogas and dashas — computed by classical rule and read back to you in plain language.",
       "dreamOracleTitle": "Dream Oracle",
-      "dreamOracleDesc": "Describe your dream and receive ancient Swapna Shastra interpretations combined with modern AI insight.",
+      "dreamOracleDesc": "Describe your dream and receive its reading in the Swapna Shastra tradition, weighed against your own chart.",
       "dailyHoroscopeTitle": "Daily Horoscope",
       "dailyHoroscopeDesc": "Personalized daily and weekly predictions based on your moon sign and current planetary transits."
     },
@@ -507,8 +507,8 @@
       "contact": "Contact"
     },
     "heroSection": {
-      "headline": "Free Kundali — Your Vedic Birth Chart, Decoded by AI",
-      "subhead": "Generate your Janam Kundali, daily Vedic horoscope, and dasha analysis instantly — rooted in authentic Jyotish.",
+      "headline": "Free Kundali — Your Birth Chart, Cast by Classical Rule",
+      "subhead": "Your Janam Kundali, daily horoscope and dasha analysis — computed on the Lahiri ayanamsa, read in language you can act on.",
       "ctaReading": "Get Your Free Reading",
       "ctaDream": "Interpret a Dream",
       "wordBirthCharts": "Birth Charts",
@@ -523,10 +523,10 @@
       "title": "How It Works",
       "step1Title": "Enter Your Birth Details",
       "step1Desc": "Date, time, and place of birth.",
-      "step2Title": "AI Generates Your Kundali",
-      "step2Desc": "Planets, houses, nakshatras, and dashas calculated.",
-      "step3Title": "Receive Personalized Guidance",
-      "step3Desc": "Ancient Jyotish wisdom interpreted by AI."
+      "step2Title": "Your Chart Is Cast",
+      "step2Desc": "Sidereal positions, houses, nakshatras and dashas, computed from your birth moment.",
+      "step3Title": "The Chart Is Read to You",
+      "step3Desc": "Classical Jyotish rules, put into plain language."
     },
     "kundaliExplainer": {
       "title": "What is a Kundali?",
@@ -574,7 +574,7 @@
     "tryItNow": {
       "noSignup": "No signup needed",
       "title": "Try It Now — Free Preview",
-      "subtitle": "Experience the power of Vedic astrology. Get a real AI-generated reading instantly.",
+      "subtitle": "A real chart, cast from your birth moment and read back to you. No sign-up needed to look.",
       "tryFree": "Try Free",
       "dailyTitle": "Daily Cosmic Insight",
       "dailyDesc": "Discover how today's planetary movements affect you.",
@@ -590,7 +590,7 @@
       "rowChart": "Birth chart based",
       "rowDasha": "Dasha timing",
       "rowTransits": "Real planetary transits",
-      "rowAi": "AI explanations"
+      "rowAi": "Explained in plain language"
     },
     "index": {
       "signIn": "Sign In"
@@ -1576,6 +1576,7 @@
     "freeHeading": "Free to begin — no card needed",
     "perk1": "Your full birth chart and its yogas",
     "perk2": "A daily reading drawn from your own grahas",
-    "perk3": "Three questions to the Rishi Guru"
+    "perk3": "Three questions to the Rishi Guru",
+    "tradition": "Your chart is cast from your birth moment by classical rule, on the Lahiri ayanamsa — the same sidereal reckoning a jyotishi has always used."
   }
 }

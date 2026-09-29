@@ -7,7 +7,7 @@ const rows = [
   { key: "rowChart", label: "Birth chart based" },
   { key: "rowDasha", label: "Dasha timing" },
   { key: "rowTransits", label: "Real planetary transits" },
-  { key: "rowAi", label: "AI explanations" },
+  { key: "rowAi", label: "Explained in plain language" },
 ];
 
 export default function WhyDifferent() {

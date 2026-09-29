@@ -128,6 +128,17 @@ export default function Login() {
             className="mt-6 pt-5"
             style={{ borderTop: "0.5px solid hsl(var(--gold) / 0.16)" }}
           >
+            {/* Says what is actually computed, not what is "powered by" — the
+                chart is classical math, and that is the thing worth claiming. */}
+            <p
+              className="text-center text-[13px] italic mb-4 leading-relaxed"
+              style={{ fontFamily: "'Cormorant Garamond', serif", color: "hsl(var(--text-secondary))" }}
+            >
+              {t(
+                "login.tradition",
+                "Your chart is cast from your birth moment by classical rule, on the Lahiri ayanamsa — the same sidereal reckoning a jyotishi has always used."
+              )}
+            </p>
             <p
               className="text-center text-[10px] uppercase mb-3"
               style={{ color: "hsl(var(--gold) / 0.8)", letterSpacing: "0.18em" }}

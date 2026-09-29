@@ -24,7 +24,7 @@ const previews = [
   {
     key: "chart",
     title: "Instant Vedic Birth Chart",
-    description: "Generate your complete Kundali with AI interpretation.",
+    description: "Your complete Kundali, cast from your birth moment.",
     icon: Sun,
     emoji: "🕉️",
     link: "/preview/chart",
@@ -43,7 +43,7 @@ export default function TryItNow() {
           </TwinkleText>
           <div className="sacred-divider max-w-xs mx-auto" />
           <p style={{ color: 'hsl(35 12% 55%)' }}>
-            {t("pages:ui.tryItNow.subtitle", "Experience the power of Vedic astrology. Get a real AI-generated reading instantly.")}
+            {t("pages:ui.tryItNow.subtitle", "A real chart, cast from your birth moment and read back to you. No sign-up needed to look.")}
           </p>
         </div>
 
