@@ -11,6 +11,7 @@ import {
   Sparkles,
   Shield,
   FileText,
+  Receipt,
 } from "lucide-react";
 import {
   Sheet,
@@ -402,6 +403,7 @@ export default function MobileHeaderDrawer({
                     so signed-in users had no route to them at all. */}
                 <Row icon={Shield} label={t("pages:ui.mobileHeaderDrawer.privacy", "Privacy Policy")} to="/privacy" />
                 <Row icon={FileText} label={t("pages:ui.mobileHeaderDrawer.terms", "Terms of Service")} to="/terms" />
+                <Row icon={Receipt} label={t("pages:ui.mobileHeaderDrawer.refunds", "Refund Policy")} to="/refunds" />
               </div>
             </section>
 

@@ -3,6 +3,7 @@ import { ThemeProvider } from "next-themes";
 import App from "./App.tsx";
 import "./styles/indic-fonts.css";
 import "./index.css";
+import "./styles/legal.css";
 import "./i18n/config";
 
 // Unregister service workers and clear caches in dev/iframe contexts to avoid

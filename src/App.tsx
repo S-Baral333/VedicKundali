@@ -32,6 +32,7 @@ import RemediesPage from "./pages/RemediesPage";
 import AuthCallback from "./pages/AuthCallback";
 import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
 import TermsOfService from "./pages/legal/TermsOfService";
+import RefundPolicy from "./pages/legal/RefundPolicy";
 import TimelinePage from "./pages/TimelinePage";
 import AskOraclePage from "./pages/AskOraclePage";
 import MuhurtaPage from "./pages/MuhurtaPage";
@@ -70,6 +71,7 @@ const App = () => (
                   and Google's OAuth consent review must reach them signed-out. */}
               <Route path="/privacy" element={<PrivacyPolicy />} />
               <Route path="/terms" element={<TermsOfService />} />
+              <Route path="/refunds" element={<RefundPolicy />} />
               <Route path="/install" element={<InstallPage />} />
               <Route path="/pricing" element={<PricingPage />} />
               <Route path="/preview/horoscope" element={<HoroscopePreview />} />
