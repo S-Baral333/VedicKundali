@@ -75,7 +75,7 @@ export default function KundaliExplainer() {
 
           <article>
             <h3 className="text-xl md:text-2xl mb-3" style={{ fontFamily: 'Cinzel, serif', color: 'hsl(38 78% 65%)' }}>
-              {t("pages:ui.kundaliExplainer.h4", "Why VedicKundali.app")}
+              {t("pages:ui.kundaliExplainer.h4", "Why Gurukundali")}
             </h3>
             <p>
 <Trans i18nKey="pages:ui.kundaliExplainer.p6" defaults="Most online kundali generators stop at a chart image. We go further: every Kundali is interpreted by a <strong>three-layer engine</strong> that combines precise astronomical math (Swiss Ephemeris with Lahiri Ayanamsa), classical Jyotish rules from texts like <em>Brihat Parashara Hora Shastra</em>, and a carefully tuned AI that speaks in the voice of a <strong>warm elder</strong> — never fatalistic, always empowering. You'll see your houses, planets, dashas, yogas, dosha analysis, and daily guidance, all woven into one coherent reading." components={rich} />            </p>
