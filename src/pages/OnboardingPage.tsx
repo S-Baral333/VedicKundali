@@ -243,8 +243,8 @@ export default function OnboardingPage() {
           </div>
           <LanguageSelector
             onChange={() => {
-              // Mark explicit choice so we don't re-prompt
-              try { localStorage.setItem(LANGUAGE_STORAGE_KEY + ".explicit", "1"); } catch {}
+              // setLanguage stamps profiles.language_updated_at, which is what
+              // marks the choice as deliberate. Nothing local to record.
               setLanguageChosen(true);
             }}
           />
