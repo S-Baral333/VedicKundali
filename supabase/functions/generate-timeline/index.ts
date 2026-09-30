@@ -4,6 +4,7 @@ import { Body, EclipticLongitude, MakeTime, GeoVector, Ecliptic } from "https://
 import { resolveGuruContext, applyGuru } from "../_shared/guru.ts";
 import { normalizeLanguage, buildLanguageInstruction } from "../_shared/languages.ts";
 import { resolveAccess } from "../_shared/access.ts";
+import { persistOrLog } from "../_shared/persist.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -429,25 +430,50 @@ Cite specific planet positions/strengths from the CHART DATA above. Avoid hedgin
       }));
 
     if (notifications.length > 0) {
-      // Delete old timeline notifications for this user before inserting new ones.
-      // Both halves abort on failure: a silent delete failure notifies the user
-      // twice about every event, and a silent insert failure after a successful
-      // delete leaves them with no reminders at all — and in that second case
-      // the rows we just dropped are the ones they would have received.
-      const { error: delErr } = await adminClient
-        .from("user_notifications")
-        .delete()
-        .eq("user_id", userId)
-        .in("category", ["dasha_change", "transit", "turning_point"]);
-      if (delErr) {
-        console.error("generate-timeline notification delete error", delErr);
-        throw delErr;
-      }
+      // Replace this user's timeline reminders. Neither half aborts the request:
+      // the response below is a finished AI run and the reminders are a side
+      // effect of it, so failing the payload over the notifications table is the
+      // worse trade. The two writes are not in a transaction, so ordering — not
+      // a throw — is what keeps the table consistent.
+      //
+      // Gating the insert on the delete removes the one genuinely corrupting
+      // outcome. Inserting over rows that should have been cleared would notify
+      // the user twice about every event, and no later run could tell the
+      // duplicates apart to clean them up. If the clear fails we keep the
+      // previous reminders instead: stale, but consistent and still theirs.
+      const cleared = await persistOrLog(
+        adminClient
+          .from("user_notifications")
+          .delete()
+          .eq("user_id", userId)
+          .in("category", ["dasha_change", "transit", "turning_point"]),
+        {
+          fn: "generate-timeline",
+          table: "user_notifications",
+          detail: `clearing previous timeline reminders for user ${userId}`,
+        },
+      );
 
-      const { error: insErr } = await adminClient.from("user_notifications").insert(notifications);
-      if (insErr) {
-        console.error("generate-timeline notification insert error", insErr);
-        throw insErr;
+      if (cleared) {
+        // A failure here leaves the user with no reminders until the next run
+        // re-inserts them. Throwing would not undo the delete above — nothing
+        // rolls back — so it would cost the timeline and recover nothing.
+        await persistOrLog(
+          adminClient.from("user_notifications").insert(notifications),
+          {
+            fn: "generate-timeline",
+            table: "user_notifications",
+            detail: `${notifications.length} timeline reminders for user ${userId}`,
+          },
+        );
+      } else {
+        console.error(
+          "[persist] FAILED generate-timeline → user_notifications:" +
+            ` ${notifications.length} reminders for user ${userId} were not saved —` +
+            " the previous ones could not be cleared (logged above) and inserting" +
+            " over them would duplicate every reminder, so this run left the" +
+            " table untouched",
+        );
       }
     }
 

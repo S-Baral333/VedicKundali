@@ -6,28 +6,41 @@
 // came to be unlimited — see the doc comment on recordUsageEvent in usage.ts —
 // and the same shape appeared in every generator that caches its output.
 //
-// There are only two honest things to do with such a write, and which one
-// applies is a property of the call site, not a preference:
+// What to do about it is a property of the call site, not a preference. The
+// question is never "is this write important" — they all are — but "does
+// aborting actually prevent the bad state":
 //
-//   1. The write still has consequences the caller can act on — a cache the
-//      next request will read as truth, or the first half of a
-//      delete-then-insert pair whose failure leaves duplicates or nothing at
-//      all. Check the error inline and abort the request. Those sites do not
-//      use this module; they read the error and throw, next to the code whose
-//      failure they mirror.
+//   1. It does, because nothing has been spent yet and a later reader would
+//      take the missing write as truth. compute-predictions and
+//      generate-predictions clear a chart's events before regenerating them:
+//      if that delete is lost and the insert lands, the chart carries two
+//      generations at once and the timeline prints each twice. Both abort, and
+//      neither has called a model yet, so the retry is free. Those sites do not
+//      use this module; they read the error and throw, beside the insert whose
+//      check they mirror.
 //
-//   2. The work is already delivered. The reading has streamed, the remedies
-//      are in the response body, the horoscope's failure marker is the last act
-//      of a background task with no caller left to tell. Aborting would destroy
-//      a result the user is holding and change nothing about the lost row. Log
-//      it under a marker someone can grep for, and carry on — that is
-//      persistOrLog.
+//   2. It does not, because the work is already delivered — the reading has
+//      streamed, the remedies are in the response body, the horoscope's failure
+//      marker is the last act of a background task with no caller left to tell.
+//      Aborting would destroy a result the user is holding and change nothing
+//      about the lost row. Log and carry on: persistOrLog.
 //
-// The distinction that matters: (2) is not "ignore the error". An unlogged
-// failure here is silent data loss — the user re-opens the chart, the cache is
-// empty, the expensive generation runs again, and nothing in the logs says why.
+// Beware of reaching for (1) just because a write comes in a delete-then-insert
+// pair. None of these pairs is transactional, so a throw between the two does
+// not undo the delete — it only adds a failed request to a table that is
+// already half-updated. generate-timeline is the case that makes this concrete:
+// its reminder swap happens after the AI run, so aborting would cost a finished
+// timeline and still leave the user with no reminders. Gating the insert on the
+// delete's result is what removes the corrupting outcome there, which is why
+// this function returns a boolean rather than just logging.
 //
-// Grep `[persist] FAILED` in the function logs to find every one of them.
+// So: prevent the bad state by ordering the writes where you can, abort only
+// where aborting is what prevents it, and log the rest. What is never an option
+// is discarding the error. An unlogged failure is silent data loss — the user
+// reopens the chart, the cache is empty, the expensive generation runs again,
+// and nothing says why.
+//
+// Grep `[persist] FAILED` in the function logs to find every such loss.
 
 /** The shape every Supabase write resolves to, narrowed to the part that matters. */
 type WriteResult = { error: unknown };
