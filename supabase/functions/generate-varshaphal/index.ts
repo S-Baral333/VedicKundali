@@ -9,6 +9,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { Body, EclipticLongitude, MakeTime, GeoVector, Ecliptic } from "https://esm.sh/astronomy-engine@2.1.19";
 import { normalizeLanguage, buildLanguageInstruction } from "../_shared/languages.ts";
 import { resolveGuruContext, applyGuru } from "../_shared/guru.ts";
+import { persistOrLog } from "../_shared/persist.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -280,10 +281,19 @@ Natal chart summary: ${cd.llm_summary || `Ascendant ${cd.ascendant?.sign || "unk
     // Cache inside chart_data.varshaphal_cache[year]
     const cache = (cd.varshaphal_cache && typeof cd.varshaphal_cache === "object") ? { ...cd.varshaphal_cache } : {};
     cache[String(year)] = result;
-    await supabase
-      .from("birth_charts")
-      .update({ chart_data: { ...cd, varshaphal_cache: cache } })
-      .eq("id", chart_id);
+    // The annual chart is already in the response below; a failed write only
+    // means this year gets recomputed on the next visit. Logged, not fatal.
+    await persistOrLog(
+      supabase
+        .from("birth_charts")
+        .update({ chart_data: { ...cd, varshaphal_cache: cache } })
+        .eq("id", chart_id),
+      {
+        fn: "generate-varshaphal",
+        table: "birth_charts",
+        detail: `varshaphal_cache[${year}] for chart ${chart_id}`,
+      },
+    );
 
     return new Response(JSON.stringify(result), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
   } catch (e) {

@@ -10,6 +10,7 @@ import { normalizeLanguage, buildLanguageInstruction } from "../_shared/language
 import { resolveGuruContext, applyGuru } from "../_shared/guru.ts";
 import { resolveAccess } from "../_shared/access.ts";
 import { modelForTier } from "../_shared/tiers.ts";
+import { persistOrLog } from "../_shared/persist.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -466,11 +467,21 @@ serve(async (req) => {
       disclaimer: "These classical recommendations are spiritual practices, not medical, legal, or financial advice. Consult a qualified astrologer before wearing gemstones, especially if combining with other stones.",
     };
 
-    // Persist cache
-    await supabase
-      .from("birth_charts")
-      .update({ chart_data: { ...cd, remedy_prescription: result } })
-      .eq("id", chart_id);
+    // Persist cache. The prescriptions are already in the response below, so a
+    // failed write cannot abort — it costs the user a second paid AI synthesis
+    // the next time they open the page, which is exactly the kind of loss that
+    // needs to be greppable rather than silent.
+    await persistOrLog(
+      supabase
+        .from("birth_charts")
+        .update({ chart_data: { ...cd, remedy_prescription: result } })
+        .eq("id", chart_id),
+      {
+        fn: "generate-remedies",
+        table: "birth_charts",
+        detail: `remedy_prescription cache for chart ${chart_id}`,
+      },
+    );
 
     return new Response(JSON.stringify({ ...result, from_cache: false }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
   } catch (e) {

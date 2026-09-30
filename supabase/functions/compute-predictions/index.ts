@@ -65,8 +65,14 @@ serve(async (req) => {
 
     const events = synthesizeEvents(chart.chart_data);
 
-    // Replace cache for this chart
-    await admin.from("predicted_events").delete().eq("chart_id", chartId);
+    // Replace cache for this chart. The delete has to be checked as strictly as
+    // the insert below: if it fails and the insert lands, the chart carries two
+    // generations of events at once and the timeline shows each one twice.
+    const { error: derr } = await admin.from("predicted_events").delete().eq("chart_id", chartId);
+    if (derr) {
+      console.error("compute-predictions delete error", derr);
+      throw derr;
+    }
 
     if (events.length > 0) {
       const rows = events.map(e => ({

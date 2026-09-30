@@ -429,14 +429,26 @@ Cite specific planet positions/strengths from the CHART DATA above. Avoid hedgin
       }));
 
     if (notifications.length > 0) {
-      // Delete old timeline notifications for this user before inserting new ones
-      await adminClient
+      // Delete old timeline notifications for this user before inserting new ones.
+      // Both halves abort on failure: a silent delete failure notifies the user
+      // twice about every event, and a silent insert failure after a successful
+      // delete leaves them with no reminders at all — and in that second case
+      // the rows we just dropped are the ones they would have received.
+      const { error: delErr } = await adminClient
         .from("user_notifications")
         .delete()
         .eq("user_id", userId)
         .in("category", ["dasha_change", "transit", "turning_point"]);
+      if (delErr) {
+        console.error("generate-timeline notification delete error", delErr);
+        throw delErr;
+      }
 
-      await adminClient.from("user_notifications").insert(notifications);
+      const { error: insErr } = await adminClient.from("user_notifications").insert(notifications);
+      if (insErr) {
+        console.error("generate-timeline notification insert error", insErr);
+        throw insErr;
+      }
     }
 
     return new Response(JSON.stringify({ events: allEvents }), {

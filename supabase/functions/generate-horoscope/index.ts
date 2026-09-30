@@ -8,6 +8,7 @@ import {
   GURU_EXTRA_JSON,
 } from "../_shared/guru.ts";
 import { normalizeLanguage, buildLanguageInstruction } from "../_shared/languages.ts";
+import { persistOrLog } from "../_shared/persist.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -713,8 +714,14 @@ serve(async (req) => {
     const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY");
     if (!ANTHROPIC_API_KEY) throw new Error("ANTHROPIC_API_KEY not configured");
 
-    // Stamp a processing placeholder so concurrent callers see the in-flight job
-    await adminClient.from("daily_horoscopes").upsert({
+    // Stamp a processing placeholder so concurrent callers see the in-flight job.
+    // This is the lock the 202 response promises, not a cache: if it does not
+    // land, the client we are about to send "processing" to polls, finds no row,
+    // and starts another generation — and so does every concurrent caller, each
+    // paying for the same model run. Nothing expensive has happened yet, so
+    // there is no result to lose by failing here, and the outer catch answers
+    // 500 rather than sending the client to poll a row that does not exist.
+    const { error: placeholderError } = await adminClient.from("daily_horoscopes").upsert({
       sign_name: signName,
       sign_type: moonSign ? "moon" : "general",
       valid_date: validDate,
@@ -727,6 +734,10 @@ serve(async (req) => {
       error: null,
       generated_at: new Date().toISOString(),
     }, { onConflict: "sign_type,sign_name,period,valid_date,mode,language,voice" });
+    if (placeholderError) {
+      console.error("generate-horoscope: could not stamp processing placeholder", placeholderError);
+      throw placeholderError;
+    }
 
 
     let transitContext = "";
@@ -1158,7 +1169,11 @@ ${(period === "monthly" || period === "yearly") ? `- For this ${period} reading,
         if (cacheError) console.error("Failed to cache horoscope:", cacheError);
       } catch (err) {
         console.error("Background horoscope generation failed:", err);
-        await adminClient.from("daily_horoscopes").upsert({
+        // Last act of a background task with no caller left to fail: the 202 went
+        // out long ago. If this marker is lost the row stays "processing" until
+        // it ages past the 150s window and the next poll silently retries, so
+        // the log line is the only trace of why.
+        await persistOrLog(adminClient.from("daily_horoscopes").upsert({
           sign_name: signName,
           sign_type: moonSign ? "moon" : "general",
           valid_date: validDate,
@@ -1170,7 +1185,11 @@ ${(period === "monthly" || period === "yearly") ? `- For this ${period} reading,
           status: "failed",
           error: err instanceof Error ? err.message : String(err),
           generated_at: new Date().toISOString(),
-        }, { onConflict: "sign_type,sign_name,period,valid_date,mode,language,voice" });
+        }, { onConflict: "sign_type,sign_name,period,valid_date,mode,language,voice" }), {
+          fn: "generate-horoscope",
+          table: "daily_horoscopes",
+          detail: `failed-status marker for ${signName} ${period} ${validDate} (${language})`,
+        });
       }
     })();
 

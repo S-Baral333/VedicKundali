@@ -2,6 +2,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { resolveGuruContext, applyGuru } from "../_shared/guru.ts";
 import { normalizeLanguage, buildLanguageInstruction } from "../_shared/languages.ts";
+import { persistOrLog } from "../_shared/persist.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -364,7 +365,29 @@ Please weave all this information into a cohesive, personalized reading.`;
         } finally {
           controller.close();
           if (fullContent.length > 0) {
-            supabase.from("birth_charts").update({ reading: fullContent }).eq("id", chart_id).then(() => {});
+            // The reading has already streamed to the client, so this cannot
+            // abort anything — but it was also never observed: `.then(() => {})`
+            // discarded the error result and swallowed rejections alike, so a
+            // chart whose reading was never saved looked identical to one that
+            // was, and the user re-ran a paid generation to find out.
+            const persist = persistOrLog(
+              supabase.from("birth_charts").update({ reading: fullContent }).eq("id", chart_id),
+              {
+                fn: "generate-reading",
+                table: "birth_charts",
+                detail: `reading for chart ${chart_id} (${fullContent.length} chars)`,
+              },
+            );
+            // The client stream is closed, so nothing is holding this isolate
+            // open; without waitUntil the update can be torn down in flight and
+            // not even the log line survives.
+            // @ts-ignore - EdgeRuntime is provided by Supabase Edge runtime
+            if (typeof EdgeRuntime !== "undefined" && EdgeRuntime?.waitUntil) {
+              // @ts-ignore
+              EdgeRuntime.waitUntil(persist);
+            } else {
+              await persist;
+            }
           }
         }
       },

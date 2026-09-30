@@ -8,6 +8,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { synthesizeEvents } from "../_shared/prediction-engine/synthesize.ts";
 import { resolveGuruContext, applyGuru } from "../_shared/guru.ts";
 import { normalizeLanguage, buildLanguageInstruction } from "../_shared/languages.ts";
+import { persistOrLog } from "../_shared/persist.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -76,7 +77,15 @@ serve(async (req) => {
     if (stale) {
       const fresh = synthesizeEvents(chart.chart_data);
       // Delete only the rows for this language so other languages' caches survive.
-      await admin.from("predicted_events").delete().eq("chart_id", chartId).eq("language", language);
+      // Checked for the same reason as the insert: a silent failure here plus a
+      // successful insert leaves two generations of this language's events, and
+      // the refetch below would hand the caller every event twice.
+      const { error: delErr } = await admin.from("predicted_events").delete()
+        .eq("chart_id", chartId).eq("language", language);
+      if (delErr) {
+        console.error("generate-predictions delete error", delErr);
+        throw delErr;
+      }
       if (fresh.length) {
         const rows = fresh.map(e => ({
           user_id: user.id, chart_id: chartId,
@@ -197,14 +206,24 @@ Format your response as JSON:
       parsed = { narrations: [], overview: "" };
     }
 
-    // Write narrations back to events
+    // Write narrations back to events. The response below merges these from
+    // `parsed` regardless, so the caller gets its narration either way and
+    // aborting would discard a full model run over a cache miss — but a failure
+    // means the next request re-narrates, and that needs to be greppable.
     if (Array.isArray(parsed.narrations)) {
       for (const n of parsed.narrations) {
         if (n?.event_id && n?.text) {
-          await admin.from("predicted_events")
-            .update({ narration: n.text })
-            .eq("id", n.event_id)
-            .eq("user_id", user.id);
+          await persistOrLog(
+            admin.from("predicted_events")
+              .update({ narration: n.text })
+              .eq("id", n.event_id)
+              .eq("user_id", user.id),
+            {
+              fn: "generate-predictions",
+              table: "predicted_events",
+              detail: `narration for event ${n.event_id}`,
+            },
+          );
         }
       }
     }
