@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { withLanguage, getCurrentLanguage } from "@/lib/i18nClient";
 import { Link, Navigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Star, Moon, Sun, Compass, Heart, Loader2, Sparkles, RefreshCw, Crown, Zap, ArrowRight } from "lucide-react";
 import UsageIndicator from "@/components/UsageIndicator";
@@ -299,10 +300,17 @@ const UserDashboard = React.forwardRef<HTMLDivElement>((_props, ref) => {
           </div>
           {t("dashboard.yourPlan")}
         </div>
+        {/* The tier belongs to the card, not to each meter — it used to repeat
+            on every row below, and would repeat once more per meter added. */}
+        {!isPremium && (
+          <Badge variant="outline" className="shrink-0 text-[10px] px-1.5 py-0">
+            {t("ui.usageIndicator.free", "Free")}
+          </Badge>
+        )}
       </div>
       <div className="flex flex-col gap-3 mb-4">
-        <UsageIndicator feature="dreams" />
-        <UsageIndicator feature="oracle" />
+        <UsageIndicator feature="dreams" showTierBadge={false} />
+        <UsageIndicator feature="oracle" showTierBadge={false} />
       </div>
       <div className="sacred-divider" />
       {isElite && (
