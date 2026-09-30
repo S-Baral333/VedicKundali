@@ -1311,6 +1311,18 @@
       "cat_gemstone": "Gemstone",
       "cat_ritual": "Ritual",
       "cat_general": "General"
+    },
+    "birthTime": {
+      "periodBrahma": "Before sunrise",
+      "periodMorning": "Morning",
+      "periodAfternoon": "Afternoon",
+      "periodEvening": "Evening",
+      "periodNight": "Night",
+      "dontKnow": "I don't know it",
+      "pickPeriod": "Roughly when were you born?",
+      "periodCaveat": "Your Moon and nakshatra will be reliable. Your ascendant, houses and dasha dates stay estimates until you add an exact time — you can add it any time from your profile.",
+      "note_period": "Cast from the middle of the part of day you gave. Your Moon and nakshatra are reliable; your ascendant, houses and dasha dates are estimates until you add an exact time.",
+      "note_unknown": "No birth time on file, so this chart is cast from midday. Only your Moon sign is dependable. Add a birth time to get the rest."
     }
   },
   "panchanga": {

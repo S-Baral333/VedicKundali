@@ -18,6 +18,8 @@ import LanguageSelector from "@/components/LanguageSelector";
 import GoogleMark from "@/components/GoogleMark";
 import { LANGUAGES } from "@/i18n/languages";
 import { formatPickerDate } from "@/lib/panchanga-i18n";
+import { resolveBirthTime, type BirthTimeAccuracy } from "@/lib/birth-time";
+import BirthTimeField from "@/components/BirthTimeField";
 import { LIFE_PRIORITIES, EMOTIONAL_STATES, GUIDANCE_STYLES } from "@/lib/onboarding-constants";
 import SacredPageShell from "@/components/layout/SacredPageShell";
 import PageNavRail from "@/components/layout/PageNavRail";
@@ -30,6 +32,8 @@ interface ProfileData {
   full_name: string | null;
   date_of_birth: string | null;
   birth_time: string | null;
+  birth_time_accuracy?: string | null;
+  birth_time_period?: string | null;
   birthplace: string | null;
   latitude: number | null;
   longitude: number | null;
@@ -53,6 +57,8 @@ const ProfilePage = () => {
   // Birth details state
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [birthTime, setBirthTime] = useState("");
+  const [birthAccuracy, setBirthAccuracy] = useState<BirthTimeAccuracy>("exact");
+  const [birthPeriod, setBirthPeriod] = useState("");
   const [birthplace, setBirthplace] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
@@ -74,7 +80,7 @@ const ProfilePage = () => {
     const fetchProfile = async () => {
       const { data, error } = await supabase
         .from("profiles")
-        .select("full_name, date_of_birth, birth_time, birthplace, latitude, longitude, created_at, onboarding_preferences, rishi_guru_enabled")
+        .select("full_name, date_of_birth, birth_time, birth_time_accuracy, birth_time_period, birthplace, latitude, longitude, created_at, onboarding_preferences, rishi_guru_enabled")
         .eq("user_id", user.id)
         .maybeSingle();
 
@@ -85,6 +91,8 @@ const ProfilePage = () => {
         setFullName(data.full_name ?? "");
         setDateOfBirth(data.date_of_birth ?? "");
         setBirthTime(data.birth_time ?? "");
+        setBirthAccuracy((data.birth_time_accuracy as BirthTimeAccuracy) ?? (data.birth_time ? "exact" : "unknown"));
+        setBirthPeriod(data.birth_time_period ?? "");
         setBirthplace(data.birthplace ?? "");
         setLatitude(data.latitude?.toString() ?? "");
         setLongitude(data.longitude?.toString() ?? "");
@@ -152,7 +160,9 @@ const ProfilePage = () => {
       .from("profiles")
       .update({
         date_of_birth: dateOfBirth || null,
-        birth_time: birthTime || null,
+        birth_time: resolveBirthTime(birthAccuracy, birthTime, birthPeriod),
+        birth_time_accuracy: birthAccuracy,
+        birth_time_period: birthAccuracy === "period" ? birthPeriod : null,
         birthplace: birthplace.trim() || null,
         latitude: latitude ? parseFloat(latitude) : null,
         longitude: longitude ? parseFloat(longitude) : null,
@@ -287,10 +297,16 @@ const ProfilePage = () => {
               <Label htmlFor="dob">{t("pages:ui.profilePage.dob", "Date of Birth")}</Label>
               <Input id="dob" type="date" value={dateOfBirth} onChange={(e) => setDateOfBirth(e.target.value)} />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="birthTime">{t("pages:ui.profilePage.birthTime", "Birth Time")}</Label>
-              <Input id="birthTime" type="time" value={birthTime} onChange={(e) => setBirthTime(e.target.value)} />
-            </div>
+            <BirthTimeField
+              accuracy={birthAccuracy}
+              time={birthTime}
+              period={birthPeriod}
+              onChange={({ accuracy, time, period }) => {
+                setBirthAccuracy(accuracy);
+                setBirthTime(time);
+                setBirthPeriod(period);
+              }}
+            />
           </div>
           <div className="space-y-2">
             <Label htmlFor="birthplace">{t("pages:ui.profilePage.birthplace", "Birthplace")}</Label>

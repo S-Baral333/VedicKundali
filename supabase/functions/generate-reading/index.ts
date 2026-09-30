@@ -73,6 +73,32 @@ serve(async (req) => {
 
     const chartData = chart.chart_data as any;
 
+    // What this reading is allowed to state as fact.
+    //
+    // When the user named a part of the day instead of a clock time, the chart
+    // was cast from that period's midpoint. The Moon barely moves in six hours,
+    // but the ascendant crosses about three signs — so the lagna, the houses,
+    // the divisional charts and the dasha *dates* are estimates dressed as
+    // precision. Left unsaid, the model cites them to the decimal, which is
+    // exactly the false confidence the Terms promise we avoid.
+    const timeAccuracy: string = chart.birth_time_accuracy ?? "exact";
+    const precisionBlock =
+      timeAccuracy === "exact"
+        ? ""
+        : timeAccuracy === "period"
+        ? `\nBIRTH TIME PRECISION — READ BEFORE WRITING:
+The birth time is approximate. ${chart.full_name} gave a part of the day, not a clock time, and this chart was cast from the middle of that window (${chart.birth_time}).
+- TREAT AS RELIABLE: Moon sign, nakshatra, the dasha sequence and its order, planetary sign placements, and all transit-based guidance.
+- TREAT AS ESTIMATE, never as fact: the Lagna and every house placement, the divisional charts (D9 and beyond), the nakshatra pada, and all dasha start and end DATES.
+- Do NOT quote a degree for the Lagna or any house cusp. Do NOT give a dasha date as certain — say "around" or name the year only.
+- Say once, plainly and without apology, that an exact birth time would sharpen the house-based part of this reading. Do not repeat it.\n`
+        : `\nBIRTH TIME PRECISION — READ BEFORE WRITING:
+No birth time is on file; this chart was cast from midday and the house structure is unreliable.
+- TREAT AS RELIABLE: the Moon sign only, and transit-based guidance.
+- Do NOT cite the Lagna, houses, divisional charts, nakshatra pada or any dasha date.
+- Lead the reading from the Moon and the grahas' sign placements, and say once that a birth time is needed for the rest.\n`;
+
+
     // Load relevant interpretations
     const planetNames = chartData.planets?.map((p: any) => p.name) || [];
 
@@ -190,9 +216,9 @@ ${citationRules}`;
 
 Birth Details:
 - Date: ${chart.date_of_birth}
-- Time: ${chart.birth_time}
+- Time: ${chart.birth_time}${timeAccuracy !== "exact" ? " (approximate — see precision note below)" : ""}
 - Place: ${chart.birthplace}
-${citationBlock}
+${precisionBlock}${citationBlock}
 Chart Data:
 ${JSON.stringify(chartData, null, 2)}
 
@@ -234,9 +260,9 @@ ${citationRules}`;
 
 Birth Details:
 - Date: ${chart.date_of_birth}
-- Time: ${chart.birth_time}
+- Time: ${chart.birth_time}${timeAccuracy !== "exact" ? " (approximate — see precision note below)" : ""}
 - Place: ${chart.birthplace}
-${citationBlock}
+${precisionBlock}${citationBlock}
 Chart Data:
 ${JSON.stringify(chartData, null, 2)}
 

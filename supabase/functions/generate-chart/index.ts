@@ -1694,7 +1694,14 @@ serve(async (req) => {
       });
     }
 
-    const { full_name, date_of_birth, birth_time, birthplace, latitude, longitude, utc_offset_minutes } = await req.json();
+    const {
+      full_name, date_of_birth, birth_time, birthplace, latitude, longitude, utc_offset_minutes,
+      // How precise birth_time is. The client resolves a named part of the day
+      // to that period's midpoint before calling, so birth_time is always a
+      // real clock time here — these two only record what it was derived from,
+      // so a reading downstream knows what it may state as fact.
+      birth_time_accuracy, birth_time_period,
+    } = await req.json();
 
     if (!full_name || !date_of_birth || !birth_time || !birthplace || latitude == null || longitude == null) {
       return new Response(JSON.stringify({ error: "Missing required fields" }), {
@@ -1961,6 +1968,8 @@ serve(async (req) => {
         full_name,
         date_of_birth,
         birth_time,
+        birth_time_accuracy: birth_time_accuracy ?? "exact",
+        birth_time_period: birth_time_period ?? null,
         birthplace,
         latitude,
         longitude,

@@ -13,6 +13,8 @@ import { LIFE_PRIORITIES, GUIDANCE_STYLES } from "@/lib/onboarding-constants";
 import KundaliMark from "@/components/KundaliMark";
 import LanguageSelector from "@/components/LanguageSelector";
 import { LANGUAGE_STORAGE_KEY } from "@/i18n/languages";
+import { resolveBirthTime } from "@/lib/birth-time";
+import BirthTimeField from "@/components/BirthTimeField";
 
 interface OnboardingData {
   name: string;
@@ -20,6 +22,8 @@ interface OnboardingData {
   birthTime: string;
   birthplace: string;
   skipBirthTime: boolean;
+  /** Which part of the day, when the exact time is unknown. */
+  birthPeriod: string;
   lifePriorities: string[];
   guidanceStyle: string;
 }
@@ -51,6 +55,7 @@ export default function OnboardingPage() {
     birthTime: "",
     birthplace: "",
     skipBirthTime: false,
+    birthPeriod: "",
     lifePriorities: [],
     guidanceStyle: "balanced",
   });
@@ -200,7 +205,17 @@ export default function OnboardingPage() {
       };
 
       if (data.dateOfBirth) profileUpdate.date_of_birth = data.dateOfBirth;
-      if (data.birthTime && !data.skipBirthTime) profileUpdate.birth_time = data.birthTime;
+
+      // A named period is stored as that period's midpoint, so everything
+      // downstream still has a real clock time to work from — what changes is
+      // that the chart now carries how precise that time actually was.
+      const accuracy = data.skipBirthTime
+        ? (data.birthPeriod ? "period" : "unknown")
+        : (data.birthTime ? "exact" : "unknown");
+      const resolvedTime = resolveBirthTime(accuracy, data.birthTime, data.birthPeriod);
+      profileUpdate.birth_time_accuracy = accuracy;
+      profileUpdate.birth_time_period = accuracy === "period" ? data.birthPeriod : null;
+      if (resolvedTime) profileUpdate.birth_time = resolvedTime;
       if (data.birthplace) profileUpdate.birthplace = data.birthplace;
       if (latitude != null) profileUpdate.latitude = latitude;
       if (longitude != null) profileUpdate.longitude = longitude;
@@ -376,26 +391,25 @@ export default function OnboardingPage() {
                   className="bg-background/50 border-border/30 text-sm"
                 />
               </div>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <Label className="text-xs text-muted-foreground">{t("pages:ui.onboardingPage.timeOfBirth", "Time of Birth")}</Label>
-                  <label className="flex items-center gap-1.5 cursor-pointer">
-                    <span className="text-[11px] text-muted-foreground">{t("pages:ui.onboardingPage.dontKnow", "Don't know")}</span>
-                    <Switch
-                      checked={data.skipBirthTime}
-                      onCheckedChange={(checked) => setData({ ...data, skipBirthTime: checked, birthTime: checked ? "" : data.birthTime })}
-                    />
-                  </label>
-                </div>
-                {!data.skipBirthTime && (
-                  <Input
-                    type="time"
-                    value={data.birthTime}
-                    onChange={(e) => setData({ ...data, birthTime: e.target.value })}
-                    className="bg-background/50 border-border/30 text-sm"
-                  />
-                )}
-              </div>
+              {/* Skipping the time used to leave birth_time null, and
+                  generate-chart rejects that outright — so "don't know" led to
+                  an account that could never cast a chart. */}
+              <BirthTimeField
+                accuracy={data.skipBirthTime ? (data.birthPeriod ? "period" : "unknown") : "exact"}
+                time={data.birthTime}
+                period={data.birthPeriod}
+                showNote={!!data.birthPeriod}
+                labelKey="pages:ui.onboardingPage.timeOfBirth"
+                labelFallback="Time of Birth"
+                onChange={({ accuracy, time, period }) =>
+                  setData({
+                    ...data,
+                    skipBirthTime: accuracy !== "exact",
+                    birthTime: time,
+                    birthPeriod: period,
+                  })
+                }
+              />
               <div className="space-y-2">
                 <Label className="text-xs text-muted-foreground">{t("onboarding:labelBirthplace")}</Label>
                 <Input
