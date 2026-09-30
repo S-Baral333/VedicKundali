@@ -4,6 +4,7 @@ import { normalizeLanguage, buildLanguageInstruction } from "../_shared/language
 import { resolveGuruContext, applyGuru } from "../_shared/guru.ts";
 import { resolveAccess } from "../_shared/access.ts";
 import { resolveModel } from "../_shared/tiers.ts";
+import { readUsageCount, recordUsageEvent, usageUnavailable } from "../_shared/usage.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -154,6 +155,15 @@ serve(async (req) => {
       { global: { headers: { Authorization: authHeader } } }
     );
 
+    // Metering runs on the service role, both the read and the write. The quota
+    // gate is a server-side decision, so it must not depend on the caller's own
+    // RLS grants: the usage_counters admin policy calls has_role(), and a future
+    // revoke there would otherwise take dream readings down with it.
+    const serviceClient = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
+    );
+
     const token = authHeader.replace("Bearer ", "");
     const { data: claimsData, error: claimsError } =
       await supabase.auth.getClaims(token);
@@ -167,27 +177,18 @@ serve(async (req) => {
     const guru = await resolveGuruContext(supabase, userId);
 
     // ─── Subscription Tier Check ───
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("subscription_tier, feature_usage")
-      .eq("user_id", userId)
-      .maybeSingle();
-
     const access = await resolveAccess(supabase, userId, corsHeaders);
-    const rawUsage = profile?.feature_usage as { dreams_count?: number; oracle_count?: number; period_start?: string | null } | null;
-    const usage = rawUsage || { dreams_count: 0, oracle_count: 0, period_start: null };
 
-    // Reset usage if new month
-    const periodStart = usage.period_start ? new Date(usage.period_start) : null;
-    const startOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
-    if (!periodStart || periodStart < startOfMonth) {
-      usage.dreams_count = 0;
-      usage.oracle_count = 0;
-      usage.period_start = startOfMonth.toISOString();
+    // Monthly dream allowance, driven by the shared tier table. The count lives
+    // in usage_counters, keyed by month, so there is no period to reset by hand:
+    // a new month is simply a row that does not exist yet.
+    let dreamsUsed: number;
+    try {
+      dreamsUsed = await readUsageCount(serviceClient, userId, "dream");
+    } catch (e) {
+      return usageUnavailable(corsHeaders, "dream", e);
     }
 
-    // Monthly dream allowance, driven by the shared tier table.
-    const dreamsUsed = usage.dreams_count || 0;
     if (!access.withinQuota("dream", dreamsUsed)) {
       return access.denyQuota(
         "dream",
@@ -445,21 +446,19 @@ Provide the complete layered interpretation following the exact output structure
       } finally {
         // Save completed interpretation to DB
         if (fullInterpretation) {
-          const serviceClient = createClient(
-            Deno.env.get("SUPABASE_URL")!,
-            Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
-          );
-          await serviceClient
+          const { error: saveError } = await serviceClient
             .from("dream_interpretations")
             .update({ interpretation: fullInterpretation })
             .eq("id", dreamRecord.id);
+          if (saveError) {
+            console.error("[interpret-dream] failed to save interpretation:", saveError);
+          }
 
-          // Increment usage count after successful interpretation
-          const newUsage = { ...usage, dreams_count: (usage.dreams_count || 0) + 1 };
-          await serviceClient
-            .from("profiles")
-            .update({ feature_usage: newUsage })
-            .eq("user_id", userId);
+          // Meter the dream after a successful interpretation. Logs loudly on
+          // failure — the reading has already been streamed to the reader, so
+          // there is nothing left to refuse, but an unmetered call must not be
+          // invisible.
+          await recordUsageEvent(serviceClient, userId, "dream");
         }
         writer.close();
       }

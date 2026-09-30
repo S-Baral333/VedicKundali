@@ -5,6 +5,7 @@ import { normalizeLanguage, buildLanguageInstruction } from "../_shared/language
 import { resolveGuruContext, type GuruContext } from "../_shared/guru.ts";
 import { resolveAccess } from "../_shared/access.ts";
 import { resolveModel, type Tier } from "../_shared/tiers.ts";
+import { readUsageCount, recordUsageEvent, usageUnavailable } from "../_shared/usage.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -474,10 +475,9 @@ async function runOracleDecisionJob(args: {
   ai_model?: string;
   chart_id?: string;
   tier: Tier;
-  usage: { dreams_count?: number; oracle_count?: number; period_start?: string | null };
   language?: string;
 }) {
-  const { serviceClient, jobId, userId, question, category, mode, previous_context, ai_model, chart_id, tier, usage, language } = args;
+  const { serviceClient, jobId, userId, question, category, mode, previous_context, ai_model, chart_id, tier, language } = args;
   const languageInstruction = buildLanguageInstruction(language || "en");
   const guru = await resolveGuruContext(serviceClient, userId);
 
@@ -754,8 +754,10 @@ async function runOracleDecisionJob(args: {
     .single();
   if (readingError) throw readingError;
 
-  const newUsage = { ...usage, oracle_count: (usage.oracle_count || 0) + 1 };
-  await serviceClient.from("profiles").update({ feature_usage: newUsage }).eq("user_id", userId);
+  // Meter the reading now that it is saved. Logs loudly on failure rather than
+  // failing the job — the reader already has a completed reading, so marking it
+  // failed over a counter would be the worse outcome.
+  await recordUsageEvent(serviceClient, userId, "ai_chat");
 
   await updateOracleJob(serviceClient, jobId, {
     status: "completed",
@@ -879,10 +881,9 @@ async function runOracleStream(args: {
   ai_model?: string;
   chart_id?: string;
   tier: Tier;
-  usage: { dreams_count?: number; oracle_count?: number; period_start?: string | null };
   language?: string;
 }): Promise<Response> {
-  const { serviceClient, userId, question, category, mode, previous_context, ai_model, chart_id, tier, usage, language } = args;
+  const { serviceClient, userId, question, category, mode, previous_context, ai_model, chart_id, tier, language } = args;
   const languageInstruction = buildLanguageInstruction(language || "en");
   const guru = await resolveGuruContext(serviceClient, userId);
 
@@ -1033,8 +1034,9 @@ async function runOracleStream(args: {
           .single();
         if (readingError) throw readingError;
 
-        const newUsage = { ...usage, oracle_count: (usage.oracle_count || 0) + 1 };
-        await serviceClient.from("profiles").update({ feature_usage: newUsage }).eq("user_id", userId);
+        // Meter the reading now that it is saved. Logs loudly on failure rather
+        // than breaking the stream the reader is already receiving.
+        await recordUsageEvent(serviceClient, userId, "ai_chat");
 
         send({ done: 1, reading_id: inserted?.id ?? null, final: result, created_at: inserted?.created_at ?? null });
       } catch (e) {
@@ -1094,26 +1096,22 @@ serve(async (req) => {
       });
     }
 
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("subscription_tier, feature_usage")
-      .eq("user_id", userId)
-      .maybeSingle();
-
     const access = await resolveAccess(supabase, userId, corsHeaders);
     const tier = access.tier;
-    const rawUsage = profile?.feature_usage as { dreams_count?: number; oracle_count?: number; period_start?: string | null } | null;
-    const usage = rawUsage || { dreams_count: 0, oracle_count: 0, period_start: null };
-    const periodStart = usage.period_start ? new Date(usage.period_start) : null;
-    const startOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
-    if (!periodStart || periodStart < startOfMonth) {
-      usage.dreams_count = 0;
-      usage.oracle_count = 0;
-      usage.period_start = startOfMonth.toISOString();
+
+    // Monthly Oracle allowance, driven by the shared tier table. The count lives
+    // in usage_counters, keyed by month, so there is no period to reset by hand:
+    // a new month is simply a row that does not exist yet.
+    //
+    // Read on the service role, like the write: the quota gate is a server-side
+    // decision and must not depend on the caller's own RLS grants.
+    let oracleUsed: number;
+    try {
+      oracleUsed = await readUsageCount(serviceClient, userId, "ai_chat");
+    } catch (e) {
+      return usageUnavailable(corsHeaders, "ai_chat", e);
     }
 
-    // Monthly Oracle allowance, driven by the shared tier table.
-    const oracleUsed = usage.oracle_count || 0;
     if (!access.withinQuota("ai_chat", oracleUsed)) {
       return access.denyQuota(
         "ai_chat",
@@ -1136,7 +1134,6 @@ serve(async (req) => {
         ai_model,
         chart_id,
         tier,
-        usage,
         language,
       });
     }
@@ -1171,7 +1168,6 @@ serve(async (req) => {
       ai_model,
       chart_id,
       tier,
-      usage,
       language,
     }).catch(async (error) => {
       console.error("generate-decision background error:", error);

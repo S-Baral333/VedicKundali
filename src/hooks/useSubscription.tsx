@@ -72,9 +72,18 @@ const SubscriptionContext = createContext<SubscriptionContextType | null>(null);
 export const UPGRADE_EVENT = "lov:open-upgrade";
 export type UpgradeEventDetail = { feature?: FeatureKey; requiredTier?: Tier };
 
+// Period key for usage_counters: first day of the current month in UTC.
+//
+// Must be UTC, not local. usage_counters rows are written with
+// date_trunc('month', now())::date, which is UTC, so building the key from local
+// month start and then serialising to UTC misses the row for any reader east of
+// UTC — in Melbourne, local 1 Sep becomes "2026-08-31" and the lookup finds
+// nothing, so usage always displayed as zero.
 function periodStartIso(): string {
   const now = new Date();
-  return new Date(now.getFullYear(), now.getMonth(), 1).toISOString().slice(0, 10);
+  return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1))
+    .toISOString()
+    .slice(0, 10);
 }
 
 // Map legacy resource names used by old call sites to canonical keys
@@ -106,7 +115,7 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
       // 1. Tier — prefer subscriptions row, fall back to profile column.
       let [{ data: sub }, { data: profile }] = await Promise.all([
         supabase
-          .from("subscriptions" as any)
+          .from("subscriptions")
           .select("tier,status,billing_interval,trial_ends_at,current_period_end,cancel_at,provider_customer_id")
           .eq("user_id", user.id)
           .maybeSingle(),
@@ -123,13 +132,13 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
           hasProfile: !!profile,
           hasSubscription: !!sub,
         });
-        const { error: healErr } = await supabase.rpc("ensure_user_profile" as any);
+        const { error: healErr } = await supabase.rpc("ensure_user_profile");
         if (healErr) {
           console.error("[subscription] ensure_user_profile failed", healErr);
         } else {
           const refetch = await Promise.all([
             supabase
-              .from("subscriptions" as any)
+              .from("subscriptions")
               .select("tier,status,billing_interval,trial_ends_at,current_period_end,cancel_at,provider_customer_id")
               .eq("user_id", user.id)
               .maybeSingle(),
@@ -153,16 +162,19 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
       setTrialEndsAt(subRow?.trial_ends_at ?? null);
       setPeriodEndsAt(subRow?.current_period_end ?? null);
 
-      // 2. Usage — read counters for current month
-      const { data: counters } = await supabase
-        .from("usage_counters" as any)
+      // 2. Usage — read counters for current month. A failed read must not look
+      // like "nothing used yet": that would show full allowance remaining on
+      // every gate, so it surfaces as an error instead (the catch below toasts).
+      const { data: counters, error: countersError } = await supabase
+        .from("usage_counters")
         .select("resource,count")
         .eq("user_id", user.id)
         .eq("period_start", periodStartIso());
+      if (countersError) throw countersError;
 
       const next: UsageMap = { ...DEFAULT_USAGE };
-      ((counters ?? []) as unknown as Array<{ resource: string; count: number }>).forEach((row) => {
-        if (row.resource in next) (next as any)[row.resource] = row.count;
+      (counters ?? []).forEach((row) => {
+        if (row.resource in next) next[row.resource as keyof UsageMap] = row.count;
       });
       setUsage(next);
     } catch (e) {
@@ -223,7 +235,7 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
     // optimistic
     setUsage((u) => ({ ...u, [resource]: (u[resource as keyof UsageMap] ?? 0) + 1 }));
     try {
-      const { data, error } = await supabase.rpc("increment_usage" as any, { p_resource: resource });
+      const { data, error } = await supabase.rpc("increment_usage", { p_resource: resource });
       if (error) throw error;
       if (typeof data === "number") setUsage((u) => ({ ...u, [resource]: data }));
       return true;
