@@ -5,6 +5,7 @@ import { Navigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useSubscription } from "@/hooks/useSubscription";
+import { readEdgeError } from "@/lib/edge-errors";
 import { useActiveChart } from "@/hooks/useActiveChart";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -342,6 +343,10 @@ function AddPersonSheet({
 }: { open: boolean; onOpenChange: (o: boolean) => void; onCreated: (chart: BirthChart) => void; sessionToken?: string }) {
   const { t } = useTranslation("pages");
   const { toast } = useToast();
+  // generate-chart enforces the per-tier saved-chart limit, so adding a person
+  // can be refused with a quota denial that an upgrade would lift. No usage
+  // refresh here: the chart allowance is a row count, not a usage_counters row.
+  const { openUpgrade } = useSubscription();
   const [fullName, setFullName] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [birthTime, setBirthTime] = useState("");
@@ -426,7 +431,14 @@ function AddPersonSheet({
         body: JSON.stringify(body),
       });
       setGenerationStep("Generating your Kundali...");
-      if (!res.ok) { const err = await res.json(); throw new Error(err.error || "Failed to generate chart"); }
+      if (!res.ok) {
+        const { message, upgradeFeature } = await readEdgeError(
+          res,
+          t("ui.birthChartPage.chartFailed", "Could not generate this chart. Please try again."),
+        );
+        if (upgradeFeature) openUpgrade({ feature: upgradeFeature });
+        throw new Error(message);
+      }
       const chart = await res.json() as BirthChart;
       if (calendarSystem === "bs" && chart.id) {
         await supabase.from("birth_charts").update({ calendar_system: "bs", bs_date: bsDateString }).eq("id", chart.id);
@@ -590,7 +602,7 @@ const TABS: { key: string; label: string; short: string }[] = [
 export default function BirthChartPage() {
   const { t } = useTranslation("pages");
   const { user, session, isLoading: authLoading } = useAuth();
-  const { isElite } = useSubscription();
+  const { isElite, openUpgrade, refreshUsage } = useSubscription();
   const { refresh: refreshActiveCharts, activeChart, setActiveChart } = useActiveChart();
   const { toast } = useToast();
   const [params, setParams] = useSearchParams();
@@ -689,7 +701,14 @@ export default function BirthChartPage() {
         method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${session?.access_token}` },
         body: JSON.stringify(body),
       });
-      if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || "Failed to recompute");
+      if (!res.ok) {
+        const { message, upgradeFeature } = await readEdgeError(
+          res,
+          t("ui.birthChartPage.recomputeFailedMessage", "Could not recompute this chart. Please try again."),
+        );
+        if (upgradeFeature) openUpgrade({ feature: upgradeFeature });
+        throw new Error(message);
+      }
       const fresh = await res.json() as BirthChart;
       const wasPrimary = selectedChart.is_primary;
       const oldReading = selectedChart.reading;
@@ -724,7 +743,14 @@ export default function BirthChartPage() {
         method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${session?.access_token}` },
         body: JSON.stringify(body),
       });
-      if (!res.ok || !res.body) throw new Error((await res.json().catch(() => ({ error: "Stream failed" }))).error);
+      if (!res.ok || !res.body) {
+        const { message, upgradeFeature } = await readEdgeError(
+          res,
+          t("ui.birthChartPage.readingFailed", "Could not compose this reading. Please try again."),
+        );
+        if (upgradeFeature) openUpgrade({ feature: upgradeFeature });
+        throw new Error(message);
+      }
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let buf = "";
@@ -752,6 +778,8 @@ export default function BirthChartPage() {
       // persist
       await supabase.from("birth_charts").update({ reading: final }).eq("id", selectedChart.id);
       setCharts(p => p.map(c => c.id === selectedChart.id ? { ...c, reading: final } : c));
+      // The reading was metered server side, so the local usage map is now stale.
+      refreshUsage();
     } catch (e: any) {
       setReadingError(e.message);
     } finally {

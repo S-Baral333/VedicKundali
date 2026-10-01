@@ -25,6 +25,7 @@ import { Moon, Sparkles, Eye, ChevronDown, Loader2, Trash2, Copy, MoonStar, Clou
 import UsageIndicator from "@/components/UsageIndicator";
 import PaywallModal from "@/components/PaywallModal";
 import { useSubscription } from "@/hooks/useSubscription";
+import { readEdgeError } from "@/lib/edge-errors";
 import TwinkleText from "@/components/TwinkleText";
 import SacredPageShell from "@/components/layout/SacredPageShell";
 import PageNavRail from "@/components/layout/PageNavRail";
@@ -98,7 +99,7 @@ export default function DreamInterpretationPage() {
   const { user, isLoading: authLoading } = useAuth();
   const { activeChart } = useActiveChart();
   const navigate = useNavigate();
-  const { canUseDreams, refreshUsage, tier } = useSubscription();
+  const { canUseDreams, refreshUsage, tier, openUpgrade } = useSubscription();
 
   const [dreamDescription, setDreamDescription] = useState("");
   const [dreamTime, setDreamTime] = useState("");
@@ -207,8 +208,12 @@ export default function DreamInterpretationPage() {
       );
 
       if (!resp.ok) {
-        const err = await resp.json().catch(() => ({ error: "Failed" }));
-        throw new Error(err.error || "Request failed");
+        const { message, upgradeFeature } = await readEdgeError(
+          resp,
+          t("dream.error.failed", "Could not interpret this dream. Please try again."),
+        );
+        if (upgradeFeature) openUpgrade({ feature: upgradeFeature });
+        throw new Error(message);
       }
 
       const reader = resp.body!.getReader();

@@ -18,6 +18,7 @@ import PageNavRail from "@/components/layout/PageNavRail";
 import CosmicFieldCard from "@/components/layout/CosmicFieldCard";
 import PaywallModal from "@/components/PaywallModal";
 import { useSubscription } from "@/hooks/useSubscription";
+import { readEdgeError } from "@/lib/edge-errors";
 import { useRishiGuru } from "@/hooks/useRishiGuru";
 import LiveOracleStream from "@/components/oracle/LiveOracleStream";
 import GuruWatchingPanel from "@/components/oracle/GuruWatchingPanel";
@@ -589,7 +590,7 @@ export default function AskOraclePage() {
     }
   }, []);
 
-  const { canUseOracle, refreshUsage, tier } = useSubscription();
+  const { canUseOracle, refreshUsage, tier, openUpgrade } = useSubscription();
   const [paywallOpen, setPaywallOpen] = useState(false);
   const { user } = useAuth();
   const { activeChart } = useActiveChart();
@@ -687,11 +688,11 @@ export default function AskOraclePage() {
       });
 
       if (!resp.ok || !resp.body) {
-        const errText = await resp.text().catch(() => "");
-        let msg = t("askOracle.error.failedToStart");
-        try { msg = JSON.parse(errText).error || msg; } catch { /* ignore */ }
+        const { message, upgradeFeature } = await readEdgeError(resp, t("askOracle.error.failedToStart"));
+        let msg = message;
         if (resp.status === 402) msg = t("askOracle.error.creditsExhausted");
         if (resp.status === 429) msg = t("askOracle.error.tooManyRequests");
+        if (upgradeFeature) openUpgrade({ feature: upgradeFeature });
         throw new Error(msg);
       }
 
