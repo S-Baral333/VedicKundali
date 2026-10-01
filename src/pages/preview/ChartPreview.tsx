@@ -7,6 +7,7 @@ import { Sun, ArrowLeft, Lock, Compass } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { withLanguage } from "@/lib/i18nClient";
 import ParallaxStarfield from "@/components/onboarding/ParallaxStarfield";
+import Seo from "@/components/Seo";
 
 interface ChartResult {
   sign: string;
@@ -38,6 +39,11 @@ export default function ChartPreview() {
 
   return (
     <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
+      <Seo
+        title="Free Vedic Birth Chart Preview – Gurukundali"
+        description="Enter your birth date for an instant preview of your Vedic sun sign, nakshatra and ruling planet — then unlock your full Janam Kundali for free."
+        path="/preview/chart"
+      />
       <ParallaxStarfield />
       <div className="relative z-10 max-w-2xl mx-auto px-4 py-8">
         <Link to="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-8 transition-colors">

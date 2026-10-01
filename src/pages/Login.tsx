@@ -7,6 +7,7 @@ import KundaliMark from "@/components/KundaliMark";
 import GoogleMark from "@/components/GoogleMark";
 import mandalaUrl from "@/assets/kundali-mark-sacred.svg";
 import { Loader2, Star, Sun, Flame } from "lucide-react";
+import Seo from "@/components/Seo";
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
@@ -29,6 +30,12 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+      <Seo
+        title="Sign In – Gurukundali"
+        description="Sign in to Gurukundali to access your Vedic birth chart, daily horoscope and Guru oracle."
+        path="/login"
+        noindex
+      />
       {/* Local scrim ensuring text contrast on top of the global UniverseBackground */}
       <div
         aria-hidden

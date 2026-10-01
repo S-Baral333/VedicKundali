@@ -7,6 +7,7 @@ import { ArrowLeft, Send, Sparkles, Lock, Star } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { withLanguage } from "@/lib/i18nClient";
 import ParallaxStarfield from "@/components/onboarding/ParallaxStarfield";
+import Seo from "@/components/Seo";
 
 export default function OraclePreview() {
   const [question, setQuestion] = useState("");
@@ -38,6 +39,11 @@ export default function OraclePreview() {
 
   return (
     <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
+      <Seo
+        title="Ask the Vedic Oracle – Free Preview – Gurukundali"
+        description="Ask the Rishi Guru oracle a question for a free preview answer, grounded in classical Jyotish — then unlock unlimited questions."
+        path="/preview/oracle"
+      />
       <ParallaxStarfield />
       <div className="relative z-10 max-w-lg mx-auto px-4 py-8">
         <Link to="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-8 transition-colors text-sm">

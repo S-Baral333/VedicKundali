@@ -8,6 +8,7 @@ import LegalLayout, {
   type TocEntry,
 } from "./LegalLayout";
 import { LEGAL, LEGAL_CONTACTS, STATUTES, REGULATORS } from "@/lib/legal";
+import Seo from "@/components/Seo";
 
 const TOC: TocEntry[] = [
   { id: "intro", label: "Introduction" },
@@ -33,6 +34,11 @@ export default function RefundPolicy() {
       ]}
       toc={TOC}
     >
+      <Seo
+        title="Refund Policy – Gurukundali"
+        description="When you're entitled to a refund on Gurukundali plans, how to request one, and your rights under the Australian Consumer Law."
+        path="/refunds"
+      />
       <StatuteNotice tag={`Important — ${STATUTES.acl}`}>
         Our services come with guarantees that cannot be excluded under the Australian Consumer
         Law. Nothing in this Refund Policy limits, excludes or modifies any right or remedy you

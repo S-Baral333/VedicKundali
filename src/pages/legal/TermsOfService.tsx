@@ -5,6 +5,7 @@ import LegalLayout, {
   type TocEntry,
 } from "./LegalLayout";
 import { LEGAL, LEGAL_CONTACTS, STATUTES } from "@/lib/legal";
+import Seo from "@/components/Seo";
 
 const TOC: TocEntry[] = [
   { id: "intro", label: "Introduction" },
@@ -40,6 +41,11 @@ export default function TermsOfService() {
       ]}
       toc={TOC}
     >
+      <Seo
+        title="Terms of Service – Gurukundali"
+        description="The terms governing use of Gurukundali's Vedic astrology app, plans and AI-generated readings."
+        path="/terms"
+      />
       <StatuteNotice tag={STATUTES.acl}>
         Our services come with guarantees that cannot be excluded under the Australian Consumer
         Law. Nothing in these Terms limits, excludes or modifies any right or remedy you have

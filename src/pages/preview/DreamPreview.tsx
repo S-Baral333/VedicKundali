@@ -7,6 +7,7 @@ import { Moon, ArrowLeft, Sparkles, Lock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { withLanguage } from "@/lib/i18nClient";
 import ParallaxStarfield from "@/components/onboarding/ParallaxStarfield";
+import Seo from "@/components/Seo";
 
 export default function DreamPreview() {
   const [dreamText, setDreamText] = useState("");
@@ -36,6 +37,11 @@ export default function DreamPreview() {
 
   return (
     <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
+      <Seo
+        title="Free Dream Interpretation Preview – Gurukundali"
+        description="Describe a dream for a free Vedic interpretation preview — then unlock unlimited dream readings from the Guru oracle."
+        path="/preview/dream"
+      />
       <ParallaxStarfield />
       <div className="relative z-10 max-w-2xl mx-auto px-4 py-8">
         <Link to="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-8 transition-colors">

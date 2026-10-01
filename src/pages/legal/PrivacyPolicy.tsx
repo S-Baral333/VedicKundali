@@ -7,6 +7,7 @@ import LegalLayout, {
   type TocEntry,
 } from "./LegalLayout";
 import { LEGAL, LEGAL_CONTACTS, STATUTES, SUBPROCESSORS, REGULATORS } from "@/lib/legal";
+import Seo from "@/components/Seo";
 
 const TOC: TocEntry[] = [
   { id: "intro", label: "Introduction" },
@@ -39,6 +40,11 @@ export default function PrivacyPolicy() {
       ]}
       toc={TOC}
     >
+      <Seo
+        title="Privacy Policy – Gurukundali"
+        description="How Gurukundali collects, uses and protects your personal and birth data, in accordance with the Australian Privacy Act and APPs."
+        path="/privacy"
+      />
       <StatuteNotice tag={STATUTES.privacyAct}>
         This Privacy Policy is prepared in accordance with the {STATUTES.privacyAct} and the 13
         Australian Privacy Principles. Your personal information will only be used for the

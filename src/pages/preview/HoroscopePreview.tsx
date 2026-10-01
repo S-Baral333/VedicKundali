@@ -6,6 +6,7 @@ import { Star, ArrowLeft, Sparkles, Lock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { withLanguage } from "@/lib/i18nClient";
 import ParallaxStarfield from "@/components/onboarding/ParallaxStarfield";
+import Seo from "@/components/Seo";
 
 const VEDIC_SIGNS = [
   { name: "Mesha", western: "Aries", emoji: "♈", dates: "Apr 14 – May 14" },
@@ -50,6 +51,11 @@ export default function HoroscopePreview() {
 
   return (
     <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
+      <Seo
+        title="Daily Vedic Horoscope Preview – Gurukundali"
+        description="Pick your Vedic moon sign for a free preview of today's horoscope — then sign up for your personalised daily guidance."
+        path="/preview/horoscope"
+      />
       <ParallaxStarfield />
       <div className="relative z-10 max-w-4xl mx-auto px-4 py-8">
         <Link to="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-8 transition-colors">

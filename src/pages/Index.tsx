@@ -16,6 +16,7 @@ import Testimonials from "@/components/landing/Testimonials";
 import StatsBar from "@/components/landing/StatsBar";
 import FinalCTA from "@/components/landing/FinalCTA";
 import Footer from "@/components/landing/Footer";
+import Seo from "@/components/Seo";
 
 export default function Index() {
   const { user, isLoading } = useAuth();
@@ -30,6 +31,11 @@ export default function Index() {
 
   return (
     <div className="min-h-screen relative">
+      <Seo
+        title="Gurukundali – Free Vedic Birth Chart, Janam Kundali & AI Horoscope"
+        description="Free Vedic Kundali online. Your Janam Kundali birth chart, dasha analysis, dream interpretation and daily horoscope — computed by classical Jyotish on the Lahiri ayanamsa."
+        path="/"
+      />
       {/* Navbar — Veil tier so the night sky drifts behind the brand */}
       <nav className="glass-veil fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-3">
         <Link to="/" className="flex items-center gap-2.5">

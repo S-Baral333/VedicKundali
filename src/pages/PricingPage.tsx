@@ -12,6 +12,7 @@ import SacredPageShell from "@/components/layout/SacredPageShell";
 import PageNavRail from "@/components/layout/PageNavRail";
 import CosmicFieldCard from "@/components/layout/CosmicFieldCard";
 import { TIERS, type Tier } from "@/lib/tiers";
+import Seo from "@/components/Seo";
 
 const VISIBLE: Tier[] = ["darshana", "sadhaka", "grihastha"]; // Jyotisha held for v2
 
@@ -60,6 +61,11 @@ export default function PricingPage() {
 
   return (
     <div className="min-h-screen relative">
+      <Seo
+        title="Pricing – Gurukundali Vedic Astrology Plans"
+        description="Compare Gurukundali's free and paid plans: divisional charts, Sade Sati tracking, Kundali Milan compatibility, and monthly Guru questions and dream readings."
+        path="/pricing"
+      />
       <CosmicBackground />
       <SacredPageShell
         leftRail={<PageNavRail title={t("pages:ui.pricingPage.railTitle", "Pricing")} hint={t("pages:ui.pricingPage.railHint", "Choose the cosmic path that fits your journey.")} showChartSwitcher={false} sections={[{ id: "tiers", label: t("pages:ui.pricingPage.sectionTiers", "Tiers") }, { id: "compare", label: t("pages:ui.pricingPage.sectionCompare", "Compare") }, { id: "faq", label: t("pages:ui.pricingPage.sectionFaq", "FAQ") }]} />}

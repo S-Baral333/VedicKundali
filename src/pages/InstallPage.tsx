@@ -5,6 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Download, Smartphone, Monitor, ArrowLeft, Check, Share, MoreVertical, Plus } from "lucide-react";
 import KundaliMark from "@/components/KundaliMark";
 import { useTranslation } from "react-i18next";
+import Seo from "@/components/Seo";
+
+const INSTALL_SEO = {
+  title: "Install Gurukundali – Vedic Astrology App",
+  description: "Install Gurukundali on iOS, Android or desktop for offline access to your Vedic birth chart, daily horoscope and Guru oracle.",
+  path: "/install",
+};
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -55,6 +62,7 @@ export default function InstallPage() {
   if (isInstalled) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-6">
+        <Seo {...INSTALL_SEO} />
         <Card className="max-w-md w-full text-center">
           <CardContent className="pt-8 pb-8 space-y-4">
             <div className="mx-auto w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
@@ -73,6 +81,7 @@ export default function InstallPage() {
 
   return (
     <div className="min-h-screen bg-background">
+      <Seo {...INSTALL_SEO} />
       <div className="container mx-auto px-4 py-8 max-w-2xl">
         <Link to="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-8">
           <ArrowLeft className="h-4 w-4" /> {t("pages:ui.installPage.back", "Back")}
