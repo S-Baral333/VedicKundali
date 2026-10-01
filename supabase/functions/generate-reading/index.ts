@@ -230,90 +230,93 @@ No birth time is on file; this chart was cast from midday and the house structur
     let systemPrompt: string;
     let userPrompt: string;
 
-    // ─── What a continuation is allowed to go deeper on ───
-    //
-    // This branch had never run: the client sent `continue` while this function
-    // read `continuation`, so pressing "continue reading" re-ran the normal
-    // prompt and the client appended a second full reading to the first. Its
-    // focus list was therefore never checked against either the reading prompt
-    // below it or the chart data it runs on, and two of its seven items asked
-    // for data that does not exist in a natal cast:
-    //
-    //   1. "Specific transit predictions for the coming months" — chart_data
-    //      holds no transit positions at all. generate-horoscope computes those
-    //      per request; nothing here does. The model could only invent them.
-    //   2. "Remedial rituals with specific timing (tithis, nakshatras)" —
-    //      `panchanga` is the panchanga of the birth moment, not a forward
-    //      calendar, so ritual dates had nothing to come from either.
-    //
-    // Both would have produced exactly the fabrication citationRules forbids.
-    // Three more items repeated the reading prompt below rather than extending
-    // it: Pratyantar Dasha is its section 11, D9 Navamsa its section 7,
-    // remedies its section 12 — asked for alongside "every sentence must be NEW
-    // information", which the model can only resolve by repeating itself.
-    //
-    // So the list is rebuilt from what the reading below genuinely leaves on the
-    // table, and only for data this particular chart actually holds:
-    // ashtakavarga, vargas_full and vimshopaka exist only on charts cast or
-    // recomputed by the current engine — that is what the recompute banner is
-    // for — and an older chart must not be sent hunting for them.
-    //
-    // Gated on birth-time accuracy for the same reason precisionBlock exists.
-    // With no birth time the lagna, the houses, the divisional charts, the padas
-    // and every dasha date are off the table, and the original list led with
-    // four of those five. A continuation that asks for them while the precision
-    // block forbids citing them is a contradiction in a single prompt.
-    const housesUsable = timeAccuracy === "exact" || timeAccuracy === "period";
-    const deepDives: string[] = [];
-
-    if (chartData.dasha?.sookshma_dasha && housesUsable) {
-      deepDives.push(
-        "- Sookshma and Prana Dasha: the two levels below the Pratyantar the reading already covered. Name the lords and what the sub-period sharpens.",
-      );
-    }
-    if (chartData.ashtottari_dasha) {
-      deepDives.push(
-        "- Ashtottari Dasha, and where its sequence agrees or disagrees with the Vimshottari the reading used. Disagreement between the two systems is itself the insight.",
-      );
-    }
-    if (chartData.chara_dasha && housesUsable) {
-      deepDives.push("- Chara Dasha (Jaimini rashi periods) as a second opinion on timing.");
-    }
-    if (chartData.ashtakavarga?.sav && housesUsable) {
-      deepDives.push(
-        "- Ashtakavarga house strength (SAV bindus out of 56, BAV out of 8): which houses carry real support and which do not. The reading did not use this data at all — this is the largest gap in it.",
-      );
-    }
-    if (chartData.vimshopaka && housesUsable) {
-      deepDives.push(
-        "- Vimshopaka Bala: how each planet's strength holds up or collapses across the divisional charts, which a single rashi placement hides.",
-      );
-    }
-    if (chartData.vargas_full?.d60 && housesUsable) {
-      deepDives.push(
-        "- D60 (Shashtiamsha) and the other divisionals beyond D7/D9/D10/D12, which the reading covered only at D7, D9, D10 and D12.",
-      );
-    }
-    if (chartData.graha_yuddha?.length > 0 && housesUsable) {
-      deepDives.push(
-        "- Graha Yuddha (planetary war): which planet wins, and what the loser's defeat costs in the areas it rules.",
-      );
-    }
-    if (housesUsable) {
-      deepDives.push(
-        "- Nakshatra pada sub-divisions, for the Lagna and for the planets, beyond the birth nakshatra the reading treated on its own.",
-      );
-    }
-    // Safe at every accuracy level: sign- and Moon-based, no house or lagna
-    // dependency, and the reading below touches them only in passing.
-    deepDives.push(
-      "- The Rahu-Ketu axis in depth: the karmic pattern it sets by sign and by nakshatra, and the planets conjunct or aspecting it.",
-    );
-    deepDives.push(
-      "- Graha drishti: the aspect pattern between planets, and which of the reading's conclusions it reinforces or undercuts.",
-    );
-
     if (isContinuation) {
+      // ─── What a continuation is allowed to go deeper on ───
+      //
+      // This branch had never run: the client sent `continue` while this function
+      // read `continuation`, so pressing "continue reading" re-ran the normal
+      // prompt and the client appended a second full reading to the first. Its
+      // focus list was therefore never checked against either the reading prompt
+      // below it or the chart data it runs on, and two of its seven items asked
+      // for data that does not exist in a natal cast:
+      //
+      //   1. "Specific transit predictions for the coming months" — chart_data
+      //      holds no transit positions at all. generate-horoscope computes
+      //      those per request; nothing here does. The model could only invent
+      //      them.
+      //   2. "Remedial rituals with specific timing (tithis, nakshatras)" —
+      //      `panchanga` is the panchanga of the birth moment, not a forward
+      //      calendar, so ritual dates had nothing to come from either.
+      //
+      // Both would have produced exactly the fabrication citationRules forbids.
+      // Three more items repeated the reading prompt below rather than extending
+      // it: Pratyantar Dasha is its section 11, D9 Navamsa its section 7,
+      // remedies its section 12 — asked for alongside "every sentence must be
+      // NEW information", which the model can only resolve by repeating itself.
+      //
+      // So the list is rebuilt from what the reading below genuinely leaves on
+      // the table, and only for data this particular chart actually holds:
+      // ashtakavarga, vargas_full and vimshopaka exist only on charts cast or
+      // recomputed by the current engine — that is what the recompute banner is
+      // for — and an older chart must not be sent hunting for them.
+      //
+      // Gated on birth-time accuracy for the same reason precisionBlock exists.
+      // With no birth time the lagna, the houses, the divisional charts, the
+      // padas and every dasha date are off the table, and the original list led
+      // with four of those five. Asking for them while the precision block
+      // forbids citing them is a contradiction inside a single prompt.
+      const housesUsable = timeAccuracy === "exact" || timeAccuracy === "period";
+      const deepDives: string[] = [];
+
+      if (chartData.dasha?.sookshma_dasha && housesUsable) {
+        deepDives.push(
+          "- Sookshma and Prana Dasha: the two levels below the Pratyantar the reading already covered. Name the lords and what the sub-period sharpens.",
+        );
+      }
+      if (chartData.ashtottari_dasha) {
+        deepDives.push(
+          "- Ashtottari Dasha, and where its sequence agrees or disagrees with the Vimshottari the reading used. Disagreement between the two systems is itself the insight.",
+        );
+      }
+      if (chartData.chara_dasha && housesUsable) {
+        deepDives.push("- Chara Dasha (Jaimini rashi periods) as a second opinion on timing.");
+      }
+      if (chartData.ashtakavarga?.sav && housesUsable) {
+        deepDives.push(
+          "- Ashtakavarga house strength (SAV bindus out of 56, BAV out of 8): which houses carry real support and which do not. The reading did not use this data at all — it is the largest gap in it.",
+        );
+      }
+      if (chartData.vimshopaka && housesUsable) {
+        deepDives.push(
+          "- Vimshopaka Bala: how each planet's strength holds up or collapses across the divisional charts, which a single rashi placement hides.",
+        );
+      }
+      if (chartData.vargas_full?.d60 && housesUsable) {
+        deepDives.push(
+          "- D60 (Shashtiamsha) and the divisionals beyond D7, D9, D10 and D12, which are the only four the reading covered.",
+        );
+      }
+      if (chartData.graha_yuddha?.length > 0 && housesUsable) {
+        deepDives.push(
+          "- Graha Yuddha (planetary war): which planet wins, and what the loser's defeat costs in the areas it rules.",
+        );
+      }
+      if (housesUsable) {
+        deepDives.push(
+          "- Nakshatra pada sub-divisions, for the Lagna and for the planets, beyond the birth nakshatra the reading treated on its own.",
+        );
+      }
+      // Safe at every accuracy level: sign- and Moon-based, with no house or
+      // lagna dependency, and the reading below touches them only in passing. At
+      // minimum these two keep the list non-empty for an old chart with no birth
+      // time, where everything above is either absent or unreliable.
+      deepDives.push(
+        "- The Rahu-Ketu axis in depth: the karmic pattern it sets by sign and by nakshatra, and the planets conjunct or aspecting it.",
+      );
+      deepDives.push(
+        "- Graha drishti: the aspect pattern between the planets, and which of the reading's conclusions it reinforces or undercuts.",
+      );
+
       systemPrompt = `You are a renowned Vedic astrologer providing an advanced continuation of a Janam Kundali reading.
 ${engineNote}
 

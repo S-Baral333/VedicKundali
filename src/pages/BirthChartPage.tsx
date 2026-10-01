@@ -736,8 +736,13 @@ export default function BirthChartPage() {
     if (append) setIsContinuing(true); else { setIsStreaming(true); setReading(""); }
     setReadingError(null);
     try {
+      // `continuation`, not `continue`: generate-reading reads that key, and this
+      // sent `continue` — so its continuation branch had never once executed and
+      // pressing "continue reading" silently re-ran the normal prompt, producing a
+      // second full reading that the append below stacked onto the first.
+      // `continue` is a reserved word, which is plausibly how the two drifted.
       const body: Record<string, unknown> = append
-        ? { chart_id: selectedChart.id, continue: true, existing_reading: reading }
+        ? { chart_id: selectedChart.id, continuation: true, existing_reading: reading }
         : { chart_id: selectedChart.id };
       const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-reading`, {
         method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${session?.access_token}` },
@@ -754,7 +759,12 @@ export default function BirthChartPage() {
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let buf = "";
-      const base = append ? reading : "";
+      // Separate the continuation from the reading it extends. Concatenating bare
+      // left the new section's first heading glued to the previous last line,
+      // which both the markdown and splitReadingIntoChapters read as one block —
+      // and generate-reading joins with the same "\n\n" when it persists, so the
+      // two writes racing to save this reading now store identical text.
+      const base = append && reading ? `${reading}\n\n` : "";
       let acc = "";
       while (true) {
         const { done, value } = await reader.read();
