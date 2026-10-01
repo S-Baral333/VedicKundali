@@ -25,23 +25,32 @@ export default function ThreeActsStrip({ acts, dropCap }: { acts?: Acts; dropCap
   const filled = ACTS.filter(({ key }) => !!acts[key]);
   if (filled.length === 0) return null;
   return (
-    <div
-      className="grid gap-3 grid-cols-1 sm:[grid-template-columns:var(--cols)] m-flat-list"
-      style={{ ["--cols" as any]: `repeat(${filled.length}, minmax(0, 1fr))` }}
-    >
+    // These acts used to sit side by side from sm: up, which a viewport
+    // breakpoint cannot get right — the container is the prose column, and it
+    // never grows enough. Between 1280px and the 1640px cap that column runs
+    // 544–904px; minus the reading card's 1.75rem padding, two 12px gaps and
+    // each act's own padding, three columns leave a passage 123–243px to live
+    // in. That is 17–34 characters a line against a comfortable 45–75, so the
+    // widest desktop was still breaking "The Sun at / Virgo 14.1° / brings
+    // clarity" down a ribbon. Stacked, the same passage gets the full measure.
+    <div className="grid gap-3 grid-cols-1 m-flat-list">
       {filled.map(({ key, label, Icon, tint }, i) => {
         const txt = acts[key]!;
         return (
           <div
             key={key}
-            className="rounded-2xl p-4 transition-transform hover:-translate-y-[1px] m-flat"
+            className="rounded-2xl p-4 sm:px-6 sm:py-5 transition-transform hover:-translate-y-[1px] m-flat"
             style={{ background: tint, border: "0.5px solid hsl(var(--gold) / 0.14)" }}
           >
-            <div className="flex items-center gap-2 mb-2">
-              <Icon className="h-3.5 w-3.5" style={{ color: "hsl(var(--gold))" }} />
+            <div className="flex items-center gap-2 mb-2.5">
+              <Icon className="h-3.5 w-3.5 shrink-0" style={{ color: "hsl(var(--gold))" }} />
               <span className="text-[11px] tracking-[0.18em] uppercase" style={{ color: "hsl(var(--text-muted))" }}>{t("pages:ui.threeActsStrip." + key, label)}</span>
             </div>
-            <p className={`text-[14px] leading-[1.65]${dropCap && i === 0 ? " m-dropcap" : ""}`} style={{ fontFamily: "'Jost', sans-serif", fontWeight: 300, color: "hsl(var(--text-secondary))" }}>
+            {/* Matches the guidance blob above it (1.02rem / 1.85). The old
+                14px was sized for a column that no longer exists, and left the
+                acts reading like captions under the reading rather than part
+                of it. */}
+            <p className={`text-[1.02rem] leading-[1.85]${dropCap && i === 0 ? " m-dropcap" : ""}`} style={{ fontFamily: "'Jost', sans-serif", fontWeight: 300, color: "hsl(var(--text-secondary))" }}>
               <AstroText text={txt} />
             </p>
           </div>
