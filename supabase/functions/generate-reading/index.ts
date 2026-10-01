@@ -45,6 +45,9 @@ serve(async (req) => {
 
     const { chart_id, continuation, existing_reading, language: langInput } = await req.json();
     const language = normalizeLanguage(langInput);
+    // One source of truth for "this is a continuation", so the prompt branch and
+    // the write that persists its result cannot disagree about which it is.
+    const isContinuation = Boolean(continuation && existing_reading);
     if (!chart_id) {
       return new Response(JSON.stringify({ error: "chart_id is required" }), {
         status: 400,
@@ -227,20 +230,101 @@ No birth time is on file; this chart was cast from midday and the house structur
     let systemPrompt: string;
     let userPrompt: string;
 
-    if (continuation && existing_reading) {
+    // ─── What a continuation is allowed to go deeper on ───
+    //
+    // This branch had never run: the client sent `continue` while this function
+    // read `continuation`, so pressing "continue reading" re-ran the normal
+    // prompt and the client appended a second full reading to the first. Its
+    // focus list was therefore never checked against either the reading prompt
+    // below it or the chart data it runs on, and two of its seven items asked
+    // for data that does not exist in a natal cast:
+    //
+    //   1. "Specific transit predictions for the coming months" — chart_data
+    //      holds no transit positions at all. generate-horoscope computes those
+    //      per request; nothing here does. The model could only invent them.
+    //   2. "Remedial rituals with specific timing (tithis, nakshatras)" —
+    //      `panchanga` is the panchanga of the birth moment, not a forward
+    //      calendar, so ritual dates had nothing to come from either.
+    //
+    // Both would have produced exactly the fabrication citationRules forbids.
+    // Three more items repeated the reading prompt below rather than extending
+    // it: Pratyantar Dasha is its section 11, D9 Navamsa its section 7,
+    // remedies its section 12 — asked for alongside "every sentence must be NEW
+    // information", which the model can only resolve by repeating itself.
+    //
+    // So the list is rebuilt from what the reading below genuinely leaves on the
+    // table, and only for data this particular chart actually holds:
+    // ashtakavarga, vargas_full and vimshopaka exist only on charts cast or
+    // recomputed by the current engine — that is what the recompute banner is
+    // for — and an older chart must not be sent hunting for them.
+    //
+    // Gated on birth-time accuracy for the same reason precisionBlock exists.
+    // With no birth time the lagna, the houses, the divisional charts, the padas
+    // and every dasha date are off the table, and the original list led with
+    // four of those five. A continuation that asks for them while the precision
+    // block forbids citing them is a contradiction in a single prompt.
+    const housesUsable = timeAccuracy === "exact" || timeAccuracy === "period";
+    const deepDives: string[] = [];
+
+    if (chartData.dasha?.sookshma_dasha && housesUsable) {
+      deepDives.push(
+        "- Sookshma and Prana Dasha: the two levels below the Pratyantar the reading already covered. Name the lords and what the sub-period sharpens.",
+      );
+    }
+    if (chartData.ashtottari_dasha) {
+      deepDives.push(
+        "- Ashtottari Dasha, and where its sequence agrees or disagrees with the Vimshottari the reading used. Disagreement between the two systems is itself the insight.",
+      );
+    }
+    if (chartData.chara_dasha && housesUsable) {
+      deepDives.push("- Chara Dasha (Jaimini rashi periods) as a second opinion on timing.");
+    }
+    if (chartData.ashtakavarga?.sav && housesUsable) {
+      deepDives.push(
+        "- Ashtakavarga house strength (SAV bindus out of 56, BAV out of 8): which houses carry real support and which do not. The reading did not use this data at all — this is the largest gap in it.",
+      );
+    }
+    if (chartData.vimshopaka && housesUsable) {
+      deepDives.push(
+        "- Vimshopaka Bala: how each planet's strength holds up or collapses across the divisional charts, which a single rashi placement hides.",
+      );
+    }
+    if (chartData.vargas_full?.d60 && housesUsable) {
+      deepDives.push(
+        "- D60 (Shashtiamsha) and the other divisionals beyond D7/D9/D10/D12, which the reading covered only at D7, D9, D10 and D12.",
+      );
+    }
+    if (chartData.graha_yuddha?.length > 0 && housesUsable) {
+      deepDives.push(
+        "- Graha Yuddha (planetary war): which planet wins, and what the loser's defeat costs in the areas it rules.",
+      );
+    }
+    if (housesUsable) {
+      deepDives.push(
+        "- Nakshatra pada sub-divisions, for the Lagna and for the planets, beyond the birth nakshatra the reading treated on its own.",
+      );
+    }
+    // Safe at every accuracy level: sign- and Moon-based, no house or lagna
+    // dependency, and the reading below touches them only in passing.
+    deepDives.push(
+      "- The Rahu-Ketu axis in depth: the karmic pattern it sets by sign and by nakshatra, and the planets conjunct or aspecting it.",
+    );
+    deepDives.push(
+      "- Graha drishti: the aspect pattern between planets, and which of the reading's conclusions it reinforces or undercuts.",
+    );
+
+    if (isContinuation) {
       systemPrompt = `You are a renowned Vedic astrologer providing an advanced continuation of a Janam Kundali reading.
 ${engineNote}
 
-The user has already received a detailed reading. Your task is to go DEEPER with NEW insights not covered in the existing reading. Focus on:
-- Specific transit predictions for the coming months
-- Detailed nakshatra pada analysis and its sub-influences
-- Ashtakavarga-style house strength interpretations
-- Pratyantar Dasha sub-period effects
-- Remedial rituals with specific timing (tithis, nakshatras)
-- Karmic patterns from nodal axis (Rahu-Ketu) in depth
-- Relationship dynamics from D9 Navamsa in detail
+The user has already received a detailed reading of this chart. Your task is to go DEEPER, using techniques that reading did not use. Cover these, in this order, and nothing else:
+${deepDives.join("\n")}
 
-CRITICAL: Do NOT repeat ANY content from the previous reading. Every sentence must be NEW information. Use traditional Vedic terminology (with English explanations).
+CRITICAL: do not restate a conclusion the previous reading already reached. The material above was chosen because that reading did not draw on it, so every point you make should rest on data it left unused. Where you revisit a placement it already discussed, the new technique must be what changes the picture — if it does not change the picture, say so briefly and move on rather than restating it.
+
+Do NOT discuss planetary transits, current sky positions, or future dates for rituals, muhurtas or tithis. This chart is a natal cast: it contains no transit data and no forward calendar, so any such claim would be invented. Timing comes only from the dasha periods given below.
+
+Use traditional Vedic terminology (with English explanations).
 ${citationRules}`;
 
       userPrompt = `Continue the Vedic astrology reading for ${chart.full_name} with deeper, more specific insights.
@@ -265,7 +349,7 @@ ${vargaContext}
 ${existing_reading}
 === END PREVIOUS READING ===
 
-Provide NEW deeper insights not covered above. Go into specific predictions, timing, and advanced techniques.`;
+Work through the deeper material listed in your instructions, in that order. Ground every point in the chart data above, and leave out any point the data does not support.`;
     } else {
       systemPrompt = `You are a renowned Vedic astrologer providing a comprehensive Janam Kundali reading.
 ${engineNote}
@@ -404,13 +488,24 @@ Please weave all this information into a cohesive, personalized reading.`;
             // failures and neither throws, so this cannot reject — and metering
             // only a reading that actually produced text means a model call that
             // streamed nothing is not charged against the allowance.
+            //
+            // A continuation streams only the new tail, so the reading of record
+            // is the existing text plus that tail. Saving fullContent alone would
+            // cut the stored reading down to its own continuation — and since the
+            // client writes the joined text at this same moment, which of the two
+            // landed last was a coin toss. Joining here makes both writes produce
+            // the same string, with the same "\n\n" the client uses, so the order
+            // stops mattering.
+            const readingOfRecord = isContinuation
+              ? `${existing_reading}\n\n${fullContent}`
+              : fullContent;
             const finish = Promise.all([
               persistOrLog(
-                supabase.from("birth_charts").update({ reading: fullContent }).eq("id", chart_id),
+                supabase.from("birth_charts").update({ reading: readingOfRecord }).eq("id", chart_id),
                 {
                   fn: "generate-reading",
                   table: "birth_charts",
-                  detail: `reading for chart ${chart_id} (${fullContent.length} chars)`,
+                  detail: `${isContinuation ? "continued reading" : "reading"} for chart ${chart_id} (${readingOfRecord.length} chars)`,
                 },
               ),
               recordUsageEvent(supabase, userId, "ai_reading"),
