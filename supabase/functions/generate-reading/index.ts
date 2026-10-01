@@ -3,6 +3,8 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { resolveGuruContext, applyGuru } from "../_shared/guru.ts";
 import { normalizeLanguage, buildLanguageInstruction } from "../_shared/languages.ts";
 import { persistOrLog } from "../_shared/persist.ts";
+import { resolveAccess } from "../_shared/access.ts";
+import { readUsageCount, recordUsageEvent, usageUnavailable } from "../_shared/usage.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -70,6 +72,34 @@ serve(async (req) => {
         status: 403,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
+    }
+
+    // ─── Monthly reading allowance ───
+    //
+    // This function had no tier or quota check of any kind, so the one reading a
+    // month the free tier is sold was in practice unlimited, and every call is a
+    // paid model run. Gate before the reference-data loads and the model call,
+    // so a denial costs nothing.
+    //
+    // Metering reads and writes on the service-role client, like the other
+    // generators: the gate is a server-side decision and must not depend on the
+    // caller's own RLS grants.
+    const access = await resolveAccess(supabase, userId, corsHeaders);
+    let readingsUsed: number;
+    try {
+      readingsUsed = await readUsageCount(supabase, userId, "ai_reading");
+    } catch (e) {
+      return usageUnavailable(corsHeaders, "ai_reading", e);
+    }
+
+    if (!access.withinQuota("ai_reading", readingsUsed)) {
+      return access.denyQuota(
+        "ai_reading",
+        readingsUsed,
+        access.tier === "darshana"
+          ? `You've used your free reading for this month (${access.limit("ai_reading")}/month). Upgrade for unlimited readings.`
+          : "You've reached your reading limit for this month.",
+      );
     }
 
     const chartData = chart.chart_data as any;
@@ -370,23 +400,30 @@ Please weave all this information into a cohesive, personalized reading.`;
             // discarded the error result and swallowed rejections alike, so a
             // chart whose reading was never saved looked identical to one that
             // was, and the user re-ran a paid generation to find out.
-            const persist = persistOrLog(
-              supabase.from("birth_charts").update({ reading: fullContent }).eq("id", chart_id),
-              {
-                fn: "generate-reading",
-                table: "birth_charts",
-                detail: `reading for chart ${chart_id} (${fullContent.length} chars)`,
-              },
-            );
+            // Save the reading and meter it together. Both helpers log their own
+            // failures and neither throws, so this cannot reject — and metering
+            // only a reading that actually produced text means a model call that
+            // streamed nothing is not charged against the allowance.
+            const finish = Promise.all([
+              persistOrLog(
+                supabase.from("birth_charts").update({ reading: fullContent }).eq("id", chart_id),
+                {
+                  fn: "generate-reading",
+                  table: "birth_charts",
+                  detail: `reading for chart ${chart_id} (${fullContent.length} chars)`,
+                },
+              ),
+              recordUsageEvent(supabase, userId, "ai_reading"),
+            ]);
             // The client stream is closed, so nothing is holding this isolate
             // open; without waitUntil the update can be torn down in flight and
             // not even the log line survives.
             // @ts-ignore - EdgeRuntime is provided by Supabase Edge runtime
             if (typeof EdgeRuntime !== "undefined" && EdgeRuntime?.waitUntil) {
               // @ts-ignore
-              EdgeRuntime.waitUntil(persist);
+              EdgeRuntime.waitUntil(finish);
             } else {
-              await persist;
+              await finish;
             }
           }
         }

@@ -1,6 +1,8 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { Body, EclipticLongitude, MakeTime, GeoVector, Ecliptic } from "https://esm.sh/astronomy-engine@2.1.19";
+import { resolveAccess } from "../_shared/access.ts";
+import { persistOrLog } from "../_shared/persist.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -1701,12 +1703,75 @@ serve(async (req) => {
       // real clock time here — these two only record what it was derived from,
       // so a reading downstream knows what it may state as fact.
       birth_time_accuracy, birth_time_period,
+      // Set when this call recomputes an existing chart rather than adding one.
+      // See the allowance check below for why this cannot be used to get extra
+      // charts.
+      replace_chart_id,
     } = await req.json();
 
     if (!full_name || !date_of_birth || !birth_time || !birthplace || latitude == null || longitude == null) {
       return new Response(JSON.stringify({ error: "Missing required fields" }), {
         status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
+    }
+
+    // ─── Saved-chart allowance ───
+    //
+    // The per-tier chart limit was enforced nowhere, client or server, so every
+    // tier could save unlimited charts. Unlike the other quotas this is a stock,
+    // not a monthly flow, so it counts rows rather than reading usage_counters.
+    //
+    // Recompute is the wrinkle: it casts a fresh chart and drops the old one, so
+    // it momentarily needs limit+1 and would otherwise be refused to anyone at
+    // their limit. A caller names the chart it is replacing, and this function
+    // deletes that chart itself once the new one is saved. Naming a chart always
+    // costs you that chart, so the flag buys no extra room — and because the
+    // delete happens here rather than in the client, it cannot be skipped.
+    const access = await resolveAccess(supabase, user.id, corsHeaders);
+
+    let replacing: string | null = null;
+    if (typeof replace_chart_id === "string" && replace_chart_id) {
+      const { data: victim, error: victimError } = await supabase
+        .from("birth_charts")
+        .select("id")
+        .eq("id", replace_chart_id)
+        .eq("user_id", user.id)
+        .maybeSingle();
+      if (victimError) {
+        console.error("[generate-chart] replace lookup failed:", victimError);
+        return new Response(JSON.stringify({ error: "Could not verify the chart being replaced." }), {
+          status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      // Silently ignore an unowned or already-deleted id: it grants nothing, and
+      // treating it as a hard error would break a retried recompute.
+      replacing = victim ? replace_chart_id : null;
+    }
+
+    if (!replacing) {
+      const { count, error: countError } = await supabase
+        .from("birth_charts")
+        .select("id", { count: "exact", head: true })
+        .eq("user_id", user.id);
+      if (countError) {
+        // Must not fall through to "0 charts saved" — that is the shape of bug
+        // that made every other quota unlimited.
+        console.error("[generate-chart] chart count failed, refusing:", countError);
+        return new Response(JSON.stringify({ error: "We couldn't check your saved-chart allowance just now. Please try again in a moment." }), {
+          status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      const chartsSaved = count ?? 0;
+      if (!access.withinQuota("charts", chartsSaved)) {
+        return access.denyQuota(
+          "charts",
+          chartsSaved,
+          access.tier === "darshana"
+            ? `Your plan saves ${access.limit("charts")} chart. Delete one or upgrade to keep more.`
+            : `You've saved all ${access.limit("charts")} charts your plan allows. Delete one to add another.`,
+        );
+      }
     }
 
     // ─── Server-Side Timezone Resolution ───
@@ -1981,6 +2046,24 @@ serve(async (req) => {
     if (insertError) {
       console.error("Insert error:", insertError);
       throw new Error("Failed to save chart");
+    }
+
+    // Retire the chart this one replaces, now that the replacement is safely
+    // saved. Deliberately after the insert: dropping it first would lose the
+    // user's chart outright if the cast then failed. The allowance check above
+    // let this request through on the promise of this delete, so a failure here
+    // leaves the user one chart over their limit — logged, and self-correcting on
+    // their next recompute, which is a better outcome than refusing a chart that
+    // is already computed and saved.
+    if (replacing) {
+      await persistOrLog(
+        supabase.from("birth_charts").delete().eq("id", replacing).eq("user_id", user.id),
+        {
+          fn: "generate-chart",
+          table: "birth_charts",
+          detail: `retiring replaced chart ${replacing} for user ${user.id}`,
+        },
+      );
     }
 
     return new Response(JSON.stringify(chart), {

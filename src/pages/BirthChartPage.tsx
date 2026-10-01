@@ -677,6 +677,11 @@ export default function BirthChartPage() {
         full_name: selectedChart.full_name, date_of_birth: selectedChart.date_of_birth,
         birth_time: selectedChart.birth_time, birthplace: selectedChart.birthplace,
         latitude: selectedChart.latitude, longitude: selectedChart.longitude,
+        // Recompute swaps one chart for another, so it must say which chart it
+        // replaces. generate-chart enforces a per-tier saved-chart limit, and a
+        // recompute briefly needs limit+1; naming the old chart lets the new one
+        // through and makes the function retire the old one itself.
+        replace_chart_id: selectedChart.id,
       };
       const tz = (selectedChart.chart_data as any)?.timezone_used?.offset_minutes;
       if (typeof tz === "number") body.utc_offset_minutes = tz;
@@ -689,6 +694,9 @@ export default function BirthChartPage() {
       const wasPrimary = selectedChart.is_primary;
       const oldReading = selectedChart.reading;
       await supabase.from("birth_charts").update({ reading: oldReading, is_primary: wasPrimary }).eq("id", fresh.id);
+      // generate-chart already retired the replaced chart (see replace_chart_id
+      // above). Kept as a no-op backstop for the case where that delete was
+      // logged as failed, so the swap still completes from the user's side.
       await supabase.from("birth_charts").delete().eq("id", selectedChart.id);
       const enriched = { ...fresh, reading: oldReading, is_primary: wasPrimary } as BirthChart;
       setCharts(p => [enriched, ...p.filter(c => c.id !== selectedChart.id && c.id !== fresh.id)]);
