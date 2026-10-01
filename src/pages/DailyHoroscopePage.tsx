@@ -29,7 +29,7 @@ import PageNavRail from "@/components/layout/PageNavRail";
 import CosmicFieldCard from "@/components/layout/CosmicFieldCard";
 import NextRefreshBadge from "@/components/horoscope/NextRefreshBadge";
 import RishiGuruBadge from "@/components/RishiGuruBadge";
-import ThreeActsStrip from "@/components/horoscope/ThreeActsStrip";
+import ThreeActs from "@/components/horoscope/ThreeActs";
 import IfThenStrip from "@/components/horoscope/IfThenStrip";
 import MicroRitualCard from "@/components/horoscope/MicroRitualCard";
 import PersonalCallbackBanner from "@/components/horoscope/PersonalCallbackBanner";
@@ -716,7 +716,7 @@ export default function DailyHoroscopePage() {
                 {/* Three acts (daily/tomorrow only) */}
                 {(period === "daily" || period === "tomorrow") && horoscope.three_acts && (
                   <div className="mt-5">
-                    <ThreeActsStrip acts={horoscope.three_acts} dropCap={!horoscope.guidance} />
+                    <ThreeActs acts={horoscope.three_acts} dropCap={!horoscope.guidance} />
                   </div>
                 )}
 

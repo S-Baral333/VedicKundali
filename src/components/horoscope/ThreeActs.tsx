@@ -19,7 +19,7 @@ const ACTS: { key: keyof Acts; label: string; Icon: typeof Sun; tint: string }[]
  *   passes this only when no guidance blob precedes the acts, so a reading
  *   never carries two.
  */
-export default function ThreeActsStrip({ acts, dropCap }: { acts?: Acts; dropCap?: boolean }) {
+export default function ThreeActs({ acts, dropCap }: { acts?: Acts; dropCap?: boolean }) {
   const { t } = useTranslation();
   if (!acts) return null;
   const filled = ACTS.filter(({ key }) => !!acts[key]);
@@ -44,6 +44,12 @@ export default function ThreeActsStrip({ acts, dropCap }: { acts?: Acts; dropCap
           >
             <div className="flex items-center gap-2 mb-2.5">
               <Icon className="h-3.5 w-3.5 shrink-0" style={{ color: "hsl(var(--gold))" }} />
+              {/* Key namespace keeps the old component name on purpose: these
+                  three labels are also read by the dashboard, and they are
+                  translated in all seven locales. Renaming them would be a
+                  translation migration whose only payoff is tidiness, and a
+                  client holding a cached pages.json would fall back to English
+                  until it refetched. */}
               <span className="text-[11px] tracking-[0.18em] uppercase" style={{ color: "hsl(var(--text-muted))" }}>{t("pages:ui.threeActsStrip." + key, label)}</span>
             </div>
             {/* Matches the guidance blob above it (1.02rem / 1.85). The old
