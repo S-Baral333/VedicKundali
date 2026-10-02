@@ -43,6 +43,7 @@ import HoroscopePreview from "./pages/preview/HoroscopePreview";
 import DreamPreview from "./pages/preview/DreamPreview";
 import ChartPreview from "./pages/preview/ChartPreview";
 import OraclePreview from "./pages/preview/OraclePreview";
+import DwaraPreview from "./pages/preview/DwaraPreview";
 import RouteAwareUniverseBackground from "./components/RouteAwareUniverseBackground";
 import PWAUpdater from "./components/PWAUpdater";
 import ChartSwitchTransition from "./components/ChartSwitchTransition";
@@ -79,6 +80,7 @@ const App = () => (
               <Route path="/preview/chart" element={<ChartPreview />} />
               <Route path="/preview/oracle" element={<OraclePreview />} />
               <Route path="/onboarding" element={<ProtectedRoute><OnboardingPage /></ProtectedRoute>} />
+              {import.meta.env.DEV && <Route path="/preview/onboarding" element={<DwaraPreview />} />}
               {/* User pages wrapped in UserLayout */}
               <Route element={<ProtectedRoute><UserLayout /></ProtectedRoute>}>
                 <Route path="/dashboard" element={<UserDashboard />} />

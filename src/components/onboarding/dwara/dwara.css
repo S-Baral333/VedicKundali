@@ -1,0 +1,737 @@
+/* ═══════════════════════════════════════════════
+   Dwara — the onboarding portal
+   Everything is scoped to .dw-root. The solar gold here is deliberately softer
+   than the app's saffron (--gold): it is the colour of light, not of an
+   accent, and it only exists inside the portal.
+   ═══════════════════════════════════════════════ */
+
+.dw-root {
+  --dw-gold: 41 90% 63%;
+  --dw-gold-soft: 44 100% 78%;
+  --dw-pearl: 41 100% 93%;
+  --dw-item: 40px; /* mirrored by WHEEL_ITEM in WheelColumn.tsx */
+  --dw-rows: 5;
+
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  overflow: hidden;
+  overflow: clip; /* unlike hidden, cannot be scrolled programmatically by a focus */
+  color: hsl(var(--text-primary));
+  background: radial-gradient(ellipse at 50% 30%, #1a1030 0%, #0a0a1c 48%, #05060d 100%);
+  font-family: var(--font-sans);
+  -webkit-tap-highlight-color: transparent;
+}
+.dw-root *,
+.dw-root *::before,
+.dw-root *::after {
+  box-sizing: border-box;
+}
+@media (max-height: 720px) {
+  .dw-root {
+    --dw-rows: 3;
+  }
+}
+
+/* ── backdrop ─────────────────────────────── */
+.dw-sky {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.dw-fog {
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+  background:
+    radial-gradient(40% 30% at 20% 25%, hsl(265 60% 30% / 0.22), transparent 70%),
+    radial-gradient(35% 28% at 80% 60%, hsl(220 70% 28% / 0.2), transparent 70%),
+    radial-gradient(30% 25% at 55% 85%, hsl(var(--dw-gold) / 0.06), transparent 70%);
+  animation: dw-drift 70s ease-in-out infinite alternate;
+}
+@keyframes dw-drift {
+  from { transform: translate3d(-2%, -1%, 0); }
+  to { transform: translate3d(2%, 2%, 0) rotate(1.5deg); }
+}
+.dw-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+/* ── layout ───────────────────────────────── */
+.dw-stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+.dw-top {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: calc(env(safe-area-inset-top, 0px) + 14px) 20px 0;
+}
+.dw-spacer {
+  flex: 1;
+  min-height: 0;
+}
+/* The scrim: the card's text always sits on near-black, however bright the
+   mandala behind it gets. */
+.dw-dock {
+  position: relative;
+  padding: 88px 20px calc(env(safe-area-inset-bottom, 0px) + 22px);
+  max-height: calc(var(--dw-vh, 100dvh) * 0.88);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  background: linear-gradient(to top, rgba(5, 6, 13, 0.96) 76%, rgba(5, 6, 13, 0));
+}
+.dw-dock::-webkit-scrollbar {
+  display: none;
+}
+/* While the light floods the screen the scrim must go with the card, or it
+   shows as a dark band across the bottom of the bloom. */
+.dw-dock {
+  transition: background 0.5s ease;
+}
+.dw-dock[data-hidden="true"] {
+  background: transparent;
+}
+
+.dw-back {
+  position: absolute;
+  left: 10px;
+  top: calc(env(safe-area-inset-top, 0px) + 14px);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 10px;
+  background: none;
+  border: 0;
+  color: hsl(var(--text-secondary));
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.dw-back:hover {
+  color: hsl(var(--dw-pearl));
+}
+
+/* ── progress orbs + the name that rose ───── */
+.dw-orbs {
+  display: block;
+  overflow: visible;
+}
+.dw-orbit {
+  transform-origin: 22px 22px;
+  animation: dw-orbit 80s linear infinite;
+}
+@keyframes dw-orbit {
+  to { transform: rotate(360deg); }
+}
+.dw-orb {
+  fill: none;
+  stroke: hsl(var(--dw-gold) / 0.55);
+  stroke-width: 1;
+  transition: all 0.6s ease;
+}
+.dw-orb-on {
+  fill: hsl(var(--dw-gold-soft));
+  stroke: none;
+  filter: drop-shadow(0 0 4px hsl(var(--dw-gold)));
+}
+.dw-orb-core {
+  fill: hsl(var(--dw-gold-soft));
+  transition: all 0.6s ease;
+}
+.dw-sigil {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-serif);
+  font-size: 19px;
+  color: hsl(var(--dw-gold-soft));
+  text-shadow: 0 0 18px hsl(var(--dw-gold) / 0.45);
+  animation: dw-sigil-in 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.dw-sigil-star {
+  width: 12px;
+  height: 12px;
+  color: hsl(var(--dw-gold-soft));
+  filter: drop-shadow(0 0 6px hsl(var(--dw-gold)));
+}
+@keyframes dw-sigil-in {
+  from { opacity: 0; transform: translateY(46vh) scale(1.5); }
+  55% { opacity: 1; }
+  to { opacity: 1; transform: none; }
+}
+
+/* ── the card ─────────────────────────────── */
+.dw-card {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  text-align: center;
+  transition: opacity 0.5s ease;
+  animation: dw-rise 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.dw-card[data-leaving="true"] {
+  animation: dw-fall 0.36s ease both;
+  pointer-events: none;
+}
+.dw-card[data-hidden="true"] {
+  animation: none;
+  opacity: 0;
+  pointer-events: none;
+}
+@keyframes dw-rise {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes dw-fall {
+  to { opacity: 0; transform: translateY(-14px) scale(1.02); }
+}
+
+.dw-eyebrow {
+  margin: 0 0 10px;
+  font-size: 12px;
+  color: hsl(var(--dw-gold));
+}
+/* Tracking and capitals are Latin conventions; they break Indic conjuncts. */
+html[data-lang="en"] .dw-eyebrow {
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+}
+.dw-h1 {
+  margin: 0 0 10px;
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(28px, 7.4vw, 40px);
+  line-height: 1.14;
+  color: hsl(var(--text-primary));
+  text-shadow: 0 0 30px hsl(var(--dw-gold) / 0.3);
+  outline: none;
+}
+.dw-sub {
+  margin: 0 0 20px;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.55;
+  color: hsl(var(--text-secondary));
+}
+.dw-hint {
+  margin: 10px 0 0;
+  font-size: 12px;
+  color: hsl(var(--text-muted));
+}
+
+/* ── controls ─────────────────────────────── */
+.dw-input {
+  width: 100%;
+  min-height: 52px;
+  padding: 15px 16px;
+  border-radius: 14px;
+  border: 1px solid hsl(var(--dw-gold) / 0.35);
+  background: rgba(255, 255, 255, 0.04);
+  color: inherit;
+  font: inherit;
+  font-size: 16px; /* anything smaller makes iOS zoom the page on focus */
+  text-align: center;
+  outline: none;
+  color-scheme: dark;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.dw-input::placeholder {
+  color: hsl(var(--text-muted));
+}
+.dw-input:focus-visible {
+  border-color: hsl(var(--dw-gold));
+  box-shadow: 0 0 0 4px hsl(var(--dw-gold) / 0.12), 0 0 30px hsl(var(--dw-gold) / 0.22);
+}
+
+.dw-btn {
+  width: 100%;
+  min-height: 52px;
+  margin-top: 14px;
+  padding: 14px;
+  border: 0;
+  border-radius: 14px;
+  background: linear-gradient(120deg, #e58a12, hsl(var(--dw-gold)), hsl(var(--dw-gold-soft)));
+  color: #2a1a04;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  box-shadow: 0 0 34px hsl(var(--dw-gold) / 0.35);
+  transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+}
+.dw-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 0 48px hsl(var(--dw-gold) / 0.55);
+}
+.dw-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+  box-shadow: none;
+}
+.dw-link {
+  display: block;
+  min-height: 44px;
+  margin: 8px auto 0;
+  padding: 10px 14px;
+  background: none;
+  border: 0;
+  color: hsl(var(--text-secondary));
+  font: inherit;
+  font-size: 14px;
+  text-decoration: underline;
+  text-decoration-color: hsl(var(--text-muted) / 0.5);
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+.dw-link:hover {
+  color: hsl(var(--dw-pearl));
+}
+.dw-btn:focus-visible,
+.dw-link:focus-visible,
+.dw-back:focus-visible,
+.dw-find:focus-visible,
+.dw-chip:focus-visible,
+.dw-option:focus-visible,
+.dw-period:focus-visible,
+.dw-result:focus-visible,
+.dw-switch:focus-visible {
+  outline: 2px solid hsl(var(--dw-pearl));
+  outline-offset: 3px;
+}
+
+/* ── the date wheels ──────────────────────── */
+.dw-wheels {
+  position: relative;
+  display: grid;
+  grid-template-columns: 0.8fr 1.7fr 1.1fr;
+  gap: 6px;
+  max-width: 360px;
+  margin: 0 auto 4px;
+}
+.dw-wheel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.dw-wheel-label {
+  height: 18px;
+  margin-bottom: 6px;
+  font-size: 11px;
+  line-height: 18px;
+  color: hsl(var(--text-muted));
+}
+html[data-lang="en"] .dw-wheel-label {
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.dw-wheel-scroll {
+  width: 100%;
+  height: calc(var(--dw-rows) * var(--dw-item));
+  padding-block: calc((var(--dw-rows) - 1) / 2 * var(--dw-item));
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  border-radius: 10px;
+  outline: none;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 28%, #000 72%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 28%, #000 72%, transparent);
+}
+.dw-wheel-scroll::-webkit-scrollbar {
+  display: none;
+}
+.dw-wheel-scroll:focus-visible {
+  box-shadow: 0 0 0 2px hsl(var(--dw-gold) / 0.6);
+}
+.dw-wheel-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--dw-item);
+  font-size: 19px;
+  font-variant-numeric: tabular-nums;
+  color: hsl(var(--text-muted));
+  scroll-snap-align: center;
+  user-select: none;
+  cursor: pointer;
+  transition: color 0.2s, font-size 0.2s;
+}
+.dw-wheel-item[aria-selected="true"] {
+  font-size: 22px;
+  color: hsl(var(--dw-pearl));
+}
+/* A default nobody has chosen yet — visibly not an answer. */
+.dw-wheel[data-idle="true"] .dw-wheel-item[aria-selected="true"] {
+  color: hsl(var(--text-secondary));
+  opacity: 0.55;
+}
+.dw-wheel-band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(24px + (var(--dw-rows) - 1) / 2 * var(--dw-item));
+  height: var(--dw-item);
+  pointer-events: none;
+  border-block: 1px solid hsl(var(--dw-gold) / 0.35);
+  background: linear-gradient(90deg, transparent, hsl(var(--dw-gold) / 0.07), transparent);
+}
+
+/* ── time ─────────────────────────────────── */
+.dw-time-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.dw-time {
+  width: 100%;
+  max-width: 260px;
+  min-height: 64px;
+  padding: 10px 16px;
+  border-radius: 16px;
+  border: 1px solid hsl(var(--dw-gold) / 0.35);
+  background: rgba(255, 255, 255, 0.04);
+  color: hsl(var(--dw-pearl));
+  font-family: var(--font-serif);
+  font-size: 34px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  outline: none;
+  color-scheme: dark;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.dw-time:focus-visible {
+  border-color: hsl(var(--dw-gold));
+  box-shadow: 0 0 0 4px hsl(var(--dw-gold) / 0.12), 0 0 30px hsl(var(--dw-gold) / 0.22);
+}
+.dw-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  background: none;
+  border: 0;
+  color: hsl(var(--text-secondary));
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+.dw-switch-track {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  border-radius: 20px;
+  border: 1px solid hsl(var(--dw-gold) / 0.5);
+  transition: background 0.25s;
+}
+.dw-switch-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: hsl(var(--dw-gold));
+  transition: transform 0.25s;
+}
+.dw-switch[aria-checked="true"] .dw-switch-track {
+  background: hsl(var(--dw-gold) / 0.25);
+}
+.dw-switch[aria-checked="true"] .dw-switch-knob {
+  transform: translateX(16px);
+}
+.dw-periods {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  width: 100%;
+}
+.dw-periods-hint {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 13px;
+  color: hsl(var(--text-secondary));
+}
+.dw-period,
+.dw-result,
+.dw-option {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+}
+.dw-period {
+  padding: 10px 12px;
+  border-radius: 12px;
+}
+.dw-period-name {
+  display: block;
+  font-size: 14px;
+}
+.dw-period-sub {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  color: hsl(var(--text-muted));
+}
+.dw-period[data-active="true"],
+.dw-result[data-active="true"],
+.dw-option[data-on="true"] {
+  border-color: hsl(var(--dw-gold));
+  background: hsl(var(--dw-gold) / 0.1);
+  box-shadow: 0 0 24px hsl(var(--dw-gold) / 0.15);
+}
+.dw-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: left;
+  color: hsl(var(--text-secondary));
+}
+.dw-note svg {
+  margin-top: 2px;
+  color: hsl(var(--dw-gold));
+}
+
+/* ── place ────────────────────────────────── */
+.dw-place-row {
+  display: flex;
+  gap: 8px;
+}
+.dw-place-row .dw-input {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+}
+.dw-find {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 52px;
+  padding: 0 16px;
+  border-radius: 14px;
+  border: 1px solid hsl(var(--dw-gold) / 0.5);
+  background: hsl(var(--dw-gold) / 0.1);
+  color: hsl(var(--dw-gold-soft));
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+.dw-find:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.dw-place-status {
+  min-height: 22px;
+  margin: 8px 0 2px;
+  font-size: 13px;
+  color: hsl(var(--text-secondary));
+}
+.dw-place-status p {
+  margin: 0;
+}
+.dw-results {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.dw-result {
+  display: block;
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 12px;
+}
+.dw-result-label {
+  display: block;
+  font-size: 15px;
+}
+.dw-result-full {
+  display: block;
+  margin-top: 2px;
+  overflow: hidden;
+  font-size: 11px;
+  color: hsl(var(--text-muted));
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── intent ───────────────────────────────── */
+.dw-slots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 0 14px;
+}
+.dw-slot {
+  width: 20px;
+  height: 20px;
+  color: hsl(var(--dw-gold) / 0.25);
+  transition: color 0.4s, filter 0.4s, transform 0.4s;
+}
+.dw-slot-on {
+  color: hsl(var(--dw-gold-soft));
+  filter: drop-shadow(0 0 8px hsl(var(--dw-gold) / 0.8));
+  transform: scale(1.15);
+}
+.dw-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+.dw-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  color: hsl(var(--text-secondary));
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 0.25s, background 0.25s, color 0.25s, box-shadow 0.25s, opacity 0.25s;
+}
+.dw-chip-star {
+  width: 14px;
+  height: 14px;
+  color: hsl(var(--dw-gold) / 0.35);
+  transition: color 0.3s, filter 0.3s;
+}
+.dw-chip[data-on="true"] {
+  border-color: hsl(var(--dw-gold));
+  background: hsl(var(--dw-gold) / 0.12);
+  color: hsl(var(--dw-pearl));
+  box-shadow: 0 0 22px hsl(var(--dw-gold) / 0.2);
+}
+.dw-chip[data-on="true"] .dw-chip-star {
+  color: hsl(var(--dw-gold-soft));
+  filter: drop-shadow(0 0 6px hsl(var(--dw-gold)));
+}
+.dw-chip:disabled {
+  opacity: 0.38;
+  cursor: default;
+}
+.dw-count {
+  margin: 12px 0 0;
+  font-size: 12px;
+  color: hsl(var(--text-muted));
+}
+.dw-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.dw-option {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 14px;
+}
+.dw-option-name {
+  display: block;
+  font-size: 15px;
+}
+.dw-option-desc {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  color: hsl(var(--text-secondary));
+}
+
+/* ── crossing ─────────────────────────────── */
+.dw-spinner {
+  display: block;
+  width: 22px;
+  height: 22px;
+  margin: 4px auto 0;
+  color: hsl(var(--dw-gold));
+  animation: dw-spin 1.2s linear infinite;
+}
+@keyframes dw-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* The primary button stays reachable when a tall beat has to scroll. */
+.dw-card > .dw-btn {
+  position: sticky;
+  bottom: 0; /* measured from the dock's content box, so its padding is already the margin */
+  z-index: 1;
+}
+
+/* Short phones (360×640 and up to ~720px): tighten rather than scroll. */
+@media (max-height: 720px) {
+  .dw-dock {
+    padding-top: 48px;
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
+    max-height: calc(var(--dw-vh, 100dvh) * 0.94);
+  }
+  .dw-option-desc { margin-top: 0; }
+  /* "You can change this later" is the one line the tone beat can spare. */
+  .dw-root[data-step="tone"] .dw-sub { display: none; }
+  .dw-h1 { margin-bottom: 6px; font-size: clamp(26px, 6.8vw, 34px); }
+  .dw-sub { margin-bottom: 14px; font-size: 14px; line-height: 1.45; }
+  .dw-eyebrow { margin-bottom: 6px; }
+  .dw-btn { min-height: 48px; margin-top: 10px; }
+  .dw-option { padding: 9px 14px; }
+  .dw-options { gap: 6px; }
+  .dw-chip { min-height: 40px; }
+  .dw-slots { margin-bottom: 10px; }
+}
+
+/* Indic scripts read smaller than Latin at the same size, and the small print
+   (labels, hints, notes) is where it shows. */
+html:not([data-lang="en"]) .dw-eyebrow { font-size: 14px; }
+html:not([data-lang="en"]) .dw-sub { font-size: 16px; }
+html:not([data-lang="en"]) .dw-wheel-label { font-size: 13px; }
+html:not([data-lang="en"]) .dw-hint,
+html:not([data-lang="en"]) .dw-count,
+html:not([data-lang="en"]) .dw-note,
+html:not([data-lang="en"]) .dw-option-desc,
+html:not([data-lang="en"]) .dw-period-sub { font-size: 13px; }
+
+/* ── reduced motion: the sky holds still, beats simply swap ── */
+@media (prefers-reduced-motion: reduce) {
+  .dw-fog,
+  .dw-orbit,
+  .dw-card,
+  .dw-card[data-leaving="true"],
+  .dw-sigil {
+    animation: none;
+  }
+  .dw-spinner {
+    animation-duration: 3s;
+  }
+  .dw-root * {
+    transition-duration: 0.01ms !important;
+  }
+  .dw-btn:hover:not(:disabled) {
+    transform: none;
+  }
+}

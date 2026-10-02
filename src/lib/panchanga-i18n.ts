@@ -49,7 +49,7 @@ export const localNum = (lang: string, v: number | string) =>
 
 type Period = "daily" | "tomorrow" | "weekly" | "monthly" | "yearly";
 
-const INTL_LOCALE: Record<string, string> = { ne: "ne-NP", hi: "hi-IN", mr: "mr-IN", bn: "bn-IN", ta: "ta-IN", te: "te-IN" };
+export const INTL_LOCALE: Record<string, string> = { ne: "ne-NP", hi: "hi-IN", mr: "mr-IN", bn: "bn-IN", ta: "ta-IN", te: "te-IN" };
 
 /** "Tue, 6 Asoj" — a day in a list. Nepali uses the Bikram Sambat date. */
 export function formatShortDate(iso: string, lang: string): string {
