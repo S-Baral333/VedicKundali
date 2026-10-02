@@ -184,13 +184,30 @@ const enPages = {
   },
   login: {
     tagline: "Your stars. Your story. Your dharma.",
-    // Google is the only door in; there is no separate sign-up copy because
-    // Google settles whether this is a new account or a returning one.
-    subheadGoogle: "Sign in or create your account with Google.",
+    // Two doors, neither with a password, and neither of them a separate
+    // sign-up: a new address creates the account, a known one returns to it.
+    subheadBoth: "Sign in or create your account — no password either way.",
     continueWithGoogle: "Continue with Google",
     googleRedirecting: "Taking you to Google…",
     googleFailed: "Couldn't reach Google. Check your connection and try again.",
-    noPasswordNote: "No password to remember — Google verifies it's you.",
+    noPasswordNoteBoth: "No password either way — Google vouches for you, or we email you a code.",
+    or: "or",
+    // ── Email code (OTP) ──
+    // emailLabel and aligningStars below are reused here rather than duplicated.
+    emailPlaceholder: "you@example.com",
+    sendCode: "Email me a code",
+    sendingCode: "Sending your code…",
+    codeSentTo: "We sent a six-digit code to {{email}}",
+    verifyCode: "Verify and continue",
+    resendCode: "Send a new code",
+    resendIn: "You can ask for a new code in {{seconds}}s",
+    useDifferentEmail: "Use a different address",
+    emailInvalid: "That doesn't look like an email address.",
+    sendFailed: "We couldn't send that code. Try again in a moment.",
+    // One string for both: Supabase cannot tell a mistyped code from a stale
+    // one, so neither can we, and pretending otherwise misdirects the reader.
+    codeInvalid: "That code didn't work. Check it, or ask for a new one.",
+    captchaPending: "Please complete the check below first.",
     callbackWorking: "Signing you in…",
     callbackFailed: "We couldn't complete that sign-in.",
     tryAgain: "Try again",

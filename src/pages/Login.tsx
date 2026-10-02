@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import KundaliMark from "@/components/KundaliMark";
 import GoogleMark from "@/components/GoogleMark";
+import EmailCodeForm from "@/components/auth/EmailCodeForm";
 import mandalaUrl from "@/assets/kundali-mark-sacred.svg";
 import { Loader2, Star, Sun, Flame } from "lucide-react";
 import Seo from "@/components/Seo";
@@ -91,10 +92,11 @@ export default function Login() {
               <span className="h-px w-10" style={{ background: "linear-gradient(90deg, hsl(var(--gold) / 0.4), transparent)" }} />
             </div>
 
-            {/* One door in, so the copy never asks the user to choose between
-                signing in and signing up — Google settles which it is. */}
+            {/* Two doors now, but still no fork between signing in and signing
+                up: whichever the reader picks, a new address creates the
+                account and a known one returns to it. */}
             <p className="text-sm" style={{ color: "hsl(var(--text-secondary))", lineHeight: 1.55 }}>
-              {t("login.subheadGoogle", "Sign in or create your account with Google.")}
+              {t("login.subheadBoth", "Sign in or create your account — no password either way.")}
             </p>
           </div>
 
@@ -120,11 +122,26 @@ export default function Login() {
               : t("login.continueWithGoogle", "Continue with Google")}
           </button>
 
+          {/* Google stays first and unchanged: it is one tap for anyone who
+              has an account, where the email path is three steps and a wait. */}
+          <div className="flex items-center gap-3 my-5" aria-hidden>
+            <span className="h-px flex-1" style={{ background: "hsl(var(--gold) / 0.18)" }} />
+            <span
+              className="text-[10px] uppercase"
+              style={{ color: "hsl(var(--text-muted))", letterSpacing: "0.22em" }}
+            >
+              {t("login.or", "or")}
+            </span>
+            <span className="h-px flex-1" style={{ background: "hsl(var(--gold) / 0.18)" }} />
+          </div>
+
+          <EmailCodeForm />
+
           <p
             className="mt-4 text-center text-[11px] leading-relaxed"
             style={{ color: "hsl(var(--text-muted))" }}
           >
-            {t("login.noPasswordNote", "No password to remember — Google verifies it's you.")}
+            {t("login.noPasswordNoteBoth", "No password either way — Google vouches for you, or we email you a code.")}
           </p>
 
           {/* What signing in actually gets you. Sits below the button so a

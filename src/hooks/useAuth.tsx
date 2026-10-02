@@ -1,5 +1,6 @@
 import { useState, useEffect, createContext, useContext, ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { normalizeEmail } from "@/lib/email";
 import type { User, Session } from "@supabase/supabase-js";
 
 interface AuthContextType {
@@ -7,8 +8,15 @@ interface AuthContextType {
   session: Session | null;
   isAdmin: boolean;
   isLoading: boolean;
-  /** Google is the only way in. There is no password to forget, leak or reset. */
+  /**
+   * Two doors in, neither with a password: Google, or a six-digit code sent to
+   * an email address. There is still nothing to forget, leak or reset.
+   */
   signInWithGoogle: () => Promise<{ error: Error | null }>;
+  /** Mail a six-digit code, creating the account if the address is new. */
+  sendEmailCode: (email: string, captchaToken?: string) => Promise<{ error: Error | null }>;
+  /** Exchange that code for a session. */
+  verifyEmailCode: (email: string, code: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
 }
 
@@ -75,13 +83,55 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error: error as Error | null };
   };
 
+  /**
+   * Send a six-digit code to `email`.
+   *
+   * shouldCreateUser keeps this the same single act Google is: a first-time
+   * address creates the account, and on_auth_user_created builds the profile,
+   * role and free subscription off the auth.users insert exactly as it does for
+   * an OAuth signup — so there is no separate registration step to keep in sync.
+   *
+   * Whether the mail arrives as a code or a link is decided by the project's
+   * Magic Link template: it has to render {{ .Token }}, not
+   * {{ .ConfirmationURL }}. The call is identical either way, which is why
+   * getting that template wrong shows up as users receiving links rather than
+   * as an error here.
+   *
+   * captchaToken is forwarded only when the app was built with a Turnstile site
+   * key. Supabase's captcha switch is project-wide, so it and the key have to be
+   * turned on together: tokens without the switch are ignored, but the switch
+   * without tokens rejects every sign-in.
+   */
+  const sendEmailCode = async (email: string, captchaToken?: string) => {
+    const { error } = await supabase.auth.signInWithOtp({
+      email: normalizeEmail(email),
+      options: { shouldCreateUser: true, captchaToken },
+    });
+    return { error: error as Error | null };
+  };
+
+  /**
+   * Exchange a code for a session. onAuthStateChange above picks up the new
+   * session, so nothing here needs to route or set user state.
+   */
+  const verifyEmailCode = async (email: string, code: string) => {
+    const { error } = await supabase.auth.verifyOtp({
+      email: normalizeEmail(email),
+      token: code.trim(),
+      type: "email",
+    });
+    return { error: error as Error | null };
+  };
+
   const signOut = async () => {
     sessionStorage.clear();
     await supabase.auth.signOut();
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, isAdmin, isLoading, signInWithGoogle, signOut }}>
+    <AuthContext.Provider
+      value={{ user, session, isAdmin, isLoading, signInWithGoogle, sendEmailCode, verifyEmailCode, signOut }}
+    >
       {children}
     </AuthContext.Provider>
   );
