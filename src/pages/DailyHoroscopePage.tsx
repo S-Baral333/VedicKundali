@@ -180,8 +180,8 @@ function SectionLabel({ icon: Icon, children, color }: { icon: typeof Sun; child
 export default function DailyHoroscopePage() {
   const { t, i18n } = useTranslation("pages");
   const { user, session, isLoading } = useAuth();
-  const { activeChart } = useActiveChart();
-  const { enabled: rishiEnabled } = useRishiGuru();
+  const { activeChart, isLoading: chartLoading } = useActiveChart();
+  const { enabled: rishiEnabled, loading: rishiLoading } = useRishiGuru();
   const [period, setPeriod] = useState<Period>("daily");
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -190,21 +190,37 @@ export default function DailyHoroscopePage() {
   const [meta, setMeta] = useState<HoroscopeMeta | null>(null);
   const [sign, setSign] = useState("");
   const [validDate, setValidDate] = useState("");
-  const [moonSign, setMoonSign] = useState<string | null>(null);
-  const [moonSignReady, setMoonSignReady] = useState(false);
 
   // Race guard: every fetchHoroscope call captures its own id; only the latest may write state.
   const requestIdRef = useRef(0);
   const pollTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Derive moon sign from active chart instead of "first chart"
-  useEffect(() => {
-    if (!user) { setMoonSignReady(true); return; }
-    if (!activeChart) { setMoonSignReady(true); return; }
-    const cd = activeChart.chart_data as Record<string, unknown> | null;
-    setMoonSign((cd as any)?.moon_sign || (cd as any)?.moonSign || null);
-    setMoonSignReady(true);
-  }, [user, activeChart?.id]);
+  // Moon sign comes from the active chart. A null `activeChart` only means "no
+  // chart" once the provider has finished loading; before that it means "not
+  // here yet", and asking the server then generates a reading for whichever
+  // chart it guesses is primary, then again for the real one.
+  const chartData = activeChart?.chart_data as Record<string, any> | null | undefined;
+  const moonSign: string | null = chartData?.moon_sign || chartData?.moonSign || null;
+  const moonSignReady = !chartLoading;
+
+  // Everything fetchHoroscope reads that changes without changing *which*
+  // reading is wanted — a refreshed token, or a chart object re-fetched with
+  // identical content on tab refocus. Held in a ref so those changes do not
+  // give fetchHoroscope a new identity, which would cancel the poll in flight
+  // and start another generation request.
+  const liveRef = useRef({ accessToken: "", dasha: null as DashaMeta | null, rishiEnabled: false, rishiLoading: true });
+  liveRef.current = {
+    accessToken: session?.access_token ?? "",
+    dasha: (chartData?.dasha as DashaMeta | undefined) ?? null,
+    rishiEnabled,
+    rishiLoading,
+  };
+
+  // Stop any poll still running when the page goes away.
+  useEffect(() => () => {
+    requestIdRef.current++;
+    if (pollTimerRef.current) { clearTimeout(pollTimerRef.current); pollTimerRef.current = null; }
+  }, []);
 
   // Build meta from a parsed horoscope (used as fallback when network meta missing — e.g. cache hits from older payloads)
   const metaFromHoroscope = useCallback((h: HoroscopeData | null, dasha: DashaMeta | null | undefined): HoroscopeMeta | null => {
@@ -229,7 +245,8 @@ export default function DailyHoroscopePage() {
   }, []);
 
   const fetchHoroscope = useCallback(async (selectedPeriod: Period) => {
-    if (!user || !session) return;
+    const live = liveRef.current;
+    if (!user || !live.accessToken) return;
 
     // Cancel any pending poll from a previous request and claim a new id.
     if (pollTimerRef.current) { clearTimeout(pollTimerRef.current); pollTimerRef.current = null; }
@@ -240,7 +257,7 @@ export default function DailyHoroscopePage() {
     const periodValidDate = computeClientValidDate(selectedPeriod);
     const chartScope = activeChart?.id || "default";
     const cacheKey = `horoscope-v3-${selectedPeriod}-${periodValidDate}-${chartScope}`;
-    const dasha: DashaMeta | null = (activeChart?.chart_data as any)?.dasha || null;
+    const dasha: DashaMeta | null = live.dasha;
 
     // Defensive: strip any legacy `u:<uuid>:<sign>` cache-key form that may
     // have leaked into the `sign` field from older edge-function responses
@@ -293,20 +310,26 @@ export default function DailyHoroscopePage() {
     // `u:<userId>:<moonSign>`; only the shared, chart-less rows use the bare
     // sign. Ask for both and prefer the personal one — querying the bare sign
     // alone made this path miss every personalised reading.
-    if (moonSign) {
+    // Guru and standard readings of the same day share a sign key and differ
+    // only in `mode`, so the profile's mode has to pick the row — taking the
+    // first match could show the other mode's reading. If the mode isn't known
+    // yet, skip this shortcut: the server answers a ready row just as well.
+    const wantMode: "guru" | "standard" | null = live.rishiLoading ? null : live.rishiEnabled ? "guru" : "standard";
+    if (moonSign && wantMode) {
       const personalKey = user?.id ? `u:${user.id}:${moonSign}` : null;
       const candidateKeys = personalKey ? [personalKey, moonSign] : [moonSign];
       const { data: dbRows } = await supabase
         .from("daily_horoscopes")
-        .select("sign_name, content, status")
+        .select("sign_name, content, status, mode")
         .in("sign_name", candidateKeys)
         .eq("valid_date", periodValidDate)
         .eq("period", selectedPeriod)
         .eq("language", getCurrentLanguage());
       if (!isLatest()) return;
+      const sameMode = (dbRows ?? []).filter((r: any) => r.mode === wantMode);
       const dbRow =
-        (dbRows ?? []).find((r: any) => personalKey && r.sign_name === personalKey) ??
-        (dbRows ?? [])[0];
+        sameMode.find((r: any) => personalKey && r.sign_name === personalKey) ??
+        sameMode[0];
       if (dbRow?.content && (dbRow as any).status !== "processing" && (dbRow as any).status !== "failed") {
         try {
           const parsed = typeof dbRow.content === "string" ? JSON.parse(dbRow.content) : dbRow.content;
@@ -330,11 +353,20 @@ export default function DailyHoroscopePage() {
     // never match. The 202 response tells us the real key — use it rather than
     // rebuilding it here, which is how the two drifted apart to begin with.
     let serverSignKey: string | null = null;
+    // Likewise the mode (guru/standard) the server chose: it reads it from the
+    // profile, and the row it writes is keyed on it as well as on the sign.
+    let serverMode: string | null = null;
+    // The server answers this call in a couple of seconds (the generation itself
+    // runs in the background), so one that has not come back by now is hung.
+    // Without a limit it leaves the spinner up for as long as the connection lives.
+    const abort = new AbortController();
+    const abortTimer = setTimeout(() => abort.abort(), 45_000);
     try {
       const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-horoscope`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${live.accessToken}` },
         body: JSON.stringify({ local_date: localDate, period: selectedPeriod, chart_id: activeChart?.id, language: getCurrentLanguage() }),
+        signal: abort.signal,
       });
 
       const data = await res.json().catch(() => ({}));
@@ -343,6 +375,7 @@ export default function DailyHoroscopePage() {
       if (res.status === 202 || data?.status === "processing") {
         triggered = true;
         serverSignKey = data?.sign_key ?? null;
+        serverMode = data?.meta?.mode ?? null;
         // fall through to polling below
       } else if (!res.ok) {
         if (!hasCached) {
@@ -373,27 +406,33 @@ export default function DailyHoroscopePage() {
       }
       setLoading(false); setRefreshing(false);
       return;
+    } finally {
+      clearTimeout(abortTimer);
     }
 
     // 4) Poll daily_horoscopes table while job is processing
     if (triggered) {
       const targetSign = serverSignKey || moonSign || "General";
-      let attempts = 0;
-      // Monthly/yearly readings are long; the server may take up to ~150s
-      // (primary model + fallback) before it marks the row ready or failed.
-      const maxAttempts = selectedPeriod === "monthly" || selectedPeriod === "yearly" ? 42 : 20; // ~170s / ~80s
+      // The server bounds one job at 140s and treats a "processing" row older
+      // than 150s as dead, so any shorter window gives up on readings that are
+      // still going to land. A Nepali reading alone takes ~50s; an overloaded
+      // model plus the fallback takes far longer than the 80s this used to allow.
+      const POLL_INTERVAL_MS = 3_000;
+      const deadline = Date.now() + 160_000;
       const poll = async () => {
         if (!isLatest()) return;
-        attempts++;
-        const { data: row } = await supabase
+        // Not .maybeSingle(): Guru and standard readings of the same day share
+        // this key, and two matches make maybeSingle error out — which reads as
+        // "no row yet" and polls until the deadline.
+        const { data: rows } = await supabase
           .from("daily_horoscopes")
-          .select("content, status")
+          .select("content, status, mode")
           .eq("sign_name", targetSign)
           .eq("valid_date", periodValidDate)
           .eq("period", selectedPeriod)
-          .eq("language", getCurrentLanguage())
-          .maybeSingle();
+          .eq("language", getCurrentLanguage());
         if (!isLatest()) return;
+        const row = serverMode ? (rows ?? []).find((r: any) => r.mode === serverMode) : (rows ?? [])[0];
 
         if (row && (row as any).status === "ready" && row.content) {
           try {
@@ -414,7 +453,7 @@ export default function DailyHoroscopePage() {
           return;
         }
 
-        if (attempts >= maxAttempts) {
+        if (Date.now() >= deadline) {
           if (!isLatest()) return;
           if (!hasCached) {
             setFetchError(true);
@@ -423,13 +462,16 @@ export default function DailyHoroscopePage() {
           setLoading(false); setRefreshing(false);
           return;
         }
-        pollTimerRef.current = setTimeout(poll, 4000);
+        pollTimerRef.current = setTimeout(poll, POLL_INTERVAL_MS);
       };
-      pollTimerRef.current = setTimeout(poll, 4000);
+      pollTimerRef.current = setTimeout(poll, POLL_INTERVAL_MS);
     } else if (isLatest()) {
       setLoading(false); setRefreshing(false);
     }
-  }, [user?.id, session?.access_token, moonSign, activeChart?.id, activeChart?.chart_data, metaFromHoroscope]);
+    // Deliberately the ids and the moon sign, not the user/chart/session
+    // objects: those are replaced with equal copies on every tab refocus and
+    // token refresh, and each replacement restarted this whole sequence.
+  }, [user?.id, moonSign, activeChart?.id, metaFromHoroscope]);
 
   useEffect(() => {
     // GC: keep only entries for current valid dates across active chart (both v1 + v2 keys)

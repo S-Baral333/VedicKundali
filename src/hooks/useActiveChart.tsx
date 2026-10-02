@@ -55,15 +55,24 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export function ActiveChartProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth();
+  // Key on the id, not the user object: supabase-js re-emits SIGNED_IN with a
+  // fresh-but-equal user every time the tab regains focus, and reloading the
+  // charts for each one replaced `activeChart` and restarted anything watching it.
+  const userId = user?.id ?? null;
   const [charts, setCharts] = useState<ActiveChartSummary[]>([]);
   const [activeChart, setActiveChartState] = useState<ActiveChartSummary | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  // Which user the current `charts` were fetched for. Between a user appearing
+  // and the fetch starting, `isLoading` alone reads false with `activeChart`
+  // still null — indistinguishable from "this user has no chart".
+  const [loadedFor, setLoadedFor] = useState<string | null>(null);
   const [switching, setSwitching] = useState<SwitchingState>({ phase: "idle", targetName: null });
 
   const load = useCallback(async () => {
-    if (!user) {
+    if (!userId) {
       setCharts([]);
       setActiveChartState(null);
+      setLoadedFor(null);
       setIsLoading(false);
       return;
     }
@@ -71,7 +80,7 @@ export function ActiveChartProvider({ children }: { children: ReactNode }) {
     const { data } = await supabase
       .from("birth_charts")
       .select("id, full_name, date_of_birth, birthplace, is_primary, chart_data, created_at")
-      .eq("user_id", user.id)
+      .eq("user_id", userId)
       .order("created_at", { ascending: false });
 
     const list = (data as ActiveChartSummary[]) || [];
@@ -83,8 +92,9 @@ export function ActiveChartProvider({ children }: { children: ReactNode }) {
     const fromDb = list.find((c) => c.is_primary);
     const fallback = list[list.length - 1] || null;
     setActiveChartState(fromHint || fromDb || fallback);
+    setLoadedFor(userId);
     setIsLoading(false);
-  }, [user]);
+  }, [userId]);
 
   useEffect(() => { load(); }, [load]);
 
@@ -129,7 +139,7 @@ export function ActiveChartProvider({ children }: { children: ReactNode }) {
   }, [charts, user, activeChart, load]);
 
   return (
-    <ActiveChartContext.Provider value={{ charts, activeChart, isLoading, switching, setActiveChart, refresh: load }}>
+    <ActiveChartContext.Provider value={{ charts, activeChart, isLoading: isLoading || (!!userId && loadedFor !== userId), switching, setActiveChart, refresh: load }}>
       {children}
     </ActiveChartContext.Provider>
   );
