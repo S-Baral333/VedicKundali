@@ -40,7 +40,12 @@ export default function LanguageSelector({ variant = "grid", onChange }: Languag
             role="radio"
             aria-checked={active}
             onClick={() => handle(lang.code)}
-            className="group relative flex items-center gap-3 rounded-2xl border px-3 py-3 text-left transition-all duration-300"
+            // Tight gaps and a 32px glyph on purpose. At three columns the chip
+            // is ~139px, and the glyph, both gaps and the tick are all fixed
+            // width, so whatever they leave is the label's entire budget. At
+            // gap-3 with a 36px glyph that budget was 39px, which clipped
+            // "English" (45px) and "తెలుగు" (41px); this leaves 55px.
+            className="group relative flex items-center gap-2 rounded-2xl border px-2.5 py-3 text-left transition-all duration-300"
             style={{
               background: active ? "hsl(var(--gold) / 0.08)" : "hsl(var(--ink-2) / 0.4)",
               borderColor: active ? "hsl(var(--gold) / 0.5)" : "hsl(var(--glass-border-soft))",
@@ -48,7 +53,7 @@ export default function LanguageSelector({ variant = "grid", onChange }: Languag
             }}
           >
             <span
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border text-base"
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-base"
               style={{
                 borderColor: "hsl(var(--gold) / 0.3)",
                 color: "hsl(var(--gold))",
@@ -76,9 +81,14 @@ export default function LanguageSelector({ variant = "grid", onChange }: Languag
                 {lang.name}
               </span>
             </span>
-            {active && (
-              <Check className="h-4 w-4 shrink-0" style={{ color: "hsl(var(--gold))" }} />
-            )}
+            {/* Always rendered so the text column keeps its width: hiding the
+                tick instead of unmounting it stops the label truncating when
+                an option becomes active. aria-checked above carries the state. */}
+            <Check
+              className="h-4 w-4 shrink-0"
+              style={{ color: "hsl(var(--gold))", opacity: active ? 1 : 0 }}
+              aria-hidden
+            />
           </button>
         );
       })}
