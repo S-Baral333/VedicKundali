@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "@/hooks/use-toast";
 import i18n from "@/i18n/config";
+import { ensureChartFromProfile } from "@/lib/chartFromProfile";
 
 export interface ActiveChartSummary {
   id: string;
@@ -97,6 +98,21 @@ export function ActiveChartProvider({ children }: { children: ReactNode }) {
   }, [userId]);
 
   useEffect(() => { load(); }, [load]);
+
+  // A signed-in user with no charts gets their first one cast from the birth
+  // details onboarding saved, so they never retype them. Runs again after
+  // every load, so onboarding only has to call refresh() once it has saved.
+  // A profile without full birth details is simply skipped.
+  const meta = user?.user_metadata as { full_name?: string; name?: string } | undefined;
+  const fallbackName = meta?.full_name || meta?.name || "";
+  useEffect(() => {
+    if (!userId || loadedFor !== userId || isLoading || charts.length > 0) return;
+    let cancelled = false;
+    ensureChartFromProfile(userId, fallbackName).then((outcome) => {
+      if (!cancelled && outcome === "created") load();
+    });
+    return () => { cancelled = true; };
+  }, [userId, loadedFor, isLoading, charts, fallbackName, load]);
 
   const setActiveChart = useCallback(async (chartId: string) => {
     const target = charts.find((c) => c.id === chartId);

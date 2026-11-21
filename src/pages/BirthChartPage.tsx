@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import { CHART_PROFILE_COLUMNS, type ChartProfile } from "@/lib/chartFromProfile";
 import { useTranslation } from "react-i18next";
 import { planetLabel } from "@/lib/panchanga-i18n";
 import { Navigate, useSearchParams } from "react-router-dom";
@@ -339,8 +340,12 @@ function GenerationStepper({ step }: { step: string }) {
  * Add Person Form (in Sheet)
  * ═══════════════════════════════════════════════════════ */
 function AddPersonSheet({
-  open, onOpenChange, onCreated, sessionToken,
-}: { open: boolean; onOpenChange: (o: boolean) => void; onCreated: (chart: BirthChart) => void; sessionToken?: string }) {
+  open, onOpenChange, onCreated, sessionToken, prefillUserId,
+}: {
+  open: boolean; onOpenChange: (o: boolean) => void; onCreated: (chart: BirthChart) => void; sessionToken?: string;
+  /** Set when the person has no chart yet: the form starts from the birth details their profile already holds. */
+  prefillUserId?: string;
+}) {
   const { t } = useTranslation("pages");
   const { toast } = useToast();
   // generate-chart enforces the per-tier saved-chart limit, so adding a person
@@ -363,6 +368,40 @@ function AddPersonSheet({
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationStep, setGenerationStep] = useState("");
 
+  // How precise the prefilled time is ("night" → its midpoint). Sent on only
+  // while the time is left as prefilled; a typed time is an exact one.
+  const [prefillTime, setPrefillTime] = useState<{ time: string; accuracy: string | null; period: string | null } | null>(null);
+
+  // Their own first chart: start from what onboarding saved instead of a blank
+  // form, so only the missing pieces need typing. Never overwrites typing.
+  useEffect(() => {
+    if (!open || !prefillUserId) return;
+    let cancelled = false;
+    supabase
+      .from("profiles")
+      .select(CHART_PROFILE_COLUMNS)
+      .eq("user_id", prefillUserId)
+      .maybeSingle()
+      .then(({ data }) => {
+        const p = data as ChartProfile | null;
+        if (cancelled || !p) return;
+        setFullName((v) => v || p.full_name || "");
+        setDateOfBirth((v) => v || p.date_of_birth || "");
+        if (p.birth_time) {
+          const time = p.birth_time.slice(0, 5);
+          setBirthTime((v) => v || time);
+          setPrefillTime({ time, accuracy: p.birth_time_accuracy, period: p.birth_time_period });
+        }
+        if (p.birthplace) {
+          setBirthplace((v) => v || p.birthplace || "");
+          if (p.latitude != null && p.longitude != null) {
+            setSelectedCoords((c) => c ?? { lat: p.latitude as number, lng: p.longitude as number });
+          }
+        }
+      });
+    return () => { cancelled = true; };
+  }, [open, prefillUserId]);
+
   const tzLabel = (m: number, fallback: string) =>
     TIMEZONE_OFFSETS.some(o => o.minutes === m) ? t("pages:ui.birthChartPage.tzOffset." + (m < 0 ? "m" : "p") + Math.abs(m), fallback) : fallback;
 
@@ -370,7 +409,7 @@ function AddPersonSheet({
     setFullName(""); setDateOfBirth(""); setBirthTime(""); setBirthplace("");
     setBsYear(null); setBsMonth(null); setBsDay(null);
     setTimezoneOverride(null); setTzOpen(false);
-    setSelectedCoords(null); setLocationResults([]);
+    setSelectedCoords(null); setLocationResults([]); setPrefillTime(null);
   };
 
   const searchLocation = (query: string) => {
@@ -426,6 +465,10 @@ function AddPersonSheet({
         birthplace, latitude: coords.lat, longitude: coords.lng,
       };
       if (timezoneOverride !== null) body.utc_offset_minutes = timezoneOverride;
+      if (prefillTime && prefillTime.time === birthTime) {
+        if (prefillTime.accuracy) body.birth_time_accuracy = prefillTime.accuracy;
+        if (prefillTime.period) body.birth_time_period = prefillTime.period;
+      }
       const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-chart`, {
         method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${sessionToken}` },
         body: JSON.stringify(body),
@@ -1154,6 +1197,7 @@ export default function BirthChartPage() {
         open={addOpen}
         onOpenChange={setAddOpen}
         sessionToken={session?.access_token}
+        prefillUserId={charts.length === 0 ? user?.id : undefined}
         onCreated={(c) => {
           setCharts(p => [c, ...p]);
           setSelectedChart(c);

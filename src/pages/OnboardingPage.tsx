@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { useActiveChart } from "@/hooks/useActiveChart";
 import { supabase } from "@/integrations/supabase/client";
 import { LANGUAGE_STORAGE_KEY } from "@/i18n/languages";
 import { buildProfileUpdate, type OnboardingResult } from "@/lib/onboarding-profile";
@@ -13,6 +14,7 @@ import DwaraFlow from "@/components/onboarding/dwara/DwaraFlow";
  */
 export default function OnboardingPage() {
   const { user, isLoading } = useAuth();
+  const { refresh: refreshCharts } = useActiveChart();
   const navigate = useNavigate();
 
   const [languageChosen] = useState<boolean>(() => {
@@ -36,8 +38,12 @@ export default function OnboardingPage() {
       // The dashboard keeps a per-tab cache of the profile. Anything cached
       // before this save describes someone who hasn't onboarded yet.
       try { sessionStorage.removeItem("dashboard-data"); } catch { /* storage blocked */ }
+      // Reloading the charts lets the provider see "no chart yet" against the
+      // profile just saved and cast the first one while the arrival screen
+      // plays. Not awaited: the person shouldn't wait on it to cross over.
+      void refreshCharts();
     },
-    [user]
+    [user, refreshCharts]
   );
 
   // Someone who has already finished onboarding never sees it again, however
