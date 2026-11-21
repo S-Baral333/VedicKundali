@@ -7,7 +7,7 @@ import { LEGAL_CONTACTS } from "@/lib/legal";
 const PRODUCT_LINKS = [
   { key: "birthChart", label: "Birth Chart", to: "/chart", icon: Sparkles },
   { key: "todaysHoroscope", label: "Today's Horoscope", to: "/horoscope", icon: CalendarDays },
-  { key: "askGuru", label: "Ask the Guru", to: "/ask", icon: MessageCircleQuestion },
+  { key: "askGuru", label: "Ask the Rishi Guru", to: "/ask", icon: MessageCircleQuestion },
   { key: "compatibility", label: "Compatibility", to: "/compatibility", icon: Heart },
   { key: "dreamInterpretation", label: "Dream Interpretation", to: "/dreams", icon: BookOpen },
 ];

@@ -186,7 +186,7 @@ export default function UserDetailSheet({
               <section>
                 <h3 className="text-xs uppercase tracking-wider text-muted-foreground mb-2">Usage</h3>
                 <Row label="Birth charts">{d.totals.birth_charts ?? "—"}</Row>
-                <Row label="Oracle readings">{d.totals.oracle_readings ?? "—"}</Row>
+                <Row label="Rishi Guru questions">{d.totals.oracle_readings ?? "—"}</Row>
                 <Row label="Dream interpretations">{d.totals.dream_interpretations ?? "—"}</Row>
                 <Row label="Compatibility reports">{d.totals.compatibility_reports ?? "—"}</Row>
                 <div className="mt-2 text-xs text-muted-foreground">This month:</div>

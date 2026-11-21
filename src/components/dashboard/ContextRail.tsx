@@ -7,7 +7,7 @@ interface ContextRailProps {
 }
 
 const QUICK = [
-  { to: "/oracle", icon: MessageCircleQuestion, label: "Ask the Oracle", labelKey: "ui.contextRail.askOracle" },
+  { to: "/ask", icon: MessageCircleQuestion, label: "Ask the Rishi Guru", labelKey: "ui.contextRail.askOracle" },
   { to: "/dreams", icon: Moon, label: "Interpret a Dream", labelKey: "ui.contextRail.interpretDream" },
   { to: "/muhurta", icon: Calendar, label: "Find Auspicious Time", labelKey: "ui.contextRail.findAuspiciousTime" },
   { to: "/compatibility", icon: Heart, label: "Check Compatibility", labelKey: "ui.contextRail.checkCompatibility" },

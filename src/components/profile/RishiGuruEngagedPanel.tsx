@@ -35,7 +35,7 @@ interface ChartHighlights {
 }
 
 const CONSUMERS = [
-  { key: "oracle", label: "Oracle" },
+  { key: "oracle", label: "Rishi Guru" },
   { key: "dailyHoroscope", label: "Daily Horoscope" },
   { key: "reading", label: "Reading" },
   { key: "predictions", label: "Predictions" },

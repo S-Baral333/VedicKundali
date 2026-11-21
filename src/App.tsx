@@ -43,7 +43,6 @@ import BillingPage from "./pages/BillingPage";
 import HoroscopePreview from "./pages/preview/HoroscopePreview";
 import DreamPreview from "./pages/preview/DreamPreview";
 import ChartPreview from "./pages/preview/ChartPreview";
-import OraclePreview from "./pages/preview/OraclePreview";
 import DwaraPreview from "./pages/preview/DwaraPreview";
 import RouteAwareUniverseBackground from "./components/RouteAwareUniverseBackground";
 import PWAUpdater from "./components/PWAUpdater";
@@ -79,7 +78,10 @@ const App = () => (
               <Route path="/preview/horoscope" element={<HoroscopePreview />} />
               <Route path="/preview/dream" element={<DreamPreview />} />
               <Route path="/preview/chart" element={<ChartPreview />} />
-              <Route path="/preview/oracle" element={<OraclePreview />} />
+              {/* The Guru lives at /ask. Old links to the retired oracle pages land there
+                  (signed-out visitors are sent to sign in first). */}
+              <Route path="/preview/oracle" element={<Navigate to="/ask" replace />} />
+              <Route path="/oracle" element={<Navigate to="/ask" replace />} />
               <Route path="/onboarding" element={<ProtectedRoute><OnboardingPage /></ProtectedRoute>} />
               {import.meta.env.DEV && <Route path="/preview/onboarding" element={<DwaraPreview />} />}
               {/* User pages wrapped in UserLayout */}

@@ -142,7 +142,7 @@ const VOICE_DEMOS = [
 ];
 
 const CONSUMERS = [
-  { name: "generate-decision", label: "Oracle", phase: 4 },
+  { name: "generate-decision", label: "Rishi Guru", phase: 4 },
   { name: "generate-reading", label: "Reading", phase: 5 },
   { name: "generate-predictions", label: "Predictions", phase: 5 },
   { name: "generate-timeline", label: "Timeline", phase: 5 },

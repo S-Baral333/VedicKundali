@@ -65,7 +65,7 @@ export default function HeroSection() {
         </div>
 
         <div className="glass-card-premium rounded-2xl p-6 inline-flex flex-col sm:flex-row gap-4 justify-center mb-6">
-          <Link to="/preview/oracle">
+          <Link to="/ask">
             <Button size="lg" className="gap-2 text-base px-8 border-0" style={{ background: 'linear-gradient(135deg, hsl(var(--gold)), hsl(var(--gold-dim)))', color: 'hsl(var(--ink))' }}>
               <Star className="h-4 w-4" />
               {t("pages:ui.heroSection.ctaReading", "Get Your Free Reading")}

@@ -1117,8 +1117,8 @@ serve(async (req) => {
         "ai_chat",
         oracleUsed,
         access.tier === "darshana"
-          ? `You've used your free Oracle questions (${access.limit("ai_chat")}/month). Upgrade for more.`
-          : "You've reached your Oracle question limit for this month.",
+          ? `You've used your free Rishi Guru questions (${access.limit("ai_chat")}/month). Upgrade for more.`
+          : "You've reached your Rishi Guru question limit for this month.",
       );
     }
 

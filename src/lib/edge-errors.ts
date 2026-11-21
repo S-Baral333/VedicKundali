@@ -3,7 +3,7 @@
 // The functions answer a denial with both a machine code and a sentence:
 //
 //   { error: "quota_reached",
-//     message: "You've used your free Oracle questions (3/month). Upgrade for more.",
+//     message: "You've used your free Rishi Guru questions (3/month). Upgrade for more.",
 //     feature: "ai_chat", upgrade_required: true, used: 3, limit: 3 }
 //
 // Every call site used to throw `err.error`, so the moment the quotas actually

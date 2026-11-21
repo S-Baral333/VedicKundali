@@ -27,7 +27,7 @@ export default function FinalCTA() {
           <p className="mb-8" style={{ color: 'hsl(35 12% 55%)' }}>
             {t("pages:ui.finalCTA.subtitle", "Discover what the stars say about your future.")}
           </p>
-          <Link to="/preview/oracle">
+          <Link to="/ask">
             <Button size="lg" className="gap-2 text-base px-10 border-0" style={{ background: 'linear-gradient(135deg, hsl(38 78% 55%), hsl(36 50% 45%))', color: 'hsl(30 15% 6%)' }}>
               <Star className="h-4 w-4" />
               {t("pages:ui.finalCTA.cta", "Get Your Free Guru Reading")}

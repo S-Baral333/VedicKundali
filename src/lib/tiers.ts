@@ -253,7 +253,7 @@ export const FEATURE_COPY: Record<FeatureKey, { name: string; description: strin
   client_dashboard:   { name: "Client Dashboard",        description: "Manage charts for multiple clients in one place." },
   batch_charts:       { name: "Batch Chart Generation",  description: "Generate charts in bulk from a CSV." },
   ephemeris:          { name: "Ephemeris Lookup",        description: "Full Panchangam and planetary positions for any moment." },
-  ai_chat:            { name: "Guru Questions",          description: "Ask the Oracle anything." },
+  ai_chat:            { name: "Guru Questions",          description: "Ask the Rishi Guru anything." },
   ai_reading:         { name: "Full Vedic Reading",      description: "Complete narrative reading of your chart." },
   dream:              { name: "Dream Interpretations",   description: "Vedic Swapna Shastra dream analysis." },
   pdf_download:       { name: "Sacred Kundali PDF",      description: "10-page parchment scripture with mantras and remedies." },
