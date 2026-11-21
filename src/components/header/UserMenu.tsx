@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ChevronDown, User as UserIcon, CreditCard, LogOut, Smartphone } from "lucide-react";
+import { ChevronDown, User as UserIcon, CreditCard, LogOut, Smartphone, ShieldCheck } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/useAuth";
 import { useSubscription } from "@/hooks/useSubscription";
@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 
 export default function UserMenu() {
   const { t } = useTranslation();
-  const { user, signOut } = useAuth();
+  const { user, signOut, isAdmin } = useAuth();
   const { tier, usage, config } = useSubscription();
   const { isStandalone } = useStandaloneMode();
 
@@ -119,6 +119,14 @@ export default function UserMenu() {
             <span className="text-sm" style={{ color: "hsl(var(--text-primary))" }}>{t("pages:ui.userMenu.billing", "Billing & usage")}</span>
           </Link>
         </DropdownMenuItem>
+        {isAdmin && (
+          <DropdownMenuItem asChild className="cursor-pointer focus:bg-[hsl(var(--gold)/0.10)] rounded-lg">
+            <Link to="/admin" className="flex items-center gap-2 py-2">
+              <ShieldCheck className="h-3.5 w-3.5" style={{ color: "hsl(var(--gold-light))" }} />
+              <span className="text-sm" style={{ color: "hsl(var(--text-primary))" }}>{t("pages:ui.userMenu.admin", "Admin panel")}</span>
+            </Link>
+          </DropdownMenuItem>
+        )}
         <DropdownMenuItem asChild className="cursor-pointer focus:bg-[hsl(var(--gold)/0.10)] rounded-lg">
           <Link to="/pricing" className="flex items-center gap-2 py-2">
             <span className="text-sm pl-5" style={{ color: "hsl(var(--text-muted))" }}>{t("pages:ui.userMenu.viewPlans", "View plans")}</span>

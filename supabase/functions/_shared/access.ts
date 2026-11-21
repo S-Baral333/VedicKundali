@@ -3,7 +3,7 @@
 // One place that answers "what is this caller allowed to do", so gates cannot
 // drift between functions. Resolves two things together:
 //
-//   1. Super admin — the `admin` role in public.user_roles. Bypasses every tier
+//   1. Admin — the `admin` or `superadmin` role in public.user_roles. Bypasses every tier
 //      gate and quota. The role lives in the database, never a hardcoded email
 //      or a client-supplied flag, so the caller cannot spoof it.
 //   2. Subscription tier — normalized from profiles.subscription_tier, which
@@ -67,12 +67,12 @@ export async function resolveAccess(
 
   if (userId) {
     const [roleRes, profileRes] = await Promise.allSettled([
-      client.from("user_roles").select("role").eq("user_id", userId).eq("role", "admin").maybeSingle(),
+      client.from("user_roles").select("role").eq("user_id", userId).in("role", ["admin", "superadmin"]).limit(1),
       client.from("profiles").select("subscription_tier").eq("user_id", userId).maybeSingle(),
     ]);
 
     if (roleRes.status === "fulfilled" && !roleRes.value.error) {
-      isAdmin = !!roleRes.value.data;
+      isAdmin = (roleRes.value.data ?? []).length > 0;
     } else {
       console.error("[access] role lookup failed, denying admin bypass", roleRes);
     }

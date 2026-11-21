@@ -6,8 +6,14 @@ import type { User, Session } from "@supabase/supabase-js";
 interface AuthContextType {
   user: User | null;
   session: Session | null;
+  /** `admin` or `superadmin` role. Unlocks /admin and bypasses plan limits. */
   isAdmin: boolean;
+  /** `superadmin` role. Unlocks user management and the audit log. */
+  isSuperadmin: boolean;
+  /** True until the session is known. */
   isLoading: boolean;
+  /** True until the signed-in user's roles are known (admin screens wait on this). */
+  rolesLoading: boolean;
   /**
    * Two doors in, neither with a password: Google, or a six-digit code sent to
    * an email address. There is still nothing to forget, leak or reset.
@@ -28,16 +34,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isSuperadmin, setIsSuperadmin] = useState(false);
+  const [sessionLoading, setSessionLoading] = useState(true);
+  // Which user the role flags belong to, so /admin never renders "Access
+  // denied" for an admin whose roles are still on their way. A failed lookup
+  // still settles (as no roles), so the admin screen never spins forever.
+  const [rolesFor, setRolesFor] = useState<string | null>(null);
 
+  // Display only: the server re-checks roles on every admin request (RLS and
+  // the admin-users edge function), so these flags grant nothing by themselves.
   const checkAdmin = async (userId: string) => {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from("user_roles")
       .select("role")
       .eq("user_id", userId)
-      .eq("role", "admin")
-      .maybeSingle();
-    setIsAdmin(!!data);
+      .in("role", ["admin", "superadmin"]);
+    if (error) console.error("[auth] role lookup failed", error);
+    const roles = new Set((data ?? []).map((r: { role: string }) => r.role));
+    setIsSuperadmin(roles.has("superadmin"));
+    setIsAdmin(roles.has("admin") || roles.has("superadmin"));
+    setRolesFor(userId);
   };
 
   useEffect(() => {
@@ -49,8 +65,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           checkAdmin(session.user.id);
         } else {
           setIsAdmin(false);
+          setIsSuperadmin(false);
+          setRolesFor(null);
         }
-        setIsLoading(false);
+        setSessionLoading(false);
       }
     );
 
@@ -60,7 +78,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (session?.user) {
         checkAdmin(session.user.id);
       }
-      setIsLoading(false);
+      setSessionLoading(false);
     });
 
     return () => subscription.unsubscribe();
@@ -140,6 +158,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error: error as Error | null };
   };
 
+  const rolesLoading = sessionLoading || (!!user && rolesFor !== user.id);
+
   const signOut = async () => {
     sessionStorage.clear();
     await supabase.auth.signOut();
@@ -147,7 +167,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, session, isAdmin, isLoading, signInWithGoogle, signInWithGoogleIdToken, sendEmailCode, verifyEmailCode, signOut }}
+      value={{ user, session, isAdmin, isSuperadmin, isLoading: sessionLoading, rolesLoading, signInWithGoogle, signInWithGoogleIdToken, sendEmailCode, verifyEmailCode, signOut }}
     >
       {children}
     </AuthContext.Provider>

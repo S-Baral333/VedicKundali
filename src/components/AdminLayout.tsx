@@ -27,6 +27,8 @@ import {
   Palette,
   Flame,
   LogOut,
+  ScrollText,
+  ArrowLeft,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -45,10 +47,10 @@ const contentItems = [
 ];
 
 export default function AdminLayout() {
-  const { user, isAdmin, isLoading, signOut } = useAuth();
+  const { user, isAdmin, isSuperadmin, isLoading, rolesLoading, signOut } = useAuth();
   const location = useLocation();
 
-  if (isLoading) {
+  if (isLoading || (user && rolesLoading)) {
     return (
       <div className="dark min-h-screen flex items-center justify-center bg-background">
         <div className="animate-pulse text-primary text-lg">Loading...</div>
@@ -90,7 +92,7 @@ export default function AdminLayout() {
               </SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
-                  {navItems.map((item) => (
+                  {[...navItems, ...(isSuperadmin ? [{ title: "Audit log", icon: ScrollText, href: "/admin/audit" }] : [])].map((item) => (
                     <SidebarMenuItem key={item.href}>
                       <SidebarMenuButton asChild isActive={location.pathname === item.href}>
                         <Link to={item.href}>
@@ -170,9 +172,15 @@ export default function AdminLayout() {
           </SidebarContent>
 
           <SidebarFooter className="p-4">
-            <div className="text-xs text-muted-foreground truncate mb-2">
+            <div className="text-xs text-muted-foreground truncate">
               {user.email}
             </div>
+            <div className="text-[10px] uppercase tracking-wider text-muted-foreground/70 mb-2">
+              {isSuperadmin ? "Superadmin" : "Admin"}
+            </div>
+            <Button asChild variant="ghost" size="sm" className="w-full gap-2 mb-1">
+              <Link to="/dashboard"><ArrowLeft className="w-3 h-3" /> Back to app</Link>
+            </Button>
             <Button variant="outline" size="sm" onClick={signOut} className="w-full gap-2">
               <LogOut className="w-3 h-3" />
               Sign Out

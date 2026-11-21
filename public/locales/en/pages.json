@@ -846,7 +846,8 @@
       "signOut": "Sign out",
       "privacy": "Privacy Policy",
       "terms": "Terms of Service",
-      "refunds": "Refund Policy"
+      "refunds": "Refund Policy",
+      "admin": "Admin panel"
     },
     "primaryNav": {
       "match": "Kundali Milan — match your charts",
@@ -875,7 +876,8 @@
       "viewProfile": "View profile",
       "billing": "Billing & usage",
       "viewPlans": "View plans",
-      "signOut": "Sign out"
+      "signOut": "Sign out",
+      "admin": "Admin panel"
     },
     "userLayout": {
       "notificationsUnread": "Notifications ({{count}} unread)",

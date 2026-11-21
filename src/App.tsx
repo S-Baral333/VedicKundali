@@ -17,6 +17,7 @@ import YogasPage from "./pages/admin/YogasPage";
 import AnalyticsPage from "./pages/admin/AnalyticsPage";
 import AppearancePage from "./pages/admin/AppearancePage";
 import AiEnginePage from "./pages/admin/AiEnginePage";
+import AuditLogPage from "./pages/admin/AuditLogPage";
 import NotFound from "./pages/NotFound";
 import Index from "./pages/Index";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -106,6 +107,7 @@ const App = () => (
                 <Route path="analytics" element={<AnalyticsPage />} />
                 <Route path="appearance" element={<AppearancePage />} />
                 <Route path="ai-engine" element={<AiEnginePage />} />
+                <Route path="audit" element={<AuditLogPage />} />
               </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>

@@ -12,6 +12,7 @@ import {
   Shield,
   FileText,
   Receipt,
+  ShieldCheck,
 } from "lucide-react";
 import {
   Sheet,
@@ -80,7 +81,7 @@ export default function MobileHeaderDrawer({
   onOpenNotifications,
 }: MobileHeaderDrawerProps) {
   const { t } = useTranslation();
-  const { user, signOut } = useAuth();
+  const { user, signOut, isAdmin } = useAuth();
   const { tier } = useSubscription();
 
   const email = user?.email ?? "";
@@ -396,6 +397,9 @@ export default function MobileHeaderDrawer({
                 />
                 <Row icon={UserIcon} label={t("pages:ui.mobileHeaderDrawer.profileSettings", "Profile & settings")} to="/profile" />
                 <Row icon={CreditCard} label={t("pages:ui.mobileHeaderDrawer.subscription", "Subscription")} to="/pricing" />
+                {isAdmin && (
+                  <Row icon={ShieldCheck} label={t("pages:ui.mobileHeaderDrawer.admin", "Admin panel")} to="/admin" />
+                )}
                 {!isStandalone && (
                   <Row icon={Download} label={t("pages:ui.mobileHeaderDrawer.installApp", "Install app")} to="/install" />
                 )}

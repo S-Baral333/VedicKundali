@@ -1039,7 +1039,7 @@ export type Database = {
       publish_prompt_layer: { Args: { p_id: string }; Returns: undefined }
     }
     Enums: {
-      app_role: "admin" | "user"
+      app_role: "admin" | "user" | "superadmin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1170,7 +1170,7 @@ export const Constants = {
   },
   public: {
     Enums: {
-      app_role: ["admin", "user"],
+      app_role: ["admin", "user", "superadmin"],
     },
   },
 } as const
