@@ -33,6 +33,21 @@ export default function AuthCallback() {
       return;
     }
 
+    // One-tap sign-in from the code email: the "Sign in now" button links here
+    // with #token_hash=…&type=email. It sits in the fragment so it never reaches
+    // a server log, and is verified client-side, so a mail scanner that
+    // prefetches the link can't spend it. Not tied to the browser that asked
+    // for the code (unlike a PKCE magic link), so opening it from a phone's
+    // mail app works. Success lands in onAuthStateChange below.
+    const tokenHash = params.get("token_hash");
+    if (tokenHash) {
+      const type = params.get("type") === "signup" ? "signup" : "email";
+      window.history.replaceState(null, "", window.location.pathname);
+      supabase.auth.verifyOtp({ token_hash: tokenHash, type }).then(({ error }) => {
+        if (error && !settled.current) setFailed(error.message);
+      });
+    }
+
     const route = async (userId: string) => {
       if (settled.current) return;
       settled.current = true;

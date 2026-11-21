@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+<title>Welcome to Gurukundali</title>
+</head>
+<body style="margin:0;padding:0;background:#F3EEE3;">
+<!-- Inbox preview line. Kept plain on purpose: spam filters weigh this text. -->
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;">Welcome to Gurukundali. Tap "Create my account" or enter {{ .Token }} to finish signing up.&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F3EEE3;">
+  <tr><td align="center" style="padding:28px 12px;">
+
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;border-collapse:separate;">
+
+      <!-- Brand header -->
+      <tr><td align="center" bgcolor="#100D22" style="background:#100D22;background-image:linear-gradient(180deg,#1C1638 0%,#0B0918 100%);border-radius:16px 16px 0 0;padding:34px 24px 28px;">
+        <a href="https://www.gurukundali.com" style="text-decoration:none;">
+          <img src="https://www.gurukundali.com/email/logo-mark.png" width="76" height="76" alt="Gurukundali" style="display:block;margin:0 auto;border:0;outline:none;width:76px;height:76px;">
+        </a>
+        <div style="font-family:Georgia,'Times New Roman',serif;font-size:24px;font-weight:bold;letter-spacing:7px;color:#E8B03A;padding-top:16px;">GURUKUNDALI</div>
+        <div style="font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:14px;color:#CFC4AA;padding-top:6px;">Your stars. Your story. Your dharma.</div>
+        <div style="font-family:Georgia,serif;font-size:11px;letter-spacing:10px;color:#B8862A;padding-top:14px;">&#10022; &#10022; &#10022;</div>
+      </td></tr>
+      <tr><td style="height:3px;background:#C8901A;background-image:linear-gradient(90deg,#8A5A00,#E8B03A,#8A5A00);font-size:1px;line-height:3px;">&nbsp;</td></tr>
+
+      <!-- Body -->
+      <tr><td bgcolor="#FFFDF8" style="background:#FFFDF8;border-left:1px solid #E7DECB;border-right:1px solid #E7DECB;padding:34px 36px 6px;font-family:Helvetica,Arial,sans-serif;">
+        <h1 style="margin:0;font-family:Georgia,'Times New Roman',serif;font-size:26px;line-height:34px;font-weight:normal;color:#1F1A14;">Welcome to Gurukundali</h1>
+        <p style="margin:14px 0 0;font-size:15px;line-height:24px;color:#4A443B;">Namaste,</p>
+        <p style="margin:6px 0 0;font-size:15px;line-height:24px;color:#4A443B;">Thank you for joining. Tap the button to finish creating your account — your birth chart is one step away.</p>
+      </td></tr>
+
+      <!-- One-tap sign-in -->
+      <tr><td align="center" bgcolor="#FFFDF8" style="background:#FFFDF8;border-left:1px solid #E7DECB;border-right:1px solid #E7DECB;padding:24px 36px 4px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+          <td align="center" bgcolor="#9A6A0A" style="border-radius:999px;background:#9A6A0A;background-image:linear-gradient(180deg,#B57D12,#8A5A00);">
+            <a href="https://www.gurukundali.com/auth/callback#token_hash={{ .TokenHash }}&type=email" style="display:inline-block;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:bold;color:#FFFFFF;text-decoration:none;padding:14px 40px;border-radius:999px;">Create my account</a>
+          </td>
+        </tr></table>
+      </td></tr>
+
+      <!-- Code fallback -->
+      <tr><td align="center" bgcolor="#FFFDF8" style="background:#FFFDF8;border-left:1px solid #E7DECB;border-right:1px solid #E7DECB;padding:26px 36px 6px;font-family:Helvetica,Arial,sans-serif;">
+        <div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#8C8272;">Or enter this code</div>
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-top:12px;"><tr>
+          <td align="center" bgcolor="#FBF4E2" style="background:#FBF4E2;border:1px dashed #C8901A;border-radius:12px;padding:14px 26px;">
+            <span style="font-family:'Courier New',Courier,monospace;font-size:34px;font-weight:bold;letter-spacing:8px;color:#1F1A14;-webkit-user-select:all;user-select:all;">{{ .Token }}</span>
+          </td>
+        </tr></table>
+        <div style="font-size:12px;line-height:18px;color:#8C8272;padding-top:10px;">Tap the code to select it, then copy. It works once and expires soon.</div>
+      </td></tr>
+
+      <!-- Security note -->
+      <tr><td bgcolor="#FFFDF8" style="background:#FFFDF8;border-left:1px solid #E7DECB;border-right:1px solid #E7DECB;padding:26px 36px 32px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+          <td bgcolor="#F6F1E6" style="background:#F6F1E6;border-left:3px solid #C8901A;border-radius:6px;padding:14px 16px;font-family:Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;color:#5A5348;">
+            <strong style="color:#3A342B;">Didn't request this?</strong> You can safely ignore this email. No account is created without this code, and Gurukundali will never ask you for it.
+          </td>
+        </tr></table>
+      </td></tr>
+
+      <!-- Trust strip -->
+      <tr><td align="center" bgcolor="#100D22" style="background:#100D22;border-radius:0 0 16px 16px;padding:16px 20px;font-family:Helvetica,Arial,sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#C9A55A;">
+        Sidereal zodiac &nbsp;&#10022;&nbsp; Vedic tradition &nbsp;&#10022;&nbsp; Private &amp; secure
+      </td></tr>
+
+      <!-- Footer: who sent this, why, and how to reach us -->
+      <tr><td align="center" style="padding:24px 20px 0;font-family:Helvetica,Arial,sans-serif;font-size:12px;line-height:20px;color:#7D7466;">
+        Need help? Write to <a href="mailto:support@gurukundali.com" style="color:#8A5A00;text-decoration:underline;">support@gurukundali.com</a><br>
+        <a href="https://www.gurukundali.com" style="color:#8A5A00;text-decoration:none;">gurukundali.com</a> &nbsp;&middot;&nbsp;
+        <a href="https://www.gurukundali.com/privacy" style="color:#8A5A00;text-decoration:none;">Privacy</a> &nbsp;&middot;&nbsp;
+        <a href="https://www.gurukundali.com/terms" style="color:#8A5A00;text-decoration:none;">Terms</a>
+      </td></tr>
+      <tr><td align="center" style="padding:14px 20px 8px;font-family:Helvetica,Arial,sans-serif;font-size:11px;line-height:17px;color:#A0978A;">
+        This email was sent to {{ .Email }} because an account was started with this address on gurukundali.com. It's an account security message, so it's sent even if you've opted out of other emails.<br><br>
+        Gurukundali is operated by Aayush Timalsina (sole trader), ABN 97 851 594 042, Victoria, Australia.
+      </td></tr>
+
+    </table>
+
+  </td></tr>
+</table>
+</body>
+</html>

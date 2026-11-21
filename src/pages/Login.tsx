@@ -1,22 +1,44 @@
 import { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import KundaliMark from "@/components/KundaliMark";
 import GoogleMark from "@/components/GoogleMark";
 import EmailCodeForm from "@/components/auth/EmailCodeForm";
+import GoogleSignInButton, { googleIdentityEnabled } from "@/components/auth/GoogleSignInButton";
 import mandalaUrl from "@/assets/kundali-mark-sacred.svg";
 import { Loader2, Star, Sun, Flame } from "lucide-react";
 import Seo from "@/components/Seo";
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
-  const { user, isLoading, signInWithGoogle } = useAuth();
+  // Google's own button when a client ID is configured; the Supabase redirect
+  // otherwise, or if Google's script can't load (offline, blocked).
+  const [useGoogleButton, setUseGoogleButton] = useState(googleIdentityEnabled);
+  // Bumped to remount Google's button with a fresh nonce after a failure.
+  const [googleKey, setGoogleKey] = useState(0);
+  const { user, isLoading, signInWithGoogle, signInWithGoogleIdToken } = useAuth();
   const { t } = useTranslation("pages");
+  const navigate = useNavigate();
 
-  // Already signed in — nothing to do here.
-  if (!isLoading && user) return <Navigate to="/dashboard" replace />;
+  // Already signed in — nothing to do here. Skipped while a Google ID-token
+  // sign-in is settling, so /auth/callback (not this) decides onboarding.
+  if (!isLoading && user && !loading) return <Navigate to="/dashboard" replace />;
+
+  const handleGoogleCredential = async (idToken: string, rawNonce: string) => {
+    setLoading(true);
+    const { error } = await signInWithGoogleIdToken(idToken, rawNonce);
+    if (error) {
+      setLoading(false);
+      setGoogleKey((k) => k + 1);
+      toast.error(t("login.googleFailed", "Couldn't reach Google. Check your connection and try again."));
+      return;
+    }
+    // The one place that decides onboarding vs dashboard; the session is
+    // already in place, so it routes immediately.
+    navigate("/auth/callback", { replace: true });
+  };
 
   const handleGoogle = async () => {
     setLoading(true);
@@ -71,7 +93,7 @@ export default function Login() {
                 textTransform: "uppercase",
               }}
             >
-              Kundali
+              Gurukundali
             </h1>
             <p
               className="mt-2"
@@ -100,6 +122,23 @@ export default function Login() {
             </p>
           </div>
 
+          {useGoogleButton ? (
+            loading ? (
+              <div
+                className="w-full inline-flex items-center justify-center gap-3 min-h-[48px] text-[15px]"
+                style={{ color: "hsl(var(--text-secondary))", fontFamily: "'Jost', sans-serif" }}
+              >
+                <Loader2 className="h-5 w-5 animate-spin" />
+                {t("login.callbackWorking", "Signing you in…")}
+              </div>
+            ) : (
+              <GoogleSignInButton
+                key={googleKey}
+                onCredential={handleGoogleCredential}
+                onUnavailable={() => setUseGoogleButton(false)}
+              />
+            )
+          ) : (
           <button
             type="button"
             onClick={handleGoogle}
@@ -121,6 +160,7 @@ export default function Login() {
               ? t("login.googleRedirecting", "Taking you to Google…")
               : t("login.continueWithGoogle", "Continue with Google")}
           </button>
+          )}
 
           {/* Google stays first and unchanged: it is one tap for anyone who
               has an account, where the email path is three steps and a wait. */}

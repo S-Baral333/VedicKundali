@@ -13,6 +13,8 @@ interface AuthContextType {
    * an email address. There is still nothing to forget, leak or reset.
    */
   signInWithGoogle: () => Promise<{ error: Error | null }>;
+  /** Exchange an ID token from Google's own button for a session. */
+  signInWithGoogleIdToken: (idToken: string, rawNonce: string) => Promise<{ error: Error | null }>;
   /** Mail a six-digit code, creating the account if the address is new. */
   sendEmailCode: (email: string, captchaToken?: string) => Promise<{ error: Error | null }>;
   /** Exchange that code for a session. */
@@ -84,6 +86,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   /**
+   * The same Google sign-in without leaving the page: Google's button (see
+   * GoogleSignInButton) returns an ID token, and Supabase verifies it against
+   * the Google provider's client ID and the nonce. New accounts still come from
+   * on_auth_user_created, exactly as with the redirect.
+   */
+  const signInWithGoogleIdToken = async (idToken: string, rawNonce: string) => {
+    const { error } = await supabase.auth.signInWithIdToken({
+      provider: "google",
+      token: idToken,
+      nonce: rawNonce,
+    });
+    return { error: error as Error | null };
+  };
+
+  /**
    * Send a six-digit code to `email`.
    *
    * shouldCreateUser keeps this the same single act Google is: a first-time
@@ -130,7 +147,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, session, isAdmin, isLoading, signInWithGoogle, sendEmailCode, verifyEmailCode, signOut }}
+      value={{ user, session, isAdmin, isLoading, signInWithGoogle, signInWithGoogleIdToken, sendEmailCode, verifyEmailCode, signOut }}
     >
       {children}
     </AuthContext.Provider>

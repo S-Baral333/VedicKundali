@@ -1,12 +1,12 @@
-# Kundali — Vedic Astrology Platform
+# Gurukundali — Vedic Astrology Platform
 
-**Built by WandongBulls Corp**
+**[gurukundali.com](https://www.gurukundali.com)**
 
 Your stars. Your story. Your dharma.
 
 ## About
 
-Kundali is a precision Vedic astrology web app built on React 18, Vite, TypeScript, Supabase, and i18next. It delivers birth chart generation, daily horoscopes, dream interpretation, Kundali Milan compatibility, muhurta timing, and AI-powered oracle readings — rooted in the classical Sanskrit tradition of Jyotisha.
+Gurukundali is a precision Vedic astrology web app built on React 18, Vite, TypeScript, Supabase, and i18next. It delivers birth chart generation, daily horoscopes, dream interpretation, Kundali Milan compatibility, muhurta timing, and AI-powered oracle readings — rooted in the classical Sanskrit tradition of Jyotisha.
 
 Supported languages: English, Hindi (हिन्दी), Bengali (বাংলা), Tamil (தமிழ்), Telugu (తెలుగు), Marathi (मराठी), Nepali (नेपाली).
 
@@ -71,4 +71,4 @@ supabase functions deploy
 
 ## License
 
-© WandongBulls Corp. All rights reserved.
+© Aayush Timalsina, trading as Gurukundali (ABN 97 851 594 042). All rights reserved.
