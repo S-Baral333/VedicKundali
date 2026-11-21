@@ -22,9 +22,12 @@ export default function Login() {
   const { t } = useTranslation("pages");
   const navigate = useNavigate();
 
-  // Already signed in — nothing to do here. Skipped while a Google ID-token
-  // sign-in is settling, so /auth/callback (not this) decides onboarding.
-  if (!isLoading && user && !loading) return <Navigate to="/dashboard" replace />;
+  // Already signed in — nothing to do here. This is also how an email-code
+  // sign-in leaves (the session lands while this page is open), so it goes via
+  // /auth/callback, the one place that decides onboarding vs dashboard.
+  // Skipped while a Google ID-token sign-in is settling; that path navigates
+  // to /auth/callback itself.
+  if (!isLoading && user && !loading) return <Navigate to="/auth/callback" replace />;
 
   const handleGoogleCredential = async (idToken: string, rawNonce: string) => {
     setLoading(true);

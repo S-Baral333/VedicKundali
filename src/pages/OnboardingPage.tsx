@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
@@ -33,11 +33,34 @@ export default function OnboardingPage() {
         .select("user_id");
       if (error) throw error;
       if (!data || data.length === 0) throw new Error("profile row was not updated");
+      // The dashboard keeps a per-tab cache of the profile. Anything cached
+      // before this save describes someone who hasn't onboarded yet.
+      try { sessionStorage.removeItem("dashboard-data"); } catch { /* storage blocked */ }
     },
     [user]
   );
 
-  if (isLoading) {
+  // Someone who has already finished onboarding never sees it again, however
+  // they got here (a bookmark, the back button, a stale redirect).
+  const userId = user?.id;
+  const [alreadyDone, setAlreadyDone] = useState<boolean | null>(null);
+  useEffect(() => {
+    if (!userId) return;
+    let cancelled = false;
+    supabase
+      .from("profiles")
+      .select("onboarding_completed")
+      .eq("user_id", userId)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (!cancelled) setAlreadyDone(!!data?.onboarding_completed);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [userId]);
+
+  if (isLoading || (user && alreadyDone === null)) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -45,6 +68,7 @@ export default function OnboardingPage() {
     );
   }
   if (!user) return <Navigate to="/login" replace />;
+  if (alreadyDone) return <Navigate to="/dashboard" replace />;
 
   // Google already told us what they go by; offer it, they can change it.
   const meta = user.user_metadata as { given_name?: string; full_name?: string; name?: string } | undefined;

@@ -43,7 +43,7 @@ function computeClientValidDate(p: string): string {
 
 interface ChartSummary { id: string; full_name: string; chart_data: any; }
 interface DreamSummary { id: string; dream_category: string | null; dream_description: string; created_at: string; }
-interface DashboardCache { chart: ChartSummary | null; dreams: DreamSummary[]; profileName: string; preferences: any; needsOnboarding: boolean; }
+interface DashboardCache { chart: ChartSummary | null; dreams: DreamSummary[]; profileName: string; preferences: any; }
 
 const CACHE_KEY = "dashboard-data";
 
@@ -226,7 +226,7 @@ const UserDashboard = React.forwardRef<HTMLDivElement>((_props, ref) => {
     setOnboardingChecked(true);
     setLoading(false);
 
-    const cacheData: DashboardCache = { chart: newChart, dreams: newDreams, profileName: newProfileName, preferences: newPreferences, needsOnboarding: newNeedsOnboarding };
+    const cacheData: DashboardCache = { chart: newChart, dreams: newDreams, profileName: newProfileName, preferences: newPreferences };
     try { sessionStorage.setItem(CACHE_KEY, JSON.stringify(cacheData)); } catch {}
   };
 
@@ -237,8 +237,10 @@ const UserDashboard = React.forwardRef<HTMLDivElement>((_props, ref) => {
       if (cached) {
         const data: DashboardCache = JSON.parse(cached);
         setChart(data.chart); setDreams(data.dreams); setProfileName(data.profileName);
-        setPreferences(data.preferences); setNeedsOnboarding(data.needsOnboarding);
-        setOnboardingChecked(true); setLoading(false);
+        // Not needsOnboarding: a cached "true" from before onboarding finished
+        // would bounce the person straight back into it. Only the fresh read
+        // below may send anyone to /onboarding.
+        setPreferences(data.preferences); setLoading(false);
       }
     } catch {}
     loadDashboard();
