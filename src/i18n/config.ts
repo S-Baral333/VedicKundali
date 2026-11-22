@@ -58,7 +58,7 @@ const enOnboarding = {
   askLanguageTitle: "Which language feels like home?",
   askLanguageHelper:
     "Choose how Kundali should speak to you. You can change this anytime in your Profile.",
-  placeholderBirthplace: "e.g. Mumbai, India",
+  placeholderBirthplace: "e.g. Pashupatinath Temple, Kathmandu",
   continueBtn: "Continue",
   selectedCount: "{{n}}/3 selected",
   // Dwara — the onboarding portal (components/onboarding/dwara)
